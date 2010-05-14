@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.37 in css mode. -->
+<html>
+  <head>
+    <title>init.el</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #dcdccc;
+        background-color: #3f3f3f;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #7f9f7f;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #708070;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #dca3a3;
+        font-weight: bold;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #f0dfaf;
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #cc9393;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="comment-delimiter">;; </span><span class="comment">Everyday functionality using REQUIRE
+</span>(<span class="keyword">require</span> '<span class="constant">cl</span>)
+(<span class="keyword">require</span> '<span class="constant">saveplace</span>)
+(<span class="keyword">require</span> '<span class="constant">ffap</span>)
+(<span class="keyword">require</span> '<span class="constant">uniquify</span>)
+(<span class="keyword">require</span> '<span class="constant">ansi-color</span>)
+(<span class="keyword">require</span> '<span class="constant">recentf</span>)
+
+<span class="comment-delimiter">;; </span><span class="comment">We will use ELPA now 
+</span>(setq package-user-dir (concat site-lisp <span class="string">"/elpa"</span>))
+(<span class="keyword">require</span> '<span class="constant">package</span>)
+(package-initialize)
+(<span class="keyword">require</span> '<span class="constant">init-elpa</span>)
+
+<span class="comment-delimiter">;; </span><span class="comment">load my customization 
+</span>(<span class="keyword">require</span> '<span class="constant">init-defuns</span>)
+(<span class="keyword">require</span> '<span class="constant">init-general</span>)
+(<span class="keyword">require</span> '<span class="constant">init-progmodes</span>)
+(<span class="keyword">require</span> '<span class="constant">init-xml</span>)
+(<span class="keyword">require</span> '<span class="constant">init-bindings</span>)
+</pre>
+  </body>
+</html>

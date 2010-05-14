@@ -1,0 +1,14 @@
+loaddefs.el*
+backups/*
+auto-save-list
+custom.el
+*elc
+places
+.svn
+.DS_Store
+image-dired/
+elim/
+session*
+*~
+tramp
+\#*
