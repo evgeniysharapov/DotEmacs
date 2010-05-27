@@ -13,3 +13,4 @@ session*
 tramp
 \#*
 /server/server
+site-lisp/elpa/**/*
