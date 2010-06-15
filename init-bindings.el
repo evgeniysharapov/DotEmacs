@@ -27,5 +27,9 @@
 (global-set-key [(control x) (control b)] 'ibuffer)
 
 
+;; Windows
+(global-set-key [(control ?z)] 'delete-window)
+(global-set-key [(control x) (control ?z)] 'delete-other-windows)
+
 
 (provide 'init-bindings)
