@@ -66,11 +66,13 @@
 
 (setq uniquify-buffer-name-style 'forward
       mouse-yank-at-point t
-      require-final-newline t)
+      require-final-newline t
+      delete-selection-mode t)
 
 (set-default 'indent-tabs-mode nil)
 (set-default 'indicate-empty-lines t)
 (set-default 'imenu-auto-rescan t)
+
 
 ;; --------------------------------------------------
 ;;    Miscellaneous 
