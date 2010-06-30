@@ -64,6 +64,7 @@
 (require 'init-general)
 (require 'init-progmodes)
 (require 'init-xml)
+(require 'init-org)
 (require 'init-bindings)
 
 ;; Autoloads and custom files 
