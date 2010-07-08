@@ -30,6 +30,9 @@
 ;; Windows
 (global-set-key [(control ?z)] 'delete-window)
 (global-set-key [(control x) (control ?z)] 'delete-other-windows)
-
+(global-set-key [(meta shift up)] 'windmove-up)
+(global-set-key [(meta shift down)] 'windmove-down)
+(global-set-key [(meta shift left)] 'windmove-left)
+(global-set-key [(meta shift right)] 'windmove-right)
 
 (provide 'init-bindings)
