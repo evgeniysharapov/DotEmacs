@@ -39,9 +39,8 @@
 (defun turn-off-tool-bar ()
   (tool-bar-mode -1))
 
-(defun turn-on-linum-and-zenburn ()
-  (linum-mode)
-  (color-theme-zenburn))
+(defun turn-on-linum ()
+  (linum-mode +1))
 
 (defun add-watchwords ()
   (font-lock-add-keywords
@@ -54,7 +53,7 @@
 (add-hook '*programming-hook* 'turn-on-save-place-mode)
 (add-hook '*programming-hook* 'pretty-greek)
 (add-hook '*programming-hook* 'add-watchwords)
-(add-hook '*programming-hook* 'turn-on-linum-and-zenburn)
+(add-hook '*programming-hook* 'turn-on-linum)
 
 (defun run-programming-hook ()
   "Enable things that are convenient across all coding buffers."
