@@ -54,3 +54,10 @@
                           ("${?\\([#@*$!?0-9]\\|PWD\\|UID\\OPTARG\\|OPTIND\\|PPID\\|HOSSTNAME\\)}?" . 'sh-special-variables-face)
                           ))
 
+
+;;
+;; Addign Yasippets 
+;;
+(if (and (file-directory-p "~/.emacs.d/snippets")
+         (fboundp 'yas/load-directory))
+    (yas/load-directory "~/.emacs.d/snippets"))
