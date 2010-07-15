@@ -63,28 +63,36 @@
 ;;     Setup Lisp based modes (including Elisp)
 ;; --------------------------------------------------
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
+;; redefine paredit keys 
+(eval-after-load "paredit"
+  '(progn 
+     (define-key paredit-mode-map [(return)] 'paredit-newline)
+     (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))
+     ;; unset C-right/C-left
+     (local-unset-key [(control left)])
+     (local-unset-key [(control right)])))
 
-(defun turn-on-paredit (keymap) 
-  (paredit-mode +1) 
-  (define-key keymap (kbd "RET") 'paredit-newline))
+(defun turn-on-paren-dim (mode)
+  "Adds a new font-lock-kw for dimming parens in lisp based modes"
+  (when window-system
+    (defface dimmed-paren
+      '((((class color))
+         :foreground "DimGray"))
+        :group) 'faces)
+    (font-lock-add-keywords
+     (intern (concat mode "-hook"))
+     '(("(\\|)" . 'dimmed-paren-face))))
 
-(add-hook 'emacs-lisp-mode-hook (lambda () (turn-on-paredit emacs-lisp-mode-map)))
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'pretty-greek)
-(add-hook 'lisp-mode-hook 'pretty-greek)
-
-(dolist (x '(scheme emacs-lisp lisp clojure))
-  ;(when window-system
-  ;  (font-lock-add-keywords
-  ;   (intern (concat (symbol-name x) "-mode"))
-  ;   '(("(\\|)" . 'esk-paren-face))))
+(dolist (mode '(scheme emacs-lisp lisp clojure))
   (add-hook
-   (intern (concat (symbol-name x) "-mode-hook"))
+   (intern (concat (symbol-name mode) "-mode-hook"))
    (lambda ()
-     (paredit-mode +1)
-     (idle-highlight +1)
-     (run-programming-hook))))
+     (progn
+       (paredit-mode +1)
+       (turn-on-eldoc-mode)
+       (eldoc-mode)
+       (idle-highlight +1)
+       (run-programming-hook)))))
 
 ;; ;; these paredit keys are confusing
 ;; (eval-after-load 'paredit
