@@ -18,18 +18,20 @@ it goes to the next heading"
   )
 
 (defun sen/org-mode-yasnippet-fix ()
-  (yas/initialize)
-  (org-set-local 'yas/trigger-key [tab])
-  (define-key yas/keymap [tab] 'yas/next-field-group)
+  ;; (yas/initialize)
+  ;; (org-set-local 'yas/trigger-key [tab])
+  ;; (define-key yas/keymap [tab] 'yas/next-field-group)
   )
 
-(add-hook 'org-mode-hook 'sen/org-mode-custom-bindings)
-(add-hook 'org-mode-hook 'sen/org-mode-yasnippet-fix)
-(add-hook 'org-mode-hook 'yas/minor-mode)
-
-(add-hook 'org-mode-hook (lambda ()
-                           (setq org-return-follows-link t)  ; To follow links with RET
-                           ))
+(add-hook 'org-mode-hook
+   (lambda ()
+      ; To follow links with RET
+     (setq org-return-follows-link t
+           org-completion-use-ido t)
+     (sen/org-mode-custom-bindings)
+     (sen/org-mode-yasnippet-fix)
+     (yas/minor-mode-on)
+     (turn-on-auto-fill)))
 
 
 (provide 'init-org)
