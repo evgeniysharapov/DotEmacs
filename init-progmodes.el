@@ -71,7 +71,7 @@
 
 (defface dimmed-paren
   '((((class color))
-     :foreground "gray80"))
+     :foreground "LightSlateGray"))
   "Dim parens in Lisp-like languages")
 
 (defun turn-on-paren-dim (mode)
@@ -84,13 +84,13 @@
 (dolist (mode '(scheme emacs-lisp lisp clojure))
   (add-hook
    (intern (concat (symbol-name mode) "-mode-hook"))
-   (lambda ()
+   `(lambda ()
      (progn
        (paredit-mode +1)
        (turn-on-eldoc-mode)
        (idle-highlight +1)
        (run-programming-hook)
-       ;(turn-on-paren-dim (concat (symbol-name mode) "-mode"))
+       (turn-on-paren-dim ,(concat (symbol-name mode) "-mode"))
        ))))
 
 ;; ;; these paredit keys are confusing
