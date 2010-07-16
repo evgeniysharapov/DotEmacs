@@ -36,9 +36,6 @@
 (defun turn-on-whitespace ()
   (whitespace-mode t))
 
-(defun turn-off-tool-bar ()
-  (tool-bar-mode -1))
-
 (defun turn-on-linum ()
   (linum-mode +1))
 
