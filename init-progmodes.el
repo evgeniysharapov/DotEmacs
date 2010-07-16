@@ -90,7 +90,6 @@
      (progn
        (paredit-mode +1)
        (turn-on-eldoc-mode)
-       (eldoc-mode)
        (idle-highlight +1)
        (run-programming-hook)))))
 
