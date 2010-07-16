@@ -72,16 +72,17 @@
      (local-unset-key [(control left)])
      (local-unset-key [(control right)])))
 
+(defface dimmed-paren
+  '((((class color))
+     :foreground "gray80"))
+  "Dim parens in Lisp-like languages")
+
 (defun turn-on-paren-dim (mode)
   "Adds a new font-lock-kw for dimming parens in lisp based modes"
   (when window-system
-    (defface dimmed-paren
-      '((((class color))
-         :foreground "DimGray"))
-        :group) 'faces)
     (font-lock-add-keywords
-     (intern (concat mode "-hook"))
-     '(("(\\|)" . 'dimmed-paren-face))))
+     (intern mode)
+     '(("(\\|)" . 'dimmed-paren)))))
 
 (dolist (mode '(scheme emacs-lisp lisp clojure))
   (add-hook
@@ -91,7 +92,8 @@
        (paredit-mode +1)
        (turn-on-eldoc-mode)
        (idle-highlight +1)
-       (run-programming-hook)))))
+       (run-programming-hook)
+       (turn-on-paren-dim (concat (symbol-name mode) "-mode"))))))
 
 ;; ;; these paredit keys are confusing
 ;; (eval-after-load 'paredit
