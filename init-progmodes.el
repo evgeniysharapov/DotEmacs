@@ -90,7 +90,8 @@
        (turn-on-eldoc-mode)
        (idle-highlight +1)
        (run-programming-hook)
-       (turn-on-paren-dim (concat (symbol-name mode) "-mode"))))))
+       ;(turn-on-paren-dim (concat (symbol-name mode) "-mode"))
+       ))))
 
 ;; ;; these paredit keys are confusing
 ;; (eval-after-load 'paredit
