@@ -14,4 +14,3 @@ tramp
 /server/server
 site-lisp/elpa/**/*
 .DS_Store
-site-lisp/elpa/archives/elpa/archive-contents
