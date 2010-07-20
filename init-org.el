@@ -15,6 +15,8 @@ it goes to the next heading"
   (local-set-key [(control up)] 'outline-previous-visible-heading)
   (local-set-key [(control down)]  'outline-next-visible-heading)
   (local-set-key [(control meta up)]  'outline-up-heading)
+  (local-set-key [(control c) (meta ?w)] 'org-store-link )
+  (local-set-key [(control c) (control ?y)] 'org-insert-link)
   )
 
 (defun sen/org-mode-yasnippet-fix ()
