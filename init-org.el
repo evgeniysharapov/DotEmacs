@@ -34,6 +34,7 @@ it goes to the next heading"
      (sen/org-mode-custom-bindings)
      (sen/org-mode-yasnippet-fix)
      (yas/minor-mode-on)
+     (hl-line-mode +1)
      (turn-on-auto-fill)))
 
 
