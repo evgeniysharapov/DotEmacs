@@ -21,9 +21,10 @@ it goes to the next heading"
 
 (defun sen/org-mode-yasnippet-fix ()
   ;; (yas/initialize)
-  ;; (org-set-local 'yas/trigger-key [tab])
-  ;; (define-key yas/keymap [tab] 'yas/next-field-group)
-  )
+  (make-variable-buffer-local 'yas/trigger-key)
+  (setq yas/trigger-key [tab])
+  (define-key yas/keymap [(tab)] 'yas/next-field-group))
+
 
 (add-hook 'org-mode-hook
    (lambda ()
