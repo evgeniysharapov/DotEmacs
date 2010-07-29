@@ -25,6 +25,11 @@ it goes to the next heading"
   (setq yas/trigger-key [tab])
   (define-key yas/keymap [(tab)] 'yas/next-field-group))
 
+;;
+;; Adding functionality to integrate with Outlook
+;;
+(require 'org-outlook)
+
 
 (add-hook 'org-mode-hook
    (lambda ()
