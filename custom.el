@@ -9,6 +9,8 @@
  '(inferior-lisp-program "clj")
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(muse-html-charset-default "utf-8")
+ '(muse-html-encoding-default (quote utf-8))
  '(org-empty-line-terminates-plain-lists t)
  '(org-outlook-location (w32-short-file-name "c:/Program Files/Microsoft Office/OFFICE12/OUTLOOK.exe"))
  '(recentf-max-saved-items 200)
