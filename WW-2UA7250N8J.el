@@ -54,6 +54,11 @@
                           ("${?\\([#@*$!?0-9]\\|PWD\\|UID\\OPTARG\\|OPTIND\\|PPID\\|HOSSTNAME\\)}?" . 'sh-special-variables-face)
                           ))
 
+(defun disney-occur-entries ()
+  "Calls occur on regular expression that marks entries in log excerpts from A La Carte"
+  (interactive)
+  (occur (rx ?> ?> (1+ blank) "SEClient"
+            (1+ blank) ?> ?> (1+ blank) (1+ alnum))))
 
 ;;
 ;; Addign Yasippets 
