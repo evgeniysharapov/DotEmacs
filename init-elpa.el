@@ -17,7 +17,8 @@
                             'findr
                             'smex
                             'nxml
-                            'nxml-mode)
+                            'nxml-mode
+                            'muse)
   "Libraries that should be installed by default.")
 
 
