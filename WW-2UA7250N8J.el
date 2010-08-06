@@ -22,7 +22,10 @@
 ;;
 ;; ORG-Mode Special Tweaks
 ;;
-(setq org-outlook-location (w32-short-file-name "c:/Program Files/Microsoft Office/OFFICE12/OUTLOOK.exe"))
+;; Adding functionality to integrate with Outlook
+(require 'org-outlook)
+(when (fboundp 'w32-short-file-name)
+  (setq org-outlook-location (w32-short-file-name "c:/Program Files/Microsoft Office/OFFICE12/OUTLOOK.exe")))
 
 ;;
 ;; Define new faces for shell
