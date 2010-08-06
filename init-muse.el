@@ -4,8 +4,8 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
-(require 'muse-mode)
-(require 'muse-publish)
-(require 'muse-html)
+;; (require 'muse-mode)
+;; (require 'muse-publish)
+;; (require 'muse-html)
 
 (provide 'init-muse)
