@@ -17,6 +17,13 @@
 ;;
 (require 'tramp)
 (setq tramp-default-method "plink")
+
+
+;;
+;; ORG-Mode Special Tweaks
+;;
+(setq org-outlook-location (w32-short-file-name "c:/Program Files/Microsoft Office/OFFICE12/OUTLOOK.exe"))
+
 ;;
 ;; Define new faces for shell
 ;;
@@ -54,12 +61,36 @@
                           ("${?\\([#@*$!?0-9]\\|PWD\\|UID\\OPTARG\\|OPTIND\\|PPID\\|HOSSTNAME\\)}?" . 'sh-special-variables-face)
                           ))
 
+
+
+;; Here we started work on ALC log files mode
+(defgroup disney-alc-log nil
+  "Major mode for viewing log files."
+  ;; :link '(emacs-library-link :tag "Source File" "")
+  :group 'faces
+  :group 'files)
+
 (defun disney-occur-entries ()
   "Calls occur on regular expression that marks entries in log excerpts from A La Carte"
   (interactive)
   (occur (rx ?> ?> (1+ blank) "SEClient"
             (1+ blank) ?> ?> (1+ blank) (1+ alnum))))
 
+(define-minor-mode disney-alc-log-mode
+  "Mode that helps us to work with ALC log files"
+  :init-value nil
+  :lighter "ALC"
+  :keymap '()
+  :group  'disney-alc-log
+  )
+
+(defun disney-alc-log-mode ()
+  "Toggle "
+  (interactive)
+  ;; Turn on font-lock-mode
+  (if (not font-lock-mode)
+      (font-lock-mode 1))
+  )
 ;;
 ;; Addign Yasippets 
 ;;
