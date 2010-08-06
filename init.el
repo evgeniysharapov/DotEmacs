@@ -59,15 +59,6 @@
 (package-initialize)
 (require 'init-elpa)
 
-;; load my customization 
-(require 'init-defuns)
-(require 'init-general)
-(require 'init-progmodes)
-(require 'init-xml)
-(require 'init-org)
-(require 'init-muse)
-(require 'init-bindings)
-
 ;; Autoloads and custom files 
 (setq autoload-file (concat dotfiles-dir "loaddefs.el"))
 (when  (not (file-exists-p autoload-file))
@@ -77,6 +68,15 @@
               (message "Updating autoloads from %s" path)
               (update-directory-autoloads path))))
 (load autoload-file)
+
+;; load my customization 
+(require 'init-defuns)
+(require 'init-general)
+(require 'init-progmodes)
+(require 'init-xml)
+(require 'init-org)
+(require 'init-muse)
+(require 'init-bindings)
 
 ;; Custom variables and faces 
 (setq custom-file   (concat dotfiles-dir "custom.el"))
