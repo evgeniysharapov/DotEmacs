@@ -37,4 +37,10 @@
 (global-set-key [(control shift meta left)] 'windmove-left)
 (global-set-key [(control shift meta right)] 'windmove-right)
 
+
+;; we use kill-ring-search through ELPA, hence check if it is
+;; available first
+(when (fboundp 'kill-ring-search)
+  (global-set-key [(control meta ?y)] 'kill-ring-search))
+
 (provide 'init-bindings)
