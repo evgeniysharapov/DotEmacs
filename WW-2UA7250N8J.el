@@ -73,6 +73,17 @@
   :group 'faces
   :group 'files)
 
+(defun disney-format-log ()
+  "Formats INC excerpts, getting rid of long line and making SOAP messages look prettier"
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward ":Envelope" nil t)
+      (backward-word 2)
+      (setq start (point))
+      (re-search-forward ":Envelope>" nil t 2)
+      (xml-pretty-print-region start (point)))))
+
 (defun disney-occur-entries ()
   "Calls occur on regular expression that marks entries in log excerpts from A La Carte"
   (interactive)
