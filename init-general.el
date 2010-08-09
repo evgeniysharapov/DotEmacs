@@ -71,6 +71,11 @@
 (set-default 'indicate-empty-lines t)
 (set-default 'imenu-auto-rescan t)
 
+;; --------------------------------------------------
+;;   Windows and stuff 
+;; --------------------------------------------------
+(when (fboundp 'winner-mode)
+      (winner-mode 1))
 
 ;; --------------------------------------------------
 ;;    Miscellaneous 
