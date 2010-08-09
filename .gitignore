@@ -13,4 +13,4 @@ tramp
 \#*
 /server/server
 site-lisp/elpa/**/*
-.DS_Store
+ede-projects.el
