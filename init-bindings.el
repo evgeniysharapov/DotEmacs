@@ -37,6 +37,10 @@
 (global-set-key [(control shift meta left)] 'windmove-left)
 (global-set-key [(control shift meta right)] 'windmove-right)
 
+;; Buffer operations 
+(global-set-key [(control shift ?r)] 'search-backward)
+(global-set-key [(control shift ?s)] 'search-forward)
+
 
 ;; we use kill-ring-search through ELPA, hence check if it is
 ;; available first
