@@ -73,16 +73,29 @@
   :group 'faces
   :group 'files)
 
+(defun -format-xml (start end indentation)
+  "Formats XML using xmlstartlet command line tool"
+  (shell-command-on-region start end (format "xml fo -s %s -o" indentation) nil t))
+
+(defun disney-format-xml (start end &optional indent)
+  "Formats region as XML"
+  (interactive "r")
+  (if indent
+    (-format-xml start end indent)
+    (-format-xml start end 2))
+  ;; now go to the mark
+  (goto-char (mark)))
+
 (defun disney-format-log ()
   "Formats INC excerpts, getting rid of long line and making SOAP messages look prettier"
   (interactive)
   (save-excursion
     (goto-char (point-min))
     (while (re-search-forward ":Envelope" nil t)
-      (backward-word 2)
+      (search-backward "<" nil t)
       (setq start (point))
-      (re-search-forward ":Envelope>" nil t 2)
-      (xml-pretty-print-region start (point)))))
+      (re-search-forward ":Envelope>" nil t)
+      (disney-format-xml start (point)))))
 
 (defun disney-occur-entries ()
   "Calls occur on regular expression that marks entries in log excerpts from A La Carte"
