@@ -6,18 +6,8 @@
 
 ;; This variable contains functions that we need to run if we are programming 
 (defvar *programming-hook*)
-
 ;; --------------------------------------------------
-;;  Autocomplete 
-;; --------------------------------------------------
-(require 'auto-complete)
-(global-auto-complete-mode t)
-(defadvice ac-start (before advice-turn-on-auto-start activate)
-  (set (make-local-variable 'ac-auto-start) t))
-(defadvice ac-cleanup (after advice-turn-off-auto-start activate)
-  (set (make-local-variable 'ac-auto-start) nil))
-;; --------------------------------------------------
-;;  Other programming modes nifties 
+;; Stuff that is good to have
 ;; --------------------------------------------------
 (defun local-column-number-mode ()
   (make-local-variable 'column-number-mode)
