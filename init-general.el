@@ -86,6 +86,7 @@
 
 (random t)
 
+;;;; Setup IDO mode 
 (ido-mode t)
 (ido-everywhere t)
 (setq ido-enable-prefix nil
@@ -94,10 +95,12 @@
       ido-use-filename-at-point 'guess
       ido-max-prospects 10)
 
-; add Smex 
+;;;; add Smex 
 (if (fboundp 'smex-initialize) (progn 
                                  (smex-initialize)
                                  (global-set-key (kbd "M-x") 'smex)
                                  (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+
+;;;; add Company completion
 
 (provide 'init-general)
