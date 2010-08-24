@@ -81,7 +81,8 @@
        (idle-highlight +1)
        (run-programming-hook)
        (turn-on-paren-dim ,(concat (symbol-name mode) "-mode"))
-       ))))
+       (if (fboundp 'highlight-parentheses-mode)
+           (highlight-parentheses-mode +1))))))
 
 ;; ;; these paredit keys are confusing
 ;; (eval-after-load 'paredit
