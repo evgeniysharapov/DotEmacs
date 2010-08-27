@@ -10,4 +10,4 @@
 ;;
 ;; TODO: justify for the face font size 
 (if (window-system)
-    (set-frame-size (selected-frame) 156 42))
+    (set-frame-size (selected-frame) 165 42))
