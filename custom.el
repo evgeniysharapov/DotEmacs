@@ -23,6 +23,7 @@
  '(scroll-step 1)
  '(show-paren-mode t)
  '(show-paren-style (quote mixed))
+ '(swank-clojure-deps (list (concat "http://repo.technomancy.us/" "swank-clojure-1.1.0.jar") (concat "http://build.clojure.org/snapshots/org/" "clojure/clojure-contrib/1.2.0-SNAPSHOT/" "clojure-contrib-1.2.0-SNAPSHOT.jar") (concat "http://build.clojure.org/snapshots/org/" "clojure/clojure/1.2.0-master-SNAPSHOT/" "clojure-1.2.0-master-20100813.160144-94.jar")))
  '(use-dialog-box nil)
  '(visible-bell t))
 (custom-set-faces
