@@ -21,8 +21,15 @@
 
 (setq visible-bell t
       echo-keystrokes 0.1
-      font-lock-maximum-decoration t
-      color-theme-is-global t)
+      font-lock-maximum-decoration t)
+
+;;
+;; Initialize Color-Theme
+;;
+(if (fboundp 'color-theme-initialize)
+	(progn 
+	 (setq color-theme-is-global nil)
+	 (color-theme-initialize)))
 
 (display-time)
 ;; --------------------------------------------------
