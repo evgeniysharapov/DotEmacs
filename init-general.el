@@ -97,10 +97,11 @@
       ido-show-dot-for-dired t)
 
 ;;;; add Smex 
-(if (fboundp 'smex-initialize) (progn 
-                                 (smex-initialize)
-                                 (global-set-key (kbd "M-x") 'smex)
-                                 (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+(if (fboundp 'smex-initialize)
+    (progn 
+      (smex-initialize)
+      (global-set-key (kbd "M-x") 'smex)
+      (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
 
 ;;;; add Company completion
 
