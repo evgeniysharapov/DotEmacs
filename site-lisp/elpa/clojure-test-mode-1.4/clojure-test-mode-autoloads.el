@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (clojure-test-mode) "clojure-test-mode" "clojure-test-mode.el"
-;;;;;;  (19450 34065))
+;;;;;;  (19575 1461))
 ;;; Generated autoloads from clojure-test-mode.el
 
 (autoload 'clojure-test-mode "clojure-test-mode" "\
@@ -20,11 +20,12 @@ Also will enable it if the file is in a test directory." (save-excursion (save-w
 
 ;;;***
 
-;;;### (autoloads nil nil ("clojure-test-mode-pkg.el") (19450 34065
-;;;;;;  827000))
+;;;### (autoloads nil nil ("clojure-test-mode-pkg.el") (19575 1461
+;;;;;;  141769))
 
 ;;;***
 
+(provide 'clojure-test-mode-autoloads)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

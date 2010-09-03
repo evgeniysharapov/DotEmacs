@@ -4,8 +4,8 @@
 
 
 ;;;### (autoloads (swank-clojure-project swank-clojure-cmd swank-clojure-slime-mode-hook
-;;;;;;  swank-clojure-init) "swank-clojure" "swank-clojure.el" (19450
-;;;;;;  34076))
+;;;;;;  swank-clojure-init) "swank-clojure" "swank-clojure.el" (19575
+;;;;;;  1463))
 ;;; Generated autoloads from swank-clojure.el
 
 (autoload 'swank-clojure-init "swank-clojure" "\
@@ -33,10 +33,11 @@ Setup classpath for a clojure project and starts a new SLIME session.
 
 ;;;***
 
-;;;### (autoloads nil nil ("swank-clojure-pkg.el") (19450 34076 980000))
+;;;### (autoloads nil nil ("swank-clojure-pkg.el") (19575 1463 616733))
 
 ;;;***
 
+(provide 'swank-clojure-autoloads)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
