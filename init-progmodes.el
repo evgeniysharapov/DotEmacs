@@ -56,8 +56,8 @@
      (define-key paredit-mode-map [(return)] 'paredit-newline)
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))
      ;; unset C-right/C-left
-     (local-unset-key [(control left)])
-     (local-unset-key [(control right)])))
+     (define-key paredit-mode-map [(control left)] nil)
+     (define-key paredit-mode-map [(control right)] nil)))
 
 (defface dimmed-paren
   '((((class color))

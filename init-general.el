@@ -21,8 +21,15 @@
 
 (setq visible-bell t
       echo-keystrokes 0.1
-      font-lock-maximum-decoration t
-      color-theme-is-global t)
+      font-lock-maximum-decoration t)
+
+;;
+;; Initialize Color-Theme
+;;
+(if (fboundp 'color-theme-initialize)
+	(progn 
+	 (setq color-theme-is-global nil)
+	 (color-theme-initialize)))
 
 (display-time)
 ;; --------------------------------------------------
@@ -93,13 +100,15 @@
       ido-enable-flex-matching t
       ido-create-new-buffer 'always
       ido-use-filename-at-point 'guess
-      ido-max-prospects 10)
+      ido-max-prospects 10
+      ido-show-dot-for-dired t)
 
 ;;;; add Smex 
-(if (fboundp 'smex-initialize) (progn 
-                                 (smex-initialize)
-                                 (global-set-key (kbd "M-x") 'smex)
-                                 (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+(if (fboundp 'smex-initialize)
+    (progn 
+      (smex-initialize)
+      (global-set-key (kbd "M-x") 'smex)
+      (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
 
 ;;;; add Company completion
 
