@@ -31,12 +31,15 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(completions-first-difference ((t (:inherit bold :underline t))))
+ '(dropdown-list-selection-face ((t (:inherit dropdown-list-face :background "purple" :foreground "ivory"))))
  '(font-lock-comment-face ((((class color) (min-colors 88) (background light)) (:foreground "gray50" :slant italic))))
  '(font-lock-doc-face ((t (:inherit font-lock-string-face :background "gray90" :slant oblique))))
  '(font-lock-function-name-face ((((class color) (min-colors 88) (background light)) (:foreground "ForestGreen"))))
  '(font-lock-keyword-face ((((class color) (min-colors 88) (background light)) (:foreground "Purple" :weight semi-bold))))
  '(font-lock-string-face ((((class color) (min-colors 88) (background light)) (:foreground "RoyalBlue4"))))
  '(font-lock-type-face ((((class color) (min-colors 88) (background light)) (:foreground "VioletRed4"))))
+ '(hi-green-b ((((min-colors 88)) (:foreground "green4" :weight bold))))
  '(hl-paren-face ((t (:weight bold))) t)
  '(sh-quoted-exec ((((class color) (background light)) (:background "gray85"))))
  '(show-paren-match ((((class color) (background light)) (:background "LimeGreen"))))
