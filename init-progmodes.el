@@ -46,6 +46,7 @@
   "Enable things that are convenient across all coding buffers."
   (run-hooks '*programming-hook*))
 
+
 ;; --------------------------------------------------
 ;;     Setup Lisp based modes (including Elisp)
 ;; --------------------------------------------------
@@ -55,13 +56,13 @@
   '(progn 
      (define-key paredit-mode-map [(return)] 'paredit-newline)
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))
-     ;; unset C-right/C-left
+     ;; unset C-right/C-left as it is used to jump words 
      (define-key paredit-mode-map [(control left)] nil)
      (define-key paredit-mode-map [(control right)] nil)))
 
 (defface dimmed-paren
   '((((class color))
-     :foreground "LightSlateGray"))
+     :foreground (face-attribute 'font-lock-comment-face :foreground)))
   "Dim parens in Lisp-like languages")
 
 (defun turn-on-paren-dim (mode)
