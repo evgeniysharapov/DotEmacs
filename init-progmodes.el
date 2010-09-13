@@ -71,7 +71,9 @@
     (font-lock-add-keywords
      (intern mode)
      '(("(\\|)" . 'dimmed-paren)))))
-
+;;
+;; Things that are needed in evey lisp-like language 
+;;
 (dolist (mode '(scheme emacs-lisp lisp clojure))
   (add-hook
    (intern (concat (symbol-name mode) "-mode-hook"))
@@ -85,24 +87,25 @@
        (if (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))))))
 
-;; ;; these paredit keys are confusing
-;; (eval-after-load 'paredit
-;;   '(progn
-;;      ;; it's a habit to use C-Arrows to move over words 
-;;      (define-key paredit-mode-map  [(control right)] nil)
-     
-;;      (define-key paredit-mode-map  [(kbd "<M-down>")] nil)
-;;      (define-key paredit-mode-map "\M-r" nil)))
+;; --------------------------------------------------
+;;                       Slime 
+;; --------------------------------------------------
+(eval-after-load "slime"
+  (add-hook 'slime-repl-mode-hook
+            (lambda ()
+              (progn
+                (paredit-mode +1)
+                (setq slime-net-coding-system 'utf-8-unix)))))
 
-;; ;; --------------------------------------------------
-;; ;;  Clojure
-;; ;; --------------------------------------------------
+;; --------------------------------------------------
+;;                       Clojure
+;; --------------------------------------------------
 ;; (eval-after-load "slime"
-;;   '(progn
-;;      (require 'swank-clojure-extra)
-;;      (add-to-list 'slime-lisp-implementations
-;;                   `(clojure ,(swank-clojure-cmd)
-;;                             :init swank-clojure-init)
+;;    '(progn
+;;       (require 'swank-clojure-extra)
+;;       (add-to-list 'slime-lisp-implementations
+;;                    `(clojure ,(swank-clojure-cmd)
+;                             :init swank-clojure-init)
 ;;                   t)
 ;;      (add-hook 'slime-indentation-update-hooks 'swank-clojure-update-indentation)
 ;;      (add-hook 'slime-repl-mode-hook 'swank-clojure-slime-repl-modify-syntax t)
