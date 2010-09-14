@@ -62,7 +62,7 @@
 
 (defface dimmed-paren
   '((((class color))
-     :foreground (face-attribute 'font-lock-comment-face :foreground)))
+     :foreground "gray50")) ; (face-attribute 'font-lock-comment-face :foreground)))
   "Dim parens in Lisp-like languages")
 
 (defun turn-on-paren-dim (mode)
