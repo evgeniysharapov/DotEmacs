@@ -15,6 +15,7 @@
  '(muse-html-encoding-default (quote utf-8))
  '(org-empty-line-terminates-plain-lists t)
  '(recentf-max-saved-items 200)
+ '(savehist-mode t nil (savehist))
  '(scalable-fonts-allowed t)
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
