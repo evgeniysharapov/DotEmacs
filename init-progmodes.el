@@ -87,6 +87,12 @@
        (if (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))))))
 
+(defun conditionally-enable-paredit-mode ()
+  "Enable paredit-mode during eval-expression"
+  (if (eq this-command 'eval-expression)
+      (paredit-mode 1)))
+(add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
+
 ;; --------------------------------------------------
 ;;                       Slime 
 ;; --------------------------------------------------
