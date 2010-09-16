@@ -97,17 +97,19 @@
 ;;                       Slime 
 ;; --------------------------------------------------
 (eval-after-load "slime"
-  (add-hook 'slime-repl-mode-hook
-            (lambda ()
-              (progn
-                (paredit-mode +1)
-                (setq slime-net-coding-system 'utf-8-unix)
-                ; set some keys to behave like we are in paredit
-                ; prevent grabbing DEL button from
-                ; http://www.emacswiki.org/emacs/ParEdit
-                (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil)
-                
-                ))))
+  (progn
+    (setq slime-complete-symbol*-fancy t)
+    (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+    (setq slime-net-coding-system 'utf-8-unix)
+
+    (add-hook 'slime-repl-mode-hook
+              (lambda ()
+                (progn
+                  (paredit-mode +1)
+                  ; set some keys to behave like we are in paredit
+                  ; prevent grabbing DEL button from
+                  ; http://www.emacswiki.org/emacs/ParEdit
+                  (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil))))))
 
 ;; --------------------------------------------------
 ;;                       Clojure
