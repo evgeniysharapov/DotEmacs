@@ -95,7 +95,13 @@
             (lambda ()
               (progn
                 (paredit-mode +1)
-                (setq slime-net-coding-system 'utf-8-unix)))))
+                (setq slime-net-coding-system 'utf-8-unix)
+                ; set some keys to behave like we are in paredit
+                ; prevent grabbing DEL button from
+                ; http://www.emacswiki.org/emacs/ParEdit
+                (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil)
+                
+                ))))
 
 ;; --------------------------------------------------
 ;;                       Clojure
