@@ -39,5 +39,8 @@ it goes to the next heading"
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 
+;; add documentation path
+(add-to-list 'Info-directory-list "~/.emacs.d/site-lisp/org")
+
 
 (provide 'init-org)
