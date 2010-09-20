@@ -37,5 +37,7 @@ it goes to the next heading"
      (hl-line-mode +1)
      (turn-on-auto-fill)))
 
+(add-hook 'org-mode-hook 'turn-on-font-lock)
+
 
 (provide 'init-org)

@@ -14,6 +14,7 @@
  '(muse-html-charset-default "utf-8")
  '(muse-html-encoding-default (quote utf-8))
  '(org-empty-line-terminates-plain-lists t)
+ '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-id org-info org-jsinfo org-w3m org-panel)))
  '(recentf-max-saved-items 200)
  '(savehist-mode t nil (savehist))
  '(scalable-fonts-allowed t)
