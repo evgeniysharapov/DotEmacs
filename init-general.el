@@ -89,6 +89,8 @@
 ;; --------------------------------------------------
 ;(add-hook 'before-make-frame-hook 'turn-off-tool-bar)
 
+(setq redisplay-dont-pause t)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (random t)
