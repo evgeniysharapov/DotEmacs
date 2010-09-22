@@ -73,22 +73,5 @@
   (interactive)
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
-(defun my/move-line-up ()
-  "Move curent line up one line"
-  (interactive)
-  (transpose-lines 1)
-  (previous-line)
-  (previous-line))
-
-(defun my/move-line-down ()
-  "Move curent line down one line"
-  (interactive)
-  (next-line)
-  (transpose-lines 1)
-  (previous-line))
-
-(global-set-key [(control ?x) (control up)] 'my/move-line-up)
-(global-set-key [(control ?x) (control down)] 'my/move-line-down)
-
 (provide 'init-defuns)
 
