@@ -29,9 +29,21 @@
 (define-key global-map [f11] 'previous-buffer)
 (define-key global-map [f12] 'next-buffer)
 
-;; Windows
-(global-set-key [(control ?z)] 'delete-window)
-(global-set-key [(control x) (control ?z)] 'delete-other-windows)
+;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+;;; C-z my-map
+;; Make the prefix key `C-z' for my personal keymap.
+;; On qwerty-keyboards `C-z' is one of the most accessible keys
+;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
+;; for mode-specific commands (both user-defined and standard Emacs extensions).
+;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
+;; is reassigned here to double key sequence `C-z C-z'.
+(defvar my-map
+  (let ((map (make-sparse-keymap))
+        (c-z (global-key-binding [(control ?z)])))
+    (global-unset-key [(control ?z)])
+    (define-key global-map [(control ?z)] map)
+    (define-key map [(control ?z)] c-z)
+    map))
 
 ;; Windmove
 (global-set-key [(control shift meta up)] 'windmove-up)
