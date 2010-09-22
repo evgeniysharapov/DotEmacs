@@ -60,6 +60,10 @@
 (global-set-key [(control shift ?s)] 'search-forward)
 
 
+;;; Moving in a window
+(define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
+(define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
+
 ;; we use kill-ring-search through ELPA, hence check if it is
 ;; available first
 (when (fboundp 'kill-ring-search)
