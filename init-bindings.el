@@ -26,6 +26,8 @@
 (global-set-key [(meta ?`)] 'file-cache-minibuffer-complete)
 (global-set-key [(control x) (control b)] 'ibuffer)
 
+(define-key global-map [f11] 'previous-buffer)
+(define-key global-map [f12] 'next-buffer)
 
 ;; Windows
 (global-set-key [(control ?z)] 'delete-window)
