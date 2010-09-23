@@ -129,6 +129,10 @@ Example:
 (defadvice next-buffer (after my/next-buffer activate)
   (my/display-prev-next-buffers))
 
+;;; Added visualizing undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode)
+
 ;; --------------------------------------------------
 ;;   Windows and stuff 
 ;; --------------------------------------------------
