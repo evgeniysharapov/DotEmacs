@@ -127,8 +127,14 @@
 ;;      (setq slime-highlight-compiler-notes nil)))
 
 ;; ;; 
-
-
+;; --------------------------------------------------
+;;                        Scheme
+;; --------------------------------------------------
+(autoload 'gambit-inferior-mode "gambit" "Hook Gambit mode into cmuscheme.")
+(autoload 'gambit-mode "gambit" "Hook Gambit mode into scheme.")
+(add-hook 'inferior-scheme-mode-hook (function gambit-inferior-mode))
+(add-hook 'scheme-mode-hook (function gambit-mode))
+(setq scheme-program-name "gsi -:d-")
 
 
 ;; --------------------------------------------------
@@ -148,5 +154,6 @@
 ;(add-hook 'python-mode-hook 'sen/py-autocomplete)
 ;(add-hook 'python-mode-hook 'sen/python-auto-fill-comments-only)
 ;(add-hook 'python-mode-hook 'run-programming-hook)
+
 
 (provide 'init-progmodes)
