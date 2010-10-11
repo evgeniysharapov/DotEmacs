@@ -149,4 +149,13 @@
 ;(add-hook 'python-mode-hook 'sen/python-auto-fill-comments-only)
 ;(add-hook 'python-mode-hook 'run-programming-hook)
 
+
+;; --------------------------------------------------
+;;       Scala Mode 
+;; --------------------------------------------------
+(require 'scala-mode-auto)
+(add-hook 'scala-mode-hook '(lambda ()
+                              (yas/minor-mode-on)))
+
+
 (provide 'init-progmodes)
