@@ -38,7 +38,6 @@
 
 ;; Save a list of recent files visited.
 (recentf-mode 1)
-(setq recentf-max-saved-items 1000)
 
 ;;  File associations 
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
