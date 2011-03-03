@@ -64,6 +64,9 @@
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
 
+;; Added global shortcut to run Magit
+(define-key global-map [(control x) ?g] 'magit-status)
+
 ;; we use kill-ring-search through ELPA, hence check if it is
 ;; available first
 (when (fboundp 'kill-ring-search)
