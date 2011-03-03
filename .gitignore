@@ -15,3 +15,5 @@ tramp
 /server/server
 site-lisp/elpa/**/*
 ede-projects.el
+/bookmarks
+/.org-id-locations
