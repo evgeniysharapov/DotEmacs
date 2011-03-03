@@ -1,8 +1,8 @@
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(color-theme-is-cumulative nil)
  '(column-number-mode t)
  '(custom-buffer-done-kill t)
@@ -29,10 +29,10 @@
  '(use-dialog-box nil)
  '(visible-bell t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(completions-first-difference ((t (:inherit bold :underline t))))
  '(dropdown-list-selection-face ((t (:inherit dropdown-list-face :background "purple" :foreground "ivory"))))
  '(font-lock-comment-face ((((class color) (min-colors 88) (background light)) (:foreground "gray50" :slant italic))))
@@ -46,7 +46,7 @@
  '(org-level-1 ((t (:foreground "blue"))))
  '(org-level-2 ((t (:foreground "turquoise4"))))
  '(org-level-3 ((t (:foreground "green4"))))
- '(org-level-4 ((t (:foreground "goldenrod"))))
+ '(org-level-4 ((t (:foreground "dark goldenrod"))))
  '(org-level-5 ((t (:foreground "chocolate"))))
  '(org-level-6 ((t (:foreground "violetred"))))
  '(org-level-7 ((t (:foreground "purple"))))
