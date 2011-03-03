@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : image
+# contributor: Evgeniy Sharapov, sen@fnal.gov
+# --
+#+CAPTION: $0 
+#+LABEL: fig:$1
+[[./ZScreen/Images/2010-12/$2]]
+

@@ -39,6 +39,24 @@ it goes to the next heading"
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 
+;;
+;;  Setup iimage working with Org-mode
+;; 
+(add-hook 'org-mode-hook 'turn-on-iimage-mode)
+
+;; (add-hook 'org-mode-hook (lambda ()
+;; 	(add-to-list 'iimage-mode-image-regex-alist
+;;              (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex
+;;                            "\\)\\]")  1))))
+
+(defun org-toggle-iimage-in-org ()
+  "display images in your org file"
+  (interactive)
+  (if (face-underline-p 'org-link)
+      (set-face-underline-p 'org-link nil)
+    (set-face-underline-p 'org-link t))
+  (iimage-mode))
+
 ;; add documentation path
 (add-to-list 'Info-directory-list "~/.emacs.d/site-lisp/org")
 
