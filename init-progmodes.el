@@ -48,7 +48,7 @@
 (add-hook '*programming-hook* 'pretty-greek)
 (add-hook '*programming-hook* 'add-watchwords)
 (add-hook '*programming-hook* 'turn-on-linum)
-(add-hook '*programming-hook* 'turn-on-company-mode)
+;(add-hook '*programming-hook* 'turn-on-company-mode)
 
 
 (defun run-programming-hook ()
