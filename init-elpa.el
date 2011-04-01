@@ -21,7 +21,9 @@
                             'muse)
   "Libraries that should be installed by default.")
 
-
+(setq package-archives '(("ELPA" . "http://tromey.com/elpa/") 
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")))
 
 (defun elpa-install ()
   "Install all packages that aren't installed."
