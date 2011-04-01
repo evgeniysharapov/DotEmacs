@@ -16,8 +16,8 @@
                             'paredit
                             'smart-tab
                             'yasnippet-bundle
-                            'dired-isearch
-                            'findr
+                            ;'dired-isearch
+                            ;'findr
                             'smex
                             ;'nxml
                             ;'nxml-mode
