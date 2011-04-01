@@ -19,6 +19,7 @@
                             ;'dired-isearch
                             ;'findr
                             'smex
+			    'org
                             ;'nxml
                             ;'nxml-mode
                             'muse)
