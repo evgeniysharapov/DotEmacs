@@ -54,9 +54,6 @@
 (require 'recentf)
 
 ;; We will use ELPA now 
-(setq package-user-dir (concat site-lisp "/elpa"))
-(require 'package)
-(package-initialize)
 (require 'init-elpa)
 
 ;; Autoloads and custom files 

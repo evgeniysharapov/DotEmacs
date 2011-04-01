@@ -3,6 +3,9 @@
 ;;  Startup
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
+(require 'package)
+(setq package-user-dir (concat site-lisp "/elpa"))
+;(package-initialize)
 
 (defvar elpa-packages (list ;'css-mode
                             ;'magit
