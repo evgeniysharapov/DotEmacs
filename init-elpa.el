@@ -4,20 +4,20 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
-(defvar elpa-packages (list 'css-mode
-                            'magit
+(defvar elpa-packages (list ;'css-mode
+                            ;'magit
 			    'slime
                             'htmlize
                             'idle-highlight
-                            'log4j-mode
+                            ;'log4j-mode
                             'paredit
                             'smart-tab
                             'yasnippet-bundle
                             'dired-isearch
                             'findr
                             'smex
-                            'nxml
-                            'nxml-mode
+                            ;'nxml
+                            ;'nxml-mode
                             'muse)
   "Libraries that should be installed by default.")
 
