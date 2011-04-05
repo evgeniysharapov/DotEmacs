@@ -17,4 +17,5 @@ site-lisp/elpa/**/*
 ede-projects.el
 /bookmarks
 /.org-id-locations
-site-lisp/elpa/* 
+site-lisp/elpa/*
+url
