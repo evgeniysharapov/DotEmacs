@@ -7,23 +7,14 @@
 (setq package-user-dir (concat site-lisp "/elpa"))
 ;(package-initialize)
 
-(defvar elpa-packages (list ;'css-mode
-                            ;'magit
-			    'slime
-                            'htmlize
+(defvar elpa-packages (list 'htmlize
                             'idle-highlight
-                            ;'log4j-mode
                             'paredit
                             'smart-tab
                             'yasnippet-bundle
-                            ;'dired-isearch
-                            ;'findr
                             'smex
 			    'org
-                            ;'nxml
-                            ;'nxml-mode
-                            'muse
-			)
+                            'muse)
   "Libraries that should be installed by default.")
 
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/") 
