@@ -7,8 +7,7 @@
 (setq package-user-dir (concat site-lisp "/elpa"))
 ;(package-initialize)
 
-(defvar elpa-packages (list 'htmlize
-                            'idle-highlight
+(defvar elpa-packages (list 'idle-highlight
                             'paredit
                             'smart-tab
                             'yasnippet-bundle
