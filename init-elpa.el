@@ -7,24 +7,23 @@
 (setq package-user-dir (concat site-lisp "/elpa"))
 ;(package-initialize)
 
-(defvar elpa-packages (list 'idle-highlight
-                            'paredit
-                            'smart-tab
-                            'yasnippet-bundle
-                            'smex
-			    'org
-                            'muse)
-  "Libraries that should be installed by default.")
-
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/") 
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ))
 
+(defvar default-elpa-packages (list 'paredit
+                                    'smart-tab
+                                    'yasnippet-bundle
+                                    'smex
+                                    'org)
+  "Libraries that should be installed by default.")
+
+
 (defun elpa-install ()
   "Install all packages that aren't installed."
   (interactive)
-  (dolist (pkg elpa-packages)
+  (dolist (pkg default-elpa-packages)
     (unless (or (member pkg package-activated-list)
                 (functionp pkg))
       (message "Installing %s" (symbol-name pkg))

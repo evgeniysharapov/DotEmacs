@@ -34,13 +34,6 @@
    nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\|REFACTOR\\):"
           1 font-lock-warning-face t))))
 
-(defun turn-on-company-mode ()
-  "Initializes company (COMplete ANYthing) mode"
-  (setq company-idle-delay 0.2)
-  (setq company-minimum-prefix-length 1)
-  (setq company-show-number nil)
-  (company-mode))
-
 (add-hook '*programming-hook* 'local-column-number-mode)
 (add-hook '*programming-hook* 'local-comment-auto-fill)
 (add-hook '*programming-hook* 'turn-on-hl-line-mode)
@@ -48,7 +41,6 @@
 (add-hook '*programming-hook* 'pretty-greek)
 (add-hook '*programming-hook* 'add-watchwords)
 (add-hook '*programming-hook* 'turn-on-linum)
-;(add-hook '*programming-hook* 'turn-on-company-mode)
 
 
 (defun run-programming-hook ()
@@ -90,7 +82,6 @@
      (progn
        (paredit-mode +1)
        (turn-on-eldoc-mode)
-       (idle-highlight +1)
        (run-programming-hook)
        (turn-on-paren-dim ,(concat (symbol-name mode) "-mode"))
        (if (fboundp 'highlight-parentheses-mode)
