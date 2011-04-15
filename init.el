@@ -72,7 +72,6 @@
 (require 'init-progmodes)
 (require 'init-xml)
 (require 'init-org)
-(require 'init-muse)
 (require 'init-bindings)
 
 ;; Custom variables and faces 
