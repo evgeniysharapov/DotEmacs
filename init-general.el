@@ -167,4 +167,13 @@ Example:
 
 ;;;; add Company completion
 
+;;; Using smerge for merging files
+(defun sm-try-smerge ()
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward "^<<<<<<< " nil t)
+      (smerge-mode 1))))
+
+(add-hook 'find-file-hook 'sm-try-smerge t)
+
 (provide 'init-general)
