@@ -6,7 +6,7 @@
 
 ;;(setq debug-on-error t)
 ;; start server 
-;(server-start)
+(server-start)
 
 ;; We set up load paths first 
 
