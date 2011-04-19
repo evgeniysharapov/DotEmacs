@@ -58,8 +58,4 @@ it goes to the next heading"
     (set-face-underline-p 'org-link t))
   (iimage-mode))
 
-;; add documentation path
-(add-to-list 'Info-directory-list "~/.emacs.d/site-lisp/org")
-
-
 (provide 'init-org)
