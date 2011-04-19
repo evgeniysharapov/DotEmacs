@@ -52,7 +52,7 @@
 (require 'recentf)
 
 ;; We will use ELPA now 
-(require 'init-elpa)
+(require 'init-libs)
 
 ;; Autoloads and custom files 
 (setq autoload-file (concat *dotfiles-dir* "loaddefs.el"))

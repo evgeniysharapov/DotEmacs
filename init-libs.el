@@ -13,4 +13,4 @@
 
 (package-initialize)
 
-(provide 'init-elpa)
+(provide 'init-libs)
