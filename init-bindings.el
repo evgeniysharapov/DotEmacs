@@ -46,14 +46,10 @@
     map))
 
 ;; Windmove
-(define-key my-map [(up)] 'windmove-up)
-(define-key my-map [(control up)] 'windmove-up)
-(define-key my-map [(down)] 'windmove-down)
-(define-key my-map [(control down)] 'windmove-down)
-(define-key my-map [(left)] 'windmove-left)
-(define-key my-map [(control left)] 'windmove-left)
-(define-key my-map [(right)] 'windmove-right)
-(define-key my-map [(control right)] 'windmove-right)
+(global-set-key [(shift left)] 'windmove-left)
+(global-set-key [(shift right)] 'windmove-right)
+(global-set-key [(shift up)] 'windmove-up)
+(global-set-key [(shift down)] 'windmove-down)
 
 ;; Buffer operations 
 (global-set-key [(control shift ?r)] 'search-backward)
