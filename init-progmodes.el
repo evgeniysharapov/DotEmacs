@@ -94,7 +94,7 @@
 (add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
 
 ;; --------------------------------------------------
-;;                       Slime 
+;;                       Slime
 ;; --------------------------------------------------
 (eval-after-load "slime"
   (progn
@@ -105,7 +105,8 @@
     (add-hook 'slime-repl-mode-hook
               (lambda ()
                 (progn
-                  (paredit-mode +1)
+                  (if (fboundp paredit-mode)
+                      (paredit-mode +1))
                   ; set some keys to behave like we are in paredit
                   ; prevent grabbing DEL button from
                   ; http://www.emacswiki.org/emacs/ParEdit
