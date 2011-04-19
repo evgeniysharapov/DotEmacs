@@ -128,8 +128,6 @@ Example:
 ;; --------------------------------------------------
 ;;    Miscellaneous 
 ;; --------------------------------------------------
-;(add-hook 'before-make-frame-hook 'turn-off-tool-bar)
-
 (setq redisplay-dont-pause t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -152,8 +150,6 @@ Example:
       (smex-initialize)
       (global-set-key (kbd "M-x") 'smex)
       (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
-
-;;;; add Company completion
 
 ;;; Using smerge for merging files
 (defun sm-try-smerge ()
