@@ -68,24 +68,6 @@
 
 (set-default 'imenu-auto-rescan t)
 
-(defun my/move-line-up ()
-  "Move curent line up one line"
-  (interactive)
-  (transpose-lines 1)
-  (previous-line)
-  (previous-line))
-
-(defun my/move-line-down ()
-  "Move curent line down one line"
-  (interactive)
-  (next-line)
-  (transpose-lines 1)
-  (previous-line))
-
-(global-set-key [(control ?x) (control up)] 'my/move-line-up)
-(global-set-key [(control ?x) (control down)] 'my/move-line-down)
-
-
 ;;;; After switching a buffer, display names of adjacent buffers in
 ;;;; the echo area.
 ;;;; From http://www.jurta.org/en/emacs/dotemacs
