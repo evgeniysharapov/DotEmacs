@@ -8,9 +8,9 @@
 
 ;; We set up load paths first 
 
-(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
-(add-to-list 'load-path dotfiles-dir)
-(setq site-lisp (concat dotfiles-dir "site-lisp"))
+(setq *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)))
+(add-to-list 'load-path *dotfiles-dir*)
+(setq site-lisp (concat *dotfiles-dir* "site-lisp"))
 
 ;; Set up local path list (from where we will regenerate autoloads 
 (setq local-load-path (list site-lisp))
@@ -55,7 +55,7 @@
 (require 'init-elpa)
 
 ;; Autoloads and custom files 
-(setq autoload-file (concat dotfiles-dir "loaddefs.el"))
+(setq autoload-file (concat *dotfiles-dir* "loaddefs.el"))
 (when  (not (file-exists-p autoload-file))
   (let (emacs-lisp-mode-hook
         (generated-autoload-file autoload-file))
@@ -76,9 +76,9 @@
 (server-start)
 
 ;; Custom variables and faces 
-(setq custom-file   (concat dotfiles-dir "custom.el"))
+(setq custom-file   (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
 
 ;; loading customization settings specific for a system 
-(setq system-specific-config (concat dotfiles-dir system-name ".el"))
+(setq system-specific-config (concat *dotfiles-dir* system-name ".el"))
 (if (file-exists-p system-specific-config) (load system-specific-config))

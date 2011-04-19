@@ -46,9 +46,9 @@
 (add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
 
 ;; Backups and saves 
-(setq save-place-file (concat dotfiles-dir "places"))
+(setq save-place-file (concat *dotfiles-dir* "places"))
 (setq backup-directory-alist `(("." . ,(expand-file-name
-                                        (concat dotfiles-dir "backups")))))
+                                        (concat *dotfiles-dir* "backups")))))
 
 ;; --------------------------------------------------
 ;;                    Byte Compilation 
