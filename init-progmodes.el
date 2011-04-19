@@ -51,7 +51,6 @@
 ;; --------------------------------------------------
 ;;     Setup Lisp based modes (including Elisp)
 ;; --------------------------------------------------
-(autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 ;; redefine paredit keys
 (eval-after-load "paredit"
   '(progn
