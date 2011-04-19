@@ -5,8 +5,6 @@
 ;;
 
 ;;(setq debug-on-error t)
-;; start server 
-(server-start)
 
 ;; We set up load paths first 
 
@@ -73,6 +71,9 @@
 (require 'init-xml)
 (require 'init-org)
 (require 'init-bindings)
+
+;; start server 
+(server-start)
 
 ;; Custom variables and faces 
 (setq custom-file   (concat dotfiles-dir "custom.el"))
