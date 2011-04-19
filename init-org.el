@@ -33,7 +33,8 @@ it goes to the next heading"
            org-completion-use-ido t)
      (sen/org-mode-custom-bindings)
      (sen/org-mode-yasnippet-fix)
-     (yas/minor-mode-on)
+     (if (fboundp 'yas/minor-mode-on)
+         (yas/minor-mode-on))
      (hl-line-mode +1)
      (turn-on-auto-fill)))
 
