@@ -19,10 +19,6 @@
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
-(setq visible-bell t
-      echo-keystrokes 0.1
-      font-lock-maximum-decoration t)
-
 ;;
 ;; Initialize Color-Theme
 ;;
@@ -53,8 +49,6 @@
 ;; --------------------------------------------------
 ;;                    Byte Compilation 
 ;; --------------------------------------------------
-(setq byte-compile-verbose nil)
-(setq byte-compile-warnings t)
 (setq byte-cache-directory nil)
 (setq bcc-enabled-on-save t)
 (setq bcc-blacklist '("/\\.recentf$" "/history$" "/\\.ecb-user-layouts\\.el$" "/\\.session$" "/\\.emacs-project$" 
@@ -71,13 +65,7 @@
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(setq uniquify-buffer-name-style 'forward
-      mouse-yank-at-point t
-      require-final-newline t
-      delete-selection-mode t)
 
-(set-default 'indent-tabs-mode nil)
-(set-default 'indicate-empty-lines t)
 (set-default 'imenu-auto-rescan t)
 
 (defun my/move-line-up ()
