@@ -121,7 +121,7 @@ Example:
 (ido-everywhere t)
 
 ;;;; add Smex 
-(if (fboundp 'smex-initialize)
+(when (fboundp 'smex-initialize)
     (progn 
       (smex-initialize)
       (global-set-key (kbd "M-x") 'smex)
