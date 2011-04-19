@@ -52,12 +52,12 @@
 ;;     Setup Lisp based modes (including Elisp)
 ;; --------------------------------------------------
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
-;; redefine paredit keys 
+;; redefine paredit keys
 (eval-after-load "paredit"
-  '(progn 
+  '(progn
      (define-key paredit-mode-map [(return)] 'paredit-newline)
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))
-     ;; unset C-right/C-left as it is used to jump words 
+     ;; unset C-right/C-left as it is used to jump words
      (define-key paredit-mode-map [(control left)] nil)
      (define-key paredit-mode-map [(control right)] nil)))
 
@@ -73,7 +73,7 @@
      (intern mode)
      '(("(\\|)" . 'dimmed-paren)))))
 ;;
-;; Things that are needed in evey lisp-like language 
+;; Things that are needed in evey lisp-like language
 ;;
 (dolist (mode '(scheme emacs-lisp lisp clojure))
   (add-hook
@@ -126,8 +126,7 @@
 ;;      (add-hook 'slime-repl-mode-hook 'swank-clojure-slime-repl-modify-syntax t)
 ;;      (add-hook 'clojure-mode-hook 'swank-clojure-slime-mode-hook t)
 ;;      (setq slime-highlight-compiler-notes nil)))
-
-;; ;; 
+;;
 ;; --------------------------------------------------
 ;;                        Scheme
 ;; --------------------------------------------------
