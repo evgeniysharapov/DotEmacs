@@ -45,20 +45,30 @@
     (define-key map [(control ?z)] c-z)
     map))
 
+;;; ------------------------------------------------------------------ 
+;;;
+;;;  Windows Operations
+;;;
+;;; ------------------------------------------------------------------
 ;; Windmove
 (global-set-key [(shift left)] 'windmove-left)
 (global-set-key [(shift right)] 'windmove-right)
 (global-set-key [(shift up)] 'windmove-up)
 (global-set-key [(shift down)] 'windmove-down)
+;;; Moving in a window
+(define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
+(define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
+;; switch windows
+(global-set-key [(meta ?o)] 'other-window)
+
+
+
 
 ;; Buffer operations 
 (global-set-key [(control shift ?r)] 'search-backward)
 (global-set-key [(control shift ?s)] 'search-forward)
 
 
-;;; Moving in a window
-(define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
-(define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
 
 ;; Added global shortcut to run Magit
 (define-key global-map [(control x) ?g] 'magit-status)
