@@ -49,6 +49,8 @@
 ;; --------------------------------------------------
 ;;                    Byte Compilation 
 ;; --------------------------------------------------
+(setq byte-compile-verbose nil)
+(setq byte-compile-warnings (quote (unresolved obsolete suspicious)))
 (setq byte-cache-directory nil)
 (setq bcc-enabled-on-save t)
 (setq bcc-blacklist '("/\\.recentf$" "/history$" "/\\.ecb-user-layouts\\.el$" "/\\.session$" "/\\.emacs-project$" 
