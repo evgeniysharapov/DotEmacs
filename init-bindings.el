@@ -60,6 +60,11 @@
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
 ;; switch windows
 (global-set-key [(meta ?o)] 'other-window)
+;; Typical window operations but faster
+(global-set-key [(meta ?0)] 'delete-window)
+(global-set-key [(meta ?1)] 'delete-other-windows)
+(global-set-key [(meta ?2)] 'split-window-vertically)
+(global-set-key [(meta ?3)] 'split-window-horizontally)
 
 
 
