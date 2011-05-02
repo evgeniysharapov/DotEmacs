@@ -8,6 +8,7 @@
  '(compilation-scroll-output (quote first-error))
  '(custom-buffer-done-kill t)
  '(delete-selection-mode t)
+ '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
  '(hl-paren-background-colors (quote ("tomato" "aquamarine3" "goldenrod" "magenta")))
  '(hl-paren-colors (quote ("black" "black" "black" "black")))
