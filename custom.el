@@ -53,6 +53,8 @@
  '(tab-always-indent (quote complete))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(use-dialog-box nil)
+ '(user-full-name "Evgeniy Sharapov")
+ '(user-mail-address "evgeniy.sharapov@gmail.com")
  '(visible-bell t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
