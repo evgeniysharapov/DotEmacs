@@ -4,22 +4,22 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
-(defun outline-down-heading ()
-  "Goes to the next heading with one level up, unless there's none, then 
-it goes to the next heading"
-  (interactive)
-  )
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "medium blue" :weight bold)
+              ("NOTE" :foreground "dark violet" :weight bold)
+              ("STARTED" :foreground "dark orange" :weight bold)
+              ("WAITING" :foreground "red" :weight bold)
+              ("DELEGATED" :foreground "red" :weight bold))))
 
-(defun sen/org-mode-custom-bindings ()
+(defun my-org-mode-custom-bindings ()
   "customize org-mode keys"
   (local-set-key [(control up)] 'outline-previous-visible-heading)
   (local-set-key [(control down)]  'outline-next-visible-heading)
   (local-set-key [(control meta up)]  'outline-up-heading)
   (local-set-key [(control c) (meta ?w)] 'org-store-link )
-  (local-set-key [(control c) (control ?y)] 'org-insert-link)
-  )
+  (local-set-key [(control c) (control ?y)] 'org-insert-link))
 
-(defun sen/org-mode-yasnippet-fix ()
+(defun my-org-mode-yasnippet-fix ()
   ;; (yas/initialize)
   (make-variable-buffer-local 'yas/trigger-key)
   (setq yas/trigger-key [tab])
@@ -28,18 +28,14 @@ it goes to the next heading"
 
 (add-hook 'org-mode-hook
    (lambda ()
-      ; To follow links with RET
-     (setq org-return-follows-link t
-           org-completion-use-ido t)
-     (sen/org-mode-custom-bindings)
-     (sen/org-mode-yasnippet-fix)
+     (my-org-mode-custom-bindings)
+     (my-org-mode-yasnippet-fix)
      (when (fboundp 'yas/minor-mode-on)
          (yas/minor-mode-on))
      (hl-line-mode +1)
      (turn-on-auto-fill)))
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
-
 
 ;;; Fix conflict of Windmove and Org mode
 (add-hook 'org-shiftup-final-hook 'windmove-up)
@@ -51,11 +47,6 @@ it goes to the next heading"
 ;;  Setup iimage working with Org-mode
 ;; 
 (add-hook 'org-mode-hook 'turn-on-iimage-mode)
-
-;; (add-hook 'org-mode-hook (lambda ()
-;; 	(add-to-list 'iimage-mode-image-regex-alist
-;;              (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex
-;;                            "\\)\\]")  1))))
 
 (defun org-toggle-iimage-in-org ()
   "display images in your org file"
