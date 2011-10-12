@@ -17,7 +17,8 @@
   (local-set-key [(control down)]  'outline-next-visible-heading)
   (local-set-key [(control meta up)]  'outline-up-heading)
   (local-set-key [(control c) (meta ?w)] 'org-store-link )
-  (local-set-key [(control c) (control ?y)] 'org-insert-link))
+  (local-set-key [(control c) (control ?y)] 'org-insert-link)
+  (local-set-key [(control c) ?a] 'org-agenda))
 
 (defun my-org-mode-yasnippet-fix ()
   ;; (yas/initialize)
