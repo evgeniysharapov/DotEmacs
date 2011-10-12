@@ -101,12 +101,6 @@ Example:
   (my/display-prev-next-buffers))
 
 ;; --------------------------------------------------
-;;   Windows and stuff
-;; --------------------------------------------------
-(when (fboundp 'winner-mode)
-      (winner-mode 1))
-
-;; --------------------------------------------------
 ;;    Miscellaneous
 ;; --------------------------------------------------
 (setq redisplay-dont-pause t)

@@ -56,7 +56,8 @@
  '(use-dialog-box nil)
  '(user-full-name "Evgeniy Sharapov")
  '(user-mail-address "evgeniy.sharapov@gmail.com")
- '(visible-bell t))
+ '(visible-bell t)
+ '(winner-mode t nil (winner)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
