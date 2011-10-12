@@ -109,10 +109,6 @@ Example:
 
 (random t)
 
-;;;; Setup IDO mode
-(ido-mode t)
-(ido-everywhere t)
-
 ;;;; add Smex
 (when (fboundp 'smex-initialize)
     (progn
