@@ -65,6 +65,7 @@
 (load autoload-file)
 
 ;; load my customization 
+(require 'init-os)
 (require 'init-defuns)
 (require 'init-general)
 (require 'init-progmodes)

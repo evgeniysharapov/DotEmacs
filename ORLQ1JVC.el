@@ -3,13 +3,6 @@
 ;; We know that it's a Windows Machine 
 ;; Evgeniy Sharapov, 2010 
 ;;
-; maximize Emacs frame
-(global-set-key [(control f11)]
-                (make-interactive w32-send-sys-command #xf030 nil))
-  ; restore original size of the Emacs frame
-(global-set-key [(control shift f11)]
-                (make-interactive w32-send-sys-command #xf120 nil))
-(set-face-attribute 'default nil :family "Consolas" :height 100)
 
 ;;
 ;; ORG-Mode Special Tweaks
