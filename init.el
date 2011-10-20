@@ -8,12 +8,12 @@
 
 ;; We set up load paths first 
 
-(setq *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)))
+(defvar *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)) "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
 (add-to-list 'load-path *dotfiles-dir*)
-(setq site-lisp (concat *dotfiles-dir* "site-lisp"))
+(defvar *site-lisp* (concat *dotfiles-dir* "site-lisp") "Directory for Emacs Extensions files")
 
 ;; Set up local path list (from where we will regenerate autoloads 
-(setq local-load-path (list site-lisp))
+(setq local-load-path (list *site-lisp*))
 
 (defun add-paths (this-directory path-list &optional with-subdirs recursive) 
   "Add THIS-DIRECTORY at the beginning of the load-path, if it exists. Add all its subdirectories not starting with a '.' if the optional argument WITH-SUBDIRS is not nil. Do it recursively if the third argument is not nil."
@@ -37,8 +37,8 @@
                      (add-paths dir-or-file path-list))) 
                 (setq files (cdr files)))))))))
 
-;; add recursively all subdirectories of site-lisp 
-(add-paths site-lisp 'local-load-path 'with-subdirs 'recursive)
+;; add recursively all subdirectories of *site-lisp* 
+(add-paths *site-lisp* 'local-load-path 'with-subdirs 'recursive)
 
 ;; add it to the load path 
 (dolist (path local-load-path) (add-to-list 'load-path path))

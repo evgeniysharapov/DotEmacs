@@ -1,10 +1,14 @@
 ;;  
-;;  New Emacs Configuration
-;;  Startup
+;;  Emacs Extension Management Configuration
+;;  As the source for extensions we use ELPA and El-Get
+;; 
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
+
+
 (require 'package)
-(setq package-user-dir (concat site-lisp "/elpa"))
+;; all ELPA packages are located here
+(setq package-user-dir (concat *site-lisp* "/elpa"))
 
 (setq package-archives '(;("ELPA" . "http://tromey.com/elpa/") 
                          ("gnu" . "http://elpa.gnu.org/packages/")
