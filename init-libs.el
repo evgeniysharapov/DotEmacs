@@ -37,8 +37,11 @@
   
   (require-package 'paredit)
   (require-package 'slime)
+  (require-package 'slime-fuzzy)
+  (require-package 'slime-repl)
   
   (require-package 'ido-yes-or-no)
+  (require-package 'ido-ubiquitous)
   (require-package 'smex)
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
