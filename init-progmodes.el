@@ -72,17 +72,6 @@
      (define-key paredit-mode-map [(control left)] nil)
      (define-key paredit-mode-map [(control right)] nil)))
 
-(defface dimmed-paren
-  '((((class color))
-     :foreground "gray50")) ; (face-attribute 'font-lock-comment-face :foreground)))
-  "Dim parens in Lisp-like languages")
-
-(defun turn-on-paren-dim (mode)
-  "Adds a new font-lock-kw for dimming parens in lisp based modes"
-  (when window-system
-    (font-lock-add-keywords
-     (intern mode)
-     '(("(\\|)" . 'dimmed-paren)))))
 ;;
 ;; Things that are needed in evey lisp-like language
 ;;
