@@ -19,6 +19,7 @@
  '(ido-max-prospects 10)
  '(ido-mode (quote both) nil (ido))
  '(ido-show-dot-for-dired t)
+ '(ido-ubiquitous t)
  '(ido-use-filename-at-point (quote guess))
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
