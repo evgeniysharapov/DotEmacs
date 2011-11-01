@@ -66,7 +66,6 @@
 ;; redefine paredit keys
 (eval-after-load "paredit"
   '(progn
-     (define-key paredit-mode-map [(return)] 'paredit-newline)
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))
      ;; unset C-right/C-left as it is used to jump words
      (define-key paredit-mode-map [(control left)] nil)
@@ -84,17 +83,18 @@
                     (paredit-mode +1))
        (turn-on-eldoc-mode)
        (run-programming-hook)
-       (turn-on-paren-dim ,(concat (symbol-name mode) "-mode"))
        (when (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))))))
 
-(defun conditionally-enable-paredit-mode ()
+;;; Adding paredit-mode for an eval-expression in minibuffer. RET
+;;; works as an exit minibuffer with evaluation. 
+(defun minibuffer-enable-paredit-mode ()
   "Enable paredit-mode during eval-expression"
   (if (eq this-command 'eval-expression)
       (when (fboundp 'paredit-mode)
-                    (paredit-mode +1))))
-
-(add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
+        (paredit-mode +1)
+        )))
+(add-hook 'minibuffer-setup-hook 'minibuffer-enable-paredit-mode)
 
 ;; --------------------------------------------------
 ;;                       Slime
