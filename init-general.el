@@ -100,6 +100,13 @@ Example:
 (defadvice next-buffer (after my/next-buffer activate)
   (my/display-prev-next-buffers))
 
+;;; ------------------------------------------------------------
+;;;  Spellcheck setup 
+;;; ------------------------------------------------------------
+(when (executable-find "aspell")
+  (setq ispell-program-name "aspell"
+        ispell-extra-args '("--sug-mode=ultra")))
+
 ;; --------------------------------------------------
 ;;    Miscellaneous
 ;; --------------------------------------------------
