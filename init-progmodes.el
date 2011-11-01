@@ -29,19 +29,31 @@
 (defun turn-on-linum ()
   (linum-mode +1))
 
-(defun add-watchwords ()
+(defface prog-mode-watchword-face
+  '((((background light)) (:foreground "Red" :bold t))
+    (((background dark)) (:foreground "Orange" :bold t)))
+  "Highlight words like TODO, FIXME and so on"
+  :group 'faces)
+
+(defface prog-mode-bugs-face
+  '((((background light)) (:background "Red" :foreground "Yellow"))
+    (((background dark)) (:background "Red" :foreground "Yellow")))
+  "Highlight Bug 1234 and alike"
+  :group 'faces)
+
+(defun prog-mode-faces-add ()
   (font-lock-add-keywords
-   nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\|REFACTOR\\):"
-          1 font-lock-warning-face t))))
+   nil
+   '(("\\s<\\s-*\\(FIX\\(ME\\)?\\|TODO\\|XXX\\):?\\(.+\\)\\>" 1 'prog-mode-watchword-face t)
+     ("\\s<\\s-*\\([Bb][Uu][Gg]\\s-+[0-9]+\\)\\s-*:?"  1 'prog-mode-bugs-face t))))
 
 (add-hook '*programming-hook* 'local-column-number-mode)
 (add-hook '*programming-hook* 'local-comment-auto-fill)
 (add-hook '*programming-hook* 'turn-on-hl-line-mode)
 (add-hook '*programming-hook* 'turn-on-save-place-mode)
 (add-hook '*programming-hook* 'pretty-greek)
-(add-hook '*programming-hook* 'add-watchwords)
+(add-hook '*programming-hook* 'prog-mode-faces-add)
 (add-hook '*programming-hook* 'turn-on-linum)
-
 
 (defun run-programming-hook ()
   "Enable things that are convenient across all coding buffers."
