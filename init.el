@@ -4,7 +4,7 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
-;;(setq debug-on-error t)
+(setq debug-on-error t)
 
 ;; We set up load paths first 
 
