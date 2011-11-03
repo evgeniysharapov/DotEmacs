@@ -9,6 +9,7 @@
  '(custom-buffer-done-kill t)
  '(delete-old-versions t)
  '(delete-selection-mode t)
+ '(desktop-globals-to-save (quote (desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring regexp-history register-alist file-name-history extended-command-history grep-history ido-last-directory-list minibuffer-history query-replace-history shell-command-history)))
  '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
  '(hl-paren-background-colors (quote ("tomato" "aquamarine3" "goldenrod" "magenta")))
