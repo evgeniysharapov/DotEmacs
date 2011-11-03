@@ -80,11 +80,13 @@
    `(lambda ()
      (progn
        (when (fboundp 'paredit-mode) 
-                    (paredit-mode +1))
+         (paredit-mode +1))
        (turn-on-eldoc-mode)
        (run-programming-hook)
        (when (fboundp 'highlight-parentheses-mode)
-           (highlight-parentheses-mode +1))))))
+         (highlight-parentheses-mode +1))
+       (when (fboundp 'rainbow-delimiters-mode)
+         (rainbow-delimiters-mode))))))
 
 ;;; Adding paredit-mode for an eval-expression in minibuffer. RET
 ;;; works as an exit minibuffer with evaluation. 
