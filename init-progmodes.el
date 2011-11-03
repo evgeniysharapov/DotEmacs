@@ -54,6 +54,7 @@
 (add-hook '*programming-hook* 'pretty-greek)
 (add-hook '*programming-hook* 'prog-mode-faces-add)
 (add-hook '*programming-hook* 'turn-on-linum)
+(add-hook '*programming-hook* 'flyspell-prog-mode)
 
 (defun run-programming-hook ()
   "Enable things that are convenient across all coding buffers."
