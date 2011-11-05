@@ -75,7 +75,7 @@
 ;;
 ;; Things that are needed in evey lisp-like language
 ;;
-(dolist (mode '(scheme emacs-lisp lisp clojure))
+(dolist (mode '(emacs-lisp lisp clojure))
   (add-hook
    (intern (concat (symbol-name mode) "-mode-hook"))
    `(lambda ()
@@ -133,15 +133,6 @@
 ;;      (add-hook 'clojure-mode-hook 'swank-clojure-slime-mode-hook t)
 ;;      (setq slime-highlight-compiler-notes nil)))
 ;;
-;; --------------------------------------------------
-;;                        Scheme
-;; --------------------------------------------------
-(autoload 'gambit-inferior-mode "gambit" "Hook Gambit mode into cmuscheme.")
-(autoload 'gambit-mode "gambit" "Hook Gambit mode into scheme.")
-(add-hook 'inferior-scheme-mode-hook (function gambit-inferior-mode))
-(add-hook 'scheme-mode-hook (function gambit-mode))
-(setq scheme-program-name "gsi -:d-")
-
 
 ;; --------------------------------------------------
 ;;       Haskell Mode 
