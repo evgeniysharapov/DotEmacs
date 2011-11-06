@@ -60,9 +60,9 @@
 ;; --------------------------------------------------
 
 ;; Encoding and text related stuff
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
+;(set-terminal-coding-system 'utf-8)
+;(set-keyboard-coding-system 'utf-8)
+;(prefer-coding-system 'utf-8)
 
 
 (set-default 'imenu-auto-rescan t)
