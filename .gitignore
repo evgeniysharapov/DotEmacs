@@ -19,3 +19,4 @@ ede-projects.el
 /.org-id-locations
 site-lisp/elpa/*
 url
+eshell
