@@ -29,6 +29,11 @@
 (defun turn-on-linum ()
   (linum-mode +1))
 
+(defun turn-on-flyspell-prog-mode ()
+  (when (and (boundp 'ispell-program-name) 
+             (executable-find ispell-program-name))
+    (flyspell-prog-mode)))
+
 (defface prog-mode-watchword-face
   '((((background light)) (:foreground "Red" :bold t))
     (((background dark)) (:foreground "Orange" :bold t)))
@@ -54,7 +59,7 @@
 (add-hook '*programming-hook* 'pretty-greek)
 (add-hook '*programming-hook* 'prog-mode-faces-add)
 (add-hook '*programming-hook* 'turn-on-linum)
-(add-hook '*programming-hook* 'flyspell-prog-mode)
+(add-hook '*programming-hook* 'turn-on-flyspell-prog-mode)
 
 (defun run-programming-hook ()
   "Enable things that are convenient across all coding buffers."
