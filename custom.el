@@ -28,6 +28,7 @@
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(kept-new-versions 3)
+ '(magit-git-executable "C:/Program Files (x86)/Git/bin/git.exe")
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(muse-html-charset-default "utf-8")
