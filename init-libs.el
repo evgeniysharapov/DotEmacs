@@ -50,6 +50,7 @@
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
   
-  )
+  (require-package 'org)
+)
 
 (provide 'init-libs)
