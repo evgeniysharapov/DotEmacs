@@ -39,6 +39,10 @@
   (require-package 'slime)
   (require-package 'slime-fuzzy)
   (require-package 'slime-repl)
+
+  (require-package 'slime-clj)
+  (require-package 'clojure-mode)
+  (require-package 'clojure-test-mode)
   
   (require-package 'ido-yes-or-no)
   (require-package 'ido-ubiquitous)
