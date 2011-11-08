@@ -108,6 +108,8 @@ Example:
 
 (random t)
 
+(put 'set-goal-column 'disabled nil)
+
 ;;;; add Smex
 (when (fboundp 'smex-initialize)
     (progn
