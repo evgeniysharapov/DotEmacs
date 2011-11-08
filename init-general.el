@@ -19,14 +19,6 @@
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
-;;
-;; Initialize Color-Theme
-;;
-(if (fboundp 'color-theme-initialize)
-	(progn
-	 (setq color-theme-is-global nil)
-	 (color-theme-initialize)))
-
 (display-time)
 ;; --------------------------------------------------
 ;;        Files Settings and Operations
