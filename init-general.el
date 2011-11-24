@@ -92,6 +92,10 @@ Example:
 (defadvice next-buffer (after my/next-buffer activate)
   (my/display-prev-next-buffers))
 
+;;; Undo settings 
+
+(autoload 'turn-on-undo-tree-mode "undo-tree" nil t)
+
 ;;; ------------------------------------------------------------
 ;;;  Spellcheck setup 
 ;;; ------------------------------------------------------------
