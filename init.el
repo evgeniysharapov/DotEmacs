@@ -10,7 +10,7 @@
 
 (defvar *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)) "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
 (add-to-list 'load-path *dotfiles-dir*)
-(defvar *site-lisp* (concat *dotfiles-dir* "site-lisp") "Directory for Emacs Extensions files")
+(defvar *site-lisp* (file-name-directory (concat *dotfiles-dir* "site-lisp")) "Directory for Emacs Extensions files")
 
 ;; Set up local path list (from where we will regenerate autoloads 
 (setq local-load-path (list *site-lisp*))
