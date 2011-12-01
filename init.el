@@ -20,9 +20,6 @@
     (let ((default-directory *site-lisp*))
       (normal-top-level-add-subdirs-to-load-path)))
 
-;; add it to the load path 
-(dolist (path local-load-path) (add-to-list 'load-path path))
-
 ;; Everyday functionality using REQUIRE
 (require 'cl)
 (require 'saveplace)
