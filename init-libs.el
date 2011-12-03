@@ -14,15 +14,13 @@
 
 
 (when (require 'package nil 'noerror)
-  
-  ;; all ELPA packages are located here
-  (setq package-user-dir (concat *site-lisp* "/elpa"))
-  ;; ELPA extensions repos 
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
-  ;; ELPA packages that should be installed by default
-  (package-initialize)
+   ;; all ELPA packages are located here
+   (setq package-user-dir (concat *dotfiles-dir* "elpa"))
+   ;; ELPA extensions repos 
+   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
+   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+   (package-initialize)
 
   (unless package-archive-contents
     (package-refresh-contents))
@@ -36,16 +34,10 @@
   (require-package 'rainbow-delimiters)
   
   (require-package 'paredit)
-  (require-package 'slime)
-  (require-package 'slime-fuzzy)
-  (require-package 'slime-repl)
 
-  (require-package 'slime-clj)
-  (require-package 'clojure-mode)
-  (require-package 'clojure-test-mode)
-  
   (require-package 'ido-yes-or-no)
   (require-package 'ido-ubiquitous)
+  
   (require-package 'smex)
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)

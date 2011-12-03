@@ -4,7 +4,8 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
-;(setq debug-on-error t)
+;; debug if there's an error dusinr loading
+(let ((debug-on-error t))
 
 ;; We set up load paths first 
 
@@ -60,3 +61,4 @@
 ;; loading customization settings specific for a system 
 (setq system-specific-config (concat *dotfiles-dir* system-name ".el"))
 (if (file-exists-p system-specific-config) (load system-specific-config))
+)
