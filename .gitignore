@@ -20,3 +20,4 @@ ede-projects.el
 site-lisp/elpa/*
 url
 eshell
+elpa/*
