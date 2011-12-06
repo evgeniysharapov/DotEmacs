@@ -83,4 +83,8 @@
 (when (fboundp 'kill-ring-search)
   (global-set-key [(control meta ?y)] 'kill-ring-search))
 
+;; browse kill ring is nice too and also might be unavailable
+(when (fboundp 'browse-kill-ring)
+  (global-set-key [(control x) (control ?y)] 'browse-kill-ring))
+
 (provide 'init-bindings)
