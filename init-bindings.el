@@ -66,8 +66,8 @@
 (global-set-key [(meta ?2)] 'split-window-vertically)
 (global-set-key [(meta ?3)] 'split-window-horizontally)
 
-
-
+;;; toggles line in the buffer
+(global-set-key [(control x) (control shift ?l)] 'linum-mode)
 
 ;; Buffer operations 
 (global-set-key [(control shift ?r)] 'search-backward)
