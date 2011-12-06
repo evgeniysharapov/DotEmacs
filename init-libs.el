@@ -39,6 +39,7 @@
   (require-package 'ido-ubiquitous)
 
   (require-package 'browse-kill-ring)
+  (require-package 'kill-ring-search)
   
   (require-package 'smex)
   (require-package 'yasnippet-bundle)
