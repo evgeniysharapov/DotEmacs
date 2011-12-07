@@ -93,9 +93,7 @@ Example:
   (my/display-prev-next-buffers))
 
 ;;; Undo settings 
-
 (autoload 'turn-on-undo-tree-mode "undo-tree" nil t)
-(global-set-key [(control x) (control shift ?u)] 'turn-on-undo-tree-mode)
 
 ;;; ------------------------------------------------------------
 ;;;  Spellcheck setup 

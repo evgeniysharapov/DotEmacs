@@ -48,9 +48,9 @@
     (define-key map [(control ?z)] c-z)
     map))
 
-;;; ------------------------------------------------------------------ 
+;;; ------------------------------------------------------------
 ;;;  Windows Operations
-;;; ------------------------------------------------------------------
+;;; ------------------------------------------------------------
 ;; Windmove
 (global-set-key [(shift left)] 'windmove-left)
 (global-set-key [(shift right)] 'windmove-right)
@@ -91,5 +91,8 @@
 ;; browse kill ring is nice too and also might be unavailable
 (when (fboundp 'browse-kill-ring)
   (global-set-key [(control x) (control ?y)] 'browse-kill-ring))
+
+(when (fboundp 'turn-on-undo-tree-mode)
+  (global-set-key [(control x) (control shift ?u)] 'turn-on-undo-tree-mode))
 
 (provide 'init-bindings)
