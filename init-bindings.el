@@ -95,4 +95,9 @@
 (when (fboundp 'turn-on-undo-tree-mode)
   (global-set-key [(control x) (control shift ?u)] 'turn-on-undo-tree-mode))
 
+;; Smex is used in minibuffer M-x
+(when (fboundp 'smex-initialize)
+  (global-set-key [(meta ?x)] 'smex)
+  (global-set-key [(meta shift ?x)] 'smex-major-mode-commands))
+
 (provide 'init-bindings)

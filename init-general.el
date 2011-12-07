@@ -115,10 +115,7 @@ Example:
 
 ;;;; add Smex
 (when (fboundp 'smex-initialize)
-    (progn
-      (smex-initialize)
-      (global-set-key (kbd "M-x") 'smex)
-      (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+  (smex-initialize))
 
 ;;; Using smerge for merging files
 (defun sm-try-smerge ()
