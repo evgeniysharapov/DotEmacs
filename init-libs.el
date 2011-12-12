@@ -5,12 +5,29 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
+(defun ffy-find-package-autoloads-file (package)
+  "Finds autoload file for the ELPA package and returns the path to the file, with a  check for file existence if performed, or nil."
+  ;; get version of the package version list to string 
+  (let* ((pkg-str (if (symbolp package) (symbol-name package) package))
+         (pkg-ver-str (mapconcat 'number-to-string 
+                                 (elt (cdr  (assq package package-alist)) 0) "."))
+         (pkg-al-file (concat (package--dir pkg-str pkg-ver-str) "/" pkg-str "-autoloads.el")))
+    ;; check file existence 
+    (when (file-exists-p pkg-al-file)
+      pkg-al-file)))
+
+;;; One of the examples of using the 
+;;; (ffy-find-package-autoloads-file 'haskell-mode)
+
 (defun require-package (package &optional min-version)
   "Installs package of desired version using ELPA"
   ;; TODO: make it work with minimum and maximum version
   ;; use version-list-= and version-list-> from subr.el
   (unless (package-installed-p package min-version)
-    (package-install package)))
+    (package-install package))
+  (let ((pkg-autoload (ffy-find-package-autoloads-file package)))
+    (when pkg-autoload
+      (load pkg-autoload t))))
 
 
 (when (require 'package nil 'noerror)
@@ -46,6 +63,8 @@
   (require-package 'undo-tree)
   
   (require-package 'org)
+
+  (require-package 'haskell-mode)
 )
 
 (provide 'init-libs)
