@@ -25,7 +25,6 @@
  '(ido-use-filename-at-point (quote guess))
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
- '(inferior-lisp-program "clj")
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(kept-new-versions 3)
