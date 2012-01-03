@@ -94,6 +94,9 @@
        (when (fboundp 'rainbow-delimiters-mode)
          (rainbow-delimiters-mode))))))
 
+;;; Set up Lisp keys 
+(define-key lisp-mode-shared-map [(return)] 'reindent-then-newline-and-indent)
+
 ;;; Adding paredit-mode for an eval-expression in minibuffer. RET
 ;;; works as an exit minibuffer with evaluation. 
 (defun minibuffer-enable-paredit-mode ()
