@@ -21,3 +21,4 @@ site-lisp/elpa/*
 url
 eshell
 elpa/*
+ac-comphist.dat
