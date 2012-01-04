@@ -12,9 +12,7 @@
 (defvar *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)) "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
 (add-to-list 'load-path *dotfiles-dir*)
 (defvar *site-lisp* (file-name-as-directory (concat *dotfiles-dir* "site-lisp")) "Directory for Emacs Extensions files")
-
-;; Set up local path list (from where we will regenerate autoloads 
-(setq local-load-path (list *site-lisp*))
+(defvar *autoload-file* (concat *dotfiles-dir* "loaddefs.el") "This is file containing all autoloads extracted from Emacs lisp files")
 
 ;; add recursively all subdirectories of *site-lisp* 
 (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
@@ -32,15 +30,22 @@
 ;; We will use ELPA now 
 (require 'init-libs)
 
-;; Autoloads and custom files 
-(setq autoload-file (concat *dotfiles-dir* "loaddefs.el"))
-(when  (not (file-exists-p autoload-file))
-  (let (emacs-lisp-mode-hook
-        (generated-autoload-file autoload-file))
-    (dolist (path local-load-path)
-              (message "Updating autoloads from %s" path)
-              (update-directory-autoloads path))))
-(load autoload-file)
+(defun extract-autoloads ()
+  "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
+  (interactive "f")
+  (let* ((generated-autoload-file *autoload-file*)
+         (bcc-blacklist (cons generated-autoload-file bcc-blacklist))
+         (buffer-file-coding-system 'no-conversion)
+         ;; avoid generating autoloads for slime - results in error 
+         ;; "Local variables entry is missing the suffix"
+         (dir-list (loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
+                         if (file-directory-p d)
+                         collect d)))
+    (apply 'update-directory-autoloads dir-list)))
+
+(add-hook 'kill-emacs-hook 'extract-autoloads)
+
+(load *autoload-file* 'noerror)
 
 ;; load my customization 
 (require 'init-defuns)
