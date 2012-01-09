@@ -8,7 +8,6 @@
 (let ((debug-on-error t))
 
 ;; We set up load paths first 
-
 (defvar *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)) "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
 (add-to-list 'load-path *dotfiles-dir*)
 (defvar *site-lisp* (file-name-as-directory (concat *dotfiles-dir* "site-lisp")) "Directory for Emacs Extensions files")
@@ -20,12 +19,7 @@
       (normal-top-level-add-subdirs-to-load-path)))
 
 ;; Everyday functionality using REQUIRE
-(require 'cl)
-(require 'saveplace)
-(require 'ffap)
-(require 'uniquify)
-(require 'ansi-color)
-(require 'recentf)
+(mapc #'require '(cl saveplace ffap uniquify ansi-color recentf))
 
 ;; We will use ELPA now 
 (require 'init-libs)
