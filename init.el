@@ -22,7 +22,7 @@
 (mapc #'require '(cl saveplace ffap uniquify ansi-color recentf))
 
 ;; We will use ELPA now 
-(require 'init-libs)
+(require 'init-exts)
 
 (defun extract-autoloads ()
   "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
