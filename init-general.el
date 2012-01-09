@@ -40,12 +40,6 @@
 ;; --------------------------------------------------
 (setq byte-compile-verbose nil)
 (setq byte-compile-warnings (quote (unresolved obsolete suspicious)))
-(setq byte-cache-directory nil)
-(setq bcc-enabled-on-save t)
-(setq bcc-blacklist '("/\\.recentf$" "/history$" "/\\.ecb-user-layouts\\.el$" "/\\.session$" "/\\.emacs-project$"
-			"/\\.emacs\\.desktop$" "/custom\\.el$" "/init\\.el$" "/\\.ido\\.last$" "/\\.ecb-tip-of-day\\.el$"
-			"/\\.viper$" "/\\.recentf$" "cal-loaddefs\\.el" "esh-groups\\.el"  "tramp-loaddefs\\.el" "finder-inf\\.el"))
-(require 'byte-code-cache nil t)
 
 ;; --------------------------------------------------
 ;;                    Buffers

@@ -28,7 +28,6 @@
   "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
   (interactive "f")
   (let* ((generated-autoload-file *autoload-file*)
-         (bcc-blacklist (cons generated-autoload-file bcc-blacklist))
          (buffer-file-coding-system 'no-conversion)
          ;; avoid generating autoloads for slime - results in error 
          ;; "Local variables entry is missing the suffix"
