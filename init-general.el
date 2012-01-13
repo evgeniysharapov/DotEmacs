@@ -38,10 +38,9 @@
 ;; --------------------------------------------------
 ;;                    Byte Compilation
 ;; --------------------------------------------------
-(add-hook 'after-save-hook ;; compile elisp on save
-          '(lambda ()
-             (when (string-match "\\.el$" (buffer-file-name))
-               (byte-compile-file (buffer-file-name)))))
+(add-hook 'after-save-hook (lambda () (let ((byte-compile-verbose nil))
+                                   (emacs-lisp-byte-compile-and-load))))
+
 
 ;; --------------------------------------------------
 ;;                    Buffers
