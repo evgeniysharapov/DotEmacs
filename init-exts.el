@@ -67,4 +67,4 @@
   (require-package 'haskell-mode)
 )
 
-(provide 'init-libs)
+(provide 'init-exts)

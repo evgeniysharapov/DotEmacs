@@ -1,5 +1,6 @@
 ;;  
-;;  New Emacs Configuration
+;;  Utility functions and macros
+;;
 ;;  Utility functions. Too big and clumsy to put in settings
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
