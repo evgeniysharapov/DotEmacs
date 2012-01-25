@@ -39,7 +39,9 @@
 ;;                    Byte Compilation
 ;; --------------------------------------------------
 (add-hook 'after-save-hook (lambda () (let ((byte-compile-verbose nil))
-                                   (emacs-lisp-byte-compile-and-load))))
+                                   (when (eq major-mode 'emacs-lisp-mode)
+                                     (emacs-lisp-byte-compile-and-load)))))
+
 
 ;; --------------------------------------------------
 ;;                    Buffers
