@@ -1,7 +1,8 @@
 ;;  
 ;;  Emacs Extension Management Configuration
 ;;  As the source for extensions we use ELPA and El-Get
-;; 
+;;  Also we use packages in site-lisp directory
+;;
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
@@ -28,7 +29,6 @@
   (let ((pkg-autoload (ffy-find-package-autoloads-file package)))
     (when pkg-autoload
       (load pkg-autoload t))))
-
 
 (when (require 'package nil 'noerror)
   ;; all ELPA packages are located here
@@ -66,5 +66,19 @@
 
   (require-package 'haskell-mode)
 )
+
+(defun extract-autoloads ()
+  "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
+  (interactive "f")
+  (let* ((generated-autoload-file *autoload-file*)
+         (buffer-file-coding-system 'no-conversion)
+         ;; avoid generating autoloads for slime - results in error 
+         ;; "Local variables entry is missing the suffix"
+         (dir-list (loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
+                         if (file-directory-p d)
+                         collect d)))
+    (apply 'update-directory-autoloads dir-list)))
+
+(add-hook 'kill-emacs-hook 'extract-autoloads)
 
 (provide 'init-exts)

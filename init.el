@@ -21,26 +21,11 @@
 ;; Everyday functionality using REQUIRE
 (mapc #'require '(cl saveplace ffap uniquify ansi-color recentf))
 
-;; We will use ELPA now 
-(require 'init-exts)
-
-(defun extract-autoloads ()
-  "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
-  (interactive "f")
-  (let* ((generated-autoload-file *autoload-file*)
-         (buffer-file-coding-system 'no-conversion)
-         ;; avoid generating autoloads for slime - results in error 
-         ;; "Local variables entry is missing the suffix"
-         (dir-list (loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
-                         if (file-directory-p d)
-                         collect d)))
-    (apply 'update-directory-autoloads dir-list)))
-
-(add-hook 'kill-emacs-hook 'extract-autoloads)
-
+;; loading autoloads
 (load *autoload-file* 'noerror)
 
 ;; load my customization 
+(require 'init-exts)
 (require 'init-defuns)
 (require 'init-system)
 (require 'init-general)
