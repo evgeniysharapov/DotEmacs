@@ -12,6 +12,9 @@
 ;; To be able to M-x without meta
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 
+;;; apropos seems to be more useful than apropos-command
+(define-key global-map [(control h) ?a] 'apropos)
+
 ;;; ------------------------------------------------------------
 ;;;  File Operations 
 ;;; ------------------------------------------------------------
