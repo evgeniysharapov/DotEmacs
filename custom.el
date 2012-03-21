@@ -57,7 +57,7 @@
  '(shift-select-mode nil)
  '(show-paren-mode t)
  '(show-paren-style (quote mixed))
- '(show-trailing-whitespace nil)
+ '(show-trailing-whitespace t)
  '(tab-always-indent (quote complete))
  '(undo-limit 2000000)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
