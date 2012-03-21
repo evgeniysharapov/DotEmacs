@@ -18,13 +18,11 @@
 ;;; ------------------------------------------------------------
 ;;;  File Operations 
 ;;; ------------------------------------------------------------
-(define-key global-map [(f4)]      'recentf-open-most-recent-file)
-(define-key global-map [(meta f4)] 'recentf-open-files)
+(define-key global-map [(control x) (shift ?f)]      'recentf-open-most-recent-file)
 (define-key global-map [(control x) (meta ?f)] 'ido-find-file-other-window)
 (define-key global-map [(control x) (control meta ?f)] 'find-file-in-project)
 (define-key global-map [(control x) ?f] 'ido-choose-from-recentf)
 (define-key global-map [(control x) (control p)] 'find-file-at-point)
-(define-key global-map [(meta ?`)] 'file-cache-minibuffer-complete)
 
 ;;; ------------------------------------------------------------
 ;;;  Buffer Operations 
