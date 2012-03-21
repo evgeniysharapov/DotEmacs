@@ -19,7 +19,7 @@
       (normal-top-level-add-subdirs-to-load-path)))
 
 ;; Everyday functionality using REQUIRE
-(mapc #'require '(cl saveplace ffap uniquify ansi-color recentf))
+(mapc #'require '(uniquify saveplace))
 
 ;; loading autoloads
 (load *autoload-file* 'noerror)
