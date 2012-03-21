@@ -7,7 +7,10 @@
 ;;
 
 (defun ffy-find-package-autoloads-file (package)
-  "Finds autoload file for the ELPA package and returns the path to the file, with a  check for file existence if performed, or nil."
+  "Finds autoload file for the ELPA package and returns the path to the file, with a  check for file existence if performed, or nil.
+One of the examples of using the 
+
+ (ffy-find-package-autoloads-file 'haskell-mode)"
   ;; get version of the package version list to string 
   (let* ((pkg-str (if (symbolp package) (symbol-name package) package))
          (pkg-ver-str (mapconcat 'number-to-string 
@@ -16,9 +19,6 @@
     ;; check file existence 
     (when (file-exists-p pkg-al-file)
       pkg-al-file)))
-
-;;; One of the examples of using the 
-;;; (ffy-find-package-autoloads-file 'haskell-mode)
 
 (defun require-package (package &optional min-version)
   "Installs package of desired version using ELPA"
