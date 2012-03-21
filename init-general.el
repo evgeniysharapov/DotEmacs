@@ -23,17 +23,10 @@
 ;; --------------------------------------------------
 ;;        Files Settings and Operations
 ;; --------------------------------------------------
-
-;;  File associations
-(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
-(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\(on\\)?$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
-
 ;; Backups and saves
-(setq save-place-file (concat *dotfiles-dir* "places"))
-(setq backup-directory-alist `(("." . ,(expand-file-name
-                                        (concat *dotfiles-dir* "backups")))))
+(setq save-place-file (concat *dotfiles-dir* "places")
+      backup-directory-alist `(("." . ,(expand-file-name (concat *dotfiles-dir* "backups")))))
+
 
 ;; --------------------------------------------------
 ;;                    Byte Compilation

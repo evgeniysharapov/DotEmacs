@@ -53,6 +53,7 @@
  '(scroll-margin 5)
  '(scroll-preserve-screen-position t)
  '(scroll-step 1)
+ '(sentence-end-double-space nil)
  '(shift-select-mode nil)
  '(show-paren-mode t)
  '(show-paren-style (quote mixed))
