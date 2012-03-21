@@ -74,5 +74,31 @@
   (interactive)
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
+(defun ffy-display-prev-next-buffers ()
+  "Show two previous, current and two next buffer names in the echo area.
+Example:
+-2:*Messages* -1:*Help*    0:.emacs      1:*info*  2:*scratch*
+
+From http://www.jurta.org/en/emacs/dotemacs"
+  (interactive)
+  (let ((i -3) b (bl (buffer-list (selected-frame))) (message-log-max nil))
+    (message "%s"
+             (mapconcat
+              (lambda (x)
+                (setq i (+ i 1))
+                (format "%d:%-12s"
+                        i (substring (buffer-name x) 0
+                                     (min (length (buffer-name x)) 11))))
+              (append
+               (nreverse
+                (list
+                 (setq b (get-next-valid-buffer (reverse bl) t))
+                 (get-next-valid-buffer (cdr (memq b (reverse bl))) t)))
+               (list (current-buffer))
+               (list
+                (setq b (get-next-valid-buffer (cdr bl) t))
+                (get-next-valid-buffer (cdr (memq b bl)) t)))
+              " "))))
+
 (provide 'init-defuns)
 
