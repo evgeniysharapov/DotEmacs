@@ -62,10 +62,7 @@ One of the examples of using the
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
   
-  (require-package 'org)
-
-  (require-package 'haskell-mode)
-)
+  (require-package 'org))
 
 (defun extract-autoloads ()
   "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
