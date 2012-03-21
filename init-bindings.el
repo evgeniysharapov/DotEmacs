@@ -55,10 +55,7 @@
 ;;;  Windows Operations
 ;;; ------------------------------------------------------------
 ;; Windmove
-(define-key global-map [(shift left)] 'windmove-left)
-(define-key global-map [(shift right)] 'windmove-right)
-(define-key global-map [(shift up)] 'windmove-up)
-(define-key global-map [(shift down)] 'windmove-down)
+(windmove-default-keybindings) ;; Shift+direction
 ;;; Moving in a window
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
