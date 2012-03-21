@@ -5,12 +5,12 @@
 ;;
 
 ;; Turn on the menu bar for exploring new modes
-(global-set-key [f1] 'menu-bar-mode)
-(global-set-key [(control f1)] 'imenu-add-menubar-index)
+(define-key global-map [f1] 'menu-bar-mode)
+(define-key global-map [(control f1)] 'imenu-add-menubar-index)
 
 ;; We are trying to make keys working in both Windows and Mac OS X
 ;; To be able to M-x without meta
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(define-key global-map (kbd "C-x C-m") 'execute-extended-command)
 
 ;;; apropos seems to be more useful than apropos-command
 (define-key global-map [(control h) ?a] 'apropos)
@@ -18,20 +18,20 @@
 ;;; ------------------------------------------------------------
 ;;;  File Operations 
 ;;; ------------------------------------------------------------
-(global-set-key [(f4)]      'recentf-open-most-recent-file)
-(global-set-key [(meta f4)] 'recentf-open-files)
-(global-set-key [(control x) (meta ?f)] 'ido-find-file-other-window)
-(global-set-key [(control x) (control meta ?f)] 'find-file-in-project)
-(global-set-key [(control x) ?f] 'ido-choose-from-recentf)
-(global-set-key [(control x) (control p)] 'find-file-at-point)
-(global-set-key [(meta ?`)] 'file-cache-minibuffer-complete)
+(define-key global-map [(f4)]      'recentf-open-most-recent-file)
+(define-key global-map [(meta f4)] 'recentf-open-files)
+(define-key global-map [(control x) (meta ?f)] 'ido-find-file-other-window)
+(define-key global-map [(control x) (control meta ?f)] 'find-file-in-project)
+(define-key global-map [(control x) ?f] 'ido-choose-from-recentf)
+(define-key global-map [(control x) (control p)] 'find-file-at-point)
+(define-key global-map [(meta ?`)] 'file-cache-minibuffer-complete)
 
 ;;; ------------------------------------------------------------
 ;;;  Buffer Operations 
 ;;; ------------------------------------------------------------
-(global-set-key [(control c) ?y] 'bury-buffer)
-(global-set-key [(control c) ?r] 'revert-buffer)
-(global-set-key [(control x) (control b)] 'ibuffer)
+(define-key global-map [(control c) ?y] 'bury-buffer)
+(define-key global-map [(control c) ?r] 'revert-buffer)
+(define-key global-map [(control x) (control b)] 'ibuffer)
 (define-key global-map [f11] 'previous-buffer)
 (define-key global-map [f12] 'next-buffer)
 
@@ -55,28 +55,28 @@
 ;;;  Windows Operations
 ;;; ------------------------------------------------------------
 ;; Windmove
-(global-set-key [(shift left)] 'windmove-left)
-(global-set-key [(shift right)] 'windmove-right)
-(global-set-key [(shift up)] 'windmove-up)
-(global-set-key [(shift down)] 'windmove-down)
+(define-key global-map [(shift left)] 'windmove-left)
+(define-key global-map [(shift right)] 'windmove-right)
+(define-key global-map [(shift up)] 'windmove-up)
+(define-key global-map [(shift down)] 'windmove-down)
 ;;; Moving in a window
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
 ;; switch windows
-(global-set-key [(meta ?o)] 'other-window)
+(define-key global-map [(meta ?o)] 'other-window)
 ;; Typical window operations but faster
-(global-set-key [(meta ?0)] 'delete-window)
-(global-set-key [(meta ?1)] 'delete-other-windows)
-(global-set-key [(meta ?2)] 'split-window-vertically)
-(global-set-key [(meta ?3)] 'split-window-horizontally)
+(define-key global-map [(meta ?0)] 'delete-window)
+(define-key global-map [(meta ?1)] 'delete-other-windows)
+(define-key global-map [(meta ?2)] 'split-window-vertically)
+(define-key global-map [(meta ?3)] 'split-window-horizontally)
 
 ;;; ------------------------------------------------------------
 ;;;  Editing/Operations In Buffer
 ;;; ------------------------------------------------------------
 ;;; toggles line  numbers in the buffer
-(global-set-key [(control x) (control shift ?l)] 'linum-mode)
-(global-set-key [(control shift ?r)] 'search-backward)
-(global-set-key [(control shift ?s)] 'search-forward)
+(define-key global-map [(control x) (control shift ?l)] 'linum-mode)
+(define-key global-map [(control shift ?r)] 'search-backward)
+(define-key global-map [(control shift ?s)] 'search-forward)
 
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
@@ -89,18 +89,18 @@
 ;; we use kill-ring-search through ELPA, hence check if it is
 ;; available first
 (when (fboundp 'kill-ring-search)
-  (global-set-key [(control meta ?y)] 'kill-ring-search))
+  (define-key global-map [(control meta ?y)] 'kill-ring-search))
 
 ;; browse kill ring is nice too and also might be unavailable
 (when (fboundp 'browse-kill-ring)
-  (global-set-key [(control x) (control ?y)] 'browse-kill-ring))
+  (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
 
 (when (fboundp 'turn-on-undo-tree-mode)
-  (global-set-key [(control x) (control shift ?u)] 'turn-on-undo-tree-mode))
+  (define-key global-map [(control x) (control shift ?u)] 'turn-on-undo-tree-mode))
 
 ;; Smex is used in minibuffer M-x
 (when (fboundp 'smex-initialize)
-  (global-set-key [(meta ?x)] 'smex)
-  (global-set-key [(meta shift ?x)] 'smex-major-mode-commands))
+  (define-key global-map [(meta ?x)] 'smex)
+  (define-key global-map [(meta shift ?x)] 'smex-major-mode-commands))
 
 (provide 'init-bindings)
