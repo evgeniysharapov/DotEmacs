@@ -4,8 +4,7 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
-;; This variable contains functions that we need to run if we are programming 
-(defvar *programming-hook*)
+(defvar *programming-hook* nil "This variable contains functions that we need to run if we are programming ")
 ;; --------------------------------------------------
 ;; Stuff that is good to have
 ;; --------------------------------------------------
