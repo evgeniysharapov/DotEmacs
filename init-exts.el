@@ -51,7 +51,7 @@ One of the examples of using the
   (require-package 'rainbow-delimiters)
   
   (require-package 'paredit)
-
+  (require-package 'elisp-slime-nav)
   (require-package 'ido-yes-or-no)
   (require-package 'ido-ubiquitous)
 
