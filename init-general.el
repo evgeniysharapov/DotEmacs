@@ -38,9 +38,9 @@
 ;; --------------------------------------------------
 ;;                    Byte Compilation
 ;; --------------------------------------------------
-(add-hook 'after-save-hook (lambda () (let ((byte-compile-verbose nil))
-                                   (when (eq major-mode 'emacs-lisp-mode)
-                                     (emacs-lisp-byte-compile-and-load)))))
+(add-hook 'after-save-hook (lambda ()
+                             (when (eq major-mode 'emacs-lisp-mode)
+                               (emacs-lisp-byte-compile-and-load))))
 
 
 ;; --------------------------------------------------

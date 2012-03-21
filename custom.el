@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(byte-compile-verbose nil)
  '(color-theme-is-cumulative t)
  '(column-number-mode t)
  '(compilation-scroll-output (quote first-error))
@@ -13,6 +14,7 @@
  '(desktop-globals-to-save (quote (desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring regexp-history register-alist file-name-history extended-command-history grep-history ido-last-directory-list minibuffer-history query-replace-history shell-command-history)))
  '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
+ '(font-lock-verbose nil)
  '(hl-paren-background-colors (quote ("tomato" "aquamarine3" "goldenrod" "magenta")))
  '(hl-paren-colors (quote ("black" "black" "black" "black")))
  '(ido-create-new-buffer (quote always))
@@ -21,7 +23,7 @@
  '(ido-max-prospects 10)
  '(ido-mode (quote both) nil (ido))
  '(ido-show-dot-for-dired t)
- '(ido-ubiquitous t)
+ '(ido-ubiquitous-mode t)
  '(ido-use-filename-at-point (quote guess))
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
