@@ -48,7 +48,8 @@
 (add-hook '*programming-hook* 'local-column-number-mode)
 (add-hook '*programming-hook* 'local-comment-auto-fill)
 (add-hook '*programming-hook* 'turn-on-hl-line-mode)
-(add-hook '*programming-hook* 'pretty-greek)
+(if (fboundp 'pretty-greek)
+    (add-hook '*programming-hook* 'pretty-greek))
 (add-hook '*programming-hook* 'prog-mode-faces-add)
 (add-hook '*programming-hook* 'turn-on-flyspell-prog-mode)
 
