@@ -79,4 +79,5 @@
  '(rainbow-delimiters-depth-5-face ((t (:foreground "salmon"))))
  '(rainbow-delimiters-depth-6-face ((t (:foreground "pink"))))
  '(rainbow-delimiters-depth-7-face ((t (:foreground "violet"))))
- '(rainbow-delimiters-depth-8-face ((t (:foreground "medium purple")))))
+ '(rainbow-delimiters-depth-8-face ((t (:foreground "medium purple"))))
+ '(trailing-whitespace ((t (:background "IndianRed1")))))
