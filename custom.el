@@ -25,6 +25,7 @@
  '(ido-show-dot-for-dired t)
  '(ido-ubiquitous-mode t)
  '(ido-use-filename-at-point (quote guess))
+ '(ido-use-virtual-buffers t)
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
