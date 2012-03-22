@@ -22,9 +22,6 @@
 (defun turn-on-whitespace ()
   (whitespace-mode t))
 
-(defun turn-on-linum ()
-  (linum-mode +1))
-
 (defun turn-on-flyspell-prog-mode ()
   (when (and (boundp 'ispell-program-name) 
              (executable-find ispell-program-name))
@@ -53,7 +50,6 @@
 (add-hook '*programming-hook* 'turn-on-hl-line-mode)
 (add-hook '*programming-hook* 'pretty-greek)
 (add-hook '*programming-hook* 'prog-mode-faces-add)
-(add-hook '*programming-hook* 'turn-on-linum)
 (add-hook '*programming-hook* 'turn-on-flyspell-prog-mode)
 
 (defun run-programming-hook ()
