@@ -102,39 +102,41 @@
 ;; --------------------------------------------------
 ;;                       Slime
 ;; --------------------------------------------------
-(when (require 'slime-autoloads nil 'noerror)
-  (slime-setup)
-  (eval-after-load "slime"
-    '(progn
+;; (when (require 'slime-autoloads nil 'noerror)
+;;   (slime-setup))
+(eval-after-load "slime"
+  '(progn
 
-       (setq slime-complete-symbol*-fancy t
-             slime-complete-symbol-function 'slime-fuzzy-complete-symbol
-             slime-net-coding-system 'utf-8-unix)
-       ;; (setq slime-use-autodoc-mode nil)
+     (setq slime-complete-symbol*-fancy t
+           slime-complete-symbol-function 'slime-fuzzy-complete-symbol
+           slime-net-coding-system 'utf-8-unix)
+     ;; (setq slime-use-autodoc-mode nil)
 
 
-       (slime-setup '(slime-fancy slime-asdf slime-banner slime-repl))
+     (slime-setup '(slime-fancy slime-asdf slime-banner slime-repl))
 
-       (add-hook 'lisp-mode-hook
-                 (lambda ()
-                   (slime-mode t)))
+     (add-hook 'lisp-mode-hook
+               (lambda ()
+                 (slime-mode t)))
 
-       (add-hook 'inferior-lisp-mode-hook
-                 (lambda ()
-                   (inferior-slime-mode t)))
+     (add-hook 'inferior-lisp-mode-hook
+               (lambda ()
+                 (inferior-slime-mode t)))
 
-       (add-hook 'slime-repl-mode-hook
-                 (lambda ()
-                   (when (fboundp 'paredit-mode)
-                     (paredit-mode +1))
-                   ;; set some keys to behave like we are in paredit
-                   ;; prevent grabbing DEL button from
-                   ;; http://www.emacswiki.org/emacs/ParEdit
-                   (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil)))
+     (add-hook 'slime-repl-mode-hook
+               (lambda ()
+                 (when (fboundp 'paredit-mode)
+                   (paredit-mode +1))
+                 ;; set some keys to behave like we are in paredit
+                 ;; prevent grabbing DEL button from
+                 ;; http://www.emacswiki.org/emacs/ParEdit
+                 (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil)))
 
-       (setq slime-lisp-implementations
-             `((clozurecl ("d:/evgeniy/lisp/ccl-1.7/wx86cl.exe"))
-                ,@slime-lisp-implementations)))))
+     ;; (setq slime-lisp-implementations
+     ;;       `((clozurecl ("d:/evgeniy/lisp/ccl-1.7/wx86cl.exe"))
+     ;;         ,@slime-lisp-implementations))
+
+     ))
 
 ;;; ------------------------------------------------------------
 ;;;                        Auto-Complete
