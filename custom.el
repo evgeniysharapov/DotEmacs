@@ -15,6 +15,8 @@
  '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
  '(font-lock-verbose nil)
+ '(history-delete-duplicates t)
+ '(history-length t)
  '(hl-paren-background-colors (quote ("tomato" "aquamarine3" "goldenrod" "magenta")))
  '(hl-paren-colors (quote ("black" "black" "black" "black")))
  '(ido-create-new-buffer (quote always))
