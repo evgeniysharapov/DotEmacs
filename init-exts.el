@@ -61,6 +61,17 @@ One of the examples of using the
   (require-package 'smex)
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
+
+  ;; ruby and rails setup
+  (require-package 'rinari)
+  (require-package 'rspec-mode)
+  (require-package 'ruby-block)
+  (require-package 'ruby-compilation)
+  (require-package 'ruby-electric)
+  (require-package 'ruby-end)
+  (require-package 'ruby-mode)
+  (require-package 'ruby-test-mode)
+  (require-package 'ruby-tools)
   
   (require-package 'org))
 
