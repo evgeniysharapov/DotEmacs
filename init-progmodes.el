@@ -102,18 +102,14 @@
 ;; --------------------------------------------------
 ;;                       Slime
 ;; --------------------------------------------------
-;; (when (require 'slime-autoloads nil 'noerror)
-;;   (slime-setup))
 (eval-after-load "slime"
   '(progn
 
      (setq slime-complete-symbol*-fancy t
            slime-complete-symbol-function 'slime-fuzzy-complete-symbol
            slime-net-coding-system 'utf-8-unix)
-     ;; (setq slime-use-autodoc-mode nil)
 
-
-     (slime-setup '(slime-fancy slime-asdf slime-banner slime-repl))
+     (slime-setup '(slime-fancy slime-banner slime-repl))
 
      (add-hook 'lisp-mode-hook
                (lambda ()
@@ -132,10 +128,6 @@
                  ;; http://www.emacswiki.org/emacs/ParEdit
                  (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil)))
 
-     ;; (setq slime-lisp-implementations
-     ;;       `((clozurecl ("d:/evgeniy/lisp/ccl-1.7/wx86cl.exe"))
-     ;;         ,@slime-lisp-implementations))
-
      ))
 
 ;;; ------------------------------------------------------------
@@ -146,40 +138,5 @@
 (ac-config-default)
 (setq ac-dwim t
       ac-auto-start t)
-
-  ;; --------------------------------------------------
-  ;;                       Clojure
-  ;; --------------------------------------------------
-  ;; (eval-after-load "slime"
-  ;;    '(progn
-  ;;       (require 'swank-clojure-extra)
-  ;;       (add-to-list 'slime-lisp-implementations
-  ;;                    `(clojure ,(swank-clojure-cmd)
-                                        ;                             :init swank-clojure-init)
-  ;;                   t)
-  ;;      (add-hook 'slime-indentation-update-hooks 'swank-clojure-update-indentation)
-  ;;      (add-hook 'slime-repl-mode-hook 'swank-clojure-slime-repl-modify-syntax t)
-  ;;      (add-hook 'clojure-mode-hook 'swank-clojure-slime-mode-hook t)
-  ;;      (setq slime-highlight-compiler-notes nil)))
-  ;;
-
-  ;; --------------------------------------------------
-  ;;       Haskell Mode 
-  ;; --------------------------------------------------
-
-                                        ;(load "haskell-site-file")
-                                        ;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-                                        ;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-                                        ;(add-hook 'haskell-mode-hook 'run-programming-hook)
-
-  ;; --------------------------------------------------
-  ;;       Python Mode 
-  ;; --------------------------------------------------
-                                        ;(load "python-mode-things")
-                                        ;(add-hook 'python-mode-hook 'sen/py-indentation)
-                                        ;(add-hook 'python-mode-hook 'sen/py-autocomplete)
-                                        ;(add-hook 'python-mode-hook 'sen/python-auto-fill-comments-only)
-                                        ;(add-hook 'python-mode-hook
-                                        ;'run-programming-hook)
 
 (provide 'init-progmodes)
