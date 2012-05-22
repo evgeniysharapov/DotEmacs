@@ -11,3 +11,5 @@
   '(progn
     (define-key paredit-mode-map [(control right)] 'paredit-forward-slurp-sexp)
     (define-key paredit-mode-map [(control left)] 'paredit-backward-slurp-sexp)))
+
+(setq tramp-default-method "plink")
