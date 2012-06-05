@@ -104,12 +104,13 @@
 ;; --------------------------------------------------
 (eval-after-load "slime"
   '(progn
+     (message "Check if slime has been loaded !")
 
      (setq slime-complete-symbol*-fancy t
            slime-complete-symbol-function 'slime-fuzzy-complete-symbol
            slime-net-coding-system 'utf-8-unix)
 
-     (slime-setup '(slime-fancy slime-banner slime-repl))
+     (slime-setup '(slime-fuzzy slime-banner slime-repl))
 
      (add-hook 'lisp-mode-hook
                (lambda ()
@@ -127,7 +128,6 @@
                  ;; prevent grabbing DEL button from
                  ;; http://www.emacswiki.org/emacs/ParEdit
                  (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil)))
-
      ))
 
 ;;; ------------------------------------------------------------

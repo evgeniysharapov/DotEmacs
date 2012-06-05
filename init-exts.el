@@ -43,25 +43,26 @@ One of the examples of using the
     (package-refresh-contents))
 
   ;; ELPA packages that I would like to have installed
+  ;; VCS
   (require-package 'magit)
-  
+  ;; look options
   (require-package 'idle-highlight-mode)
   (require-package 'highlight-symbol)
   (require-package 'rainbow-mode)
   (require-package 'rainbow-delimiters)
-  
+  ;; lispish modes
   (require-package 'paredit)
   (require-package 'elisp-slime-nav)
+  (require-package 'clojure-mode)
+  ;; extend functionality
   (require-package 'ido-yes-or-no)
   (require-package 'ido-ubiquitous)
-
   (require-package 'browse-kill-ring)
   (require-package 'kill-ring-search)
-  
   (require-package 'smex)
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
-  
+  ;; miscelaneous useful modes
   (require-package 'org))
 
 (defun extract-autoloads ()
