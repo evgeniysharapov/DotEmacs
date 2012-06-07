@@ -88,6 +88,7 @@
 
 ;; browse kill ring is nice too and also might be unavailable
 (when (fboundp 'browse-kill-ring)
+  (browse-kill-ring-default-keybindings) ; advise M-y
   (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
 
 (when (fboundp 'turn-on-undo-tree-mode)
