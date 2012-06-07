@@ -34,14 +34,14 @@
 (define-key global-map [f12] 'next-buffer)
 
 ;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-;;; C-z my-map
+;;; C-z ctrl-z-map
 ;; Make the prefix key `C-z' for my personal keymap.
 ;; On qwerty-keyboards `C-z' is one of the most accessible keys
 ;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
 ;; for mode-specific commands (both user-defined and standard Emacs extensions).
 ;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
 ;; is reassigned here to double key sequence `C-z C-z'.
-(defvar my-map
+(defvar ctrl-z-map
   (let ((map (make-sparse-keymap))
         (c-z (global-key-binding [(control ?z)])))
     (global-unset-key [(control ?z)])
