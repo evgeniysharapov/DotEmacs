@@ -13,13 +13,6 @@
   (setq org-outlook-location (w32-short-file-name "c:/Program Files/Microsoft Office/OFFICE11/OUTLOOK.exe")))
 
 ;;
-;; Addign Yasippets 
-;;
-(if (and (file-directory-p "~/.emacs.d/snippets")
-         (fboundp 'yas/load-directory))
-    (yas/load-directory "~/.emacs.d/snippets"))
-
-;;
 ;; Spell checking for Emacs usin Hunspell
 ;;
 (eval-after-load "ispell"

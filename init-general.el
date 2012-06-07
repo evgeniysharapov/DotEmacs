@@ -88,4 +88,12 @@
 
 (add-hook 'find-file-hook 'sm-try-smerge t)
 
+;;
+;; Addign Yasippets 
+;;
+(if (and (file-directory-p "~/.emacs.d/snippets")
+         (fboundp 'yas/load-directory))
+    (yas/load-directory "~/.emacs.d/snippets"))
+
+
 (provide 'init-general)

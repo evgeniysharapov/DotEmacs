@@ -110,9 +110,3 @@
   (if (not font-lock-mode)
       (font-lock-mode 1))
   )
-;;
-;; Addign Yasippets 
-;;
-(if (and (file-directory-p "~/.emacs.d/snippets")
-         (fboundp 'yas/load-directory))
-    (yas/load-directory "~/.emacs.d/snippets"))
