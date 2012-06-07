@@ -13,10 +13,19 @@
 (defvar *site-lisp* (file-name-as-directory (concat *dotfiles-dir* "site-lisp")) "Directory for Emacs Extensions files")
 (defvar *autoload-file* (concat *dotfiles-dir* "loaddefs.el") "This is file containing all autoloads extracted from Emacs lisp files")
 
-;; add recursively all subdirectories of *site-lisp* 
-(if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-    (let ((default-directory *site-lisp*))
-      (normal-top-level-add-subdirs-to-load-path)))
+;; add recursively all subdirectories of *site-lisp* without
+;; cluttering function space
+(eval-when-compile
+   (require 'cl))
+(flet ((add-directory-to-path (dir)
+                              (add-to-list 'load-path dir)
+                              (dolist (entry (directory-files-and-attributes dir))
+                                (if (and (cadr entry) ; t for directory
+                                         (not (member (car entry) '("." "..")))) ; we don't want to deal with . and ..
+                                    (let ((new-directory (expand-file-name (car entry) dir)))
+                                      (add-to-list 'load-path new-directory)
+                                      (add-directory-to-path new-directory))))))
+  (add-directory-to-path *site-lisp*))
 
 ;; Everyday functionality using REQUIRE
 (mapc #'require '(uniquify saveplace))
