@@ -89,11 +89,11 @@
 (add-hook 'find-file-hook 'sm-try-smerge t)
 
 ;;
-;; Addign Yasippets 
+;; Adding Yasnippets directory
 ;;
-(if (and (file-directory-p "~/.emacs.d/snippets")
+(if (and (file-directory-p (concat *dotfiles-dir* "snippets"))
          (fboundp 'yas/load-directory))
-    (yas/load-directory "~/.emacs.d/snippets"))
+    (yas/load-directory (concat *dotfiles-dir* "snippets")))
 
 ;;
 ;;  Specific settings for different OS
