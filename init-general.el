@@ -54,8 +54,9 @@
 (defadvice next-buffer (after my/next-buffer activate)
  (ffy-display-prev-next-buffers))
 
-;;; Undo settings 
-(autoload 'turn-on-undo-tree-mode "undo-tree" nil t)
+;;; Undo settings
+(when (fboundp 'global-undo-tree-mode)
+  (global-undo-tree-mode))
 
 ;;; ------------------------------------------------------------
 ;;;  Spellcheck setup 
