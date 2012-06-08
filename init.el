@@ -35,12 +35,9 @@
 
 ;; load my customization 
 (require 'init-exts)
-(require 'init-defuns)
-(require 'init-system)
+(require 'init-utils)
 (require 'init-general)
-(require 'init-progmodes)
-(require 'init-xml)
-(require 'init-org)
+(require 'init-edit-modes)
 (require 'init-bindings)
 
 ;; start server 

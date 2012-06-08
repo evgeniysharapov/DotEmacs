@@ -100,5 +100,5 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
-(provide 'init-defuns)
+(provide 'init-utils)
 
