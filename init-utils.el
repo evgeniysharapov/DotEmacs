@@ -41,6 +41,17 @@
       (message (format "%s is not available." ',symbol))
       nil)))
 
+(defmacro on-win32 (&rest body)
+  "Leaves code that specifically targets win32 system"
+  `(when (equal system-type 'windows-nt)
+     ,@body))
+
+(defmacro on-mac (&rest body)
+  "Leaves code that specifically targets Mac OS X"
+  `(when (equal system-type 'darwin)
+     ,@body))
+
+
 (defmacro make-interactive (func &rest args) 
   "Returns a symbol of an anonymous interactive function, suitable for binding to keys." 
   `(lambda () 

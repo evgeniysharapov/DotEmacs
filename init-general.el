@@ -102,7 +102,7 @@
 ;;  files.
 
 ;; settings for Windows
-(when (equal system-type 'windows-nt)
+(on-win32
   ;; maximize Emacs frame
   (global-set-key [(control f11)]
                   (make-interactive w32-send-sys-command #xf030 nil))
