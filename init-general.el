@@ -19,6 +19,9 @@
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
+(when (fboundp 'highlight-symbol-mode)
+  (highlight-symbol-mode))
+
 (display-time)
 ;; --------------------------------------------------
 ;;        Files Settings and Operations

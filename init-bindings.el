@@ -102,4 +102,11 @@
   (define-key global-map [(meta ?x)] 'smex)
   (define-key global-map [(meta shift ?x)] 'smex-major-mode-commands))
 
+;; highlight-symbol mode is available
+(when (fboundp 'highlight-symbol-at-point)
+  (define-key ctrl-z-map [(l)] 'highlight-symbol-at-point)
+  (define-key ctrl-z-map [(j)] 'highlight-symbol-prev)
+  (define-key ctrl-z-map [(k)] 'highlight-symbol-next)
+  (define-key ctrl-z-map [(@)] 'highlight-symbol-query-replace))
+
 (provide 'init-bindings)
