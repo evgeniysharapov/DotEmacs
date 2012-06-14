@@ -62,7 +62,9 @@ One of the examples of using the
   (require-package 'smex)
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
+  (require-package 'minimap)
   ;; miscelaneous useful modes
+  (require-package 'markdown-mode)
 
   ;; ruby and rails setup
   (require-package 'rinari)
