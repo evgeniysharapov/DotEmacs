@@ -279,4 +279,12 @@ by using nxml's indentation rules."
             (make-local-variable 'outline-regexp)
             (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$")))
 
+
+;;; Hide some modes from the mode-line
+(when (fboundp 'diminish)
+  (eval-after-load 'eldoc
+    '(diminish 'eldoc-mode))
+  (eval-after-load 'undo-tree
+    '(diminish 'undo-tree-mode)))
+
 (provide 'init-edit-modes)

@@ -50,6 +50,7 @@ One of the examples of using the
   (require-package 'highlight-symbol)
   (require-package 'rainbow-mode)
   (require-package 'rainbow-delimiters)
+  (require-package 'diminish)
   ;; lispish modes
   (require-package 'paredit)
   (require-package 'elisp-slime-nav)
