@@ -27,8 +27,6 @@
 ;;; ------------------------------------------------------------
 ;;;  Buffer Operations 
 ;;; ------------------------------------------------------------
-(define-key global-map [(control c) ?y] 'bury-buffer)
-(define-key global-map [(control c) ?r] 'revert-buffer)
 (define-key global-map [(control x) (control b)] 'ibuffer)
 (define-key global-map [f11] 'previous-buffer)
 (define-key global-map [f12] 'next-buffer)
@@ -48,6 +46,10 @@
     (define-key global-map [(control ?z)] map)
     (define-key map [(control ?z)] c-z)
     map))
+
+;;; Buffer operations in C-z map
+(define-key ctrl-z-map [?b ?y] 'bury-buffer)
+(define-key ctrl-z-map [?b ?r] 'revert-buffer)
 
 ;;; ------------------------------------------------------------
 ;;;  Windows Operations
