@@ -272,5 +272,11 @@ by using nxml's indentation rules."
     (set-face-underline-p 'org-link t))
   (iimage-mode))
 
+;;; Add Markdown mode specifics.
+;;; make outline-mode navigation work for underline headers as well
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (make-local-variable 'outline-regexp)
+            (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$")))
 
 (provide 'init-edit-modes)
