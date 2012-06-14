@@ -96,9 +96,6 @@
   (browse-kill-ring-default-keybindings) ; advise M-y
   (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
 
-(when (fboundp 'turn-on-undo-tree-mode)
-  (define-key global-map [(control x) (control shift ?u)] 'turn-on-undo-tree-mode))
-
 ;; Smex is used in minibuffer M-x
 (when (fboundp 'smex-initialize)
   (define-key global-map [(meta ?x)] 'smex)
