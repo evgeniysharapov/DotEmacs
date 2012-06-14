@@ -69,8 +69,8 @@
 (define-key global-map [(meta ?2)] 'split-window-vertically)
 (define-key global-map [(meta ?3)] 'split-window-horizontally)
 
-(define-key ctrl-z-map [(u)] 'winner-undo)
-(define-key ctrl-z-map [(r)] 'winner-redo)
+(define-key global-map [(meta shift ?p)] 'winner-undo)
+(define-key global-map [(meta shift ?n)] 'winner-redo)
 
 ;;; ------------------------------------------------------------
 ;;;  Editing/Operations In Buffer
