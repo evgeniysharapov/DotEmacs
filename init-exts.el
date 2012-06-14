@@ -63,6 +63,8 @@ One of the examples of using the
   (require-package 'yasnippet-bundle)
   (require-package 'undo-tree)
   (require-package 'minimap)
+  (require-package 'bookmark+)
+
   ;; miscelaneous useful modes
   (require-package 'markdown-mode)
 

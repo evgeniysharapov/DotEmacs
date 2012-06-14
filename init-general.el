@@ -99,6 +99,10 @@
          (fboundp 'yas/load-directory))
     (yas/load-directory (concat *dotfiles-dir* "snippets")))
 
+;;; try to load bookmark+
+(eval-after-load "bookmark"
+  '(require 'bookmark+ nil t))
+
 ;;
 ;;  Specific settings for different OS
 ;;  point being that I have several computers running the same OS
