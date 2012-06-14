@@ -15,6 +15,8 @@
 ;;; apropos seems to be more useful than apropos-command
 (define-key global-map [(control h) ?a] 'apropos)
 
+(define-key global-map [(control x) ?x] 'eval-print-last-sexp)
+
 ;;; ------------------------------------------------------------
 ;;;  File Operations 
 ;;; ------------------------------------------------------------
