@@ -80,6 +80,8 @@
 (define-key global-map [(control shift ?r)] 'search-backward)
 (define-key global-map [(control shift ?s)] 'search-forward)
 
+(define-key global-map [(meta shift ?z)] 'zap-up-to-char)
+
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
 ;;; ------------------------------------------------------------

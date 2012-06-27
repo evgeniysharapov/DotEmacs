@@ -57,6 +57,12 @@
 (defadvice next-buffer (after my/next-buffer activate)
  (ffy-display-prev-next-buffers))
 
+;;; Zap-up-to char is a better alternative
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.
+
+  \(fn arg char)" 'interactive)
+
 ;;; ------------------------------------------------------------
 ;;; Undo settings
 ;;; ------------------------------------------------------------
