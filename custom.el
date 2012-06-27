@@ -16,6 +16,7 @@
  '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
  '(font-lock-verbose nil)
+ '(hippie-expand-try-functions-list (quote (try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-expand-all-abbrevs try-complete-file-name-partially try-complete-file-name try-expand-list try-expand-line)))
  '(history-delete-duplicates t)
  '(history-length t)
  '(hl-paren-background-colors (quote ("tomato" "aquamarine3" "goldenrod" "magenta")))

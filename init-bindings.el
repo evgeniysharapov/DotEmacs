@@ -77,6 +77,8 @@
 (define-key global-map [(meta shift ?p)] 'winner-undo)
 (define-key global-map [(meta shift ?n)] 'winner-redo)
 
+(define-key global-map [(meta /)] 'hippie-expand)
+
 ;;; ------------------------------------------------------------
 ;;;  Editing/Operations In Buffer
 ;;; ------------------------------------------------------------
