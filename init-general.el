@@ -57,7 +57,9 @@
 (defadvice next-buffer (after my/next-buffer activate)
  (ffy-display-prev-next-buffers))
 
+;;; ------------------------------------------------------------
 ;;; Undo settings
+;;; ------------------------------------------------------------
 (when (fboundp 'global-undo-tree-mode)
   (global-undo-tree-mode))
 
