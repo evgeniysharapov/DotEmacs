@@ -48,6 +48,11 @@
     (define-key global-map [(control ?z)] map)
     (define-key map [(control ?z)] c-z)
     map))
+;;; almost always hit suspend instead of repeat command
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
+
 
 ;;; Buffer operations in C-z map
 (define-key ctrl-z-map [?b ?y] 'bury-buffer)
