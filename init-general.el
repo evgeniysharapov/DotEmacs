@@ -23,6 +23,15 @@
   (highlight-symbol-mode))
 
 (display-time)
+
+
+;;; Hide some modes from the mode-line
+(when (fboundp 'diminish)
+  (eval-after-load 'eldoc
+    '(diminish 'eldoc-mode))
+  (eval-after-load 'undo-tree
+    '(diminish 'undo-tree-mode)))
+
 ;; --------------------------------------------------
 ;;        Files Settings and Operations
 ;; --------------------------------------------------
