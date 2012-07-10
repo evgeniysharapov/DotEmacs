@@ -59,24 +59,27 @@
 
 
 ;; --------------------------------------------------
-;;     Setup Lisp based modes (including Elisp)
+;;     Setup all Lisp-like modes
 ;; --------------------------------------------------
+(defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode))
+(defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
+
 ;; redefine paredit keys
 (eval-after-load "paredit"
   '(progn
-     (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))
-     ;; unset C-right/C-left as it is used to jump words
-     (define-key paredit-mode-map [(control left)] nil)
-     (define-key paredit-mode-map [(control right)] nil)))
+     (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))))
 
-;;
-;; Things that are needed in evey lisp-like language
-;;
-(dolist (mode '(emacs-lisp lisp clojure))
-  (add-hook
-   (intern (concat (symbol-name mode) "-mode-hook"))
-   `(lambda ()
-     (progn
+(defun ffy-minibuffer-enable-paredit-mode ()
+  "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
+  (if (eq this-command 'eval-expression)
+      (when (fboundp 'paredit-mode)
+        (paredit-mode +1))))
+
+(add-hook 'minibuffer-setup-hook 'ffy-minibuffer-enable-paredit-mode)
+
+(defun ffy-any-lisp-setup ()
+  "This is the setup that would any lisp based mode benefit from"
+  (progn
        (when (fboundp 'paredit-mode) 
          (paredit-mode +1))
        (turn-on-eldoc-mode)
@@ -84,20 +87,24 @@
        (when (fboundp 'highlight-parentheses-mode)
          (highlight-parentheses-mode +1))
        (when (fboundp 'rainbow-delimiters-mode)
-         (rainbow-delimiters-mode))))))
+         (rainbow-delimiters-mode))
+       (define-key lisp-mode-shared-map [(return)] 'reindent-then-newline-and-indent)))
 
-;;; Set up Lisp keys 
-(define-key lisp-mode-shared-map [(return)] 'reindent-then-newline-and-indent)
+(defun ffy-emacs-lisp-setup ()
+  "Only emacs-lisp related things."
+  (progn
+    (make-local-variable 'hippie-expand-try-functions-list)
+    (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
+    (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
+    (elisp-slime-nav-mode 1)))
 
-;;; Adding paredit-mode for an eval-expression in minibuffer. RET
-;;; works as an exit minibuffer with evaluation. 
-(defun minibuffer-enable-paredit-mode ()
-  "Enable paredit-mode during eval-expression"
-  (if (eq this-command 'eval-expression)
-      (when (fboundp 'paredit-mode)
-        (paredit-mode +1)
-        )))
-(add-hook 'minibuffer-setup-hook 'minibuffer-enable-paredit-mode)
+(dolist (mode *lisp-modes*)
+  (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
+    (add-hook mode-hook 'ffy-any-lisp-setup)))
+
+(dolist (mode *emacs-lisp-modes*)
+  (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
+    (add-hook mode-hook 'ffy-emacs-lisp-setup)))
 
 ;; --------------------------------------------------
 ;;                       Slime
