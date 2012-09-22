@@ -3,7 +3,7 @@
 ;;
 
 (require 'tramp)
-(setq tramp-default-method "scp")
+(setq tramp-default-method "ssh")
 
 ;;
 ;; Set Frame Size in a Window mode 
