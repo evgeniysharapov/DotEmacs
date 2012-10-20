@@ -113,15 +113,8 @@ ARCHIVE is the string name of the package archive.")
   ;; ruby and rails setup
   (require-package 'rinari)
   (require-package 'rspec-mode)
-  (require-package 'ruby-block)
   (require-package 'ruby-compilation)
-  (require-package 'ruby-electric)
-  (require-package 'ruby-end)
-  (require-package 'ruby-mode)
-  (require-package 'ruby-test-mode)
-  (require-package 'ruby-tools)
-  
-  (require-package 'org))
+)
 
 (defun extract-autoloads ()
   "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
