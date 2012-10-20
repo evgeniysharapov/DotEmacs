@@ -20,6 +20,32 @@ One of the examples of using the
     (when (file-exists-p pkg-al-file)
       pkg-al-file)))
 
+(defadvice package-generate-autoloads (after close-autoloads (name pkg-dir) activate)
+  "Stop package.el from leaving open autoload files lying around."
+  (let ((path (expand-file-name (concat name "-autoloads.el") pkg-dir)))
+    (with-current-buffer (find-file-existing path)
+      (kill-buffer nil))))
+
+;;------------------------------------------------------------------------------
+;; Add support to package.el for pre-filtering available packages
+;;------------------------------------------------------------------------------
+(defvar package-filter-function nil
+  "Optional predicate function used to internally filter packages used by package.el.
+
+The function is called with the arguments PACKAGE VERSION ARCHIVE, where
+PACKAGE is a symbol, VERSION is a vector as produced by `version-to-list', and
+ARCHIVE is the string name of the package archive.")
+
+(defadvice package--add-to-archive-contents
+  (around filter-packages (package archive) activate)
+  "Add filtering of available packages using `package-filter-function', if non-nil."
+  (when (or (null package-filter-function)
+            (funcall package-filter-function
+                     (car package)
+                     (package-desc-vers (cdr package))
+                     archive))
+    ad-do-it))
+
 (defun require-package (package &optional min-version)
   "Installs package of desired version using ELPA"
   ;; TODO: make it work with minimum and maximum version
@@ -30,13 +56,28 @@ One of the examples of using the
     (when pkg-autoload
       (load pkg-autoload t))))
 
+
 (when (require 'package nil 'noerror)
   ;; all ELPA packages are located here
   (setq package-user-dir (concat *dotfiles-dir* "elpa"))
+
+  ;; Don't take Melpa versions of certain packages
+  (setq package-filter-function
+	(lambda (package version archive)
+	  (or (not (string-equal archive "melpa"))
+	      (not (memq package
+			 '(
+			   ruby-compilation
+			   slime
+			   color-theme-sanityinc-solarized
+			   color-theme-sanityinc-tomorrow
+			   elisp-slime-nav
+			   findr))))))
+
   ;; ELPA extensions repos 
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
   (package-initialize)
 
   (unless package-archive-contents
