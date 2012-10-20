@@ -149,10 +149,11 @@
 ;;; -----------------------------------------------------------------
 ;;;   Ruby/Rails setup
 ;;; -----------------------------------------------------------------
-(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(dolist (pattern '("\\.rb$" "\\.rake$" "Rakefile$" "\\.gemspec$" "Gemfile$"))
+  (add-to-list 'auto-mode-alist (cons pattern 'ruby-mode)))
+(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 
 ;;
 ;; Some settings and functions for XML setup.
