@@ -114,6 +114,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'rinari)
   (require-package 'rspec-mode)
   (require-package 'ruby-compilation)
+  (require-package 'rvm)
 )
 
 (defun extract-autoloads ()
