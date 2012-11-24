@@ -51,6 +51,7 @@
  '(recentf-max-saved-items 1000)
  '(recentf-mode t)
  '(require-final-newline t)
+ '(rspec-use-rvm t)
  '(save-place t nil (saveplace))
  '(savehist-mode t nil (savehist))
  '(scalable-fonts-allowed t)
