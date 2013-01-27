@@ -67,6 +67,8 @@
 ;; redefine paredit keys
 (eval-after-load "paredit"
   '(progn
+     (when (fboundp 'diminish)
+       (diminish 'paredit-mode "Pared"))
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))))
 
 (defun ffy-minibuffer-enable-paredit-mode ()
@@ -147,13 +149,26 @@
       ac-auto-start t)
 
 ;;; -----------------------------------------------------------------
-;;;   Ruby/Rails setup
+;;;                       Ruby/Rails setup
 ;;; -----------------------------------------------------------------
-(dolist (pattern '("\\.rb$" "\\.rake$" "Rakefile$" "\\.gemspec$" "Gemfile$"))
+(dolist (pattern '("\\.rb$" "\\.rake$" "Rakefile$" "\\.gemspec$" "Gemfile$" "Capfile"))
   (add-to-list 'auto-mode-alist (cons pattern 'ruby-mode)))
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
+
+(eval-after-load 'rinari
+  '(progn
+     (when (fboundp 'diminish)
+       (diminish 'rinari-minor-mode "Rin"))))
+
+(eval-after-load 'ruby-mode
+  '(progn
+     (when (fboundp 'diminish)
+       (diminish 'ruby-mode "Rb"))
+     (define-key ruby-mode-map [(return)] 'reindent-then-newline-and-indent)))
+
 
 ;;
 ;; Some settings and functions for XML setup.
