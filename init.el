@@ -38,6 +38,7 @@
 (require 'init-utils)
 (require 'init-general)
 (require 'init-edit-modes)
+(require 'init-prog)
 (require 'init-bindings)
 
 ;; start server 
