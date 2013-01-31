@@ -142,7 +142,8 @@
     (make-local-variable 'hippie-expand-try-functions-list)
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
-    (elisp-slime-nav-mode 1)))
+    (elisp-slime-nav-mode 1)
+    (add-to-list 'ac-sources 'ac-source-emacs-lisp-features)))
 
 
 (dolist (mode *lisp-modes*)
