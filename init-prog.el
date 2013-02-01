@@ -134,7 +134,7 @@
          (highlight-parentheses-mode +1))
        (when (fboundp 'rainbow-delimiters-mode)
          (rainbow-delimiters-mode))
-       (define-key lisp-mode-shared-map [(return)] 'reindent-then-newline-and-indent)))
+       (define-key lisp-mode-shared-map [(meta return)] 'reindent-then-newline-and-indent)))
 
 (defun ffy-init-lisp-emacs-setup ()
   "Only emacs-lisp related things."
@@ -153,6 +153,17 @@
 (dolist (mode *emacs-lisp-modes*)
   (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
     (add-hook mode-hook 'ffy-init-lisp-emacs-setup)))
+;;;
+;;; Clojure Specifics
+;;;
+(add-hook 'clojure-mode-hook 'subword-mode)
+(add-hook 'clojure-mode-hook 'clojure-test-mode)
+
+(add-hook 'nrepl-mode-hook 'subword-mode)
+(add-hook 'nrepl-mode-hook 'paredit-mode)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 
 ;;; -----------------------------------------------------------------
 ;;;                       Ruby/Rails setup

@@ -95,7 +95,11 @@ ARCHIVE is the string name of the package archive.")
   ;; lispish modes
   (require-package 'paredit)
   (require-package 'elisp-slime-nav)
+  ;; clojure
   (require-package 'clojure-mode)
+  (require-package 'clojure-test-mode)
+  (require-package 'nrepl)
+  (require-package 'ac-nrepl)
   ;; extend functionality
   (require-package 'ido-yes-or-no)
   (require-package 'ido-ubiquitous)
