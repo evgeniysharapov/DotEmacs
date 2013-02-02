@@ -86,6 +86,13 @@
         ispell-extra-args '("--sug-mode=ultra")))
 
 ;; --------------------------------------------------
+;;           Help and Info Functions
+;; --------------------------------------------------
+(require 'help-mode+ nil t)
+(require 'help+ nil t)
+(require 'help-fns+ nil t)
+
+;; --------------------------------------------------
 ;;    Miscellaneous
 ;; --------------------------------------------------
 (setq redisplay-dont-pause t)
