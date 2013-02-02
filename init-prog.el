@@ -178,11 +178,25 @@
 (eval-after-load 'rinari
   '(progn
      (message "Rinari loaded")
-     ))                                 
+     ))
+
+(defun ffy-insert-ruby-string-interpolation ()
+  "In a double quoted string, interpolation is inserted on #."
+  (interactive)
+  (insert "#")
+  (when (and
+         (looking-back "\".*")
+         (looking-at ".*\""))
+    (insert "{}")
+    (backward-char 1)))
 
 (eval-after-load 'ruby-mode
   '(progn
-     (define-key ruby-mode-map [(return)] 'reindent-then-newline-and-indent)))
+     (inf-ruby-setup-keybindings)
+     (define-key ruby-mode-map [(return)] 'reindent-then-newline-and-indent)
+     (subword-mode +1)
+     (define-key ruby-mode-map [(?#)] 'ffy-insert-ruby-string-interpolation)
+     (define-key ruby-mode-map [(control ?h) ?r] 'yari)))
 
 (add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
 
