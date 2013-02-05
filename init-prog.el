@@ -199,5 +199,9 @@
      (define-key ruby-mode-map [(control ?h) ?r] 'yari)))
 
 (add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(add-hook 'sass-mode-hook 'flymake-sass-load)
+(add-hook 'scss-mode-hook 'flymake-sass-load)
+(add-hook 'haml-mode-hook 'flymake-haml-load)
 
 (provide 'init-prog)
