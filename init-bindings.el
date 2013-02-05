@@ -89,6 +89,16 @@
 
 (define-key global-map [(meta shift ?z)] 'zap-up-to-char)
 
+(defun ffy-bol-or-back-to-indent ()
+  "In addition to having two different mappings for (move-beginning-of-line ARG) and (back-to-indentation) we will have a function that goes to BOL if we are on the indent position and to the indent if we are at the BOL"
+  (interactive)
+  (if (bolp)
+      (back-to-indentation)
+    (move-beginning-of-line 1)))
+;;; redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
+(define-key global-map [(control shift ?a)] (key-binding [(control ?a)]))
+(define-key global-map [(control ?a)] 'ffy-bol-or-back-to-indent)
+
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
 ;;; ------------------------------------------------------------
