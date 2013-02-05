@@ -22,6 +22,7 @@
  '(history-length t)
  '(hl-paren-background-colors (quote ("tomato" "aquamarine3" "goldenrod" "magenta")))
  '(hl-paren-colors (quote ("black" "black" "black" "black")))
+ '(ido-auto-merge-work-directories-length -1)
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
