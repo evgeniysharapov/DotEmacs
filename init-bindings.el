@@ -25,6 +25,7 @@
 (define-key global-map [(control x) (control meta ?f)] 'find-file-in-project)
 (define-key global-map [(control x) ?f] 'ido-choose-from-recentf)
 (define-key global-map [(control x) (control p)] 'find-file-at-point)
+(define-key global-map [(control x) ?p] 'find-file-in-project)
 
 ;;; ------------------------------------------------------------
 ;;;  Buffer Operations 

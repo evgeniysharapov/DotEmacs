@@ -111,6 +111,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'minimap)
   (require-package 'bookmark+)
   (require-package 'ack-and-a-half)
+  (require-package 'find-file-in-project)
 
   ;; miscelaneous useful modes
   (require-package 'markdown-mode)
