@@ -110,6 +110,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'undo-tree)
   (require-package 'minimap)
   (require-package 'bookmark+)
+  (require-package 'ack-and-a-half)
 
   ;; miscelaneous useful modes
   (require-package 'markdown-mode)
