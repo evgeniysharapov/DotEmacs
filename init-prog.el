@@ -194,10 +194,11 @@
   '(progn
      (inf-ruby-setup-keybindings)
      (define-key ruby-mode-map [(return)] 'reindent-then-newline-and-indent)
-     (subword-mode +1)
      (define-key ruby-mode-map [(?#)] 'ffy-insert-ruby-string-interpolation)
      (define-key ruby-mode-map [(control ?h) ?r] 'yari)))
 
+(add-hook 'ruby-mode-hook 'subword-mode)
+(add-hook 'ruby-mode-hook 'ruby-electric-mode)
 (add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 (add-hook 'sass-mode-hook 'flymake-sass-load)
