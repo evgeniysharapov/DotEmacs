@@ -126,6 +126,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'flymake-ruby)
   (require-package 'flymake-haml)
   (require-package 'flymake-sass)
+  (require-package 'flymake-coffee)
 )
 
 (defun extract-autoloads ()

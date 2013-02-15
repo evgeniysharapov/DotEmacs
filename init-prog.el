@@ -175,10 +175,7 @@
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
 
-(eval-after-load 'rinari
-  '(progn
-     (message "Rinari loaded")
-     ))
+(global-rinari-mode)
 
 (defun ffy-insert-ruby-string-interpolation ()
   "In a double quoted string, interpolation is inserted on #."
@@ -204,5 +201,6 @@
 (add-hook 'sass-mode-hook 'flymake-sass-load)
 (add-hook 'scss-mode-hook 'flymake-sass-load)
 (add-hook 'haml-mode-hook 'flymake-haml-load)
+(add-hook 'coffee-mode-hook 'flymake-coffee-load)
 
 (provide 'init-prog)
