@@ -125,9 +125,7 @@
 ;;
 ;; Adding Yasnippets directory
 ;;
-(if (and (file-directory-p (concat *dotfiles-dir* "snippets"))
-         (fboundp 'yas/load-directory))
-    (yas/load-directory (concat *dotfiles-dir* "snippets")))
+
 
 ;;; try to load bookmark+
 (eval-after-load "bookmark"
