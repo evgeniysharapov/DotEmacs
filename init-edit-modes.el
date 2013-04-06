@@ -95,10 +95,7 @@ by using nxml's indentation rules."
 
 (add-hook 'org-mode-hook
    (lambda ()
-     (my-org-mode-custom-bindings)
-     (my-org-mode-yasnippet-fix)
-     (when (fboundp 'yas/minor-mode-on)
-         (yas/minor-mode-on))
+     (yas-minor-mode-on)
      (hl-line-mode +1)
      (turn-on-auto-fill)))
 
