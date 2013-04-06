@@ -10,7 +10,9 @@
 ;;
 ;; TODO: justify for the face font size 
 (if (window-system)
-    (set-frame-size (selected-frame) 165 42))
+    (progn
+      (set-frame-size (selected-frame) 125 40)
+      (set-face-attribute 'default nil :family "Consolas" :height 145)))
 
 ;;; adjust PATH in emacs to what it is in the terminal
 (setenv "PATH"
