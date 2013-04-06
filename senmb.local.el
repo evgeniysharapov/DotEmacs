@@ -12,7 +12,7 @@
 (if (window-system)
     (progn
       (set-frame-size (selected-frame) 125 40)
-      (set-face-attribute 'default nil :family "Consolas" :height 145)))
+      (set-face-attribute 'default nil :family "Menlo" :height 120)))
 
 ;;; adjust PATH in emacs to what it is in the terminal
 (setenv "PATH"
