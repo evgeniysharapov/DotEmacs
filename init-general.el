@@ -130,6 +130,13 @@
 ;; Adding Yasnippets directory
 ;;
 
+;;;
+;;; Some IDO settings that have been taken out from the customization file.
+;;;
+(ido-mode t)
+(ido-everywhere t)
+(ido-ubiquitous-mode t)
+
 
 ;;; try to load bookmark+
 (eval-after-load "bookmark"
