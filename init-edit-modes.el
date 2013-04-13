@@ -86,27 +86,12 @@ by using nxml's indentation rules."
   (local-set-key [(control c) (control ?y)] 'org-insert-link)
   (local-set-key [(control c) ?a] 'org-agenda))
 
-(defun my-org-mode-yasnippet-fix ()
-  ;; (yas/initialize)
-  (make-variable-buffer-local 'yas/trigger-key)
-  (setq yas/trigger-key [tab])
-  (define-key yas/keymap [(tab)] 'yas/next-field-group))
-
-
-(add-hook 'org-mode-hook
-   (lambda ()
-     (yas-minor-mode-on)
-     (hl-line-mode +1)
-     (turn-on-auto-fill)))
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
-
-;;; Fix conflict of Windmove and Org mode
-(add-hook 'org-shiftup-final-hook 'windmove-up)
-(add-hook 'org-shiftleft-final-hook 'windmove-left)
-(add-hook 'org-shiftdown-final-hook 'windmove-down)
-(add-hook 'org-shiftright-final-hook 'windmove-right)
-
+(add-hook 'org-mode-hook 'yas-minor-mode-on)
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+(add-hook 'org-mode-hook 'turn-on-flyspell)
+(add-hook 'org-mode-hook 'hl-line-mode)
 ;;
 ;;  Setup iimage working with Org-mode
 ;; 
