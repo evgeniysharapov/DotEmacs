@@ -87,7 +87,7 @@
 
 (when (executable-find "hunspell")
   (setq ispell-program-name "hunspell"
-        ispell-extra-args '("-d" "en_US" "-i" "utf-8")))
+        ispell-extra-args '("-d" "/opt/local/share/hunspell/en_US" "-i" "utf-8")))
 
 ;; --------------------------------------------------
 ;;           Help and Info Functions
