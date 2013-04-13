@@ -63,7 +63,7 @@
 ;;;  Windows Operations
 ;;; ------------------------------------------------------------
 ;; Windmove
-(windmove-default-keybindings) ;; Shift+direction
+(windmove-default-keybindings 'super) ;; ⌘+direction
 ;;; Moving in a window
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
