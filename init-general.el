@@ -81,13 +81,15 @@
 ;;; ------------------------------------------------------------
 ;;;  Spellcheck setup 
 ;;; ------------------------------------------------------------
-(when (executable-find "aspell")
-  (setq ispell-program-name "aspell"
-        ispell-extra-args '("--sug-mode=ultra")))
+(eval-after-load "ispell"
+  '(progn
+    (when (executable-find "aspell")
+      (setq ispell-program-name "aspell"
+            ispell-extra-args '("--sug-mode=ultra")))
 
-(when (executable-find "hunspell")
-  (setq ispell-program-name "hunspell"
-        ispell-extra-args '("-d" "/opt/local/share/hunspell/en_US" "-i" "utf-8")))
+    (when (executable-find "hunspell")
+      (setq ispell-program-name "hunspell"
+            ispell-extra-args '("-d" "/opt/local/share/hunspell/en_US" "-i" "utf-8")))))
 
 ;; --------------------------------------------------
 ;;           Help and Info Functions
