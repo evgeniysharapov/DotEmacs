@@ -164,6 +164,17 @@
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+;;; For Clojure we are also looking for project.clj file in the
+;;; project root
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (progn
+              (require 'find-file-in-project)
+              (when (boundp 'ffip-project-file)
+                (set (make-local-variable 'ffip-project-file)
+                     (if (listp 'ffip-project-file)
+                         (cons "project.clj" ffip-project-file)
+                       (list "project.clj" ffip-project-file)))))))
 
 ;;; -----------------------------------------------------------------
 ;;;                       Ruby/Rails setup
