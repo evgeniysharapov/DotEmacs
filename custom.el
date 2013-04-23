@@ -78,6 +78,7 @@
  ;; If there is more than one, they won't work right.
  '(diff-added ((t (:inherit diff-changed :foreground "DarkGreen"))))
  '(diff-removed ((t (:inherit diff-changed :foreground "firebrick2"))))
+ '(font-lock-comment-face ((t (:foreground "Firebrick" :slant oblique))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dim gray"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "SkyBlue3"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "aquamarine4"))))
