@@ -75,8 +75,9 @@
 (define-key global-map [(meta ?2)] 'split-window-vertically)
 (define-key global-map [(meta ?3)] 'split-window-horizontally)
 
-(define-key global-map [(meta shift ?p)] 'winner-undo)
-(define-key global-map [(meta shift ?n)] 'winner-redo)
+;;; Windows configurations
+(define-key global-map [(control x) (super left)] 'winner-undo)
+(define-key global-map [(control x) (super right)] 'winner-redo)
 
 (define-key global-map [(meta /)] 'hippie-expand)
 
