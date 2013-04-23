@@ -128,6 +128,8 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'flymake-haml)
   (require-package 'flymake-sass)
   (require-package 'flymake-coffee)
+  ;; scala
+  (require-package 'scala-mode)
 )
 
 (defun extract-autoloads ()

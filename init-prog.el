@@ -214,4 +214,8 @@
 (add-hook 'haml-mode-hook 'flymake-haml-load)
 (add-hook 'coffee-mode-hook 'flymake-coffee-load)
 
+;;; -----------------------------------------------------------------
+;;;                       Scala setup
+;;; -----------------------------------------------------------------
+
 (provide 'init-prog)
