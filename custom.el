@@ -79,6 +79,7 @@
  '(diff-added ((t (:inherit diff-changed :foreground "DarkGreen"))))
  '(diff-removed ((t (:inherit diff-changed :foreground "firebrick2"))))
  '(font-lock-comment-face ((t (:foreground "Firebrick" :slant oblique))))
+ '(org-level-4 ((t (:inherit outline-4 :slant normal))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dim gray"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "SkyBlue3"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "aquamarine4"))))
