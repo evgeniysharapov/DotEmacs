@@ -101,6 +101,8 @@
 (define-key global-map [(control shift ?a)] (key-binding [(control ?a)]))
 (define-key global-map [(control ?a)] 'ffy-bol-or-back-to-indent)
 
+;;; use C-\ to leave one space between words
+(define-key global-map [(control ?\\)] 'just-one-space)
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
 ;;; ------------------------------------------------------------
