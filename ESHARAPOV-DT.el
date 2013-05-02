@@ -40,3 +40,9 @@
 (define-key ctrl-z-map [(control ?w) (control right)] 'windmove-right)
 (define-key ctrl-z-map [(control ?w) (control up)] 'windmove-up)
 (define-key ctrl-z-map [(control ?w) (control down)] 'windmove-down)
+
+(eval-after-load "ispell"
+  '(progn
+     (setq ispell-program-name "hunspell"
+           ispell-extra-args '("-d" "C:\\Users\\esharapov\\App\\bin\\en_US" "-i" "utf-8"))))
+
