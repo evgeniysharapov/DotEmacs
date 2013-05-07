@@ -64,6 +64,7 @@
  '(show-paren-style (quote mixed))
  '(show-trailing-whitespace t)
  '(tab-always-indent (quote complete))
+ '(tags-revert-without-query t)
  '(undo-limit 2000000)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(use-dialog-box nil)
