@@ -12,7 +12,8 @@
 (if (window-system)
     (progn
       (set-frame-size (selected-frame) 125 40)
-      (set-face-attribute 'default nil :family "Menlo" :height 120)))
+      (set-face-attribute 'default nil :family "Menlo" :height 140)))
+
 
 ;;; Spellchecker setup
 (eval-after-load "ispell"
