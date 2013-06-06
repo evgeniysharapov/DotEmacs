@@ -70,7 +70,8 @@
  '(user-full-name "Evgeniy Sharapov")
  '(user-mail-address "evgeniy.sharapov@gmail.com")
  '(visible-bell t)
- '(winner-mode t nil (winner)))
+ '(winner-mode t nil (winner))
+ '(yas-global-mode t nil (yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
