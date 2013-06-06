@@ -79,7 +79,7 @@
 ;; --------------------------------------------------
 ;;    Lisp-like Programming Lanuages
 ;; --------------------------------------------------
-(defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode))
+(defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
 (defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
 
 ;;; Paredit settings
