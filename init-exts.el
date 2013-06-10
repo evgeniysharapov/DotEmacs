@@ -130,6 +130,9 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'flymake-coffee)
   ;; scala
   (require-package 'scala-mode)
+
+  ;; haskell
+  (require-package 'haskell-mode)
 )
 
 (defun extract-autoloads ()

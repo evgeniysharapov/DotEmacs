@@ -227,5 +227,9 @@
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
 (add-hook 'octave-mode-hook (lambda ()
                               (auto-fill-mode 1)))
-
-
+;;; -----------------------------------------------------------------
+;;;                           Haskell Mode
+;;; -----------------------------------------------------------------
+(add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
