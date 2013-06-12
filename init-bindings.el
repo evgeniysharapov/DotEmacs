@@ -79,11 +79,12 @@
 (define-key global-map [(control x) (super left)] 'winner-undo)
 (define-key global-map [(control x) (super right)] 'winner-redo)
 
-(define-key global-map [(meta /)] 'hippie-expand)
-
 ;;; ------------------------------------------------------------
 ;;;  Editing/Operations In Buffer
 ;;; ------------------------------------------------------------
+;;; Completion operations
+(define-key global-map [(meta /)] 'hippie-expand)
+
 ;;; toggles line  numbers in the buffer
 (define-key global-map [(control x) (control shift ?l)] 'linum-mode)
 (define-key global-map [(control shift ?r)] 'search-backward)
