@@ -72,6 +72,18 @@
 
   \(fn arg char)" 'interactive)
 
+
+(defvar *auto-close-buffers* '("*Completions*"
+                               "*Ido Completions*")
+  "List of buffers that should be closed after we done with minibuffer. Usually it is various completions buffers")
+
+(add-hook 'minibuffer-exit-hook
+          '(lambda ()
+             (progn
+               (mapc '(lambda (buffer)
+                        (if (buffer-live-p buffer)
+                            (kill-buffer buffer))) *auto-close-buffers*))))
+
 ;;; ------------------------------------------------------------
 ;;; Undo settings
 ;;; ------------------------------------------------------------
