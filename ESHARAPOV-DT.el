@@ -46,3 +46,5 @@
      (setq ispell-program-name "hunspell"
            ispell-extra-args '("-d" "C:\\Users\\esharapov\\App\\bin\\en_US" "-i" "utf-8"))))
 
+;;; Org-mode hackery
+(setq org-agenda-files (list "~/org/stoneriver.org"))
