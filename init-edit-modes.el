@@ -70,21 +70,34 @@ by using nxml's indentation rules."
 ;; ------------------------------------------------------------
 ;;                      Org Mode
 ;; ------------------------------------------------------------
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "medium blue" :weight bold)
-              ("NOTE" :foreground "dark violet" :weight bold)
-              ("STARTED" :foreground "dark orange" :weight bold)
-              ("WAITING" :foreground "red" :weight bold)
-              ("DELEGATED" :foreground "red" :weight bold))))
+; '(org-agenda-include-diary t)
+; '(org-clock-clocktable-default-properties (quote (:maxlevel 4 :scope file :step week :block thisweek :tend "")))
+; '(org-empty-line-terminates-plain-lists t)
+; '(org-hide-leading-stars t)
+; '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-id org-info org-jsinfo org-special-blocks org-w3m org-panel)))
+; '(org-return-follows-link t)
+; '(org-use-sub-superscripts (quote {}))
 
-(defun my-org-mode-custom-bindings ()
-  "customize org-mode keys"
-  (local-set-key [(control up)] 'outline-previous-visible-heading)
-  (local-set-key [(control down)]  'outline-next-visible-heading)
-  (local-set-key [(control meta up)]  'outline-up-heading)
-  (local-set-key [(control c) (meta ?w)] 'org-store-link )
-  (local-set-key [(control c) (control ?y)] 'org-insert-link)
-  (local-set-key [(control c) ?a] 'org-agenda))
+(setq org-completion-use-ido t
+      org-hide-leading-stars t
+      org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-special-blocks org-w3m org-panel))
+
+
+;(setq org-todo-keyword-faces
+;      (quote (("TODO" :foreground "medium blue" :weight bold)
+;              ("NOTE" :foreground "dark violet" :weight bold)
+;              ("STARTED" :foreground "dark orange" :weight bold)
+;              ("WAITING" :foreground "red" :weight bold)
+;              ("DELEGATED" :foreground "red" :weight bold))))
+
+;(defun my-org-mode-custom-bindings ()
+;  "customize org-mode keys"
+;  (local-set-key [(control up)] 'outline-previous-visible-heading)
+;  (local-set-key [(control down)]  'outline-next-visible-heading)
+;  (local-set-key [(control meta up)]  'outline-up-heading)
+;  (local-set-key [(control c) (meta ?w)] 'org-store-link )
+;  (local-set-key [(control c) (control ?y)] 'org-insert-link)
+;  (local-set-key [(control c) ?a] 'org-agenda))
 
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
