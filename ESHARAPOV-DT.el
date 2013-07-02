@@ -47,4 +47,12 @@
            ispell-extra-args '("-d" "C:\\Users\\esharapov\\App\\bin\\en_US" "-i" "utf-8"))))
 
 ;;; Org-mode hackery
-(setq org-agenda-files (list "~/org/stoneriver.org"))
+(setq org-clock-clocktable-default-properties
+      (list :maxlevel 4
+            :scope 'file
+            :step 'day
+            :block 'week
+            :narrow '80!
+            :link t
+            :properties '("OpenAir" "Support")
+            :inherit-props t))
