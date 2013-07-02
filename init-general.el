@@ -84,6 +84,13 @@
                         (if (buffer-live-p buffer)
                             (kill-buffer buffer))) *auto-close-buffers*))))
 
+;;; enable useful commands
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-defun 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'widen 'disabled nil)
+
+
 ;;; ------------------------------------------------------------
 ;;; Undo settings
 ;;; ------------------------------------------------------------
