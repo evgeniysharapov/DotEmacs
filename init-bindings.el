@@ -134,4 +134,9 @@
   (define-key ctrl-z-map [(k)] 'highlight-symbol-next)
   (define-key ctrl-z-map [(@)] 'highlight-symbol-query-replace))
 
+;;; org-mode bindings
+(when (fboundp 'org-mode)
+  ;; due to the conflict with Yasnippet
+  (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto))
+
 (provide 'init-bindings)
