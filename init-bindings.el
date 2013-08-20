@@ -67,8 +67,6 @@
 ;;; Moving in a window
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
-;; switch windows
-(define-key global-map [(meta ?o)] 'other-window)
 ;; Typical window operations but faster
 (define-key global-map [(meta ?0)] 'delete-window)
 (define-key global-map [(meta ?1)] 'delete-other-windows)
@@ -104,6 +102,14 @@
 
 ;;; use C-\ to leave one space between words
 (define-key global-map [(control ?\\)] 'just-one-space)
+
+(define-key global-map [(f5)] 'revert-buffer)
+
+;;; ------------------------------------------------------------
+;;;           Outline mode
+;;; ------------------------------------------------------------
+;(define-key global-map [(meta ?o)] '...)
+
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
 ;;; ------------------------------------------------------------
