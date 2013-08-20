@@ -77,7 +77,7 @@
 ;;;;;;;;;;;;;;; Specific Programming Languages Environment Follow ;;;;;;;;;
 
 ;; --------------------------------------------------
-;;    Lisp-like Programming Lanuages
+;;    Lisp-like Programming Languages
 ;; --------------------------------------------------
 (defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
 (defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
