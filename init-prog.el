@@ -186,7 +186,7 @@
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
 
-(global-rinari-mode)
+(global-rinari-mode 1)
 
 (defun ffy-insert-ruby-string-interpolation ()
   "In a double quoted string, interpolation is inserted on #."
