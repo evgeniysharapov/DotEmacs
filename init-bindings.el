@@ -104,6 +104,13 @@
 (define-key global-map [(control ?\\)] 'just-one-space)
 
 (define-key global-map [(f5)] 'revert-buffer)
+;;;
+;;; Mark/Point machinery
+;;; see
+;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
+;;;
+;;; pushes mark into a ring without activating a region
+(define-key global-map [(meta spc)] (lambda () (push-mark (point) t nil)))
 
 ;;; ------------------------------------------------------------
 ;;;           Outline mode
@@ -113,7 +120,7 @@
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
 ;;; ------------------------------------------------------------
-
+ 
 ;; Added global shortcut to run Magit
 (when (fboundp 'magit-status)
   (define-key global-map [(control x) ?g] 'magit-status))
