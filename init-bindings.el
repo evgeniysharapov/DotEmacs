@@ -109,7 +109,10 @@
 ;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
 ;;;
 ;;; pushes mark into a ring without activating a region
-(define-key global-map [(meta spc)] (lambda () (push-mark (point) t nil)))
+(define-key global-map [(meta ?\ )]
+  (make-interactive (lambda ()
+                      (push-mark (point) t nil)
+                      (message "Position %s pushed to the ring" (point)))))
 
 ;;; ------------------------------------------------------------
 ;;;           Outline mode
