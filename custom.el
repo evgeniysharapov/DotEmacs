@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auto-revert-verbose nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(byte-compile-verbose nil)
  '(color-theme-is-cumulative t)
@@ -17,6 +18,7 @@
  '(echo-keystrokes 0.1)
  '(font-lock-verbose nil)
  '(global-auto-revert-mode t)
+ '(global-auto-revert-non-file-buffers t)
  '(hippie-expand-try-functions-list (quote (try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-expand-all-abbrevs try-complete-file-name-partially try-complete-file-name try-expand-list try-expand-line)))
  '(history-delete-duplicates t)
  '(history-length t)
