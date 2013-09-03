@@ -158,6 +158,9 @@
 (ido-everywhere t)
 (ido-ubiquitous-mode t)
 
+;;; Dired settings that proved useful
+(setq dired-dwim-target t)              ; guess where to copy files
+
 
 ;;; try to load bookmark+
 (eval-after-load "bookmark"
