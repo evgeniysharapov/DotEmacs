@@ -161,6 +161,11 @@
 ;;; Dired settings that proved useful
 (setq dired-dwim-target t)              ; guess where to copy files
 
+;;; change some grep mode bindings
+(eval-after-load "grep"
+  '(progn
+     (setq wgrep-enable-key "e")
+     (define-key grep-mode-map [(?e)] 'wgrep-change-to-wgrep-mode)))
 
 ;;; try to load bookmark+
 (eval-after-load "bookmark"
