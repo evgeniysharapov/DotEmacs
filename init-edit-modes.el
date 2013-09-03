@@ -80,6 +80,7 @@ by using nxml's indentation rules."
 
 (setq org-completion-use-ido t
       org-hide-leading-stars t
+      org-return-follows-link t
       org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-protocol org-special-blocks org-w3m org-bookmark org-elisp-symbol org-panel))
 
 
