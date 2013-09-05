@@ -16,6 +16,7 @@
  '(desktop-globals-to-save (quote (desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring regexp-history register-alist file-name-history extended-command-history grep-history ido-last-directory-list minibuffer-history query-replace-history shell-command-history)))
  '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
+ '(enable-recursive-minibuffers t)
  '(font-lock-verbose nil)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
