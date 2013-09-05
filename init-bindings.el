@@ -83,7 +83,7 @@
 (define-key global-map [(meta /)] 'hippie-expand)
 
 ;;; toggles line  numbers in the buffer
-(define-key global-map [(control x) (control shift ?l)] 'linum-mode)
+(define-key global-map [(control shift ?l)] 'linum-mode)
 (define-key global-map [(control shift ?r)] 'search-backward)
 (define-key global-map [(control shift ?s)] 'search-forward)
 
