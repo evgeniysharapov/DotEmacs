@@ -151,12 +151,17 @@
 ;; Adding Yasnippets directory
 ;;
 
-;;;
+;;; ------------------------------------------------------------
 ;;; Some IDO settings that have been taken out from the customization file.
-;;;
+;;; ------------------------------------------------------------
 (ido-mode t)
 (ido-everywhere t)
 (ido-ubiquitous-mode t)
+;;; not every command should could be ido-ed
+;;; kill-ring-search has already set of minibuffer commands that don't
+;;; work well with ido-completing-read
+(setq ido-ubiquitous-command-exceptions '(kill-ring-search))
+
 
 ;;; Dired settings that proved useful
 (setq dired-dwim-target t)              ; guess where to copy files
