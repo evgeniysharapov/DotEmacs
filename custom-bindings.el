@@ -4,6 +4,33 @@
 ;;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;;
 
+
+;;; ----------------------------------------------------------------------
+;;;  Organization of key bindings :
+;;;
+;;; C-x primary map (some defaults)
+;;; C-c secondary map (modes use it)
+;;; C-z tertiary map (private custom one)
+;;;
+;;; Other maps:
+;;;   C-x f  - map  file operations
+;;;   M-g    - goto map
+
+;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
+;;;   M-o
+
+;;;   C-<capital letter>
+;;;   M-<capital letter>
+;;;
+;;;   A-<anything>
+;;;   M-A-<anything>
+;;;
+;;; Single-letter bindings still available:
+;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
+;;;   M- ?#
+
+
+
 ;;; Turn on the menu bar for exploring new modes
 (define-key global-map [f1] 'menu-bar-mode)
 (define-key global-map [(control f1)] 'imenu-add-menubar-index)
