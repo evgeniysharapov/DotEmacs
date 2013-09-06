@@ -149,4 +149,4 @@ ARCHIVE is the string name of the package archive.")
 
 (add-hook 'kill-emacs-hook 'extract-autoloads)
 
-(provide 'init-exts)
+(provide 'custom-exts)

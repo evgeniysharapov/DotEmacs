@@ -1,15 +1,15 @@
-;;  
-;;  New Emacs Configuration
-;;  Key Bindings
-;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
-;;
+;;;
+;;;  New Emacs Configuration
+;;;  Key Bindings
+;;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
+;;;
 
-;; Turn on the menu bar for exploring new modes
+;;; Turn on the menu bar for exploring new modes
 (define-key global-map [f1] 'menu-bar-mode)
 (define-key global-map [(control f1)] 'imenu-add-menubar-index)
 
-;; We are trying to make keys working in both Windows and Mac OS X
-;; To be able to M-x without meta
+;;; We are trying to make keys working in both Windows and Mac OS X
+;;; To be able to M-x without meta
 (define-key global-map (kbd "C-x C-m") 'execute-extended-command)
 
 ;;; apropos seems to be more useful than apropos-command
@@ -26,6 +26,9 @@
 (define-key global-map [(control x) ?f] 'ido-choose-from-recentf)
 (define-key global-map [(control x) (control p)] 'find-file-at-point)
 
+;;; Dired buffer
+(define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)
+
 ;;; ------------------------------------------------------------
 ;;;  Buffer Operations 
 ;;; ------------------------------------------------------------
@@ -35,12 +38,12 @@
 
 ;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
 ;;; C-z ctrl-z-map
-;; Make the prefix key `C-z' for my personal keymap.
-;; On qwerty-keyboards `C-z' is one of the most accessible keys
-;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
-;; for mode-specific commands (both user-defined and standard Emacs extensions).
-;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
-;; is reassigned here to double key sequence `C-z C-z'.
+;;; Make the prefix key `C-z' for my personal keymap.
+;;; On qwerty-keyboards `C-z' is one of the most accessible keys
+;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
+;;; for mode-specific commands (both user-defined and standard Emacs extensions).
+;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
+;;; is reassigned here to double key sequence `C-z C-z'.
 (defvar ctrl-z-map
   (let ((map (make-sparse-keymap))
         (c-z (global-key-binding [(control ?z)])))
@@ -61,7 +64,7 @@
 ;;; ------------------------------------------------------------
 ;;;  Windows Operations
 ;;; ------------------------------------------------------------
-;; Windmove
+;;; Windmove
 (windmove-default-keybindings 'super) ;; ⌘+direction
 ;;; Moving in a window
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
@@ -122,27 +125,27 @@
 ;;; ------------------------------------------------------------
 ;;; Kebindings for Extensions / Non standard Emacs Functinoality
 ;;; ------------------------------------------------------------
- 
-;; Added global shortcut to run Magit
+
+;;; Added global shortcut to run Magit
 (when (fboundp 'magit-status)
   (define-key global-map [(control x) ?g] 'magit-status))
 
-;; we use kill-ring-search through ELPA, hence check if it is
-;; available first
+;;; we use kill-ring-search through ELPA, hence check if it is
+;;; available first
 (when (fboundp 'kill-ring-search)
   (define-key global-map [(control meta ?y)] 'kill-ring-search))
 
-;; browse kill ring is nice too and also might be unavailable
+;;; browse kill ring is nice too and also might be unavailable
 (when (fboundp 'browse-kill-ring)
   (browse-kill-ring-default-keybindings) ; advise M-y
   (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
 
-;; Smex is used in minibuffer M-x
+;;; Smex is used in minibuffer M-x
 (when (fboundp 'smex-initialize)
   (define-key global-map [(meta ?x)] 'smex)
   (define-key global-map [(meta shift ?x)] 'smex-major-mode-commands))
 
-;; highlight-symbol mode is available
+;;; highlight-symbol mode is available
 (when (fboundp 'highlight-symbol-at-point)
   (define-key ctrl-z-map [(l)] 'highlight-symbol-at-point)
   (define-key ctrl-z-map [(j)] 'highlight-symbol-prev)
@@ -154,4 +157,4 @@
   ;; due to the conflict with Yasnippet
   (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto))
 
-(provide 'init-bindings)
+(provide 'custom-bindings)

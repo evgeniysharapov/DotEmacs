@@ -1,9 +1,8 @@
-;;  
-;;  Utility functions and macros
-;;
-;;  Utility functions. Too big and clumsy to put in settings
-;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
-;;
+;;;
+;;;  Utility functions and macros
+;;;
+;;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
+;;;
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
@@ -111,5 +110,5 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
-(provide 'init-utils)
+(provide 'custom-utils)
 

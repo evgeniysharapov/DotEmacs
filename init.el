@@ -1,23 +1,37 @@
-;;  
-;;  New Emacs Configuration
-;;  Startup
-;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
-;;
+;;;
+;;;  New Emacs Configuration
+;;;  Startup
+;;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
+;;;
 
-;; debug if there's an error dusinr loading
+;;; debug if there's an error during loading
 (let ((debug-on-error t))
+(setq message-log-max 10000)
+(defconst *emacs-start-time* (current-time))
 
-;; We set up load paths first 
-(defvar *dotfiles-dir* (file-name-directory (or (buffer-file-name) load-file-name)) "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
-(add-to-list 'load-path *dotfiles-dir*)
-(defvar *site-lisp* (file-name-as-directory (concat *dotfiles-dir* "site-lisp")) "Directory for Emacs Extensions files")
-(defvar *autoload-file* (concat *dotfiles-dir* "loaddefs.el") "This is file containing all autoloads extracted from Emacs lisp files")
-
-;; add recursively all subdirectories of *site-lisp* without
-;; cluttering function space
+;;; it is hard to do anything without common-lisp
 (eval-when-compile
    (require 'cl))
-(flet ((add-directory-to-path (dir)
+
+;;; ---------------------------------------------------------------------------
+;;; Load path configuration
+;;; ---------------------------------------------------------------------------
+(defconst *dotfiles-dir*
+  (file-name-directory (or (buffer-file-name) load-file-name))
+  "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
+(defconst *site-lisp*
+  (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
+  "Directory for Emacs Extensions files")
+(defconst *autoload-file*
+  (concat *dotfiles-dir* "loaddefs.el")
+  "This is file containing all autoloads extracted from Emacs lisp files")
+
+;;; adding dot files to the load path
+(add-to-list 'load-path *dotfiles-dir*)
+
+;;; add recursively all subdirectories of *site-lisp*
+;;; using temporary recursive function so not to clutter function space
+(cl-labels ((add-directory-to-path (dir)
                               (add-to-list 'load-path dir)
                               (dolist (entry (directory-files-and-attributes dir))
                                 (if (and (cadr entry) ; t for directory
@@ -27,28 +41,32 @@
                                       (add-directory-to-path new-directory))))))
   (add-directory-to-path *site-lisp*))
 
-;; Everyday functionality using REQUIRE
+;;; Everyday functionality using REQUIRE
 (mapc #'require '(uniquify saveplace))
 
-;; loading autoloads
+;;; loading autoloads
 (load *autoload-file* 'noerror)
 
-;; load my customization 
-(require 'init-exts)
-(require 'init-utils)
-(require 'init-general)
-(require 'init-edit-modes)
-(require 'init-prog)
-(require 'init-bindings)
+;;; load my customization
+(require 'custom-exts)
+(require 'custom-utils)
+(require 'custom-general)
+(require 'custom-modes)
+(require 'custom-bindings)
 
-;; start server 
+;;; start server
 (server-start)
 
-;; Custom variables and faces 
-(setq custom-file   (concat *dotfiles-dir* "custom.el"))
+;;; Custom variables and faces
+(setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
 
-;; loading customization settings specific for a system 
-(setq system-specific-config (concat *dotfiles-dir* system-name ".el"))
-(if (file-exists-p system-specific-config) (load system-specific-config))
+;; loading customization settings specific for a system
+(let ((system-specific-config (concat *dotfiles-dir* system-name ".el")))
+  (if (file-exists-p system-specific-config)
+      (load system-specific-config)))
+
+;;; How long did it take to load
+(let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
+  (message "Loading...done (%.3fs)" elapsed))
 )

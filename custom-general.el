@@ -194,4 +194,4 @@
   (set-face-attribute 'default nil :family "Consolas" :height 100))
 
 
-(provide 'init-general)
+(provide 'custom-general)
