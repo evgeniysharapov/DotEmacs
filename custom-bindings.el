@@ -54,7 +54,9 @@
 (define-key global-map [(control x) (control p)] 'find-file-at-point)
 
 ;;; Dired buffer
-(define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)
+(add-hook 'dired-mode-hook
+          '(lambda ()
+              (define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)))
 
 ;;; ------------------------------------------------------------
 ;;;  Buffer Operations 
