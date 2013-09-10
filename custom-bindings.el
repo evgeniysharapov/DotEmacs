@@ -45,13 +45,19 @@
 (define-key global-map [(control x) ?x] 'eval-print-last-sexp)
 
 ;;; ------------------------------------------------------------
-;;;  File Operations 
+;;;  File Operations
+;;;  C-x C-f is bound to ido-find-file
+;;;
+;;;  C-x f <letter> are different file commands
 ;;; ------------------------------------------------------------
-(define-key global-map [(control x) (shift ?f)]      'recentf-open-most-recent-file)
-(define-key global-map [(control x) (meta ?f)] 'ido-find-file-other-window)
-(define-key global-map [(control x) (control meta ?f)] 'find-file-in-project)
-(define-key global-map [(control x) ?f] 'ido-choose-from-recentf)
-(define-key global-map [(control x) (control p)] 'find-file-at-point)
+(defvar ctrl-x-f-map)
+(define-prefix-command 'ctrl-x-f-map)
+(define-key global-map [(control x) ?f] 'ctrl-x-f-map)
+(define-key ctrl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
+(define-key ctrl-x-f-map [?o] 'ido-find-file-other-window)
+(define-key ctrl-x-f-map [?f] 'find-file-in-project)
+(define-key ctrl-x-f-map [?r] 'ido-choose-from-recentf)
+(define-key ctrl-x-f-map [(return)] 'find-file-at-point)
 
 ;;; Dired buffer
 (add-hook 'dired-mode-hook
