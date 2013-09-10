@@ -68,8 +68,13 @@
 ;;;  Buffer Operations 
 ;;; ------------------------------------------------------------
 (define-key global-map [(control x) (control b)] 'ibuffer)
-(define-key global-map [f11] 'previous-buffer)
-(define-key global-map [f12] 'next-buffer)
+
+;;; more direct approach
+(define-key global-map [f12] 'kill-this-buffer)
+;;; other useful combos:
+;;; `C-x 4 0' - kill-buffer-and-window (works with current buffer
+;;; only)
+;;; `C-x 4 b' - ido open buffer other window
 
 ;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
 ;;; C-z ctrl-z-map
