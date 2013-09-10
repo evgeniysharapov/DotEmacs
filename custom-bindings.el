@@ -29,15 +29,44 @@
 ;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
 ;;;   M- ?#
 
+;;; ----------------------------------------------------------------------
+;;; Set keymaps
+;;; ----------------------------------------------------------------------
+(defvar ctrl-x-f-map)
+(define-prefix-command 'ctrl-x-f-map)
+(define-key global-map [(control x) ?f] 'ctrl-x-f-map)
+;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+;;; C-z ctrl-z-map
+;;; Make the prefix key `C-z' for my personal keymap.
+;;; On qwerty-keyboards `C-z' is one of the most accessible keys
+;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
+;;; for mode-specific commands (both user-defined and standard Emacs extensions).
+;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
+;;; is reassigned here to double key sequence `C-z C-z'.
+(defvar ctrl-z-map
+  (let ((map (make-sparse-keymap))
+        (c-z (global-key-binding [(control ?z)])))
+    (global-unset-key [(control ?z)])
+    (define-key global-map [(control ?z)] map)
+    (define-key map [(control ?z)] c-z)
+    map))
+;;; almost always hit suspend instead of repeat command
+;;; so not repeat is moth C-x z and C-x C-z
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
 
 
+;;; ----------------------------------------------------------------------
+;;; Miscellaneous keybindings
+;;; ----------------------------------------------------------------------
 ;;; Turn on the menu bar for exploring new modes
 (define-key global-map [f1] 'menu-bar-mode)
 (define-key global-map [(control f1)] 'imenu-add-menubar-index)
 
 ;;; We are trying to make keys working in both Windows and Mac OS X
 ;;; To be able to M-x without meta
-(define-key global-map (kbd "C-x C-m") 'execute-extended-command)
+(define-key global-map [(control x) (control ?m)] 'execute-extended-command)
 
 ;;; apropos seems to be more useful than apropos-command
 (define-key global-map [(control h) ?a] 'apropos)
@@ -50,9 +79,6 @@
 ;;;
 ;;;  C-x f <letter> are different file commands
 ;;; ------------------------------------------------------------
-(defvar ctrl-x-f-map)
-(define-prefix-command 'ctrl-x-f-map)
-(define-key global-map [(control x) ?f] 'ctrl-x-f-map)
 (define-key ctrl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
 (define-key ctrl-x-f-map [?o] 'ido-find-file-other-window)
 (define-key ctrl-x-f-map [?f] 'find-file-in-project)
@@ -75,27 +101,6 @@
 ;;; `C-x 4 0' - kill-buffer-and-window (works with current buffer
 ;;; only)
 ;;; `C-x 4 b' - ido open buffer other window
-
-;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-;;; C-z ctrl-z-map
-;;; Make the prefix key `C-z' for my personal keymap.
-;;; On qwerty-keyboards `C-z' is one of the most accessible keys
-;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
-;;; for mode-specific commands (both user-defined and standard Emacs extensions).
-;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
-;;; is reassigned here to double key sequence `C-z C-z'.
-(defvar ctrl-z-map
-  (let ((map (make-sparse-keymap))
-        (c-z (global-key-binding [(control ?z)])))
-    (global-unset-key [(control ?z)])
-    (define-key global-map [(control ?z)] map)
-    (define-key map [(control ?z)] c-z)
-    map))
-;;; almost always hit suspend instead of repeat command
-(let ((c-x-z (global-key-binding [(control x) ?z])))
-  (global-unset-key [(control x) (control ?z)])
-  (define-key ctl-x-map [(control ?z)] c-x-z))
-
 
 ;;; Buffer operations in C-z map
 (define-key ctrl-z-map [?b ?y] 'bury-buffer)
