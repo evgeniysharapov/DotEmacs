@@ -110,5 +110,28 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
+;;; This depends on the thingatpt and thingatpt+
+(defun ffy-tap-number-change (&optional num)
+  "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
+  (interactive "p")
+  (save-excursion
+    (let ((n (tap-number-at-point-decimal))
+          (bounds (tap-bounds-of-number-at-point)))
+      (if (and n bounds)
+          (progn
+            (delete-region (car bounds) (cdr bounds))
+            (insert (number-to-string (+ n (or num 1)))))))))
+
+(defun ffy-tap-number-decrease (&optional num)
+  "Decreases number at the point by `num' or 1 if argument is not given"
+  (interactive "p")
+  (ffy-tap-number-change (- (or num 1))))
+
+(defun ffy-tap-number-increase (&optional num)
+  "Increases number at the point by `num' or 1 if argument is not given"
+  (interactive "p")
+  (ffy-tap-number-change (or num 1)))
+
+
 (provide 'custom-utils)
 

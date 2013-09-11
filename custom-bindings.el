@@ -171,6 +171,11 @@
                       (push-mark (point) t nil)
                       (message "Position %s pushed to the ring" (point)))))
 
+(eval-after-load "thingatpt"
+  '(progn
+     (define-key global-map [(control ?-)] 'ffy-tap-number-decrease)
+     (define-key global-map [(control ?+)] 'ffy-tap-number-increase)))
+
 ;;; ------------------------------------------------------------
 ;;;           Outline mode
 ;;; ------------------------------------------------------------

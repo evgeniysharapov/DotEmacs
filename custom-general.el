@@ -176,6 +176,10 @@
 (eval-after-load "bookmark"
   '(require 'bookmark+ nil t))
 
+;;; Add ThingAtPoint+
+(eval-after-load "thingatpt"
+  '(when (require 'thingatpt+)
+     (tap-redefine-std-fns)))
 ;;
 ;;  Specific settings for different OS
 ;;  point being that I have several computers running the same OS
