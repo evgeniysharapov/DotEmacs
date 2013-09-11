@@ -135,7 +135,16 @@
 (define-key global-map [(control shift ?r)] 'search-backward)
 (define-key global-map [(control shift ?s)] 'search-forward)
 
+;;; M-z is zap-to-char now
+(define-key global-map [(control meta ?z)]
+    (lambda (char)
+    (interactive "cZap to char backwards: ")
+    (zap-to-char -1 char)))
 (define-key global-map [(meta shift ?z)] 'zap-up-to-char)
+(define-key global-map [(control meta shift ?z)]
+  (lambda (char)
+    (interactive "cZap up to char backwards: ")
+    (zap-up-to-char -1 char)))
 
 (defun ffy-bol-or-back-to-indent ()
   "In addition to having two different mappings for (move-beginning-of-line ARG) and (back-to-indentation) we will have a function that goes to BOL if we are on the indent position and to the indent if we are at the BOL"
