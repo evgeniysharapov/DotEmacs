@@ -36,10 +36,10 @@
 ;;     return
 ;;; and put windmove operations onto some very useles key chords
 ;;; The only problem is describe-key won't tell us about Win-Arrow
-(define-key ctrl-z-map [(control ?w) (control left)] 'windmove-left)
-(define-key ctrl-z-map [(control ?w) (control right)] 'windmove-right)
-(define-key ctrl-z-map [(control ?w) (control up)] 'windmove-up)
-(define-key ctrl-z-map [(control ?w) (control down)] 'windmove-down)
+(define-key ctl-z-map [(control ?w) (control left)] 'windmove-left)
+(define-key ctl-z-map [(control ?w) (control right)] 'windmove-right)
+(define-key ctl-z-map [(control ?w) (control up)] 'windmove-up)
+(define-key ctl-z-map [(control ?w) (control down)] 'windmove-down)
 
 (eval-after-load "ispell"
   '(progn

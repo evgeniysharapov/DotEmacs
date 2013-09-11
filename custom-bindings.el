@@ -32,18 +32,18 @@
 ;;; ----------------------------------------------------------------------
 ;;; Set keymaps
 ;;; ----------------------------------------------------------------------
-(defvar ctrl-x-f-map)
-(define-prefix-command 'ctrl-x-f-map)
-(define-key global-map [(control x) ?f] 'ctrl-x-f-map)
+(defvar ctl-x-f-map)
+(define-prefix-command 'ctl-x-f-map)
+(define-key global-map [(control x) ?f] 'ctl-x-f-map)
 ;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-;;; C-z ctrl-z-map
+;;; C-z ctl-z-map
 ;;; Make the prefix key `C-z' for my personal keymap.
 ;;; On qwerty-keyboards `C-z' is one of the most accessible keys
 ;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
 ;;; for mode-specific commands (both user-defined and standard Emacs extensions).
 ;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
 ;;; is reassigned here to double key sequence `C-z C-z'.
-(defvar ctrl-z-map
+(defvar ctl-z-map
   (let ((map (make-sparse-keymap))
         (c-z (global-key-binding [(control ?z)])))
     (global-unset-key [(control ?z)])
@@ -79,11 +79,11 @@
 ;;;
 ;;;  C-x f <letter> are different file commands
 ;;; ------------------------------------------------------------
-(define-key ctrl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
-(define-key ctrl-x-f-map [?o] 'ido-find-file-other-window)
-(define-key ctrl-x-f-map [?f] 'find-file-in-project)
-(define-key ctrl-x-f-map [?r] 'ido-choose-from-recentf)
-(define-key ctrl-x-f-map [(return)] 'find-file-at-point)
+(define-key ctl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
+(define-key ctl-x-f-map [?o] 'ido-find-file-other-window)
+(define-key ctl-x-f-map [?f] 'find-file-in-project)
+(define-key ctl-x-f-map [?r] 'ido-choose-from-recentf)
+(define-key ctl-x-f-map [(return)] 'find-file-at-point)
 
 ;;; Dired buffer
 (add-hook 'dired-mode-hook
@@ -103,8 +103,8 @@
 ;;; `C-x 4 b' - ido open buffer other window
 
 ;;; Buffer operations in C-z map
-(define-key ctrl-z-map [?b ?y] 'bury-buffer)
-(define-key ctrl-z-map [?b ?r] 'revert-buffer)
+(define-key ctl-z-map [?b ?y] 'bury-buffer)
+(define-key ctl-z-map [?b ?r] 'revert-buffer)
 
 ;;; ------------------------------------------------------------
 ;;;  Windows Operations
@@ -201,10 +201,10 @@
 
 ;;; highlight-symbol mode is available
 (when (fboundp 'highlight-symbol-at-point)
-  (define-key ctrl-z-map [(l)] 'highlight-symbol-at-point)
-  (define-key ctrl-z-map [(j)] 'highlight-symbol-prev)
-  (define-key ctrl-z-map [(k)] 'highlight-symbol-next)
-  (define-key ctrl-z-map [(@)] 'highlight-symbol-query-replace))
+  (define-key ctl-z-map [(l)] 'highlight-symbol-at-point)
+  (define-key ctl-z-map [(j)] 'highlight-symbol-prev)
+  (define-key ctl-z-map [(k)] 'highlight-symbol-next)
+  (define-key ctl-z-map [(@)] 'highlight-symbol-query-replace))
 
 ;;; org-mode bindings
 (when (fboundp 'org-mode)
