@@ -9,7 +9,8 @@
  '(column-number-mode t)
  '(compilation-scroll-output (quote first-error))
  '(custom-buffer-done-kill t)
- '(custom-safe-themes (quote ("7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" "d14db41612953d22506af16ef7a23c4d112150e5" default)))
+ '(custom-safe-themes (quote ("405fda54905200f202dd2e6ccbf94c1b7cc1312671894bc8eca7e6ec9e8a41a2" "f4b7b67590ade2debce906caf4093d5b3aa2b4a365e46fbfba9965c470ed6d6c" "f6ad6c31eabd3d107621127fa55d9f053e1bc59efdc95febfe8b74e592ac63e9" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "2b2fff94a0e7e4f46d46b6cb072d43005a84460f6f812c5e63e0ec9e23b36ba0" "030bed79e98026124afd4ef8038ba7fe064314baf18b58759a5c92b91ec872fb" "e9f642ee0dbd5638e40390b8b8eded9743f1426ad1390e7b2e5d3fa04efa2969" "9bc6cf0c6a6c4b06b929e8cd9952478fa0924a4c727dacbc80c3949fc0734fb9" "7d833883f82f10855ae65ca1e5386916971d16cfcad3c4c3cc358ae37538cd5e" "cc0e791b1402636808924566a218e7d239f3c3be4cff3f3a9cf699130723957d" "5de500cbca775a5328efc17598c42e96ee475b0f92b1da84a6596570cc7402c4" "a284400e4b6d16eb5dd004c18dbe9557312f8cc9a13aa48d7cd5079f5147f8f8" "058c8fecde91b97c6bcc4f23159d09e3c116886fce505bdcf45b71bd68d26b0e" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "028a865f20dc76715d49656bec1965e1c2fff017fefedfd0c405fc7905e1e1ba" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" "d14db41612953d22506af16ef7a23c4d112150e5" default)))
+ '(custom-theme-directory "~/.emacs.d/site-lisp/themes")
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(desktop-globals-to-save (quote (desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring regexp-history register-alist file-name-history extended-command-history grep-history ido-last-directory-list minibuffer-history query-replace-history shell-command-history)))
@@ -73,8 +74,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(diff-added ((t (:inherit diff-changed :foreground "DarkGreen"))))
- '(diff-removed ((t (:inherit diff-changed :foreground "firebrick2"))))
+ '(diff-added ((t (:inherit diff-changed :foreground "DarkGreen"))) t)
+ '(diff-removed ((t (:inherit diff-changed :foreground "firebrick2"))) t)
  '(font-lock-comment-face ((t (:foreground "Firebrick" :slant oblique))))
  '(org-level-4 ((t (:inherit outline-4 :slant normal))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dim gray"))))
