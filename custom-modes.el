@@ -196,7 +196,8 @@ by using nxml's indentation rules."
 ;;;                        Auto-Complete
 ;;; ------------------------------------------------------------
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories (concat *dotfiles-dir* "ac-dict"))
+(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict"))
+(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
 (ac-config-default)
 (setq ac-dwim t
       ac-auto-start t)

@@ -51,9 +51,14 @@
 ;;        Files Settings and Operations
 ;; --------------------------------------------------
 ;; Backups and saves
-(setq save-place-file (concat *dotfiles-dir* "places")
-      backup-directory-alist `(("." . ,(expand-file-name (concat *dotfiles-dir* "backups")))))
-
+(setq save-place-file (concat *data-dir* "places")
+      backup-directory-alist `(("." . ,*backup-dir*))
+      smex-save-file (concat *data-dir* ".smex-items")
+      recentf-save-file (concat *data-dir* ".recentf")
+      ido-save-directory-list-file (concat *data-dir* ".ido.last")
+      bookmark-default-file (concat *data-dir* "bookmarks")
+      desktop-dirname *data-dir*
+      desktop-base-file-name ".emacs.desktop")
 
 ;; --------------------------------------------------
 ;;                    Byte Compilation

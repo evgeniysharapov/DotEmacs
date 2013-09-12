@@ -1,6 +1,6 @@
 history
 loaddefs.el*
-backups/*
+data/backups/*
 auto-save-list
 *elc
 places
@@ -15,12 +15,15 @@ tramp
 /server/server
 site-lisp/elpa/**/*
 ede-projects.el
-/bookmarks
+data/bookmarks
 /.org-id-locations
 site-lisp/elpa/*
 url
 eshell
 elpa/*
-ac-comphist.dat
-/.emacs.desktop
-/.emacs.desktop.lock
+data/ac-comphist.dat
+data/.emacs.desktop
+data/.emacs.desktop.lock
+data/.recentf
+data/.ido.last
+data/.smex-items

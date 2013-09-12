@@ -14,7 +14,7 @@
    (require 'cl))
 
 ;;; ---------------------------------------------------------------------------
-;;; Load path configuration
+;;; Paths configuration
 ;;; ---------------------------------------------------------------------------
 (defconst *dotfiles-dir*
   (file-name-directory (or (buffer-file-name) load-file-name))
@@ -22,6 +22,15 @@
 (defconst *site-lisp*
   (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
   "Directory for Emacs Extensions files")
+(defconst *elpa-dir*
+  (file-name-as-directory (concat *dotfiles-dir* "elpa"))
+  "Directory for ELPA packages")
+(defconst *data-dir*
+  (file-name-as-directory (concat *dotfiles-dir* "data"))
+  "Directory for miscellaneous data, s.a. backups, histories and caches")
+(defconst *backup-dir*
+  (file-name-as-directory (concat *data-dir* "backups"))
+  "Directory for backups")
 (defconst *autoload-file*
   (concat *dotfiles-dir* "loaddefs.el")
   "This is file containing all autoloads extracted from Emacs lisp files")
