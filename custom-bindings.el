@@ -176,6 +176,11 @@
      (define-key global-map [(control ?-)] 'ffy-tap-number-decrease)
      (define-key global-map [(control ?+)] 'ffy-tap-number-increase)))
 
+;;; there's default M-^ `delete-indentation' that is an alias to join-line
+(define-key ctl-z-map [(?j)] 'join-line)
+(define-key ctl-z-map [(?J)] (lambda () "joins next line to this one"
+                               (interactive)
+                               (join-line 1)))
 ;;; ------------------------------------------------------------
 ;;;           Outline mode
 ;;; ------------------------------------------------------------
@@ -206,9 +211,9 @@
 
 ;;; highlight-symbol mode is available
 (when (fboundp 'highlight-symbol-at-point)
-  (define-key ctl-z-map [(l)] 'highlight-symbol-at-point)
-  (define-key ctl-z-map [(j)] 'highlight-symbol-prev)
-  (define-key ctl-z-map [(k)] 'highlight-symbol-next)
+  (define-key ctl-z-map [(control return)] 'highlight-symbol-at-point)
+  (define-key ctl-z-map [(control up)] 'highlight-symbol-prev)
+  (define-key ctl-z-map [(control down)] 'highlight-symbol-next)
   (define-key ctl-z-map [(@)] 'highlight-symbol-query-replace))
 
 ;;; org-mode bindings
