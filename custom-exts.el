@@ -92,6 +92,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'rainbow-mode)
   (require-package 'rainbow-delimiters)
   (require-package 'diminish)
+  (require-package 'powerline)
   ;; lispish modes
   (require-package 'paredit)
   (require-package 'elisp-slime-nav)

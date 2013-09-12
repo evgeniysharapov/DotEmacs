@@ -43,6 +43,10 @@
                (set-face-attribute 'default nil :family "Menlo" :height 140)))))
 
 
+;;; Configure powerline if it is available
+(when (fboundp 'powerline-default-theme)
+  (powerline-default-theme))
+
 ;; --------------------------------------------------
 ;;        Files Settings and Operations
 ;; --------------------------------------------------
