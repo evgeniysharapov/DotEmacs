@@ -24,13 +24,24 @@
 
 (display-time)
 
-
 ;;; Hide some modes from the mode-line
 (when (fboundp 'diminish)
   (eval-after-load 'eldoc
     '(diminish 'eldoc-mode))
   (eval-after-load 'undo-tree
     '(diminish 'undo-tree-mode)))
+
+(add-hook 'after-init-hook
+          (lambda ()
+            "Sets type font properties"
+            (on-win32
+             ;; set font for the Windows
+             (set-face-attribute 'default nil :family "Consolas" :height 100))
+            (on-mac
+             ;; set font for Macs
+             (when (window-system)
+               (set-face-attribute 'default nil :family "Menlo" :height 140)))))
+
 
 ;; --------------------------------------------------
 ;;        Files Settings and Operations
@@ -194,8 +205,7 @@
   ;; restore original size of the Emacs frame
   (global-set-key [(control shift f11)]
                   (make-interactive w32-send-sys-command #xf120 nil))
-  ;; set font for the Windows
-  (set-face-attribute 'default nil :family "Consolas" :height 100))
+  )
 
 
 (provide 'custom-general)

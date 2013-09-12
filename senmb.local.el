@@ -8,11 +8,8 @@
 ;;
 ;; Set Frame Size in a Window mode 
 ;;
-;; TODO: justify for the face font size 
-(if (window-system)
-    (progn
-      (set-frame-size (selected-frame) 125 40)
-      (set-face-attribute 'default nil :family "Menlo" :height 140)))
+(when (window-system)
+  (set-frame-size (selected-frame) 125 40))
 
 
 ;;; Spellchecker setup
