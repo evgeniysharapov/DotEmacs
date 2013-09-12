@@ -52,13 +52,17 @@
 ;; --------------------------------------------------
 ;; Backups and saves
 (setq save-place-file (concat *data-dir* "places")
-      backup-directory-alist `(("." . ,*backup-dir*))
+      backup-directory-alist `((".*" . ,*backup-dir*))
+      savehist-file (concat *data-dir* "history")
       smex-save-file (concat *data-dir* ".smex-items")
       recentf-save-file (concat *data-dir* ".recentf")
       ido-save-directory-list-file (concat *data-dir* ".ido.last")
       bookmark-default-file (concat *data-dir* "bookmarks")
       desktop-dirname *data-dir*
-      desktop-base-file-name ".emacs.desktop")
+      desktop-path (list desktop-dirname)
+      desktop-save t
+      auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
+
 
 ;; --------------------------------------------------
 ;;                    Byte Compilation
