@@ -36,6 +36,7 @@
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(kept-new-versions 3)
+ '(kill-do-not-save-duplicates t)
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(muse-html-charset-default "utf-8")
