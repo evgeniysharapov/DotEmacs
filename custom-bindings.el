@@ -219,6 +219,9 @@
 ;;; org-mode bindings
 (when (fboundp 'org-mode)
   ;; due to the conflict with Yasnippet
-  (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto))
+  (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto)
+  (define-key global-map [(control ?c) ?l] 'org-store-link)
+  (define-key global-map [(control ?c) ?a] 'org-agenda)
+  (define-key global-map [(control ?c) ?b] 'org-iswitchb))
 
 (provide 'custom-bindings)

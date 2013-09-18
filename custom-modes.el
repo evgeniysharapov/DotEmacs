@@ -81,7 +81,8 @@ by using nxml's indentation rules."
 (setq org-completion-use-ido t
       org-hide-leading-stars t
       org-return-follows-link t
-      org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-protocol org-special-blocks org-w3m org-bookmark org-elisp-symbol org-panel))
+      org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-protocol org-special-blocks org-w3m org-bookmark org-elisp-symbol org-panel)
+      org-empty-line-terminates-plain-lists t)
 
 
 ;(setq org-todo-keyword-faces
@@ -118,6 +119,8 @@ by using nxml's indentation rules."
       (set-face-underline-p 'org-link nil)
     (set-face-underline-p 'org-link t))
   (iimage-mode))
+
+
 
 ;;; Add Markdown mode specifics.
 ;;; make outline-mode navigation work for underline headers as well
