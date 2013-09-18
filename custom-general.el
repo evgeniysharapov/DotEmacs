@@ -36,7 +36,7 @@
             "Sets type font properties"
             (on-win32
              ;; set font for the Windows
-             (set-face-attribute 'default nil :family "Consolas" :height 100))
+             (set-face-attribute 'default nil :family "Consolas" :height 110))
             (on-mac
              ;; set font for Macs
              (when (window-system)
