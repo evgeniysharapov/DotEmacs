@@ -34,6 +34,7 @@
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(ispell-silently-savep t)
  '(kept-new-versions 3)
  '(kill-do-not-save-duplicates t)
  '(magit-diff-refine-hunk t)
