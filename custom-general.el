@@ -39,11 +39,11 @@
             "Sets type font properties"
             (on-win32
              ;; set font for the Windows
-             (set-face-attribute 'default nil :family "Consolas" :height 110))
+             (set-face-attribute 'default nil :family "Consolas" :height 100))
             (on-mac
              ;; set font for Macs
              (when (window-system)
-               (set-face-attribute 'default nil :family "Menlo" :height 140)))
+               (set-face-attribute 'default nil :family "Menlo" :height 110)))
             ;; (load-theme 'tomorrow-day t)
             ))
 
