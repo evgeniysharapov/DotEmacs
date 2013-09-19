@@ -4,6 +4,9 @@
 ;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;
 
+(autoload '-difference "dash")
+(autoload 's-lines "s")
+
 ;; --------------------------------------------------
 ;;           GUI/Look and Feel
 ;; --------------------------------------------------
@@ -125,6 +128,38 @@
 ;;; ------------------------------------------------------------
 ;;;  Spellcheck setup 
 ;;; ------------------------------------------------------------
+(defun find-hunspell-dictionary ()
+  "Searches for hunspell dictionaries using `hunspell -D' first and seeing if ther's
+any dictionary found. If not then try to check if dictionary exist in the same directory (case for Windows).
+
+On Mac OS X hunspell should search for dictionaries in at least /Library/Spelling. In fact, on Windows just drop dictionaries next to hunspell binary file.
+
+It returns either nil or path to the dictionary that could be used with `hunspell -d'. Put it in the `ispell-extra-args' variable.
+
+This function depends on 's and 'dash libraries."
+  (when (executable-find "hunspell")
+    ;; First, let's see if we can load any dicts by default
+    (let* ((hunspell-output (shell-command-to-string "hunspell -D"))
+           (hunspell-output-lines (remove-if #'(lambda (e) (equal e ""))
+                                             (s-lines hunspell-output)))
+           (loaded-dicts (member "LOADED DICTIONARY:"  hunspell-output-lines))
+           (available-dicts (-difference (member-if #'(lambda (e)(s-starts-with? "AVAILABLE DICTIONARIES" e)) hunspell-output-lines)
+                                         loaded-dicts)))
+      ;; If we have loaded-dicts we should be fine, otherwise try to
+      ;; search for dictionaries
+      (unless
+          (or (cdr loaded-dicts)
+              ;; Could be a message:
+              ;; Can't open affix or dictionary files for dictionary named
+              ;; "default".
+              (not (cdr available-dicts)))
+        ;; let's check if there's dictionary next to the binary
+        (let ((dictionary-path (concat
+                                (file-name-directory
+                                 (executable-find "hunspell")) "en_US")))
+          (when (file-exists-p (concat dictionary-path ".dic"))
+            dictionary-path))))))
+
 (eval-after-load "ispell"
   '(progn
     (when (executable-find "aspell")
@@ -132,8 +167,10 @@
             ispell-extra-args '("--sug-mode=ultra")))
 
     (when (executable-find "hunspell")
-      (setq ispell-program-name "hunspell"
-            ispell-extra-args '("-d" "/opt/local/share/hunspell/en_US" "-i" "utf-8")))))
+      (setq ispell-program-name "hunspell")
+      (let* ((dict-location (find-hunspell-dictionary)))
+        (when dict-location
+          (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
 ;; --------------------------------------------------
 ;;           Help and Info Functions
