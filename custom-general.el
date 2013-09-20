@@ -162,15 +162,18 @@ This function depends on 's and 'dash libraries."
 
 (eval-after-load "ispell"
   '(progn
-    (when (executable-find "aspell")
-      (setq ispell-program-name "aspell"
-            ispell-extra-args '("--sug-mode=ultra")))
-
-    (when (executable-find "hunspell")
-      (setq ispell-program-name "hunspell")
-      (let* ((dict-location (find-hunspell-dictionary)))
-        (when dict-location
-          (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
+     ;; Personal dictionary setup
+     (setq ispell-personal-dictionary (concat *data-dir* ".personal.dict"))
+     ;; Aspell Specific
+     (when (executable-find "aspell")
+       (setq ispell-program-name "aspell"
+             ispell-extra-args '("--sug-mode=ultra")))
+     ;; Hunspell Specific
+     (when (executable-find "hunspell")
+       (setq ispell-program-name "hunspell")
+       (let* ((dict-location (find-hunspell-dictionary)))
+         (when dict-location
+           (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
 ;; --------------------------------------------------
 ;;           Help and Info Functions
