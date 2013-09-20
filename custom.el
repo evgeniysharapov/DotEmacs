@@ -75,5 +75,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flyspell-duplicate ((t (:inherit warning :underline (:color foreground-color :style wave)))))
+ '(flyspell-incorrect ((t (:inherit error :underline (:color foreground-color :style wave)))))
  '(highlight ((t (:background "honeydew"))))
  '(trailing-whitespace ((t (:background "misty rose")))))
