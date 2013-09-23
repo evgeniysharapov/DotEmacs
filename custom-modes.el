@@ -44,29 +44,36 @@ by using nxml's indentation rules."
 (setq auto-mode-alist 
       (cons '("\\.\\(xml\\|xsl\\|rng\\|tal\\|xsd\\|sch\\|xslt\\|svg\\|rss\\)\\'" . nxml-mode) 
             (remove-if (lambda (x) (eq (cdr x) 'html-mode)) auto-mode-alist)))
-(setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
-;; another way to recognize XML files 
-(push '("<\\?xml" . nxml-mode) magic-mode-alist)
 
-(add-hook 'nxml-mode-hook '(lambda () (progn
-                                   ;; load hide show modes 
-                                   (local-set-key "\C-c/" 'nxml-finish-element)
-                                   (local-set-key [return] 'newline-and-indent)
-                                   ;;(auto-fill-mode)
-                                   (rng-validate-mode)
-                                   (unify-8859-on-decoding-mode)
-                                   (setq ispell-skip-html t)
-                                   (hs-minor-mode 1)
-                                   ;; controversial 
-                                   (make-variable-buffer-local 'ido-use-filename-at-point)
-                                   (setq ido-use-filename-at-point nil)
-                                   )))
+;; another way to recognize XML files 
+(setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
+;(push '("<\\?xml" . nxml-mode) magic-mode-alist)
+
+(defun ffy-customize-nxml-mode ()
+  "This function sets some variables and calls some functions that setup nXML mode."
+  ;; load hide show modes 
+  (local-set-key "\C-c/" 'nxml-finish-element)
+  (local-set-key [return] 'newline-and-indent)
+  ;;(auto-fill-mode)
+  (rng-validate-mode)
+  (unify-8859-on-decoding-mode)
+  (setq ispell-skip-html t)
+  (hs-minor-mode 1)
+  ;; controversial 
+  (make-variable-buffer-local 'ido-use-filename-at-point)
+  (setq ido-use-filename-at-point nil))
+
+(add-hook 'nxml-mode-hook 'ffy-customize-nxml-mode)
 
 (add-to-list 'hs-special-modes-alist
              '(nxml-mode
                "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
                ""
                nil))
+;;; ----------------------------------------------------------------------
+;;;  HTML and XHTML setup
+;;; ----------------------------------------------------------------------
+
 ;; ------------------------------------------------------------
 ;;                      Org Mode
 ;; ------------------------------------------------------------
