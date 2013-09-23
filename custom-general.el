@@ -113,10 +113,8 @@
                             (kill-buffer buffer))) *auto-close-buffers*))))
 
 ;;; enable useful commands
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-defun 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'widen 'disabled nil)
+(dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen))
+  (put command 'disabled nil))
 
 
 ;;; ------------------------------------------------------------
