@@ -161,7 +161,11 @@ This function depends on 's and 'dash libraries."
 (eval-after-load "ispell"
   '(progn
      ;; Personal dictionary setup
-     (setq ispell-personal-dictionary (concat *data-dir* ".personal.dict"))
+     ;; if file doesn't exist then create it
+     (setq ispell-personal-dictionary (let ((personal-dictionary-file (concat *data-dir* ".personal.dict")))
+                                        (unless (file-exists-p personal-dictionary-file)
+                                          (with-temp-file personal-dictionary-file t))
+                                        personal-dictionary-file))
      ;; Aspell Specific
      (when (executable-find "aspell")
        (setq ispell-program-name "aspell"
