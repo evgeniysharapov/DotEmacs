@@ -357,7 +357,11 @@ by using nxml's indentation rules."
 (add-hook 'scss-mode-hook 'flymake-sass-load)
 (add-hook 'haml-mode-hook 'flymake-haml-load)
 (add-hook 'coffee-mode-hook 'flymake-coffee-load)
-
+;;; -----------------------------------------------------------------
+;;;                       SCSS/SASS setup
+;;; -----------------------------------------------------------------
+(add-hook 'scss-mode-hook 'ffy-run-programming-hook)
+(add-hook 'sass-mode-hook 'ffy-run-programming-hook)
 ;;; -----------------------------------------------------------------
 ;;;                       Scala setup
 ;;; -----------------------------------------------------------------
