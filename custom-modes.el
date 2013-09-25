@@ -183,10 +183,14 @@ by using nxml's indentation rules."
 (defun turn-on-flymake ()
   (flymake-mode))
 
+(defun turn-on-electric-mode ()
+  (electric-pair-mode +1))
+
 (defun ffy-programming-keys ()
   "Sets some keys for the programming mode:
     RET - is newline-and-indent"
-  )
+  (local-set-key [return] 'newline-and-indent)
+  (local-set-key [(shift return)] 'open-line))
 
 (dolist   (it '(local-column-number-mode
                 local-comment-auto-fill
@@ -194,7 +198,8 @@ by using nxml's indentation rules."
                 pretty-greek
                 prog-mode-faces-add
                 turn-on-flyspell-prog-mode
-                turn-on-flymake))
+                turn-on-flymake
+                ffy-programming-keys))
   (if (fboundp it)
       (add-hook '*programming-hook* it)))
 
