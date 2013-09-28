@@ -43,9 +43,8 @@
             (on-mac
              ;; set font for Macs
              (when (window-system)
-               (set-face-attribute 'default nil :family "Menlo" :height 110)))
-            ;; (load-theme 'tomorrow-day t)
-            ))
+               (set-face-attribute 'default nil :family "Monaco" :height 140)
+               (load-theme 'tomorrow-night t)))))
 
 ;;; Configure powerline if it is available
 (when (fboundp 'powerline-default-theme)
