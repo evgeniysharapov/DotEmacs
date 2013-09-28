@@ -304,20 +304,24 @@ by using nxml's indentation rules."
 
 (add-hook 'nrepl-mode-hook 'subword-mode)
 (add-hook 'nrepl-mode-hook 'paredit-mode)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-;;; For Clojure we are also looking for project.clj file in the
-;;; project root
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            (progn
-              (require 'find-file-in-project)
-              (when (boundp 'ffip-project-file)
-                (set (make-local-variable 'ffip-project-file)
-                     (if (listp 'ffip-project-file)
-                         (cons "project.clj" ffip-project-file)
-                       (list "project.clj" ffip-project-file)))))))
+
+(eval-after-load "ac-nrepl"
+  '(progn (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+          (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+          (add-to-list 'ac-modes 'nrepl-mode)))
+
+(defun ffy-find-file-in-clojure-project ()
+  "For Clojure we are also looking for project.clj file in the project root"
+  (progn
+    (require 'find-file-in-project)
+    (when (boundp 'ffip-project-file)
+      (set (make-local-variable 'ffip-project-file)
+           (if (listp 'ffip-project-file)
+               (cons "project.clj" ffip-project-file)
+             (list "project.clj" ffip-project-file))))))
+
+(add-hook 'clojure-mode-hook 'ffy-find-file-in-clojure-project)
 
 ;;; -----------------------------------------------------------------
 ;;;                       Ruby/Rails setup
