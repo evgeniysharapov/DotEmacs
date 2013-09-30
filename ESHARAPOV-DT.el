@@ -56,3 +56,7 @@
             :link t
             :properties '("OpenAir" "Support")
             :inherit-props t))
+
+;;; Font properties on my work Windows machine
+(on-win32
+ (set-face-attribute 'default nil :family "Consolas" :height 100))

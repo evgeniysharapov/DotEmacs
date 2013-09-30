@@ -34,18 +34,6 @@
   (eval-after-load 'undo-tree
     '(diminish 'undo-tree-mode)))
 
-(add-hook 'after-init-hook
-          (lambda ()
-            "Sets type font properties"
-            (on-win32
-             ;; set font for the Windows
-             (set-face-attribute 'default nil :family "Consolas" :height 100))
-            (on-mac
-             ;; set font for Macs
-             (when (window-system)
-               (set-face-attribute 'default nil :family "Monaco" :height 140)
-               (load-theme 'tomorrow-night t)))))
-
 ;;; Configure powerline if it is available
 (when (fboundp 'powerline-default-theme)
   (powerline-default-theme))

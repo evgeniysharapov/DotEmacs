@@ -7,10 +7,12 @@
 
 ;;
 ;; Set Frame Size in a Window mode 
-;;
+;; and adjust font and theme
 (when (window-system)
-  (set-frame-size (selected-frame) 125 40))
-
+  (set-frame-size (selected-frame) 125 40)
+  (set-face-attribute 'default nil :family "Monaco" :height 130)
+  ;; on Mac emacs typefonts look better in dark
+  (load-theme 'base16-default t))
 
 ;;; Spellchecker setup
 (eval-after-load "ispell"

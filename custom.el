@@ -78,6 +78,6 @@
  '(flyspell-duplicate ((t (:inherit warning :underline (:color foreground-color :style wave)))))
  '(flyspell-incorrect ((t (:inherit error :underline (:color foreground-color :style wave)))))
  '(highlight ((t (:background "honeydew"))))
- '(magit-item-highlight ((t (:inherit hl-line))))
+ '(magit-item-highlight ((t (:inherit hl-line))) t)
  '(powerline-active1 ((t (:inherit mode-line :background "grey22" :foreground "ghost white"))))
- '(trailing-whitespace ((t (:background "misty rose")))))
+ '(trailing-whitespace ((t (:background "MistyRose2")))))
