@@ -1,12 +1,10 @@
-;;  
-;;  New Emacs Configuration
-;;  Setup for a Editing Text Modes (XML, Org, Text, etc.)
-;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
-;;
+;;;
+;;;  New Emacs Configuration
+;;;  Setup for a Editing Text Modes (XML, Org, Text, etc.)
+;;;  Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
+;;;
 
-;; ------------------------------------------------------------
-;;     XSL/XML setup.
-;; ------------------------------------------------------------
+;;;_ XSL/XML setup.
 (defun xml-pretty-print (begin end)
   "Makes current buffer with XML markup look prettier"
   (save-excursion
@@ -70,13 +68,11 @@ by using nxml's indentation rules."
                "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
                ""
                nil))
-;;; ----------------------------------------------------------------------
-;;;  HTML and XHTML setup
-;;; ----------------------------------------------------------------------
 
-;; ------------------------------------------------------------
-;;                      Org Mode
-;; ------------------------------------------------------------
+;;;_ HTML and XHTML setup
+
+;;;_ Org Mode
+
 ; '(org-agenda-include-diary t)
 ; '(org-clock-clocktable-default-properties (quote (:maxlevel 4 :scope file :step week :block thisweek :tend "")))
 ; '(org-empty-line-terminates-plain-lists t)
@@ -128,6 +124,8 @@ by using nxml's indentation rules."
   (iimage-mode))
 
 
+
+;;;_ Markdown
 
 ;;; Add Markdown mode specifics.
 ;;; make outline-mode navigation work for underline headers as well
