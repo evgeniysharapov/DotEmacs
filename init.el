@@ -52,15 +52,16 @@
                                            (add-directory-to-path new-directory))))))
   (add-directory-to-path *site-lisp*))
 
-;;;_ Loading lisp libraries and packages
+;;;_ Libraries and Packages
 
-;;;_. built-in Emacs libraries for everyday functionality
+;;;_. built-in Emacs libraries
+;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
 
-;;;_. loading autoloads if it's present
+;;;_. Autoloads file if it's present
 (load *autoload-file* 'noerror)
 
-;;;_. Load libraries using packages in ELPA
+;;;_. ELPA packages
 
 ;;;_ , Generating autoloads file from the installed packages
 (defun ffy-find-package-autoloads-file (package)
@@ -126,7 +127,7 @@ ARCHIVE is the string name of the package archive.")
     (when pkg-autoload
       (load pkg-autoload t))))
 
-;;;_ , Require desired packages from ELPA
+;;;_ , ELPA packages loaded
 (when (require 'package nil 'noerror)
   ;; all ELPA packages are located here
   (setq package-user-dir (concat *dotfiles-dir* "elpa"))
@@ -142,8 +143,7 @@ ARCHIVE is the string name of the package archive.")
 			   color-theme-sanityinc-tomorrow
 			   elisp-slime-nav
 			   findr))))))
-
-;;;_  . ELPA extensions repos 
+;;;_  . Sources for the ELPA repositories 
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
@@ -181,10 +181,8 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'bookmark+)
   (require-package 'ack-and-a-half)
   (require-package 'find-file-in-project)
-
 ;;;_  . Markup modes
   (require-package 'markdown-mode)
-
 ;;;_  . Ruby and Rails setup
   (require-package 'rinari)
   (require-package 'rspec-mode)
@@ -196,10 +194,8 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'flymake-haml)
   (require-package 'flymake-sass)
   (require-package 'flymake-coffee)
-
 ;;;_  . Scala
   (require-package 'scala-mode)
-
 ;;;_  . Haskell
   (require-package 'haskell-mode))
 
@@ -957,7 +953,7 @@ by using nxml's indentation rules."
 ;;;_ Customizing Bindings
 
 ;;; ----------------------------------------------------------------------
-;;;  Organization of key bindings :
+;;;_.  Organization of key bindings
 ;;;
 ;;; C-x primary map (some defaults)
 ;;; C-c secondary map (modes use it)
@@ -981,7 +977,7 @@ by using nxml's indentation rules."
 ;;;   M- ?#
 
 ;;; ----------------------------------------------------------------------
-;;; Set keymaps
+;;;_. Set keymaps
 ;;; ----------------------------------------------------------------------
 (defvar ctl-x-f-map)
 (define-prefix-command 'ctl-x-f-map)
@@ -1009,7 +1005,7 @@ by using nxml's indentation rules."
 
 
 ;;; ----------------------------------------------------------------------
-;;; Miscellaneous keybindings
+;;;_. Miscellaneous key-bindings
 ;;; ----------------------------------------------------------------------
 ;;; Turn on the menu bar for exploring new modes
 (define-key global-map [f1] 'menu-bar-mode)
@@ -1025,7 +1021,8 @@ by using nxml's indentation rules."
 (define-key global-map [(control x) ?x] 'eval-print-last-sexp)
 
 ;;; ------------------------------------------------------------
-;;;  File Operations
+;;;_. File Operations
+;;;
 ;;;  C-x C-f is bound to ido-find-file
 ;;;
 ;;;  C-x f <letter> are different file commands
@@ -1036,13 +1033,13 @@ by using nxml's indentation rules."
 (define-key ctl-x-f-map [?r] 'ido-choose-from-recentf)
 (define-key ctl-x-f-map [(return)] 'find-file-at-point)
 
-;;; Dired buffer
+;;;_ , Dired buffer
 (add-hook 'dired-mode-hook
           '(lambda ()
               (define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)))
 
 ;;; ------------------------------------------------------------
-;;;  Buffer Operations 
+;;;_. Buffer Operations
 ;;; ------------------------------------------------------------
 (define-key global-map [(control x) (control b)] 'ibuffer)
 
@@ -1058,25 +1055,24 @@ by using nxml's indentation rules."
 (define-key ctl-z-map [?b ?r] 'revert-buffer)
 
 ;;; ------------------------------------------------------------
-;;;  Windows Operations
+;;;_. Windows Operations
 ;;; ------------------------------------------------------------
-;;; Windmove
+;;;_ , Windmove
 (windmove-default-keybindings 'super) ;; ⌘+direction
-;;; Moving in a window
+;;;_ , Moving in a window
 (define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
 (define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
-;; Typical window operations but faster
+;;;_ , Typical window operations but faster
 (define-key global-map [(meta ?0)] 'delete-window)
 (define-key global-map [(meta ?1)] 'delete-other-windows)
 (define-key global-map [(meta ?2)] 'split-window-vertically)
 (define-key global-map [(meta ?3)] 'split-window-horizontally)
-
-;;; Windows configurations
+;;;_ , Windows configurations
 (define-key global-map [(control x) (super left)] 'winner-undo)
 (define-key global-map [(control x) (super right)] 'winner-redo)
 
 ;;; ------------------------------------------------------------
-;;;  Editing/Operations In Buffer
+;;;_. Editing/Operations In Buffer
 ;;; ------------------------------------------------------------
 ;;; Completion operations
 (define-key global-map [(meta /)] 'hippie-expand)
@@ -1133,12 +1129,12 @@ by using nxml's indentation rules."
                                (interactive)
                                (join-line 1)))
 ;;; ------------------------------------------------------------
-;;;           Outline mode
+;;;_. Outline mode
 ;;; ------------------------------------------------------------
 ;(define-key global-map [(meta ?o)] '...)
 
 ;;; ------------------------------------------------------------
-;;; Kebindings for Extensions / Non standard Emacs Functinoality
+;;;_. Key-bindings for Extensions / Non-standard Emacs Functionality
 ;;; ------------------------------------------------------------
 
 ;;; Added global shortcut to run Magit
@@ -1175,6 +1171,7 @@ by using nxml's indentation rules."
   (define-key global-map [(control ?c) ?a] 'org-agenda)
   (define-key global-map [(control ?c) ?b] 'org-iswitchb))
 
+
 ;;;_ Start Server
 (server-start)
 
@@ -1190,5 +1187,6 @@ by using nxml's indentation rules."
 ;;;_ How long did it take to load
 (let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
   (message "Loading Emacs...done (%.3fs)" elapsed))
+
 
 
