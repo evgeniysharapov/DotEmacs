@@ -200,6 +200,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'haskell-mode))
 
 ;;;_ Utility functions
+;;;_. eval-and-replace
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
@@ -209,7 +210,7 @@ ARCHIVE is the string name of the package archive.")
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
-
+;;;_. with-library
 (defmacro with-library (symbol &rest body) 
   "A typical use is: you want to load a
  library, and then bind some function from that library to a key. But
@@ -235,24 +236,26 @@ ARCHIVE is the string name of the package archive.")
      (error 
       (message (format "%s is not available." ',symbol))
       nil)))
-
+;;;_. on-win32
 (defmacro on-win32 (&rest body)
   "Leaves code that specifically targets win32 system"
   `(when (equal system-type 'windows-nt)
      ,@body))
 
+;;;_. on-mac
 (defmacro on-mac (&rest body)
   "Leaves code that specifically targets Mac OS X"
   `(when (equal system-type 'darwin)
      ,@body))
 
-
-(defmacro make-interactive (func &rest args) 
-  "Returns a symbol of an anonymous interactive function, suitable for binding to keys." 
-  `(lambda () 
-     (interactive) 
+;;;_. make-interactive
+(defmacro make-interactive (func &rest args)
+  "Returns a symbol of an anonymous interactive function, suitable for binding to keys."
+  `(lambda ()
+     (interactive)
      (,func ,@args)))
 
+;;;_. pretty-greek
 (defun pretty-greek () 
   (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon"
                  "phi" "chi" "psi" "omega"))) 
@@ -275,11 +278,13 @@ ARCHIVE is the string name of the package archive.")
                                    (match-end 2) ,greek-char)
                    nil)))))))))  
 
+;;;_. ido-choose-from-recentf
 (defun ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"
   (interactive)
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
+;;;_. ffy-display-prev-next-buffers
 (defun ffy-display-prev-next-buffers ()
   "Show two previous, current and two next buffer names in the echo area.
 Example:
@@ -306,6 +311,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
+;;;_. ffy-tap-number-change
 ;;; This depends on the thingatpt and thingatpt+
 (defun ffy-tap-number-change (&optional num)
   "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
@@ -318,23 +324,27 @@ From http://www.jurta.org/en/emacs/dotemacs"
             (delete-region (car bounds) (cdr bounds))
             (insert (number-to-string (+ n (or num 1)))))))))
 
+;;;_. ffy-tap-number-decrease
 (defun ffy-tap-number-decrease (&optional num)
   "Decreases number at the point by `num' or 1 if argument is not given"
   (interactive "p")
   (ffy-tap-number-change (- (or num 1))))
 
+;;;_. ffy-tap-number-increase
 (defun ffy-tap-number-increase (&optional num)
   "Increases number at the point by `num' or 1 if argument is not given"
   (interactive "p")
   (ffy-tap-number-change (or num 1)))
 
+;;;_. assocs
 (defun assocs (keylist list)
   "like `assoc' but KEYLIST is a list of keys. Returns a subset of alist LIST with keys from KEYLIST"
   (mapcar (lambda (k) (assoc k list)) keylist))
 
-
+;;;_. *frame-original-geometry*
 (defvar *frame-original-geometry* nil "Original width, height, left and top of the frame")
 
+;;;_. ffy-save-original-frame-parameters
 (defun ffy-save-original-frame-parameters ()
   "Writes original frame geometry parameters into a variable to be restored later."
   (setq *frame-original-geometry*
