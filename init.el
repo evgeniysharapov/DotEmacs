@@ -608,7 +608,7 @@ This function depends on 's and 'dash libraries."
 
 ;;;_ Customizing Modes
 
-;;;_, AllOut customizations
+;;;_. AllOut customizations
 (eval-after-load "allout"
   '(progn
      (setq
