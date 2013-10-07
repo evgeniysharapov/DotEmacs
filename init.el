@@ -174,8 +174,6 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'bookmark+)
   (require-package 'ack-and-a-half)
   (require-package 'find-file-in-project)
-;;;_  . Markup modes
-  (require-package 'markdown-mode)
 ;;;_  . Ruby and Rails setup
   (require-package 'rinari)
   (require-package 'rspec-mode)
@@ -748,7 +746,7 @@ by using nxml's indentation rules."
 
 
 ;;;_. Markdown
-
+(require-package 'markdown-mode)
 ;;; Add Markdown mode specifics.
 ;;; make outline-mode navigation work for underline headers as well
 (add-hook 'markdown-mode-hook
