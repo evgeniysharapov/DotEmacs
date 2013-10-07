@@ -174,17 +174,6 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'bookmark+)
   (require-package 'ack-and-a-half)
   (require-package 'find-file-in-project)
-;;;_  . Ruby and Rails setup
-  (require-package 'rinari)
-  (require-package 'rspec-mode)
-  (require-package 'ruby-compilation)
-  (require-package 'ruby-electric)
-  (require-package 'rvm)
-  (require-package 'yari)
-  (require-package 'flymake-ruby)
-  (require-package 'flymake-haml)
-  (require-package 'flymake-sass)
-  (require-package 'flymake-coffee)
 ;;;_  . Scala
   (require-package 'scala-mode)
 ;;;_  . Haskell
@@ -940,14 +929,18 @@ by using nxml's indentation rules."
 (add-hook 'clojure-mode-hook 'ffy-find-file-in-clojure-project)
 
 ;;;_. Ruby/Rails setup
+;;; Loading  Ruby and Rails relate ELPA packages
+(require-package 'rinari)
+(require-package 'rspec-mode)
+(require-package 'ruby-compilation)
+(require-package 'ruby-electric)
+(require-package 'rvm)
+(require-package 'yari)
+(require-package 'flymake-ruby)
 
 (dolist (pattern '("\\.rb$" "\\.rake$" "Rakefile$" "\\.gemspec$" "Gemfile$" "Capfile"))
   (add-to-list 'auto-mode-alist (cons pattern 'ruby-mode)))
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
-(add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
-(add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
 
 (global-rinari-mode 1)
 
@@ -972,12 +965,23 @@ by using nxml's indentation rules."
 (add-hook 'ruby-mode-hook 'ruby-electric-mode)
 (add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+;;;_. Coffee-Script
+;;; loading ELPA package
+(require-package 'flymake-coffee)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+
+;;;_. HAML/SCSS/SASS setup
+;;; loading ELPA packages
+(require-package 'flymake-haml)
+(require-package 'flymake-sass)
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
+(add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
 (add-hook 'sass-mode-hook 'flymake-sass-load)
 (add-hook 'scss-mode-hook 'flymake-sass-load)
 (add-hook 'haml-mode-hook 'flymake-haml-load)
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
-
-;;;_. SCSS/SASS setup
 (add-hook 'scss-mode-hook 'ffy-run-programming-hook)
 (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
 
