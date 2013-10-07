@@ -377,9 +377,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
 (autoload '-difference "dash")
 (autoload 's-lines "s")
 
-;; --------------------------------------------------
-;;           GUI/Look and Feel
-;; --------------------------------------------------
+;;;_. GUI/Look and Feel
 
 ;; Turn off bells and whistles
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -408,8 +406,8 @@ From http://www.jurta.org/en/emacs/dotemacs"
 (when (fboundp 'powerline-default-theme)
   (powerline-default-theme))
 
-;; --------------------------------------------------
-;;        Files Settings and Operations
+
+;;;_. Files Settings and Operations
 ;; --------------------------------------------------
 ;; Backups and saves
 (setq save-place-file (concat *data-dir* "places")
@@ -425,16 +423,15 @@ From http://www.jurta.org/en/emacs/dotemacs"
       auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
 
-;; --------------------------------------------------
-;;                    Byte Compilation
+
+;;;_. Byte Compilation
 ;; --------------------------------------------------
 (add-hook 'after-save-hook (lambda ()
                              (when (eq major-mode 'emacs-lisp-mode)
                                (emacs-lisp-byte-compile-and-load))))
 
 
-;; --------------------------------------------------
-;;                    Buffers
+;;;_. Buffers
 ;; --------------------------------------------------
 
 ;; Encoding and text related stuff
@@ -469,20 +466,18 @@ From http://www.jurta.org/en/emacs/dotemacs"
                         (if (buffer-live-p buffer)
                             (kill-buffer buffer))) *auto-close-buffers*))))
 
-;;; enable useful commands
+;;;_. Enable useful disabled commands
 (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen))
   (put command 'disabled nil))
 
-
-;;; ------------------------------------------------------------
-;;; Undo settings
+;;;_. Undo settings
 ;;; ------------------------------------------------------------
 (when (fboundp 'global-undo-tree-mode)
   (global-undo-tree-mode))
 
+;;;_. Spellcheck setup 
 ;;; ------------------------------------------------------------
-;;;  Spellcheck setup 
-;;; ------------------------------------------------------------
+;;;_ , find-hunspell-dictionary
 (defun find-hunspell-dictionary ()
   "Searches for hunspell dictionaries using `hunspell -D' first and seeing if ther's
 any dictionary found. If not then try to check if dictionary exist in the same directory (case for Windows).
@@ -515,6 +510,7 @@ This function depends on 's and 'dash libraries."
           (when (file-exists-p (concat dictionary-path ".dic"))
             dictionary-path))))))
 
+;;;_ , loading iSpell
 (eval-after-load "ispell"
   '(progn
      ;; Personal dictionary setup
@@ -534,15 +530,13 @@ This function depends on 's and 'dash libraries."
          (when dict-location
            (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
-;; --------------------------------------------------
-;;           Help and Info Functions
+;;;_. Help and Info Functions
 ;; --------------------------------------------------
 (require 'help-mode+ nil t)
 (require 'help+ nil t)
 (require 'help-fns+ nil t)
 
-;; --------------------------------------------------
-;;    Miscellaneous
+;;;_. Miscellaneous
 ;; --------------------------------------------------
 (defalias 'ack 'ack-and-a-half)
 (defalias 'ack-same 'ack-and-a-half-same)
@@ -571,11 +565,10 @@ This function depends on 's and 'dash libraries."
 
 (add-hook 'find-file-hook 'sm-try-smerge t)
 
-;;
-;; Adding Yasnippets directory
+;;;_. Adding Yasnippets directory
 ;;
 
-;;; ------------------------------------------------------------
+;;;_. Ido configuraiton
 ;;; Some IDO settings that have been taken out from the customization file.
 ;;; ------------------------------------------------------------
 (ido-mode t)
@@ -587,24 +580,23 @@ This function depends on 's and 'dash libraries."
 (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
 
 
-;;; Dired settings that proved useful
+;;;_. Dired settings that proved useful
 (setq dired-dwim-target t)              ; guess where to copy files
 
-;;; change some grep mode bindings
+;;;_. change some grep mode bindings
 (eval-after-load "grep"
   '(progn
      (setq wgrep-enable-key "e")
      (define-key grep-mode-map [(?e)] 'wgrep-change-to-wgrep-mode)))
 
-;;; try to load bookmark+
+;;;_. try to load bookmark+
 (eval-after-load "bookmark"
   '(require 'bookmark+ nil t))
 
-;;; Add ThingAtPoint+
+;;;_. Add ThingAtPoint+
 (eval-after-load "thingatpt"
   '(when (require 'thingatpt+)
      (tap-redefine-std-fns)))
-
 
 ;;;_ Customizing Modes
 
