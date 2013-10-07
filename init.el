@@ -328,6 +328,28 @@ From http://www.jurta.org/en/emacs/dotemacs"
   (interactive "p")
   (ffy-tap-number-change (or num 1)))
 
+(defun assocs (keylist list)
+  "like `assoc' but KEYLIST is a list of keys. Returns a subset of alist LIST with keys from KEYLIST"
+  (mapcar (lambda (k) (assoc k list)) keylist))
+
+
+(defvar *frame-original-geometry* nil "Original width, height, left and top of the frame")
+
+(defun ffy-save-original-frame-parameters ()
+  "Writes original frame geometry parameters into a variable to be restored later."
+  (setq *frame-original-geometry*
+    (assocs '(width height top left fullscreen) (frame-parameters))))
+
+(add-hook 'after-init-hook 'ffy-save-original-frame-parameters)
+
+(defun ffy-frame-maximize ()
+  (on-mac
+   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)))
+
+(defun ffy-frame-originalize ()
+  (mapc (lambda (param)
+          (set-frame-parameter (selected-frame) (car param) (cdr param))) *frame-original-geometry*))
+
 ;;;_ Customizing General Emacs Behavior
 (autoload '-difference "dash")
 (autoload 's-lines "s")
