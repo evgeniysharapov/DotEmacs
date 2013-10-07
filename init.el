@@ -4,7 +4,7 @@
 ;;;
 ;;; Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;;
-
+;;; ----------------------------------------------------------------------
 
 ;;;_ Initialization
 ;;; debug if there's an error during loading
@@ -149,35 +149,7 @@ ARCHIVE is the string name of the package archive.")
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
   (package-initialize)
   (unless package-archive-contents
-    (package-refresh-contents))
-  
-;;;_  . VCS
-  (require-package 'magit)
-;;;_  . Lisp-ish modes
-  (require-package 'paredit)
-  (require-package 'elisp-slime-nav)
-;;;_  . Clojure
-  (require-package 'clojure-mode)
-  (require-package 'clojure-test-mode)
-  (require-package 'nrepl)
-  (require-package 'ac-nrepl)
-;;;_  . Extend functionality of Emacs
-  (require-package 'ido-yes-or-no)
-  (require-package 'ido-ubiquitous)
-  (require-package 'browse-kill-ring)
-  (require-package 'kill-ring-search)
-  (require-package 'smex)
-  (require-package 'yasnippet)
-  (require-package 'undo-tree)
-  (require-package 'minimap)
-  (require-package 'bm)
-  (require-package 'bookmark+)
-  (require-package 'ack-and-a-half)
-  (require-package 'find-file-in-project)
-;;;_  . Scala
-  (require-package 'scala-mode)
-;;;_  . Haskell
-  (require-package 'haskell-mode))
+    (package-refresh-contents)))
 
 ;;;_ Utility functions
 
@@ -356,21 +328,76 @@ From http://www.jurta.org/en/emacs/dotemacs"
    (w32-send-sys-command #xf120 nil)))
 
 
+;;;_ Key Bindings
+;;; ----------------------------------------------------------------------
+;;;_. Organization of key bindings
+;;;
+;;; C-x primary map (some defaults)
+;;; C-c secondary map (modes use it)
+;;; C-z tertiary map (private custom one)
+;;;
+;;; Other maps:
+;;;   C-x f  - map  file operations
+;;;   M-g    - goto map (already exists in Emacs24)
+
+;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
+;;;   M-o
+
+;;;   C-<capital letter>
+;;;   M-<capital letter>
+;;;
+;;;   A-<anything>
+;;;   M-A-<anything>
+;;;
+;;; Single-letter bindings still available:
+;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
+;;;   M- ?#
+
+
+;;;_. Create Keymaps (ctl-x-f, ctl-z)
+;;; ----------------------------------------------------------------------
+(defvar ctl-x-f-map)
+(define-prefix-command 'ctl-x-f-map)
+(define-key global-map [(control x) ?f] 'ctl-x-f-map)
+;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+;;; C-z ctl-z-map
+;;; Make the prefix key `C-z' for my personal keymap.
+;;; On qwerty-keyboards `C-z' is one of the most accessible keys
+;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
+;;; for mode-specific commands (both user-defined and standard Emacs extensions).
+;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
+;;; is reassigned here to double key sequence `C-z C-z'.
+(defvar ctl-z-map
+  (let ((map (make-sparse-keymap))
+        (c-z (global-key-binding [(control ?z)])))
+    (global-unset-key [(control ?z)])
+    (define-key global-map [(control ?z)] map)
+    (define-key map [(control ?z)] c-z)
+    map))
+;;; almost always hit suspend instead of repeat command
+;;; so not repeat is moth C-x z and C-x C-z
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
 ;;;_ Customizing General Emacs Behavior
+;;; ----------------------------------------------------------------------
+(require-package 'dash)
 (autoload '-difference "dash")
+(require-package 's)
 (autoload 's-lines "s")
 
 ;;;_. GUI/Look and Feel
 ;;; ----------------------------------------------------------------------
-
 ;;;_ , adding packages from ELPA
 (require-package 'idle-highlight-mode)
-(require-package 'highlight-symbol)
 (require-package 'rainbow-mode)
 (require-package 'rainbow-delimiters)
 (require-package 'diminish)
 (require-package 'powerline)
 (require-package 'base16-theme)
+(require-package 'minimap)
 
 ;;;_ , Turn off some bells and whistles
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -384,8 +411,12 @@ From http://www.jurta.org/en/emacs/dotemacs"
   (blink-cursor-mode -1))
 
 ;;;_ , highlight the "word" the cursor is on
-(when (fboundp 'highlight-symbol-mode)
-  (highlight-symbol-mode))
+(when (require-package 'highlight-symbol)
+  (highlight-symbol-mode +1)
+  (define-key ctl-z-map [(control return)] 'highlight-symbol-at-point)
+  (define-key ctl-z-map [(control up)] 'highlight-symbol-prev)
+  (define-key ctl-z-map [(control down)] 'highlight-symbol-next)
+  (define-key ctl-z-map [(@)] 'highlight-symbol-query-replace))
 
 ;;;_ , display time in mode-line
 (display-time)
@@ -402,10 +433,16 @@ From http://www.jurta.org/en/emacs/dotemacs"
 (when (fboundp 'powerline-default-theme)
   (powerline-default-theme))
 
+;;;_ , UI Key-bindings
+;;; ----------------------------------------------------------------------
+;;; Turn on the menu bar for exploring new modes
+(define-key global-map [f1] 'menu-bar-mode)
+(define-key global-map [(control f1)] 'imenu-add-menubar-index)
+
 
 ;;;_. Files Settings and Operations
-;; --------------------------------------------------
-;; Backups and saves
+;;; ----------------------------------------------------------------------
+;;;_ , Backups and saves
 (setq save-place-file (concat *data-dir* "places")
       backup-directory-alist `((".*" . ,*backup-dir*))
       savehist-file (concat *data-dir* "history")
@@ -418,6 +455,28 @@ From http://www.jurta.org/en/emacs/dotemacs"
       desktop-save t
       auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
+;;;_ , Files and Projects
+(require-package 'find-file-in-project)
+
+;;;_ , Files Key-Bindings
+;;; ----------------------------------------------------------------------
+;;;  C-x C-f is bound to ido-find-file
+;;;
+;;;  C-x f <letter> are different file commands
+
+(define-key ctl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
+(define-key ctl-x-f-map [?o] 'ido-find-file-other-window)
+(define-key ctl-x-f-map [?f] 'find-file-in-project)
+(define-key ctl-x-f-map [?r] 'ido-choose-from-recentf)
+(define-key ctl-x-f-map [(return)] 'find-file-at-point)
+
+;;;_ , Dired
+;;; Dired settings that proved useful
+(setq dired-dwim-target t)              ; guess where to copy files
+
+(add-hook 'dired-mode-hook
+          '(lambda ()
+              (define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)))
 
 
 ;;;_. Byte Compilation
@@ -428,8 +487,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
 
 
 ;;;_. Buffers
-;; --------------------------------------------------
-
+;;; ----------------------------------------------------------------------
 ;; Encoding and text related stuff
 ;(set-terminal-coding-system 'utf-8)
 ;(set-keyboard-coding-system 'utf-8)
@@ -462,12 +520,40 @@ From http://www.jurta.org/en/emacs/dotemacs"
                         (if (buffer-live-p buffer)
                             (kill-buffer buffer))) *auto-close-buffers*))))
 
+;;;_ , Buffer Operations Keybindings
+;;; ------------------------------------------------------------
+(define-key global-map [(control x) (control b)] 'ibuffer)
+;;; more direct approach
+(define-key global-map [f12] 'kill-this-buffer)
+;;; other useful combos:
+;;; `C-x 4 0' - kill-buffer-and-window (works with current buffer
+;;; only)
+;;; `C-x 4 b' - ido open buffer other window
+
+;;; Buffer operations in C-z map
+(define-key ctl-z-map [?b ?y] 'bury-buffer)
+(define-key ctl-z-map [?b ?r] 'revert-buffer)
+
+
+;;;_. Kill-rings
+(require-package 'browse-kill-ring)
+(require-package 'kill-ring-search)
+;;; we use kill-ring-search through ELPA, hence check if it is
+;;; available first
+(when (fboundp 'kill-ring-search)
+  (define-key global-map [(control meta ?y)] 'kill-ring-search))
+;;; browse kill ring is nice too and also might be unavailable
+(when (fboundp 'browse-kill-ring)
+  (browse-kill-ring-default-keybindings) ; advise M-y
+  (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
+
 ;;;_. Enable useful disabled commands
 (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen))
   (put command 'disabled nil))
 
 ;;;_. Undo settings
-;;; ------------------------------------------------------------
+;;; ----------------------------------------------------------------------
+(require-package 'undo-tree)
 (when (fboundp 'global-undo-tree-mode)
   (global-undo-tree-mode))
 
@@ -526,33 +612,49 @@ This function depends on 's and 'dash libraries."
          (when dict-location
            (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
-;;;_. Help and Info Functions
-;; --------------------------------------------------
+;;;_. Help and Info
+;;; ----------------------------------------------------------------------
 (require 'help-mode+ nil t)
 (require 'help+ nil t)
 (require 'help-fns+ nil t)
+;;; apropos seems to be more useful than apropos-command
+(define-key global-map [(control h) ?a] 'apropos)
 
 ;;;_. Miscellaneous
-;; --------------------------------------------------
+;;; ----------------------------------------------------------------------
+(setq redisplay-dont-pause t)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(random t)
+(put 'set-goal-column 'disabled nil)
+
+;;;_. Ack/Grep/RGrep
+;;; ----------------------------------------------------------------------
+(require-package 'ack-and-a-half)
 (defalias 'ack 'ack-and-a-half)
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+(eval-after-load "grep"
+  '(progn
+     (setq wgrep-enable-key "e")
+     (define-key grep-mode-map [(?e)] 'wgrep-change-to-wgrep-mode)))
 
-
-(setq redisplay-dont-pause t)
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(random t)
-
-(put 'set-goal-column 'disabled nil)
-
-;;;; add Smex
+;;;_. Minibuffer and Smex
+;;; ----------------------------------------------------------------------
+(require-package 'smex)
 (when (fboundp 'smex-initialize)
-  (smex-initialize))
+  (smex-initialize)
+  ;; Smex is used in minibuffer M-x
+  (define-key global-map [(meta ?x)] 'smex)
+  (define-key global-map [(meta shift ?x)] 'smex-major-mode-commands))
 
-;;; Using smerge for merging files
+;;; We are trying to make keys working in both Windows and Mac OS X
+;;; To be able to M-x without meta
+(define-key global-map [(control x) (control ?m)] 'execute-extended-command)
+
+
+;;;_. Using smerge for merging files
+;;; ----------------------------------------------------------------------
 (defun sm-try-smerge ()
   (save-excursion
     (goto-char (point-min))
@@ -561,12 +663,23 @@ This function depends on 's and 'dash libraries."
 
 (add-hook 'find-file-hook 'sm-try-smerge t)
 
-;;;_. Adding Yasnippets directory
-;;
+;;;_. Bookmarking
+;;; ----------------------------------------------------------------------
+(require-package 'bm)
+(require-package 'bookmark+)
+(eval-after-load "bookmark"
+  '(require 'bookmark+ nil t))
+
+;;;_. Yasnippets
+;;; ----------------------------------------------------------------------
+(require-package 'yasnippet)
 
 ;;;_. Ido configuraiton
 ;;; Some IDO settings that have been taken out from the customization file.
-;;; ------------------------------------------------------------
+;;; ----------------------------------------------------------------------
+(require-package 'ido-yes-or-no)
+(require-package 'ido-ubiquitous)
+
 (ido-mode t)
 (ido-everywhere t)
 (ido-ubiquitous-mode t)
@@ -576,23 +689,17 @@ This function depends on 's and 'dash libraries."
 (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
 
 
-;;;_. Dired settings that proved useful
-(setq dired-dwim-target t)              ; guess where to copy files
-
-;;;_. change some grep mode bindings
-(eval-after-load "grep"
-  '(progn
-     (setq wgrep-enable-key "e")
-     (define-key grep-mode-map [(?e)] 'wgrep-change-to-wgrep-mode)))
-
-;;;_. try to load bookmark+
-(eval-after-load "bookmark"
-  '(require 'bookmark+ nil t))
-
 ;;;_. Add ThingAtPoint+
 (eval-after-load "thingatpt"
   '(when (require 'thingatpt+)
      (tap-redefine-std-fns)))
+
+;;;_. Version Control Systems
+;;;_ , Git
+(require-package 'magit)
+;;; Added global shortcut to run Magit
+(when (fboundp 'magit-status)
+  (define-key global-map [(control x) ?g] 'magit-status))
 
 ;;;_ Customizing Modes
 
@@ -733,6 +840,16 @@ by using nxml's indentation rules."
   (iimage-mode))
 
 
+;;;_ , Org-mode bindings
+(when (fboundp 'org-mode)
+  ;; due to the conflict with Yasnippet
+  (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto)
+  (define-key global-map [(control ?c) ?l] 'org-store-link)
+  (define-key global-map [(control ?c) ?a] 'org-agenda)
+  (define-key global-map [(control ?c) ?b] 'org-iswitchb))
+
+
+
 
 ;;;_. Markdown
 (require-package 'markdown-mode)
@@ -823,14 +940,18 @@ by using nxml's indentation rules."
       ac-auto-start t)
 
 ;;;_. Lisp-like Programming Languages
+(require-package 'elisp-slime-nav)
 
 (defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
 (defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
 
-;;;_. Paredit settings
+;;;_ , Paredit settings
+(require-package 'paredit)
+
 (eval-after-load "paredit"
   '(progn
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))))
+
 (defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
   "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
   (if (eq this-command 'eval-expression)
@@ -839,6 +960,23 @@ by using nxml's indentation rules."
 
 (add-hook 'minibuffer-setup-hook 'ffy-init-lisp-minibuffer-enable-paredit-mode)
 
+;;;_ , Emacs Lisps
+(defun ffy-init-lisp-emacs-setup ()
+  "Only emacs-lisp related things."
+  (progn
+    (make-local-variable 'hippie-expand-try-functions-list)
+    (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
+    (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
+    (elisp-slime-nav-mode 1)
+    (add-to-list 'ac-sources 'ac-source-emacs-lisp-features)))
+
+(dolist (mode *emacs-lisp-modes*)
+  (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
+    (add-hook mode-hook 'ffy-init-lisp-emacs-setup)))
+
+
+
+;;;_ , All Lisps
 (defun ffy-init-lisp-setup ()
   "This is the setup that would any lisp based mode benefit from"
   (progn
@@ -850,27 +988,14 @@ by using nxml's indentation rules."
          (highlight-parentheses-mode +1))
        (when (fboundp 'rainbow-delimiters-mode)
          (rainbow-delimiters-mode))
-       (define-key lisp-mode-shared-map [(meta return)] 'reindent-then-newline-and-indent)))
-
-(defun ffy-init-lisp-emacs-setup ()
-  "Only emacs-lisp related things."
-  (progn
-    (make-local-variable 'hippie-expand-try-functions-list)
-    (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
-    (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
-    (elisp-slime-nav-mode 1)
-    (add-to-list 'ac-sources 'ac-source-emacs-lisp-features)))
-
+       (define-key lisp-mode-shared-map [(meta return)] 'reindent-then-newline-and-indent)
+       (define-key lisp-mode-shared-map [(control x) ?x] 'eval-print-last-sexp)))
 
 (dolist (mode *lisp-modes*)
   (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
     (add-hook mode-hook 'ffy-init-lisp-setup)))
 
-(dolist (mode *emacs-lisp-modes*)
-  (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
-    (add-hook mode-hook 'ffy-init-lisp-emacs-setup)))
-
-;;;_. Slime Settings
+;;;_ , Slime Settings
 (eval-after-load "slime"
   '(progn
      (message "Check if slime has been loaded !")
@@ -902,7 +1027,11 @@ by using nxml's indentation rules."
 
 
 
-;;;_. Clojure Specifics
+;;;_ , Clojure Mode Setup
+(require-package 'clojure-mode)
+(require-package 'clojure-test-mode)
+(require-package 'nrepl)
+(require-package 'ac-nrepl)
 
 (add-hook 'clojure-mode-hook 'subword-mode)
 (add-hook 'clojure-mode-hook 'clojure-test-mode)
@@ -986,6 +1115,7 @@ by using nxml's indentation rules."
 (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
 
 ;;;_. Scala setup
+(require-package 'scala-mode)
 
 ;;;_. Octave Mode
 
@@ -994,118 +1124,14 @@ by using nxml's indentation rules."
 (add-hook 'octave-mode-hook (lambda ()
                               (auto-fill-mode 1)))
 
-;;;_.  Haskell Mode
-
+;;;_. Haskell Mode
+(require-package 'haskell-mode)
 (add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 
-;;;_ Customizing Bindings
-
-;;; ----------------------------------------------------------------------
-;;;_.  Organization of key bindings
-;;;
-;;; C-x primary map (some defaults)
-;;; C-c secondary map (modes use it)
-;;; C-z tertiary map (private custom one)
-;;;
-;;; Other maps:
-;;;   C-x f  - map  file operations
-;;;   M-g    - goto map
-
-;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
-;;;   M-o
-
-;;;   C-<capital letter>
-;;;   M-<capital letter>
-;;;
-;;;   A-<anything>
-;;;   M-A-<anything>
-;;;
-;;; Single-letter bindings still available:
-;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
-;;;   M- ?#
-
-;;; ----------------------------------------------------------------------
-;;;_. Set keymaps
-;;; ----------------------------------------------------------------------
-(defvar ctl-x-f-map)
-(define-prefix-command 'ctl-x-f-map)
-(define-key global-map [(control x) ?f] 'ctl-x-f-map)
-;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-;;; C-z ctl-z-map
-;;; Make the prefix key `C-z' for my personal keymap.
-;;; On qwerty-keyboards `C-z' is one of the most accessible keys
-;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
-;;; for mode-specific commands (both user-defined and standard Emacs extensions).
-;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
-;;; is reassigned here to double key sequence `C-z C-z'.
-(defvar ctl-z-map
-  (let ((map (make-sparse-keymap))
-        (c-z (global-key-binding [(control ?z)])))
-    (global-unset-key [(control ?z)])
-    (define-key global-map [(control ?z)] map)
-    (define-key map [(control ?z)] c-z)
-    map))
-;;; almost always hit suspend instead of repeat command
-;;; so not repeat is moth C-x z and C-x C-z
-(let ((c-x-z (global-key-binding [(control x) ?z])))
-  (global-unset-key [(control x) (control ?z)])
-  (define-key ctl-x-map [(control ?z)] c-x-z))
-
-
-;;; ----------------------------------------------------------------------
-;;;_. Miscellaneous key-bindings
-;;; ----------------------------------------------------------------------
-;;; Turn on the menu bar for exploring new modes
-(define-key global-map [f1] 'menu-bar-mode)
-(define-key global-map [(control f1)] 'imenu-add-menubar-index)
-
-;;; We are trying to make keys working in both Windows and Mac OS X
-;;; To be able to M-x without meta
-(define-key global-map [(control x) (control ?m)] 'execute-extended-command)
-
-;;; apropos seems to be more useful than apropos-command
-(define-key global-map [(control h) ?a] 'apropos)
-
-(define-key global-map [(control x) ?x] 'eval-print-last-sexp)
-
-;;; ------------------------------------------------------------
-;;;_. File Operations
-;;;
-;;;  C-x C-f is bound to ido-find-file
-;;;
-;;;  C-x f <letter> are different file commands
-;;; ------------------------------------------------------------
-(define-key ctl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
-(define-key ctl-x-f-map [?o] 'ido-find-file-other-window)
-(define-key ctl-x-f-map [?f] 'find-file-in-project)
-(define-key ctl-x-f-map [?r] 'ido-choose-from-recentf)
-(define-key ctl-x-f-map [(return)] 'find-file-at-point)
-
-;;;_ , Dired buffer
-(add-hook 'dired-mode-hook
-          '(lambda ()
-              (define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)))
-
-;;; ------------------------------------------------------------
-;;;_. Buffer Operations
-;;; ------------------------------------------------------------
-(define-key global-map [(control x) (control b)] 'ibuffer)
-
-;;; more direct approach
-(define-key global-map [f12] 'kill-this-buffer)
-;;; other useful combos:
-;;; `C-x 4 0' - kill-buffer-and-window (works with current buffer
-;;; only)
-;;; `C-x 4 b' - ido open buffer other window
-
-;;; Buffer operations in C-z map
-(define-key ctl-z-map [?b ?y] 'bury-buffer)
-(define-key ctl-z-map [?b ?r] 'revert-buffer)
-
-;;; ------------------------------------------------------------
+;;;_ Miscellaneous Keybindings
 ;;;_. Windows Operations
 ;;; ------------------------------------------------------------
 ;;;_ , Windmove
@@ -1185,43 +1211,6 @@ by using nxml's indentation rules."
 ;(define-key global-map [(meta ?o)] '...)
 
 ;;; ------------------------------------------------------------
-;;;_. Key-bindings for Extensions / Non-standard Emacs Functionality
-;;; ------------------------------------------------------------
-
-;;; Added global shortcut to run Magit
-(when (fboundp 'magit-status)
-  (define-key global-map [(control x) ?g] 'magit-status))
-
-;;; we use kill-ring-search through ELPA, hence check if it is
-;;; available first
-(when (fboundp 'kill-ring-search)
-  (define-key global-map [(control meta ?y)] 'kill-ring-search))
-
-;;; browse kill ring is nice too and also might be unavailable
-(when (fboundp 'browse-kill-ring)
-  (browse-kill-ring-default-keybindings) ; advise M-y
-  (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
-
-;;; Smex is used in minibuffer M-x
-(when (fboundp 'smex-initialize)
-  (define-key global-map [(meta ?x)] 'smex)
-  (define-key global-map [(meta shift ?x)] 'smex-major-mode-commands))
-
-;;; highlight-symbol mode is available
-(when (fboundp 'highlight-symbol-at-point)
-  (define-key ctl-z-map [(control return)] 'highlight-symbol-at-point)
-  (define-key ctl-z-map [(control up)] 'highlight-symbol-prev)
-  (define-key ctl-z-map [(control down)] 'highlight-symbol-next)
-  (define-key ctl-z-map [(@)] 'highlight-symbol-query-replace))
-
-;;; org-mode bindings
-(when (fboundp 'org-mode)
-  ;; due to the conflict with Yasnippet
-  (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto)
-  (define-key global-map [(control ?c) ?l] 'org-store-link)
-  (define-key global-map [(control ?c) ?a] 'org-agenda)
-  (define-key global-map [(control ?c) ?b] 'org-iswitchb))
-
 
 ;;;_ Start Server
 (server-start)

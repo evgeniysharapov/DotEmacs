@@ -3,7 +3,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(allout-auto-activation t)
  '(auto-revert-verbose nil)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/data/bookmarks")
  '(byte-compile-verbose nil)
  '(color-theme-is-cumulative t)
  '(column-number-mode t)
@@ -47,6 +49,7 @@
  '(recentf-mode t)
  '(require-final-newline t)
  '(rspec-use-rvm t)
+ '(safe-local-variable-values (quote ((allout-layout . t) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
  '(save-place t nil (saveplace))
  '(savehist-mode t nil (savehist))
  '(scalable-fonts-allowed t)
