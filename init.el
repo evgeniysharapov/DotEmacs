@@ -150,16 +150,9 @@ ARCHIVE is the string name of the package archive.")
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
+  
 ;;;_  . VCS
   (require-package 'magit)
-;;;_  . UI augmentation
-  (require-package 'idle-highlight-mode)
-  (require-package 'highlight-symbol)
-  (require-package 'rainbow-mode)
-  (require-package 'rainbow-delimiters)
-  (require-package 'diminish)
-  (require-package 'powerline)
-  (require-package 'base16-theme)
 ;;;_  . Lisp-ish modes
   (require-package 'paredit)
   (require-package 'elisp-slime-nav)
@@ -200,6 +193,7 @@ ARCHIVE is the string name of the package archive.")
   (require-package 'haskell-mode))
 
 ;;;_ Utility functions
+
 ;;;_. eval-and-replace
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
@@ -210,6 +204,7 @@ ARCHIVE is the string name of the package archive.")
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
+
 ;;;_. with-library
 (defmacro with-library (symbol &rest body) 
   "A typical use is: you want to load a
@@ -236,6 +231,7 @@ ARCHIVE is the string name of the package archive.")
      (error 
       (message (format "%s is not available." ',symbol))
       nil)))
+
 ;;;_. on-win32
 (defmacro on-win32 (&rest body)
   "Leaves code that specifically targets win32 system"
@@ -378,31 +374,44 @@ From http://www.jurta.org/en/emacs/dotemacs"
 (autoload 's-lines "s")
 
 ;;;_. GUI/Look and Feel
+;;; ----------------------------------------------------------------------
 
-;; Turn off bells and whistles
+;;;_ , adding packages from ELPA
+(require-package 'idle-highlight-mode)
+(require-package 'highlight-symbol)
+(require-package 'rainbow-mode)
+(require-package 'rainbow-delimiters)
+(require-package 'diminish)
+(require-package 'powerline)
+(require-package 'base16-theme)
+
+;;;_ , Turn off some bells and whistles
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-;; we want to know what is the file name
+;;;_ , File name into the frame title
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
+;;;_ , highlight the "word" the cursor is on
 (when (fboundp 'highlight-symbol-mode)
   (highlight-symbol-mode))
 
+;;;_ , display time in mode-line
 (display-time)
 
-;;; Hide some modes from the mode-line
+;;;_ , Hide some modes from the mode-line
+;;; TODO: maybe this should be moved to the corresponding modes configuration
 (when (fboundp 'diminish)
   (eval-after-load 'eldoc
     '(diminish 'eldoc-mode))
   (eval-after-load 'undo-tree
     '(diminish 'undo-tree-mode)))
 
-;;; Configure powerline if it is available
+;;;_ , Configure powerline if it is available
 (when (fboundp 'powerline-default-theme)
   (powerline-default-theme))
 
@@ -606,8 +615,7 @@ This function depends on 's and 'dash libraries."
      (setq
       ;; we want to keep C-k as paredit and other
       ;; useful modes for editing
-      allout-unprefixed-keybindings nil
-      allout-auto-activation t)
+      allout-unprefixed-keybindings nil)
      ;; add missing but useful keybindings. in allout mode
      ;; it is set through changin allout-prefixed-keybindings
      (dolist (keybinding '(("[(shift ?h)]" allout-hide-bodies)
@@ -1231,3 +1239,7 @@ by using nxml's indentation rules."
 
 
 
+
+;; Local Variables:
+;; allout-layout: t
+;; End:
