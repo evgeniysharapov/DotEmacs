@@ -352,13 +352,26 @@ From http://www.jurta.org/en/emacs/dotemacs"
 
 (add-hook 'after-init-hook 'ffy-save-original-frame-parameters)
 
+;;;_. ffy-frame-maximize
 (defun ffy-frame-maximize ()
   (on-mac
-   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)))
+   (set-frame-parameter (selected-frame) 'fullscreen 'maximized))
+  ;; on Windows we send a WM message to the window
+  ;; to maximize Emacs frame
+  (on-win32
+   (w32-send-sys-command #xf030 (selected-frame))))
 
+;;;_. ffy-frame-originalize
 (defun ffy-frame-originalize ()
   (mapc (lambda (param)
-          (set-frame-parameter (selected-frame) (car param) (cdr param))) *frame-original-geometry*))
+          (set-frame-parameter (selected-frame) (car param) (cdr param)))
+        *frame-original-geometry*)
+  ;; on Windows in addition to the frame parameters we send WM message
+  ;; to the system window to
+  ;; restore original size of the Emacs frame
+  (on-win32
+   (w32-send-sys-command #xf120 nil)))
+
 
 ;;;_ Customizing General Emacs Behavior
 (autoload '-difference "dash")
@@ -591,21 +604,6 @@ This function depends on 's and 'dash libraries."
 (eval-after-load "thingatpt"
   '(when (require 'thingatpt+)
      (tap-redefine-std-fns)))
-;;
-;;  Specific settings for different OS
-;;  point being that I have several computers running the same OS
-;;  and it is quite tedious to copy/paste the same settings between
-;;  files.
-
-;; settings for Windows
-(on-win32
-  ;; maximize Emacs frame
-  (global-set-key [(control f11)]
-                  (make-interactive w32-send-sys-command #xf030 nil))
-  ;; restore original size of the Emacs frame
-  (global-set-key [(control shift f11)]
-                  (make-interactive w32-send-sys-command #xf120 nil))
-  )
 
 
 ;;;_ Customizing Modes
