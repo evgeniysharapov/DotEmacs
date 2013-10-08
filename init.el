@@ -442,6 +442,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
 
 ;;;_. Files Settings and Operations
 ;;; ----------------------------------------------------------------------
+
 ;;;_ , Backups and saves
 (setq save-place-file (concat *data-dir* "places")
       backup-directory-alist `((".*" . ,*backup-dir*))
@@ -968,7 +969,46 @@ by using nxml's indentation rules."
   (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
     (add-hook mode-hook 'ffy-init-lisp-emacs-setup)))
 
+;;;_  . IELM
 
+(defun ffy-ielm-return ()
+  "Like `ielm-return' but more intellectual when it comes to deciding when just
+send `paredit-newline' instead.
+Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/blob/master/init.el"
+  (interactive)
+  (let ((end-of-sexp (save-excursion
+                           (goto-char (point-max))
+                           (skip-chars-backward " \t\n\r")
+                           (point))))
+        (if (>= (point) end-of-sexp)
+            (progn
+              (goto-char (point-max))
+              (skip-chars-backward " \t\n\r")
+              (delete-region (point) (point-max))
+              (call-interactively #'ielm-return))
+          (call-interactively #'paredit-newline))))
+
+(defun ffy-setup-ielm ()
+  "Sets some IELM defaults and keys."
+  (interactive)
+  (progn
+    (local-set-key [return] 'ffy-ielm-return)))
+
+(add-hook 'ielm-mode-hook 'ffy-setup-ielm)
+
+(defun ffy-ielm ()
+  "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
+  (interactive)
+  (let ((buf (current-buffer)))
+    (if (get-buffer "*ielm*")
+        (switch-to-buffer-other-window "*ielm*")
+      (progn
+        (split-window-sensibly (selected-window))
+        (other-window 1)
+        (ielm)))
+    (ielm-change-working-buffer buf)))
+
+(define-key global-map [(control ?c) (meta ?:)] 'ffy-ielm)
 
 ;;;_ , All Lisps
 (defun ffy-init-lisp-setup ()
