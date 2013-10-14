@@ -718,7 +718,7 @@ This function depends on 's and 'dash libraries."
                            ("[(shift ?e)]" allout-hide-current-entry)
                            ("[?e]" allout-show-entry)
                            ("[?o]" allout-show-to-offshoot)
-                           ("[?l]" allout-show-current-brunches)))
+                           ("[?l]" allout-show-current-branches)))
        (add-to-list 'allout-prefixed-keybindings keybinding))))
 
 ;;;_. XSL/XML setup.
