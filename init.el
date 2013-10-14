@@ -935,8 +935,6 @@ by using nxml's indentation rules."
       ac-auto-start t)
 
 ;;;_. Lisp-like Programming Languages
-(defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
-
 ;;;_ , Paredit settings
 (require-package 'paredit)
 
@@ -1013,6 +1011,8 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (define-key global-map [(control ?c) (meta ?:)] 'ffy-ielm)
 
 ;;;_ , All Lisps
+(defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
+
 (defun ffy-init-lisp-setup ()
   "This is the setup that would any lisp based mode benefit from"
   (progn
