@@ -935,9 +935,6 @@ by using nxml's indentation rules."
       ac-auto-start t)
 
 ;;;_. Lisp-like Programming Languages
-(require-package 'elisp-slime-nav)
-
-(defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
 (defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
 
 ;;;_ , Paredit settings
@@ -956,6 +953,10 @@ by using nxml's indentation rules."
 (add-hook 'minibuffer-setup-hook 'ffy-init-lisp-minibuffer-enable-paredit-mode)
 
 ;;;_ , Emacs Lisps
+(require-package 'elisp-slime-nav)
+;;; modes that deal with EmacsLisp
+(defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
+
 (defun ffy-init-lisp-emacs-setup ()
   "Only emacs-lisp related things."
   (progn
