@@ -942,6 +942,7 @@ by using nxml's indentation rules."
 
 (eval-after-load "paredit"
   '(progn
+     ;; C-S-d forces delete character in ParEdit mode
      (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))))
 
 (defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
