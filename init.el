@@ -1269,4 +1269,5 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
 ;; Local Variables:
 ;; allout-layout: t
+;; byte-compile-warnings: (not cl-functions)
 ;; End:
