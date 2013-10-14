@@ -328,6 +328,12 @@ From http://www.jurta.org/en/emacs/dotemacs"
    (w32-send-sys-command #xf120 nil)))
 
 
+;;;_. add-to-hooks
+(defmacro add-to-hooks (hooks func)
+  "Adds FUNC to HOOKS"
+  (dolist (hook ,hooks)
+    (add-hook hook ,func)))
+
 ;;;_ Key Bindings
 ;;; ----------------------------------------------------------------------
 ;;;_. Description of Organization of Key Bindings
