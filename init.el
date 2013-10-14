@@ -674,6 +674,11 @@ This function depends on 's and 'dash libraries."
 ;;;_. Yasnippets
 ;;; ----------------------------------------------------------------------
 (require-package 'yasnippet)
+(require-package 'dropdown-list)
+(yas-global-mode +1)
+
+(add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
+
 
 ;;;_. Ido configuraiton
 ;;; Some IDO settings that have been taken out from the customization file.
