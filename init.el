@@ -972,7 +972,7 @@ by using nxml's indentation rules."
     (add-hook mode-hook 'ffy-init-lisp-emacs-setup)))
 
 ;;;_  . IELM
-
+;;;_   , ffy-ielm-return
 (defun ffy-ielm-return ()
   "Like `ielm-return' but more intellectual when it comes to deciding when just
 send `paredit-newline' instead.
@@ -989,15 +989,15 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
               (delete-region (point) (point-max))
               (call-interactively #'ielm-return))
           (call-interactively #'paredit-newline))))
-
+;;;_   , ffy-setup-ielm
 (defun ffy-setup-ielm ()
   "Sets some IELM defaults and keys."
   (interactive)
   (progn
     (local-set-key [return] 'ffy-ielm-return)))
-
+;;;_   , adding IELM setup hook
 (add-hook 'ielm-mode-hook 'ffy-setup-ielm)
-
+;;;_   , ffy-ielm
 (defun ffy-ielm ()
   "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
   (interactive)
@@ -1009,7 +1009,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
         (other-window 1)
         (ielm)))
     (ielm-change-working-buffer buf)))
-
+;;;_   , adding keys (C-c M-:) to start IELM with current buffer
 (define-key global-map [(control ?c) (meta ?:)] 'ffy-ielm)
 
 ;;;_ , All Lisps
