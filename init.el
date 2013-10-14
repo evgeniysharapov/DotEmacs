@@ -330,7 +330,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
 
 ;;;_ Key Bindings
 ;;; ----------------------------------------------------------------------
-;;;_. Organization of key bindings
+;;;_. Description of Organization of Key Bindings
 ;;;
 ;;; C-x primary map (some defaults)
 ;;; C-c secondary map (modes use it)
