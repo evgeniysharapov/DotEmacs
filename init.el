@@ -1198,15 +1198,14 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;; ------------------------------------------------------------
 ;;;_. Editing/Operations In Buffer
 ;;; ------------------------------------------------------------
-;;; Completion operations
+;;;_ , Completion operations
 (define-key global-map [(meta /)] 'hippie-expand)
-
-;;; toggles line  numbers in the buffer
+;;;_ , toggles line  numbers in the buffer
 (define-key global-map [(control shift ?l)] 'linum-mode)
+;;;_ , search forward/backward
 (define-key global-map [(control shift ?r)] 'search-backward)
 (define-key global-map [(control shift ?s)] 'search-forward)
-
-;;; M-z is zap-to-char now
+;;;_ , M-z is zap-to-char now
 (define-key global-map [(control meta ?z)]
     (lambda (char)
     (interactive "cZap to char backwards: ")
@@ -1216,43 +1215,42 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
   (lambda (char)
     (interactive "cZap up to char backwards: ")
     (zap-up-to-char -1 char)))
-
+;;;_ , ffy-bol-or-back-to-indent
 (defun ffy-bol-or-back-to-indent ()
   "In addition to having two different mappings for (move-beginning-of-line ARG) and (back-to-indentation) we will have a function that goes to BOL if we are on the indent position and to the indent if we are at the BOL"
   (interactive)
   (if (bolp)
       (back-to-indentation)
     (move-beginning-of-line 1)))
-;;; redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
+;;;_ , redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
 (define-key global-map [(control shift ?a)] (key-binding [(control ?a)]))
 (define-key global-map [(control ?a)] 'ffy-bol-or-back-to-indent)
-
-;;; use C-\ to leave one space between words
+;;;_ , use C-\ to leave one space between words
 (define-key global-map [(control ?\\)] 'just-one-space)
-
+;;;_ , update buffer with F5
 (define-key global-map [(f5)] 'revert-buffer)
-;;;
-;;; Mark/Point machinery
+;;;_ , Mark/Point machinery
+
 ;;; see
 ;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
-;;;
+
 ;;; pushes mark into a ring without activating a region
 (define-key global-map [(meta ?\ )]
   (make-interactive (lambda ()
                       (push-mark (point) t nil)
                       (message "Position %s pushed to the ring" (point)))))
-
+;;;_ , inc/dec number at the point
 (eval-after-load "thingatpt"
   '(progn
      (define-key global-map [(control ?-)] 'ffy-tap-number-decrease)
      (define-key global-map [(control ?+)] 'ffy-tap-number-increase)))
-
-;;; there's default M-^ `delete-indentation' that is an alias to join-line
+;;;_ , there's default M-^ `delete-indentation' that is an alias to join-line
 (define-key ctl-z-map [(?j)] 'join-line)
 (define-key ctl-z-map [(?J)] (lambda () "joins next line to this one"
                                (interactive)
                                (join-line 1)))
 ;;; ------------------------------------------------------------
+
 ;;;_. Outline mode
 ;;; ------------------------------------------------------------
 ;(define-key global-map [(meta ?o)] '...)
