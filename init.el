@@ -331,8 +331,15 @@ From http://www.jurta.org/en/emacs/dotemacs"
 ;;;_. add-to-hooks
 (defmacro add-to-hooks (hooks func)
   "Adds FUNC to HOOKS"
-  (dolist (hook ,hooks)
-    (add-hook hook ,func)))
+  `(dolist (hook ,hooks)
+     (add-hook hook ,func)))
+
+;;;_. mark-whole-word
+(defun mark-whole-world ()
+  "Works like `mark-word' but instead of just marking forward it also looks backward for the word boundaries"
+  (interactive)
+
+)
 
 ;;;_ Key Bindings
 ;;; ----------------------------------------------------------------------
@@ -730,7 +737,33 @@ This function depends on 's and 'dash libraries."
                            ("[?e]" allout-show-entry)
                            ("[?o]" allout-show-to-offshoot)
                            ("[?l]" allout-show-current-branches)))
-       (add-to-list 'allout-prefixed-keybindings keybinding))))
+       (add-to-list 'allout-prefixed-keybindings keybinding))
+     ;; add fontification of headers
+;; (defvar ffy-allout-font-lock-keywords
+;;   '(;;
+;;     ;; Highlight AllOut headings according to the level.
+;;     (eval . (list (concat "^\\(" allout-regexp "\\).+")
+;;                   0 '(or (cdr (assq (allout-depth)
+;;                                     (let (depth-faces '())
+;;                                       (dotimes (cnt 8)
+;;                                         (add-to-list 'depth-faces (cons (1+ cnt) (intern  (concat "outline-" (int-to-string  (1+  cnt)))))))
+;;                                       depth-faces)
+;;                                     ))
+;;                          font-lock-warning-face)
+;;                   nil t)))
+;;   "Additional expressions to highlight headings in AllOut mode.")
+
+;; (defun ffy-allout-add-header-highlight ()
+;;   (interactive)
+;;   (font-lock-add-keywords 'emacs-lisp-mode
+;;                           '(("^;;;_[., ]+\\(.+\\)" '(1 outline-1)))))
+
+;; ;; (font-lock-remove-keywords nil
+;; ;;      '(("^;;;_[., ]+\\(.+\\)" . 'outline-1)))
+
+;; (add-hook 'allout-mode-hook 'ffy-allout-add-header-highlight)
+
+     ))
 
 ;;;_. XSL/XML setup.
 (defun xml-pretty-print (begin end)
@@ -1160,6 +1193,24 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (add-hook 'haml-mode-hook 'flymake-haml-load)
 (add-hook 'scss-mode-hook 'ffy-run-programming-hook)
 (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
+;;; custom line opening
+(defun ffy-open-line-indented (n)
+  "like `open-line' but keeps indentation"
+  (interactive "*p")
+  (let* ((loc (point-marker)))
+    (newline-and-indent)
+    (goto-char loc)))
+
+;;; my own customizations
+(defun ffy-customize-sass-scss-mode ()
+  (interactive)
+  ;; first of all <ret> sets newline and indent as C-j
+  (local-set-key [return] 'newline-and-indent)
+  (local-set-key [(control return)] 'ffy-open-line-indented))
+
+(add-hook 'scss-mode-hook  'ffy-customize-sass-scss-mode)
+(add-hook 'sass-mode-hook  'ffy-customize-sass-scss-mode)
+
 
 ;;;_. Scala setup
 (require-package 'scala-mode)
