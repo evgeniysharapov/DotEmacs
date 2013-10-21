@@ -266,6 +266,11 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
+;;;_. Load ThingAtPoint+ library
+(eval-after-load "thingatpt"
+  '(when (require-package 'thingatpt+)
+     (tap-redefine-std-fns)))
+
 ;;;_. ffy-tap-number-change
 ;;; This depends on the thingatpt and thingatpt+
 (defun ffy-tap-number-change (&optional num)
@@ -333,13 +338,6 @@ From http://www.jurta.org/en/emacs/dotemacs"
   "Adds FUNC to HOOKS"
   `(dolist (hook ,hooks)
      (add-hook hook ,func)))
-
-;;;_. mark-whole-word
-(defun mark-whole-world ()
-  "Works like `mark-word' but instead of just marking forward it also looks backward for the word boundaries"
-  (interactive)
-
-)
 
 ;;;_ Key Bindings
 ;;; ----------------------------------------------------------------------
@@ -707,11 +705,6 @@ This function depends on 's and 'dash libraries."
 ;;; work well with ido-completing-read
 (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
 
-
-;;;_. Add ThingAtPoint+
-(eval-after-load "thingatpt"
-  '(when (require 'thingatpt+)
-     (tap-redefine-std-fns)))
 
 ;;;_. Version Control Systems
 ;;;_ , Git
