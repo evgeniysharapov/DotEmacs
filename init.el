@@ -1222,7 +1222,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 
-;;;_ Miscellaneous Keybindings
+;;;_ Key Bindings
 ;;;_. Windows Operations
 ;;; ------------------------------------------------------------
 ;;;_ , Windmove
@@ -1293,7 +1293,9 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (define-key ctl-z-map [(?J)] (lambda () "joins next line to this one"
                                (interactive)
                                (join-line 1)))
-;;; ------------------------------------------------------------
+;;;_ , mark commands from `thing-cmds'
+(when  (require-package 'thing-cmds)
+  (thgcmd-bind-keys))
 
 ;;;_. Outline mode
 ;;; ------------------------------------------------------------
