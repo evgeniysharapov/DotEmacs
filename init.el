@@ -1205,6 +1205,35 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (add-hook 'sass-mode-hook  'ffy-customize-sass-scss-mode)
 
 
+;;;_. JavaScript
+;;; ----------------------------------------------------------------------
+;;; Good link about setting up Javascript:
+;;; http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/
+
+(require-package 'flymake-jslint)
+(require-package 'flymake-jshint)
+(require-package 'js-comint)
+
+(defun ffy-js-mode-customizations ()
+  "JavaScript customizations"
+  ;; Scan the file for nested code blocks
+  (imenu-add-menubar-index)
+  ;; Activate the folding mode
+  (hs-minor-mode t))
+
+(add-hook 'js-mode-hook 'ffy-js-mode-customizations)
+;; Use node as our repl
+(setq inferior-js-program-command (executable-find "node"))
+(setq inferior-js-mode-hook
+      (lambda ()
+        ;; We like nice colors
+        (ansi-color-for-comint-mode-on)
+        ;; Deal with some prompt nonsense
+        (add-to-list 'comint-preoutput-filter-functions
+                     (lambda (output)
+                       (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
+                     (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
+
 ;;;_. Scala setup
 (require-package 'scala-mode)
 
