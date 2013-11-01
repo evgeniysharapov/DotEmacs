@@ -64,6 +64,7 @@
 ;;;_. ELPA packages
 
 ;;;_ , Generating autoloads file from the installed packages
+;;;_  . ffy-find-package-autoloads-file
 (defun ffy-find-package-autoloads-file (package)
   "Finds autoload file for the ELPA package and returns the path to the file, with a  check for file existence if performed, or nil.
 One of the examples of using the 
@@ -77,13 +78,13 @@ One of the examples of using the
     ;; check file existence 
     (when (file-exists-p pkg-al-file)
       pkg-al-file)))
-
+;;;_  . close-autoloads advice
 (defadvice package-generate-autoloads (after close-autoloads (name pkg-dir) activate)
   "Stop package.el from leaving open autoload files lying around."
   (let ((path (expand-file-name (concat name "-autoloads.el") pkg-dir)))
     (with-current-buffer (find-file-existing path)
       (kill-buffer nil))))
-
+;;;_  . extract-autoloads
 (defun extract-autoloads ()
   "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
   (interactive "f")
@@ -95,7 +96,7 @@ One of the examples of using the
                          if (file-directory-p d)
                          collect d)))
     (apply 'update-directory-autoloads dir-list)))
-
+;;;_  . Extract autoloads on killing Emacs
 (add-hook 'kill-emacs-hook 'extract-autoloads)
 
 ;;;_ , Add support to package.el for pre-filtering available packages
