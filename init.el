@@ -340,6 +340,56 @@ From http://www.jurta.org/en/emacs/dotemacs"
   `(dolist (hook ,hooks)
      (add-hook hook ,func)))
 
+;;;_. font-lock-add-buffer-keywords
+(defun font-lock-add-buffer-keywords (keywords &optional append)
+  "Add highlighting KEYWORDS for the current buffer.
+KEYWORDS should be a list; see the variable `font-lock-keywords'.
+By default they are added at the beginning of the current highlighting list.
+If optional argument APPEND is `set', they are used to replace the current
+highlighting list.  If APPEND is any other non-nil value, they are added at the
+end of the current highlighting list.
+
+For example:
+
+ (font-lock-add-buffer-keywords
+  '((\"\\\\\\=<\\\\(FIXME\\\\):\" 1 font-lock-warning-face prepend)
+    (\"\\\\\\=<\\\\(and\\\\|or\\\\|not\\\\)\\\\\\=>\" . font-lock-keyword-face)))
+
+adds two fontification patterns: one to fontify `FIXME:' words, even in
+comments, and the other to fontify `and', `or' and `not' words as keywords.
+
+Note that some modes have specialised support for additional patterns, e.g.,
+see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
+`objc-font-lock-extra-types' and `java-font-lock-extra-types'."
+  ;; This is needed to avoid this operation ending up as a no-op (because
+  ;; `font-lock-set-defaults' might get called later, and it might decide to
+  ;; set `font-lock-keywords' itself, from scratch).  I understand that some
+  ;; older FSF Emacs releases don't do this in `font-lock-add-keywords', so
+  ;; we do it here -- which can't hurt.
+  (font-lock-set-defaults)
+  ;; Use a native implementation if one exists
+  (if (fboundp 'font-lock-add-keywords)
+      (font-lock-add-keywords nil keywords append)
+    ;; Otherwise, use this one that was grabbed from FSF Emacs 21's
+    ;; `font-lock-add-keywords' and `font-lock-remove-keywords' functions.
+    (if (eq append 'set)
+        (setq font-lock-keywords keywords)
+      ;; Try to remove duplicates
+      (setq font-lock-keywords (copy-sequence font-lock-keywords))
+      (dolist (kw keywords)
+        (setq font-lock-keywords
+              (delete kw
+                      ;; The keywords might be compiled
+                      (delete (font-lock-compile-keyword kw)
+                              font-lock-keywords))))
+      (let ((old font-lock-keywords))
+        (when (eq (car-safe font-lock-keywords) t)
+          (pop old))
+        (when append
+          (rotatef keywords old))
+        (setq font-lock-keywords (append keywords old))))))
+
+
 ;;;_ Key Bindings
 ;;; ----------------------------------------------------------------------
 ;;;_. Description of Organization of Key Bindings
@@ -732,32 +782,25 @@ This function depends on 's and 'dash libraries."
                            ("[?o]" allout-show-to-offshoot)
                            ("[?l]" allout-show-current-branches)))
        (add-to-list 'allout-prefixed-keybindings keybinding))
-     ;; add fontification of headers
-;; (defvar ffy-allout-font-lock-keywords
-;;   '(;;
-;;     ;; Highlight AllOut headings according to the level.
-;;     (eval . (list (concat "^\\(" allout-regexp "\\).+")
-;;                   0 '(or (cdr (assq (allout-depth)
-;;                                     (let (depth-faces '())
-;;                                       (dotimes (cnt 8)
-;;                                         (add-to-list 'depth-faces (cons (1+ cnt) (intern  (concat "outline-" (int-to-string  (1+  cnt)))))))
-;;                                       depth-faces)
-;;                                     ))
-;;                          font-lock-warning-face)
-;;                   nil t)))
-;;   "Additional expressions to highlight headings in AllOut mode.")
-
-;; (defun ffy-allout-add-header-highlight ()
-;;   (interactive)
-;;   (font-lock-add-keywords 'emacs-lisp-mode
-;;                           '(("^;;;_[., ]+\\(.+\\)" '(1 outline-1)))))
-
-;; ;; (font-lock-remove-keywords nil
-;; ;;      '(("^;;;_[., ]+\\(.+\\)" . 'outline-1)))
-
-;; (add-hook 'allout-mode-hook 'ffy-allout-add-header-highlight)
-
      ))
+
+(defun ffy-allout-defface (level bg)
+  (let ((face-name (intern (concat "ffy-allout-header-" (int-to-string level)))))
+     (make-face face-name)
+     (copy-face 'font-lock-comment-face face-name)
+     (set-face-background face-name bg)
+     face-name))
+
+(add-hook 'allout-mode-hook
+          (lambda ()
+            ;; add fontification of headers
+            (font-lock-add-buffer-keywords
+             '(("^\\(;;;_[\\.,]\\(.+\\)\\)" 2 (ffy-allout-defface 1 "Lavender") prepend)
+               ("^\\(;;;_[ ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 2 "LavenderBlush") prepend)
+               ("^\\(;;;_[  ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 3 "azure") prepend)
+               ("^\\(;;;_[   ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 4 "cornsilk") prepend)
+               ("^\\(;;;_[    ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 5 "seashell") prepend)
+               ("^\\(;;;_[     ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 6 "honeydew") prepend)))))
 
 ;;;_. XSL/XML setup.
 (defun xml-pretty-print (begin end)
