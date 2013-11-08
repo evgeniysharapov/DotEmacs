@@ -860,20 +860,9 @@ by using nxml's indentation rules."
 ;;;_. HTML and XHTML setup
 
 ;;;_. Org Mode
-
-; '(org-agenda-include-diary t)
-; '(org-clock-clocktable-default-properties (quote (:maxlevel 4 :scope file :step week :block thisweek :tend "")))
-; '(org-empty-line-terminates-plain-lists t)
-; '(org-hide-leading-stars t)
-; '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-id org-info org-jsinfo org-special-blocks org-w3m org-panel)))
-; '(org-return-follows-link t)
-; '(org-use-sub-superscripts (quote {}))
-(require-package 'org '(20131108))
-
 (setq org-completion-use-ido t
       org-hide-leading-stars t
       org-return-follows-link t
-      org-completion-use-ido t
       org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-protocol org-special-blocks org-w3m org-bookmark org-elisp-symbol org-panel)
       org-empty-line-terminates-plain-lists t)
 
