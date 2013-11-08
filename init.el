@@ -758,6 +758,12 @@ This function depends on 's and 'dash libraries."
 ;;; work well with ido-completing-read
 (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
 
+;;; We want to have ido completion of properties in Org-mode
+;;; hence change enable ido-ubiquitous in org-icompleting-read
+(setq ido-ubiquitous-function-overrides
+      (mapcar (lambda (override) (if (equal (caddr override)
+                                       "org-icompleting-read") (cons 'enable (cdr override))
+                              override)) ido-ubiquitous-function-overrides))
 
 ;;;_. Version Control Systems
 ;;;_ , Git
