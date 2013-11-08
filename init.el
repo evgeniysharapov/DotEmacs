@@ -943,6 +943,7 @@ by using nxml's indentation rules."
             (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$")))
 
 ;;;_. General Programming Mode
+(autoload 'turn-on-fic-mode "fic-mode")
 
 (defvar *programming-hook* nil
   "This variable contains functions that we need to run if we are programming ")
@@ -966,27 +967,9 @@ by using nxml's indentation rules."
              (executable-find ispell-program-name))
     (flyspell-prog-mode)))
 
-(defface prog-mode-watchword-face
-  '((((background light)) (:foreground "Red" :bold t))
-    (((background dark)) (:foreground "Orange" :bold t)))
-  "Highlight words like TODO, FIXME and so on"
-  :group 'faces)
-
-(defface prog-mode-bugs-face
-  '((((background light)) (:background "Red" :foreground "Yellow"))
-    (((background dark)) (:background "Red" :foreground "Yellow")))
-  "Highlight Bug 1234 and alike"
-  :group 'faces)
-
-(defun prog-mode-faces-add ()
-  "Highlights certain words, like BUG or XXX or FIXME in the code"
-  (font-lock-add-keywords
-   nil
-   '(("\\s<\\s-*\\(FIX\\(ME\\)?\\|TODO\\|XXX\\):?\\(.+\\)\\>" 1 'prog-mode-watchword-face t)
-     ("\\s<\\s-*\\([Bb][Uu][Gg]\\s-+[0-9]+\\)\\s-*:?"  1 'prog-mode-bugs-face t))))
-
 (defun turn-on-flymake ()
   (flymake-mode))
+
 
 (defun turn-on-electric-mode ()
   (electric-pair-mode +1))
@@ -996,7 +979,7 @@ by using nxml's indentation rules."
                 local-comment-auto-fill
                 turn-on-hl-line-mode
                 pretty-greek
-                prog-mode-faces-add
+                turn-on-fic-mode
                 turn-on-flyspell-prog-mode
                 turn-on-flymake))
   (if (fboundp it)
