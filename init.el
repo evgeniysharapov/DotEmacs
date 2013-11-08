@@ -780,27 +780,9 @@ This function depends on 's and 'dash libraries."
                            ("[(shift ?e)]" allout-hide-current-entry)
                            ("[?e]" allout-show-entry)
                            ("[?o]" allout-show-to-offshoot)
-                           ("[?l]" allout-show-current-branches)))
+                           ("[?b]" allout-show-current-branches)))
        (add-to-list 'allout-prefixed-keybindings keybinding))
      ))
-
-(defun ffy-allout-defface (level bg)
-  (let ((face-name (intern (concat "ffy-allout-header-" (int-to-string level)))))
-     (make-face face-name)
-     (copy-face 'font-lock-comment-face face-name)
-     (set-face-background face-name bg)
-     face-name))
-
-(add-hook 'allout-mode-hook
-          (lambda ()
-            ;; add fontification of headers
-            (font-lock-add-buffer-keywords
-             '(("^\\(;;;_[\\.,]\\(.+\\)\\)" 2 (ffy-allout-defface 1 "Lavender") prepend)
-               ("^\\(;;;_[ ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 2 "LavenderBlush") prepend)
-               ("^\\(;;;_[  ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 3 "azure") prepend)
-               ("^\\(;;;_[   ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 4 "cornsilk") prepend)
-               ("^\\(;;;_[    ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 5 "seashell") prepend)
-               ("^\\(;;;_[     ][\\.,][ ]*\\(.+\\)\\)" 2  (ffy-allout-defface 6 "honeydew") prepend)))))
 
 ;;;_. XSL/XML setup.
 (defun xml-pretty-print (begin end)
