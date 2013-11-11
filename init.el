@@ -930,7 +930,7 @@ by using nxml's indentation rules."
   (run-hooks '*programming-hook*))
 
 ;;;_. Auto-Complete
-
+(require-package 'auto-complete)
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict"))
 (setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
