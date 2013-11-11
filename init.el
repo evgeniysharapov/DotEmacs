@@ -92,11 +92,13 @@
   "Installs package of desired version using ELPA"
   ;; TODO: make it work with minimum and maximum version
   ;; use version-list-= and version-list-> from subr.el
-  (unless (package-installed-p package min-version)
+  (if (package-installed-p package min-version)
+    t
     (package-install package))
-  (let ((pkg-autoload (ffy-find-package-autoloads-file package)))
-    (when pkg-autoload
-      (load pkg-autoload t))))
+;  (let ((pkg-autoload (ffy-find-package-autoloads-file package)))
+;    (when pkg-autoload
+;      (load pkg-autoload t)))
+)
 
 ;;;_ , ELPA packages loaded
 (when (require 'package nil 'noerror)
