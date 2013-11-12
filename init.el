@@ -926,13 +926,69 @@ by using nxml's indentation rules."
   (run-hooks '*programming-hook*))
 
 ;;;_. Auto-Complete
-(require-package 'auto-complete)
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict"))
-(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
-(ac-config-default)
-(setq ac-dwim t
-      ac-auto-start t)
+;(require-package 'popup)
+;(require-package 'fuzzy)
+;(require-package 'auto-complete)
+;(require 'popup)
+;(require 'fuzzy)
+;(require 'auto-complete)
+;(require 'auto-complete-config)
+
+;;; add our own directory to the end of the list
+;(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
+;(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
+;(ac-config-default)
+;(global-auto-complete-mode t)
+;(setq ac-auto-show-menu t)
+;(setq ac-dwim t)
+;(setq ac-use-menu-map t)
+;(setq ac-quick-help-delay 1)
+;(setq ac-quick-help-height 60)
+;(setq ac-disable-inline t)
+;(setq ac-show-menu-immediately-on-auto-complete t)
+;(setq ac-auto-start 2)
+;(setq ac-candidate-menu-min 0)
+
+;(set-default 'ac-sources
+;             '(
+;               ac-source-abbrev
+;               ac-source-imenu
+;               ac-source-dictionary
+;               ac-source-words-in-buffer
+;               ac-source-words-in-same-mode-buffers
+;               ac-source-yasnippet               
+;               ))
+
+;>>>>>>>>>>>>>>>>
+;>>>>>>>>>>>>>>>>
+;;; auto-complete is enabled only in modes listed in ac-modes
+;;; TODO: take each particular thing into mode configuration
+
+;(dolist (mode '(inferior-emacs-lisp-mode))
+;   (add-to-list 'ac-modes mode)
+
+;(dolist (mode '(espresso-mode js3-mode))
+;   (add-to-list 'ac-modes mode)
+
+;(dolist (mode '(org-mode))
+;   (add-to-list 'ac-modes mode)
+
+;(dolist (mode '(haml-mode sass-mode scss-mode))
+;   (add-to-list 'ac-modes mode)
+
+;(dolist (mode '(html-mode yaml-mode nxml-mode textile-mode))
+;   (add-to-list 'ac-modes mode)
+
+; original value
+;(emacs-lisp-mode lisp-mode lisp-interaction-mode 
+; slime-repl-mode c-mode cc-mode c++-mode go-mode 
+; java-mode malabar-mode clojure-mode clojurescript-mode 
+; scala-mode scheme-mode ocaml-mode tuareg-mode coq-mode 
+; haskell-mode agda-mode agda2-mode perl-mode cperl-mode 
+; python-mode ruby-mode lua-mode ecmascript-mode javascript-mode 
+; js-mode js2-mode php-mode css-mode makefile-mode 
+; sh-mode fortran-mode f90-mode ada-mode xml-mode sgml-mode 
+; ts-mode sclang-mode verilog-mode)
 
 ;;;_. Lisp-like Programming Languages
 ;;;_ , Paredit settings
