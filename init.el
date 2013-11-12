@@ -94,11 +94,7 @@
   ;; use version-list-= and version-list-> from subr.el
   (if (package-installed-p package min-version)
     t
-    (package-install package))
-;  (let ((pkg-autoload (ffy-find-package-autoloads-file package)))
-;    (when pkg-autoload
-;      (load pkg-autoload t)))
-)
+    (package-install package)))
 
 ;;;_ , ELPA packages loaded
 (when (require 'package nil 'noerror)
