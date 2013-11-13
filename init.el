@@ -727,6 +727,53 @@ This function depends on 's and 'dash libraries."
 (when (fboundp 'magit-status)
   (define-key global-map [(control x) ?g] 'magit-status))
 
+;;;_. Auto-Complete
+(require-package 'popup)
+(require-package 'fuzzy)
+(require-package 'auto-complete)
+(require 'popup)
+(require 'fuzzy)
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+;;; add our own directory to the end of the list
+(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
+(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
+(ac-config-default)
+(global-auto-complete-mode t)
+(setq ac-auto-show-menu t)
+(setq ac-dwim t)
+(setq ac-use-menu-map t)
+(setq ac-quick-help-delay 1)
+(setq ac-quick-help-height 60)
+;(setq ac-disable-inline t)
+(setq ac-show-menu-immediately-on-auto-complete t)
+(setq ac-auto-start 2)
+(setq ac-candidate-menu-min 0)
+
+(set-default 'ac-sources
+             '(
+               ac-source-abbrev
+               ac-source-imenu
+               ac-source-dictionary
+               ac-source-words-in-buffer
+               ac-source-words-in-same-mode-buffers
+               ac-source-yasnippet
+               ))
+
+;;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
+;;; If bounds-of-thing-at-point has been redefined (and we did so)
+;;; this function will return nil. 
+(defun ac-prefix-symbol ()
+  "Overriden default prefix definition function."
+  (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
+    (if (and (null symbol-start)
+             (fboundp 'tap-bounds-of-thing-nearest-point))
+        ;; try tap- function if available
+        (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
+      ;; else
+      symbol-start)))
+
 ;;;_ Customizing Modes
 
 ;;;_. AllOut customizations
@@ -811,8 +858,14 @@ by using nxml's indentation rules."
                "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
                ""
                nil))
+;;; Add auto-complete to the the XML based modes 
+(dolist (mode '(nxml-mode))
+  (add-to-list 'ac-modes mode))
 
-;;;_. HTML and XHTML setup
+;;;_. HTML and XHTML and other markup mode setup setup
+;; (dolist (mode '(html-mode yaml-mode  textile-mode))
+;;   (add-to-list 'ac-modes mode)
+
 
 ;;;_. Org Mode
 (setq org-completion-use-ido t
@@ -844,6 +897,10 @@ by using nxml's indentation rules."
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 (add-hook 'org-mode-hook 'turn-on-flyspell)
 (add-hook 'org-mode-hook 'hl-line-mode)
+
+(dolist (mode '(org-mode))
+  (add-to-list 'ac-modes mode))
+
 ;;
 ;;  Setup iimage working with Org-mode
 ;; 
@@ -925,84 +982,6 @@ by using nxml's indentation rules."
   "Enable things that are convenient across all coding buffers."
   (run-hooks '*programming-hook*))
 
-;;;_. Auto-Complete
-(require-package 'popup)
-(require-package 'fuzzy)
-(require-package 'auto-complete)
-(require 'popup)
-(require 'fuzzy)
-(require 'auto-complete)
-(require 'auto-complete-config)
-
-;;; add our own directory to the end of the list
-(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
-(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
-(ac-config-default)
-(global-auto-complete-mode t)
-(setq ac-auto-show-menu t)
-(setq ac-dwim t)
-(setq ac-use-menu-map t)
-(setq ac-quick-help-delay 1)
-(setq ac-quick-help-height 60)
-;(setq ac-disable-inline t)
-(setq ac-show-menu-immediately-on-auto-complete t)
-(setq ac-auto-start 2)
-(setq ac-candidate-menu-min 0)
-
-(set-default 'ac-sources
-             '(
-               ac-source-abbrev
-               ac-source-imenu
-               ac-source-dictionary
-               ac-source-words-in-buffer
-               ac-source-words-in-same-mode-buffers
-               ac-source-yasnippet               
-               ))
-
-;;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
-;;; If bounds-of-thing-at-point has been redefined (and we did so)
-;;; this function will return nil. 
-(defun ac-prefix-symbol ()
-  "Overriden default prefix definition function."
-  (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
-    (if (and (null symbol-start)
-             (fboundp 'tap-bounds-of-thing-nearest-point))
-        ;; try tap- function if available
-        (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
-      ;; else
-      symbol-start)))
-
-;>>>>>>>>>>>>>>>>
-;>>>>>>>>>>>>>>>>
-;;; auto-complete is enabled only in modes listed in ac-modes
-;;; TODO: take each particular thing into mode configuration
-
-;(dolist (mode '(inferior-emacs-lisp-mode))
-;   (add-to-list 'ac-modes mode)
-
-;(dolist (mode '(espresso-mode js3-mode))
-;   (add-to-list 'ac-modes mode)
-
-;(dolist (mode '(org-mode))
-;   (add-to-list 'ac-modes mode)
-
-;(dolist (mode '(haml-mode sass-mode scss-mode))
-;   (add-to-list 'ac-modes mode)
-
-;(dolist (mode '(html-mode yaml-mode nxml-mode textile-mode))
-;   (add-to-list 'ac-modes mode)
-
-; original value
-;(emacs-lisp-mode lisp-mode lisp-interaction-mode 
-; slime-repl-mode c-mode cc-mode c++-mode go-mode 
-; java-mode malabar-mode clojure-mode clojurescript-mode 
-; scala-mode scheme-mode ocaml-mode tuareg-mode coq-mode 
-; haskell-mode agda-mode agda2-mode perl-mode cperl-mode 
-; python-mode ruby-mode lua-mode ecmascript-mode javascript-mode 
-; js-mode js2-mode php-mode css-mode makefile-mode 
-; sh-mode fortran-mode f90-mode ada-mode xml-mode sgml-mode 
-; ts-mode sclang-mode verilog-mode)
-
 ;;;_. Lisp-like Programming Languages
 ;;;_ , Paredit settings
 (require-package 'paredit)
@@ -1078,6 +1057,10 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
     (ielm-change-working-buffer buf)))
 ;;;_   , adding keys (C-c M-:) to start IELM with current buffer
 (define-key global-map [(control ?c) (meta ?:)] 'ffy-ielm)
+
+;;; add Auto-Complete to the IELM
+(dolist (mode '(inferior-emacs-lisp-mode))
+  (add-to-list 'ac-modes mode))
 
 ;;;_ , All Lisps
 (defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
@@ -1236,6 +1219,9 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (add-hook 'scss-mode-hook  'ffy-customize-sass-scss-mode)
 (add-hook 'sass-mode-hook  'ffy-customize-sass-scss-mode)
 
+;;; add Auto-Complete HAML SCSS and SASS modes
+(dolist (mode '(haml-mode sass-mode scss-mode))
+  (add-to-list 'ac-modes mode))
 
 ;;;_. JavaScript
 ;;; ----------------------------------------------------------------------
@@ -1276,6 +1262,11 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;                      (lambda (output)
 ;;                        (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
 ;;                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
+
+;;; Add Auto-Complete to JavaScript modes.
+(dolist (mode '(espresso-mode js3-mode))
+  (add-to-list 'ac-modes mode))
+
 
 ;;;_. Scala setup
 (require-package 'scala-mode)
