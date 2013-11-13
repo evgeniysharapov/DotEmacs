@@ -926,38 +926,51 @@ by using nxml's indentation rules."
   (run-hooks '*programming-hook*))
 
 ;;;_. Auto-Complete
-;(require-package 'popup)
-;(require-package 'fuzzy)
-;(require-package 'auto-complete)
-;(require 'popup)
-;(require 'fuzzy)
-;(require 'auto-complete)
-;(require 'auto-complete-config)
+(require-package 'popup)
+(require-package 'fuzzy)
+(require-package 'auto-complete)
+(require 'popup)
+(require 'fuzzy)
+(require 'auto-complete)
+(require 'auto-complete-config)
 
 ;;; add our own directory to the end of the list
-;(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
-;(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
-;(ac-config-default)
-;(global-auto-complete-mode t)
-;(setq ac-auto-show-menu t)
-;(setq ac-dwim t)
-;(setq ac-use-menu-map t)
-;(setq ac-quick-help-delay 1)
-;(setq ac-quick-help-height 60)
+(add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
+(setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
+(ac-config-default)
+(global-auto-complete-mode t)
+(setq ac-auto-show-menu t)
+(setq ac-dwim t)
+(setq ac-use-menu-map t)
+(setq ac-quick-help-delay 1)
+(setq ac-quick-help-height 60)
 ;(setq ac-disable-inline t)
-;(setq ac-show-menu-immediately-on-auto-complete t)
-;(setq ac-auto-start 2)
-;(setq ac-candidate-menu-min 0)
+(setq ac-show-menu-immediately-on-auto-complete t)
+(setq ac-auto-start 2)
+(setq ac-candidate-menu-min 0)
 
-;(set-default 'ac-sources
-;             '(
-;               ac-source-abbrev
-;               ac-source-imenu
-;               ac-source-dictionary
-;               ac-source-words-in-buffer
-;               ac-source-words-in-same-mode-buffers
-;               ac-source-yasnippet               
-;               ))
+(set-default 'ac-sources
+             '(
+               ac-source-abbrev
+               ac-source-imenu
+               ac-source-dictionary
+               ac-source-words-in-buffer
+               ac-source-words-in-same-mode-buffers
+               ac-source-yasnippet               
+               ))
+
+;;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
+;;; If bounds-of-thing-at-point has been redefined (and we did so)
+;;; this function will return nil. 
+(defun ac-prefix-symbol ()
+  "Overriden default prefix definition function."
+  (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
+    (if (and (null symbol-start)
+             (fboundp 'tap-bounds-of-thing-nearest-point))
+        ;; try tap- function if available
+        (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
+      ;; else
+      symbol-start)))
 
 ;>>>>>>>>>>>>>>>>
 ;>>>>>>>>>>>>>>>>
