@@ -715,10 +715,14 @@ This function depends on 's and 'dash libraries."
 
 ;;; We want to have ido completion of properties in Org-mode
 ;;; hence change enable ido-ubiquitous in org-icompleting-read
-(setq ido-ubiquitous-function-overrides
-      (mapcar (lambda (override) (if (equal (caddr override)
-                                       "org-icompleting-read") (cons 'enable (cdr override))
-                              override)) ido-ubiquitous-function-overrides))
+;; (setq ido-ubiquitous-function-overrides
+;;       (mapcar (lambda (override) (if (or (equal (caddr override)
+;;                                                 "org-icompleting-read")
+;;                                          (equal (caddr override)
+;;                                                 "org-completing-read"))
+;;                                      (cons 'disable (cdr override))
+;;                                    override))
+;;               ido-ubiquitous-function-overrides))
 
 ;;;_. Version Control Systems
 ;;;_ , Git
@@ -869,11 +873,35 @@ by using nxml's indentation rules."
 
 ;;;_. Org Mode
 (setq org-completion-use-ido t
+      ;; org-completion-use-iswitchb t     ; without it ido completion is
+      ;;                                   ; not going to work for
+      ;;                                   ; org-mode (see `org-read-property-value')
       org-hide-leading-stars t
       org-return-follows-link t
       org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-protocol org-special-blocks org-w3m org-bookmark org-elisp-symbol org-panel)
       org-empty-line-terminates-plain-lists t)
 
+;;; Override not working function from org-mode
+(eval-after-load "org"
+  '(defun org-read-property-value (property)
+    "Read PROPERTY value from user."
+    (let* ((completion-ignore-case t)
+           (allowed (org-property-get-allowed-values nil property 'table))
+           (cur (org-entry-get nil property))
+           (prompt (concat property " value"
+                           (if (and cur (string-match "\\S-" cur))
+                               (concat " [" cur "]") "") ": "))
+           (set-function (org-set-property-function property))
+           (val (if allowed
+                    (funcall set-function prompt allowed nil
+                             (not (get-text-property 0 'org-unrestricted
+                                                     (caar allowed))))
+                  (funcall set-function prompt
+                           (mapcar 'list (org-property-values property))
+                           nil nil "" nil cur))))
+      (if (equal val "")
+          cur
+        val))))
 
 ;(setq org-todo-keyword-faces
 ;      (quote (("TODO" :foreground "medium blue" :weight bold)
