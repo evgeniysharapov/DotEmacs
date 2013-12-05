@@ -712,17 +712,22 @@ This function depends on 's and 'dash libraries."
 ;;; kill-ring-search has already set of minibuffer commands that don't
 ;;; work well with ido-completing-read
 (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
-
-;;; We want to have ido completion of properties in Org-mode
-;;; hence change enable ido-ubiquitous in org-icompleting-read
-;; (setq ido-ubiquitous-function-overrides
-;;       (mapcar (lambda (override) (if (or (equal (caddr override)
-;;                                                 "org-icompleting-read")
-;;                                          (equal (caddr override)
-;;                                                 "org-completing-read"))
-;;                                      (cons 'disable (cdr override))
-;;                                    override))
-;;               ido-ubiquitous-function-overrides))
+;;;_ , ffy--change-ido-override
+(defun ffy--change-ido-override (behavior func-name)
+  "Changes `ido-ubiquitous-function-overrides` variable for a function FUNC-NAME by setting its behavior to BEHAVIOR"
+  (setq ido-ubiquitous-function-overrides
+         (mapcar (lambda (override) (if  (equal (caddr override) ,func-name)
+                                   (cons ,behavior (cdr override))
+                                 override))
+                 ido-ubiquitous-function-overrides)))
+;;;_ , enable-ido-for
+(defmacro enable-ido-for (func-name)
+  "Enables IDO for a function using `ido-ubiquitous' mode"
+  `(ffy--change-ido-override 'enable ,func-name))
+;;;_ , disable-ido-for
+(defmacro disable-ido-for (func-name)
+  "Disables IDO for a function using `ido-ubiquitous' mode"
+  `(ffy--change-ido-override 'disable ,func-name))
 
 ;;;_. Version Control Systems
 ;;;_ , Git
