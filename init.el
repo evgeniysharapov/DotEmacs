@@ -96,7 +96,7 @@
     t
     (package-install package)))
 
-;;;_ , ELPA packages loaded
+;;;_ , ELPA settings
 (when (require 'package nil 'noerror)
   ;; all ELPA packages are located here
   (setq package-user-dir (concat *dotfiles-dir* "elpa"))
