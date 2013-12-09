@@ -58,6 +58,10 @@
 ;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
 
+;;;_. packages in site-lisp
+(mapc #'require '(use-package bind-key))
+
+
 ;;;_. Autoloads file if it's present
 (load *autoload-file* 'noerror)
 
