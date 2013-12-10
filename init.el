@@ -143,7 +143,9 @@
 ;;; ----------------------------------------------------------------------
 (defvar ctl-x-f-map)
 (define-prefix-command 'ctl-x-f-map)
-(define-key global-map [(control x) ?f] 'ctl-x-f-map)
+
+(bind-key "C-x f" 'ctl-x-f-map)
+
 ;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
 ;;; C-z ctl-z-map
 ;;; Make the prefix key `C-z' for my personal keymap.
@@ -152,15 +154,15 @@
 ;;; for mode-specific commands (both user-defined and standard Emacs extensions).
 ;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
 ;;; is reassigned here to double key sequence `C-z C-z'.
-(defvar ctl-z-map
-  (let ((map (make-sparse-keymap))
-        (c-z (global-key-binding [(control ?z)])))
-    (global-unset-key [(control ?z)])
-    (define-key global-map [(control ?z)] map)
-    (define-key map [(control ?z)] c-z)
-    map))
+(defvar ctl-z-map)
+(define-prefix-command 'ctl-z-map)
+(let ((c-z (global-key-binding [(control ?z)])))
+  (global-unset-key [(control ?z)])
+  (bind-key "C-z" 'ctl-z-map)
+  (bind-key "C-z C-z" c-z))
+
 ;;; almost always hit suspend instead of repeat command
-;;; so not repeat is moth C-x z and C-x C-z
+;;; so `repeat' is both C-x z and C-x C-z
 (let ((c-x-z (global-key-binding [(control x) ?z])))
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
@@ -459,8 +461,8 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 ;;;_ , UI Key-bindings
 ;;; ----------------------------------------------------------------------
 ;;; Turn on the menu bar for exploring new modes
-(define-key global-map [f1] 'menu-bar-mode)
-(define-key global-map [(control f1)] 'imenu-add-menubar-index)
+(bind-key "<f1>" 'menu-bar-mode)
+(bind-key "<C-f1>" 'imenu-add-menubar-index)
 
 
 ;;;_. Files Settings and Operations
@@ -488,11 +490,11 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 ;;;
 ;;;  C-x f <letter> are different file commands
 
-(define-key ctl-x-f-map [(shift ?r)]  'recentf-open-most-recent-file)
-(define-key ctl-x-f-map [?o] 'ido-find-file-other-window)
-(define-key ctl-x-f-map [?f] 'find-file-in-project)
-(define-key ctl-x-f-map [?r] 'ido-choose-from-recentf)
-(define-key ctl-x-f-map [(return)] 'find-file-at-point)
+(bind-key "R" 'recentf-open-most-recent-file ctl-x-f-map)
+(bind-key "o" 'ido-find-file-other-window ctl-x-f-map)
+(bind-key "f" 'find-file-in-project ctl-x-f-map)
+(bind-key "r" 'ido-choose-from-recentf ctl-x-f-map)
+(bind-key "RET" 'find-file-at-point ctl-x-f-map)
 
 ;;;_ , Dired
 ;;; Dired settings that proved useful
@@ -500,7 +502,7 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 
 (add-hook 'dired-mode-hook
           '(lambda ()
-              (define-key dired-mode-map [(shift ?w)] 'wdired-change-to-wdired-mode)))
+              (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
 
 
 ;;;_. Byte Compilation
@@ -546,17 +548,17 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 
 ;;;_ , Buffer Operations Keybindings
 ;;; ------------------------------------------------------------
-(define-key global-map [(control x) (control b)] 'ibuffer)
+(bind-key "C-x C-b" 'ibuffer)
 ;;; more direct approach
-(define-key global-map [f12] 'kill-this-buffer)
+(bind-key "<f12>" 'kill-this-buffer)
 ;;; other useful combos:
 ;;; `C-x 4 0' - kill-buffer-and-window (works with current buffer
 ;;; only)
 ;;; `C-x 4 b' - ido open buffer other window
 
 ;;; Buffer operations in C-z map
-(define-key ctl-z-map [?b ?y] 'bury-buffer)
-(define-key ctl-z-map [?b ?r] 'revert-buffer)
+(bind-key "b y" 'bury-buffer  ctl-z-map)
+(bind-key "b r" 'revert-buffer  ctl-z-map)
 
 
 ;;;_. Kill-rings
@@ -565,11 +567,11 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 ;;; we use kill-ring-search through ELPA, hence check if it is
 ;;; available first
 (when (fboundp 'kill-ring-search)
-  (define-key global-map [(control meta ?y)] 'kill-ring-search))
+  (bind-key "C-M-y"'kill-ring-search))
 ;;; browse kill ring is nice too and also might be unavailable
 (when (fboundp 'browse-kill-ring)
   (browse-kill-ring-default-keybindings) ; advise M-y
-  (define-key global-map [(control x) (control ?y)] 'browse-kill-ring))
+  (bind-key "C-x C-y" 'browse-kill-ring))
 
 ;;;_. Enable useful disabled commands
 (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen))
@@ -642,7 +644,7 @@ This function depends on 's and 'dash libraries."
 (require 'help+ nil t)
 (require 'help-fns+ nil t)
 ;;; apropos seems to be more useful than apropos-command
-(define-key global-map [(control h) ?a] 'apropos)
+(bind-key "C-h a" 'apropos)
 
 ;;;_. Miscellaneous
 ;;; ----------------------------------------------------------------------
@@ -661,7 +663,7 @@ This function depends on 's and 'dash libraries."
 (eval-after-load "grep"
   '(progn
      (setq wgrep-enable-key "e")
-     (define-key grep-mode-map [(?e)] 'wgrep-change-to-wgrep-mode)))
+     (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
 
 ;;;_. Minibuffer and Smex
 ;;; ----------------------------------------------------------------------
@@ -669,12 +671,12 @@ This function depends on 's and 'dash libraries."
 (when (fboundp 'smex-initialize)
   (smex-initialize)
   ;; Smex is used in minibuffer M-x
-  (define-key global-map [(meta ?x)] 'smex)
-  (define-key global-map [(meta shift ?x)] 'smex-major-mode-commands))
+  (bind-key "M-x" 'smex)
+  (bind-key "M-X" 'smex-major-mode-commands))
 
 ;;; We are trying to make keys working in both Windows and Mac OS X
 ;;; To be able to M-x without meta
-(define-key global-map [(control x) (control ?m)] 'execute-extended-command)
+(bind-key "C-x C-m"  'execute-extended-command)
 
 
 ;;;_. Using smerge for merging files
@@ -738,7 +740,7 @@ This function depends on 's and 'dash libraries."
 (require-package 'magit)
 ;;; Added global shortcut to run Magit
 (when (fboundp 'magit-status)
-  (define-key global-map [(control x) ?g] 'magit-status))
+  (bind-key "C-x g"  'magit-status))
 
 ;;;_. Auto-Complete
 (require-package 'popup)
@@ -955,12 +957,10 @@ by using nxml's indentation rules."
 ;;;_ , Org-mode bindings
 (when (fboundp 'org-mode)
   ;; due to the conflict with Yasnippet
-  (define-key mode-specific-map [(control ?&)] 'org-mark-ring-goto)
-  (define-key global-map [(control ?c) ?l] 'org-store-link)
-  (define-key global-map [(control ?c) ?a] 'org-agenda)
-  (define-key global-map [(control ?c) ?b] 'org-iswitchb))
-
-
+  (bind-key "C-&" 'org-mark-ring-goto  mode-specific-map)
+  (bind-key "C-c l" 'org-store-link)
+  (bind-key "C-c a" 'org-agenda)
+  (bind-key "C-c b" 'org-iswitchb))
 
 
 ;;;_. Markdown
@@ -1026,7 +1026,7 @@ by using nxml's indentation rules."
 (eval-after-load "paredit"
   '(progn
      ;; C-S-d forces delete character in ParEdit mode
-     (define-key paredit-mode-map [(control shift ?d)] (lambda () (paredit-forward-delete +1)))))
+     (bind-key "C-S-d" (lambda () (paredit-forward-delete +1))  paredit-mode-map)))
 
 (defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
   "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
@@ -1093,7 +1093,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
         (ielm)))
     (ielm-change-working-buffer buf)))
 ;;;_   , adding keys (C-c M-:) to start IELM with current buffer
-(define-key global-map [(control ?c) (meta ?:)] 'ffy-ielm)
+(bind-key "C-c M-:" 'ffy-ielm)
 
 ;;; add Auto-Complete to the IELM
 (dolist (mode '(inferior-emacs-lisp-mode))
@@ -1113,8 +1113,8 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
          (highlight-parentheses-mode +1))
        (when (fboundp 'rainbow-delimiters-mode)
          (rainbow-delimiters-mode))
-       (define-key lisp-mode-shared-map [(meta return)] 'reindent-then-newline-and-indent)
-       (define-key lisp-mode-shared-map [(control x) ?x] 'eval-print-last-sexp)))
+       (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
+       (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
 
 (dolist (mode *lisp-modes*)
   (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
@@ -1211,9 +1211,9 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (eval-after-load 'ruby-mode
   '(progn
      (inf-ruby-setup-keybindings)
-     (define-key ruby-mode-map [(return)] 'reindent-then-newline-and-indent)
-     (define-key ruby-mode-map [(?#)] 'ffy-insert-ruby-string-interpolation)
-     (define-key ruby-mode-map [(control ?h) ?r] 'yari)))
+     (bind-key "<return>" 'reindent-then-newline-and-indent ruby-mode-map)
+     (bind-key "#" 'ffy-insert-ruby-string-interpolation  ruby-mode-map)
+     (bind-key "C-h r" 'yari  ruby-mode-map)))
 
 (add-hook 'ruby-mode-hook 'subword-mode)
 (add-hook 'ruby-mode-hook 'ruby-electric-mode)
@@ -1328,13 +1328,13 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;;_ , Windmove
 (windmove-default-keybindings 'super) ;; ⌘+direction
 ;;;_ , Moving in a window
-(define-key goto-map [(?t)] (make-interactive move-to-window-line 0))
-(define-key goto-map [(?b)] (make-interactive move-to-window-line -1))
+(bind-key "t" (make-interactive move-to-window-line 0)  goto-map)
+(bind-key "b" (make-interactive move-to-window-line -1)  goto-map)
 ;;;_ , Typical window operations but faster
-(define-key global-map [(meta ?0)] 'delete-window)
-(define-key global-map [(meta ?1)] 'delete-other-windows)
-(define-key global-map [(meta ?2)] 'split-window-vertically)
-(define-key global-map [(meta ?3)] 'split-window-horizontally)
+(bind-key "M-0" 'delete-window)
+(bind-key "M-1" 'delete-other-windows)
+(bind-key "M-2" 'split-window-vertically)
+(bind-key "M-3" 'split-window-horizontally)
 ;;;_ , Windows configurations
 (define-key global-map [(control x) (super left)] 'winner-undo)
 (define-key global-map [(control x) (super right)] 'winner-redo)
@@ -1343,19 +1343,19 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;;_. Editing/Operations In Buffer
 ;;; ------------------------------------------------------------
 ;;;_ , Completion operations
-(define-key global-map [(meta /)] 'hippie-expand)
+(bind-key "M-/"  'hippie-expand)
 ;;;_ , toggles line  numbers in the buffer
-(define-key global-map [(control shift ?l)] 'linum-mode)
+(bind-key "C-S-l"  'linum-mode)
 ;;;_ , search forward/backward
-(define-key global-map [(control shift ?r)] 'search-backward)
-(define-key global-map [(control shift ?s)] 'search-forward)
+(bind-key "C-S-r"  'search-backward)
+(bind-key "C-S-s"  'search-forward)
 ;;;_ , M-z is zap-to-char now
-(define-key global-map [(control meta ?z)]
+(bind-key "C-M-z"
     (lambda (char)
     (interactive "cZap to char backwards: ")
     (zap-to-char -1 char)))
-(define-key global-map [(meta shift ?z)] 'zap-up-to-char)
-(define-key global-map [(control meta shift ?z)]
+(bind-key "M-Z"  'zap-up-to-char)
+(bind-key "C-M-S-z"
   (lambda (char)
     (interactive "cZap up to char backwards: ")
     (zap-up-to-char -1 char)))
@@ -1367,32 +1367,32 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
       (back-to-indentation)
     (move-beginning-of-line 1)))
 ;;;_ , redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
-(define-key global-map [(control shift ?a)] (key-binding [(control ?a)]))
-(define-key global-map [(control ?a)] 'ffy-bol-or-back-to-indent)
+(bind-key "C-S-a" (key-binding [(control ?a)]))
+(bind-key "C-a"  'ffy-bol-or-back-to-indent)
 ;;;_ , use C-\ to leave one space between words
 (define-key global-map [(control ?\\)] 'just-one-space)
 ;;;_ , update buffer with F5
-(define-key global-map [(f5)] 'revert-buffer)
+(bind-key "<f5>" 'revert-buffer)
 ;;;_ , Mark/Point machinery
 
 ;;; see
 ;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
 
 ;;; pushes mark into a ring without activating a region
-(define-key global-map [(meta ?\ )]
+(bind-key  "M-SPC"
   (make-interactive (lambda ()
                       (push-mark (point) t nil)
                       (message "Position %s pushed to the ring" (point)))))
 ;;;_ , inc/dec number at the point
 (eval-after-load "thingatpt"
   '(progn
-     (define-key global-map [(control ?-)] 'ffy-tap-number-decrease)
-     (define-key global-map [(control ?+)] 'ffy-tap-number-increase)))
+     (bind-key "C--"  'ffy-tap-number-decrease)
+     (bind-key "C-+"  'ffy-tap-number-increase)))
 ;;;_ , there's default M-^ `delete-indentation' that is an alias to join-line
-(define-key ctl-z-map [(?j)] 'join-line)
-(define-key ctl-z-map [(?J)] (lambda () "joins next line to this one"
+(bind-key "j" 'join-line ctl-z-map)
+(bind-key "J" (lambda () "joins next line to this one"
                                (interactive)
-                               (join-line 1)))
+                               (join-line 1)) ctl-z-map)
 ;;;_ , mark commands from `thing-cmds'
 (when  (require-package 'thing-cmds)
   (thgcmd-bind-keys))
