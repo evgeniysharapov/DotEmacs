@@ -113,6 +113,59 @@
   (unless package-archive-contents
     (package-refresh-contents)))
 
+;;;_ Key Bindings Setup
+;;; ----------------------------------------------------------------------
+;;;_. Description of Organization of Key Bindings
+;;;
+;;; C-x primary map (some defaults)
+;;; C-c secondary map (modes use it)
+;;; C-z tertiary map (private custom one)
+;;;
+;;; Other maps:
+;;;   C-x f  - map  file operations
+;;;   M-g    - goto map (already exists in Emacs24)
+
+;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
+;;;   M-o
+
+;;;   C-<capital letter>
+;;;   M-<capital letter>
+;;;
+;;;   A-<anything>
+;;;   M-A-<anything>
+;;;
+;;; Single-letter bindings still available:
+;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
+;;;   M- ?#
+
+
+;;;_. Create Additional Keymaps (ctl-x-f, ctl-z)
+;;; ----------------------------------------------------------------------
+(defvar ctl-x-f-map)
+(define-prefix-command 'ctl-x-f-map)
+(define-key global-map [(control x) ?f] 'ctl-x-f-map)
+;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+;;; C-z ctl-z-map
+;;; Make the prefix key `C-z' for my personal keymap.
+;;; On qwerty-keyboards `C-z' is one of the most accessible keys
+;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
+;;; for mode-specific commands (both user-defined and standard Emacs extensions).
+;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
+;;; is reassigned here to double key sequence `C-z C-z'.
+(defvar ctl-z-map
+  (let ((map (make-sparse-keymap))
+        (c-z (global-key-binding [(control ?z)])))
+    (global-unset-key [(control ?z)])
+    (define-key global-map [(control ?z)] map)
+    (define-key map [(control ?z)] c-z)
+    map))
+;;; almost always hit suspend instead of repeat command
+;;; so not repeat is moth C-x z and C-x C-z
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
 ;;;_ Utility functions
 
 ;;;_. eval-and-replace
@@ -349,59 +402,6 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
         (when append
           (rotatef keywords old))
         (setq font-lock-keywords (append keywords old))))))
-
-
-;;;_ Key Bindings
-;;; ----------------------------------------------------------------------
-;;;_. Description of Organization of Key Bindings
-;;;
-;;; C-x primary map (some defaults)
-;;; C-c secondary map (modes use it)
-;;; C-z tertiary map (private custom one)
-;;;
-;;; Other maps:
-;;;   C-x f  - map  file operations
-;;;   M-g    - goto map (already exists in Emacs24)
-
-;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
-;;;   M-o
-
-;;;   C-<capital letter>
-;;;   M-<capital letter>
-;;;
-;;;   A-<anything>
-;;;   M-A-<anything>
-;;;
-;;; Single-letter bindings still available:
-;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
-;;;   M- ?#
-
-
-;;;_. Create Keymaps (ctl-x-f, ctl-z)
-;;; ----------------------------------------------------------------------
-(defvar ctl-x-f-map)
-(define-prefix-command 'ctl-x-f-map)
-(define-key global-map [(control x) ?f] 'ctl-x-f-map)
-;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-;;; C-z ctl-z-map
-;;; Make the prefix key `C-z' for my personal keymap.
-;;; On qwerty-keyboards `C-z' is one of the most accessible keys
-;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
-;;; for mode-specific commands (both user-defined and standard Emacs extensions).
-;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
-;;; is reassigned here to double key sequence `C-z C-z'.
-(defvar ctl-z-map
-  (let ((map (make-sparse-keymap))
-        (c-z (global-key-binding [(control ?z)])))
-    (global-unset-key [(control ?z)])
-    (define-key global-map [(control ?z)] map)
-    (define-key map [(control ?z)] c-z)
-    map))
-;;; almost always hit suspend instead of repeat command
-;;; so not repeat is moth C-x z and C-x C-z
-(let ((c-x-z (global-key-binding [(control x) ?z])))
-  (global-unset-key [(control x) (control ?z)])
-  (define-key ctl-x-map [(control ?z)] c-x-z))
 
 
 ;;;_ Customizing General Emacs Behavior
