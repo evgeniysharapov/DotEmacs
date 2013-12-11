@@ -420,7 +420,6 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 (require-package 'rainbow-mode)
 (require-package 'rainbow-delimiters)
 (require-package 'diminish)
-(require-package 'powerline)
 (require-package 'base16-theme)
 (require-package 'minimap)
 
@@ -455,7 +454,9 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
     '(diminish 'undo-tree-mode)))
 
 ;;;_ , Configure powerline if it is available
-(when (fboundp 'powerline-default-theme)
+(use-package powerline
+  :ensure t
+  :config
   (powerline-default-theme))
 
 ;;;_ , UI Key-bindings
