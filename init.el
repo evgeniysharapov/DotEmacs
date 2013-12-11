@@ -672,10 +672,13 @@ This function depends on 's and 'dash libraries."
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-(eval-after-load "grep"
-  '(progn
-     (setq wgrep-enable-key "e")
-     (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
+
+(use-package grep
+  :defer t
+  :config
+  (progn
+    (setq wgrep-enable-key "e")
+    (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
 
 ;;;_. Minibuffer and Smex
 ;;; ----------------------------------------------------------------------
