@@ -591,8 +591,8 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 
 ;;;_. Undo settings
 ;;; ----------------------------------------------------------------------
-(require-package 'undo-tree)
-(when (fboundp 'global-undo-tree-mode)
+(use-package undo-tree
+  :config
   (global-undo-tree-mode))
 
 ;;;_. Spellcheck setup 
