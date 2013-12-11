@@ -692,10 +692,15 @@ This function depends on 's and 'dash libraries."
 
 ;;;_. Bookmarking
 ;;; ----------------------------------------------------------------------
-(require-package 'bm)
-(require-package 'bookmark+)
-(eval-after-load "bookmark"
-  '(require 'bookmark+ nil t))
+(use-package bm
+  :ensure bm)
+
+(use-package bookmark
+  :defer t
+  :config
+  (progn
+    (use-package bookmark+
+      :ensure t)))
 
 ;;;_. Yasnippets
 ;;; ----------------------------------------------------------------------
