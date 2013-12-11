@@ -800,22 +800,23 @@ This function depends on 's and 'dash libraries."
 ;;;_ Customizing Modes
 
 ;;;_. AllOut customizations
-(eval-after-load "allout"
-  '(progn
-     (setq
-      ;; we want to keep C-k as paredit and other
-      ;; useful modes for editing
-      allout-unprefixed-keybindings nil)
-     ;; add missing but useful keybindings. in allout mode
-     ;; it is set through changin allout-prefixed-keybindings
-     (dolist (keybinding '(("[(shift ?h)]" allout-hide-bodies)
-                           ("[(shift ?l)]" allout-hide-current-leaves)
-                           ("[(shift ?e)]" allout-hide-current-entry)
-                           ("[?e]" allout-show-entry)
-                           ("[?o]" allout-show-to-offshoot)
-                           ("[?b]" allout-show-current-branches)))
-       (add-to-list 'allout-prefixed-keybindings keybinding))
-     ))
+(use-package allout
+  :config
+  (progn
+    (setq
+     ;; we want to keep C-k as paredit and other
+     ;; useful modes for editing
+     allout-unprefixed-keybindings nil)
+    ;; add missing but useful keybindings. in allout mode
+    ;; it is set through changin allout-prefixed-keybindings
+    (dolist (keybinding '(("[(shift ?h)]" allout-hide-bodies)
+                          ("[(shift ?l)]" allout-hide-current-leaves)
+                          ("[(shift ?e)]" allout-hide-current-entry)
+                          ("[?e]" allout-show-entry)
+                          ("[?o]" allout-show-to-offshoot)
+                          ("[?b]" allout-show-current-branches)))
+      (add-to-list 'allout-prefixed-keybindings keybinding))
+    ))
 
 ;;;_. XSL/XML setup.
 (defun xml-pretty-print (begin end)
