@@ -572,16 +572,18 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 
 
 ;;;_. Kill-rings
-(require-package 'browse-kill-ring)
-(require-package 'kill-ring-search)
-;;; we use kill-ring-search through ELPA, hence check if it is
-;;; available first
-(when (fboundp 'kill-ring-search)
-  (bind-key "C-M-y"'kill-ring-search))
-;;; browse kill ring is nice too and also might be unavailable
-(when (fboundp 'browse-kill-ring)
-  (browse-kill-ring-default-keybindings) ; advise M-y
-  (bind-key "C-x C-y" 'browse-kill-ring))
+(use-package browse-kill-ring
+  :ensure t
+  :config
+  (progn
+    (browse-kill-ring-default-keybindings) ; advise M-y
+    (bind-key "C-x C-y" 'browse-kill-ring)))
+
+(use-package kill-ring-search
+  :ensure t
+  :config
+  (progn
+    (bind-key "C-M-y" 'kill-ring-search)))
 
 ;;;_. Enable useful disabled commands
 (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen))
