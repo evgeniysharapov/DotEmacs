@@ -704,12 +704,14 @@ This function depends on 's and 'dash libraries."
 
 ;;;_. Yasnippets
 ;;; ----------------------------------------------------------------------
-(require-package 'yasnippet)
-(require-package 'dropdown-list)
-(yas-global-mode +1)
-
-(add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
-
+(use-package yasnippet
+  :ensure t
+  :config
+  (progn
+    (use-package dropdown-list
+      :ensure t)
+    (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
+    (yas-global-mode +1)))
 
 ;;;_. Ido configuraiton
 ;;; Some IDO settings that have been taken out from the customization file.
