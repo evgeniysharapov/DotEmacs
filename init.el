@@ -1210,41 +1210,55 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
 ;;;_. Ruby/Rails setup
 ;;; Loading  Ruby and Rails relate ELPA packages
-(require-package 'rinari)
-(require-package 'rspec-mode)
-(require-package 'ruby-compilation)
-(require-package 'ruby-electric)
-(require-package 'rvm)
-(require-package 'yari)
-(require-package 'flymake-ruby)
+(use-package ruby-mode
+  :ensure t
+  :init (progn
+          (use-package rinari
+            :ensure t
+            :config
+            (global-rinari-mode 1))
+          (use-package rspec-mode :ensure t)
+          (use-package ruby-compilation :ensure t)
+          (use-package ruby-electric :ensure t)
+          (use-package ruby-end
+            :ensure t
+            :config (progn
+                      (defalias 'ruby-insert-end 'ruby-end-insert-end)))
+          (use-package rvm :ensure t)
+          (use-package yari :ensure t)
+          (use-package flymake-ruby :ensure t)
 
-(dolist (pattern '("\\.rb$" "\\.rake$" "Rakefile$" "\\.gemspec$" "Gemfile$" "Capfile"))
-  (add-to-list 'auto-mode-alist (cons pattern 'ruby-mode)))
-(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+          (defun ffy-insert-ruby-string-interpolation ()
+            "In a double quoted string, interpolation is inserted on #."
+            (interactive)
+            (insert "#")
+            (when (and
+                   (looking-back "\".*")
+                   (looking-at ".*\""))
+              (insert "{}")
+              (backward-char 1)))
+          )
+  :config (progn
+            (inf-ruby-setup-keybindings)
+            (bind-key "<return>" 'reindent-then-newline-and-indent ruby-mode-map)
+            (bind-key "#" 'ffy-insert-ruby-string-interpolation  ruby-mode-map)
+            (bind-key "C-h r" 'yari  ruby-mode-map)
+            (add-hook 'ruby-mode-hook 'subword-mode)
+            (add-hook 'ruby-mode-hook 'ruby-electric-mode)
+            (add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
+            (add-hook 'ruby-mode-hook 'flymake-ruby-load))
+  :mode (("\\.rb$" . ruby-mode)
+         ("\\.rake$" . ruby-mode)
+         ("\\.gemspec$" . ruby-mode)
+         ("\\.ru$" . ruby-mode)
+         ("Rakefile$" . ruby-mode)
+         ("Gemfile$" . ruby-mode)
+         ("Capfile$" . ruby-mode)
+         ("Guardfile$" . ruby-mode)))
 
-(global-rinari-mode 1)
-
-(defun ffy-insert-ruby-string-interpolation ()
-  "In a double quoted string, interpolation is inserted on #."
-  (interactive)
-  (insert "#")
-  (when (and
-         (looking-back "\".*")
-         (looking-at ".*\""))
-    (insert "{}")
-    (backward-char 1)))
-
-(eval-after-load 'ruby-mode
-  '(progn
-     (inf-ruby-setup-keybindings)
-     (bind-key "<return>" 'reindent-then-newline-and-indent ruby-mode-map)
-     (bind-key "#" 'ffy-insert-ruby-string-interpolation  ruby-mode-map)
-     (bind-key "C-h r" 'yari  ruby-mode-map)))
-
-(add-hook 'ruby-mode-hook 'subword-mode)
-(add-hook 'ruby-mode-hook 'ruby-electric-mode)
-(add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(use-package yaml-mode
+  :ensure t
+  :mode (("\\.ya?ml$" . yaml-mode)))
 
 ;;;_. Coffee-Script
 ;;; loading ELPA package
