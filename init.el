@@ -441,12 +441,15 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
   (blink-cursor-mode -1))
 
 ;;;_ , highlight the "word" the cursor is on
-(when (require-package 'highlight-symbol)
-  (highlight-symbol-mode +1)
-  (define-key ctl-z-map [(control return)] 'highlight-symbol-at-point)
-  (define-key ctl-z-map [(control up)] 'highlight-symbol-prev)
-  (define-key ctl-z-map [(control down)] 'highlight-symbol-next)
-  (define-key ctl-z-map [(@)] 'highlight-symbol-query-replace))
+(use-package highlight-symbol
+  :ensure t
+  :config
+  (progn
+    (highlight-symbol-mode +1)
+    (bind-key "<C-return>" 'highlight-symbol-at-point  ctl-z-map)
+    (bind-key "<C-up>" 'highlight-symbol-prev  ctl-z-map)
+    (bind-key "<C-down>" 'highlight-symbol-next  ctl-z-map)
+    (bind-key "@" 'highlight-symbol-query-replace  ctl-z-map)))
 
 ;;;_ , display time in mode-line
 (display-time)
