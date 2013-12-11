@@ -416,12 +416,18 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 ;;;_. GUI/Look and Feel
 ;;; ----------------------------------------------------------------------
 ;;;_ , adding packages from ELPA
-(require-package 'idle-highlight-mode)
-(require-package 'rainbow-mode)
-(require-package 'rainbow-delimiters)
-(require-package 'diminish)
-(require-package 'base16-theme)
-(require-package 'minimap)
+(use-package idle-highlight-mode
+  :ensure t)
+(use-package rainbow-mode
+  :ensure t)
+(use-package rainbow-delimiters
+  :ensure t)
+(use-package diminish
+  :ensure t)
+(use-package base16-theme
+  :ensure t)
+(use-package minimap
+  :ensure t)
 
 ;;;_ , Turn off some bells and whistles
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
