@@ -988,13 +988,15 @@ by using nxml's indentation rules."
 
 
 ;;;_. Markdown
-(require-package 'markdown-mode)
-;;; Add Markdown mode specifics.
-;;; make outline-mode navigation work for underline headers as well
-(add-hook 'markdown-mode-hook
-          (lambda ()
-            (make-local-variable 'outline-regexp)
-            (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$")))
+(use-package markdown-mode
+  :config
+  (progn
+    (defun set-markdown-mode-outline-regexp ()
+      "Add Markdown mode specifics.  Make outline-mode navigation work for underline headers as well"
+      (make-local-variable 'outline-regexp)
+      (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$"))
+
+    (add-hook 'markdown-mode-hook 'set-markdown-mode-outline-regexp)))
 
 ;;;_. General Programming Mode
 (autoload 'turn-on-fic-mode "fic-mode")
