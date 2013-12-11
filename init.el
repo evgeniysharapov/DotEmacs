@@ -667,12 +667,13 @@ This function depends on 's and 'dash libraries."
 
 ;;;_. Minibuffer and Smex
 ;;; ----------------------------------------------------------------------
-(require-package 'smex)
-(when (fboundp 'smex-initialize)
+(use-package smex
+  :ensure t
+  :init
   (smex-initialize)
   ;; Smex is used in minibuffer M-x
-  (bind-key "M-x" 'smex)
-  (bind-key "M-X" 'smex-major-mode-commands))
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)))
 
 ;;; We are trying to make keys working in both Windows and Mac OS X
 ;;; To be able to M-x without meta
