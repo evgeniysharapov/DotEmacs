@@ -1358,16 +1358,21 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;;_ , search forward/backward
 (bind-key "C-S-r"  'search-backward)
 (bind-key "C-S-s"  'search-forward)
-;;;_ , M-z is zap-to-char now
-(bind-key "C-M-z"
-    (lambda (char)
+
+;;;_ , Zapping backa and forth
+;;;_  . zap-to-char-backwards
+(defun zap-to-char-backwards (char)
     (interactive "cZap to char backwards: ")
-    (zap-to-char -1 char)))
-(bind-key "M-Z"  'zap-up-to-char)
-(bind-key "C-M-S-z"
-  (lambda (char)
+    (zap-to-char -1 char))
+;;;_  . zap-up-char-backwards
+(defun zap-up-char-backwards (char)
     (interactive "cZap up to char backwards: ")
-    (zap-up-to-char -1 char)))
+    (zap-up-to-char -1 char))
+;;;_  . M-z is zap-to-char
+(bind-key "C-M-z" 'zap-to-char-backwards)
+(bind-key "M-Z"  'zap-up-to-char)
+(bind-key "C-M-S-z" 'zap-up-char-backwards)
+
 ;;;_ , ffy-bol-or-back-to-indent
 (defun ffy-bol-or-back-to-indent ()
   "In addition to having two different mappings for (move-beginning-of-line ARG) and (back-to-indentation) we will have a function that goes to BOL if we are on the indent position and to the indent if we are at the BOL"
