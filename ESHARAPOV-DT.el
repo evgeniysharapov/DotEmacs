@@ -17,29 +17,39 @@
        w32-scroll-lock-modifier nil))
 
 ;;; Windows machine doesn't let us use Win + arrow keys
-;;; So, use the following Autohotkey script to remap Win+Arrow
-;;     $#Right::
-;;     IfWinActive ahk_class Emacs
-;;     	  Send, ^z^w^{Right}
-;;     return
-;;     $#Left::
-;;     IfWinActive ahk_class Emacs
-;;        Send, ^z^w^{Left}
-;;     return
-;;     $#Up::
-;;     IfWinActive ahk_class Emacs
-;;     	  Send, ^z^w^{Up}
-;;     return
-;;     $#Down::
-;;     IfWinActive ahk_class Emacs
-;;     	  Send, ^z^w^{Down}
-;;     return
-;;; and put windmove operations onto some very useles key chords
-;;; The only problem is describe-key won't tell us about Win-Arrow
-(define-key ctl-z-map [(control ?w) (control left)] 'windmove-left)
-(define-key ctl-z-map [(control ?w) (control right)] 'windmove-right)
-(define-key ctl-z-map [(control ?w) (control up)] 'windmove-up)
-(define-key ctl-z-map [(control ?w) (control down)] 'windmove-down)
+;;; So, use the following Autohotkey script to remap Win+Arrow for
+;;; Emacs application and circumvent Windows specific keys 
+
+;; $#Right::
+;; IfWinActive ahk_class Emacs
+;; 	Send, ^!+{NumpadRight}
+;; return
+;; $#Left::
+;; IfWinActive ahk_class Emacs
+;; 	Send, ^!+{NumpadLeft}
+;; return
+;; $#Up::
+;; IfWinActive ahk_class Emacs
+;; 	Send, ^!+{NumpadUp}
+;; return
+;; $#Down::
+;; IfWinActive ahk_class Emacs
+;; 	Send, ^!+{NumpadDown}
+;; return
+;;
+
+;;; Now, using `key-translation-map' we are translating those key
+;;; combinations sent by Autohotkey back into Win-Arrow (assuming that
+;;; Win key is mapped to Super (see `w32-lwindow-modifier' and `w32-rwindow-modifier'))
+
+(dolist (direction-symbol '(left right up down))
+  (let* ((direction (symbol-name direction-symbol))
+         (windmove-command (intern  (concat  "windmove-"  direction)))
+         (keypress-numlock-off (concat  "<C-M-S-kp-"  direction ">"))
+         (keypress-numlock-on (concat  "<C-M-kp-" direction ">"))
+         (super-direction-keypress (concat  "<s-" direction ">")))
+    (define-key key-translation-map (kbd  keypress-numlock-off) (kbd super-direction-keypress) )
+    (define-key key-translation-map (kbd  keypress-numlock-on) (kbd super-direction-keypress))))
 
 (eval-after-load "ispell"
   '(progn
