@@ -1047,23 +1047,30 @@ by using nxml's indentation rules."
 
 ;;;_. Lisp-like Programming Languages
 ;;;_ , Paredit settings
-(require-package 'paredit)
+(use-package paredit
+  :ensure t
+  :diminish (paredit-mode . "(P)")
+  :config
+  (progn
+    (defun ffy-paredit-forward-delete ()
+      "Forces deleting a character in ParEdit mode"
+      (paredit-forward-delete +1))
 
-(eval-after-load "paredit"
-  '(progn
-     ;; C-S-d forces delete character in ParEdit mode
-     (bind-key "C-S-d" (lambda () (paredit-forward-delete +1))  paredit-mode-map)))
+    (bind-key "C-S-d" 'ffy-paredit-forward-delete  paredit-mode-map)
 
-(defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
-  "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
-  (if (eq this-command 'eval-expression)
-      (when (fboundp 'paredit-mode)
-        (paredit-mode +1))))
+    (defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
+      "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
+      (if (eq this-command 'eval-expression)
+          (when (fboundp 'paredit-mode)
+            (paredit-mode +1))))
 
-(add-hook 'minibuffer-setup-hook 'ffy-init-lisp-minibuffer-enable-paredit-mode)
+    (add-hook 'minibuffer-setup-hook 'ffy-init-lisp-minibuffer-enable-paredit-mode)))
 
 ;;;_ , Emacs Lisps
-(require-package 'elisp-slime-nav)
+(use-package elisp-slime-nav
+  :ensure t
+  :diminish t)
+
 ;;; modes that deal with EmacsLisp
 (defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
 
