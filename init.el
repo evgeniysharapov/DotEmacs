@@ -1267,12 +1267,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
   :ensure t
   :mode (("\\.ya?ml$" . yaml-mode)))
 
-;;;_. Coffee-Script
-;;; loading ELPA package
-(require-package 'flymake-coffee)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
-
 ;;;_. HAML/SCSS/SASS setup
 ;;; loading ELPA packages
 (require-package 'flymake-haml)
@@ -1307,25 +1301,50 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (dolist (mode '(haml-mode sass-mode scss-mode))
   (add-to-list 'ac-modes mode))
 
+;;;_. Coffee-Script
+;;; loading ELPA package
+(require-package 'flymake-coffee)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+
 ;;;_. JavaScript
 ;;; ----------------------------------------------------------------------
 ;;; Good link about setting up Javascript:
 ;;; http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/
-(require-package 'js2-mode)
-(require-package 'flymake-jslint)
-(require-package 'flymake-jshint)
-(require-package 'js-comint)
+(use-package js2-mode
+  :ensure t
+  :init  (progn
+           (use-package js-comint
+             :ensure t
+             :config (progn
+                       ;; Use NodeJS as our repl if it is available
+                       ;; otherwise stick to the Rhino
+                       (let* ((node-program (executable-find "node1"))
+                              (node-command (if node-program (concat node-program " --interactive")))
+                              (js-command  (or node-command "java org.mozilla.javascript.tools.shell.Main")))
+                         (setq inferior-js-program-command js-command))))
 
-(defun ffy-js-mode-customizations ()
-  "JavaScript customizations"
-  ;; Scan the file for nested code blocks
-  (imenu-add-menubar-index)
-  ;; Activate the folding mode
-  (hs-minor-mode t))
+           (use-package flymake-jslint :ensure t)
+           (use-package flymake-jshint :ensure t)
+           (use-package ac-js2 :ensure t)
 
-(add-hook 'js-mode-hook 'ffy-js-mode-customizations)
-;; Use node as our repl
-;; (setq inferior-js-program-command (executable-find "node"))
+           (defun ffy-js-mode-customizations ()
+             "JavaScript customizations"
+             ;; Scan the file for nested code blocks
+             (imenu-add-menubar-index)
+             ;; Activate the folding mode
+             (hs-minor-mode t))
+
+           (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+           (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode)))
+
+  :config (progn
+            (add-hook 'js-mode-hook 'ffy-js-mode-customizations)
+            (add-hook 'js-mode-hook 'js2-minor-mode)
+            (add-hook 'js-mode-hook 'turn-on-electric-mode)
+            ;;; Add Auto-Complete to JavaScript modes.
+            (dolist (mode '(espresso-mode js2-mode js3-mode))
+              (add-to-list 'ac-modes mode))))
 
 ;; (setq inferior-js-mode-hook
 ;;       (lambda ()
@@ -1346,11 +1365,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;                      (lambda (output)
 ;;                        (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
 ;;                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
-
-;;; Add Auto-Complete to JavaScript modes.
-(dolist (mode '(espresso-mode js3-mode))
-  (add-to-list 'ac-modes mode))
-
 
 ;;;_. Scala setup
 (require-package 'scala-mode)
