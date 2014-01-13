@@ -1311,6 +1311,23 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;; ----------------------------------------------------------------------
 ;;; Good link about setting up Javascript:
 ;;; http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/
+;;;
+;;; == Setup Rhino ==
+;;; On Windows:
+;;; 1. Download rhino1_7R4.zip from Mozilla page.
+;;; 2. Unpack it and copy js.jar to %JRE_HOME%\lib\ext
+;;;
+;;; On OSX
+;;; 1. Download rhino and unzip it
+;;; 2. Make a the library directory if it doesn't exist:
+;;;      mkdir -p ~/Library/Java/Extensions
+;;; 3. Copy the jar to the extensions directory:
+;;;      cp ~/Downloads/rhino1_7R2/js.jar ~/Library/Java/Extensions/
+;;;
+;;; == Test Rhino ==
+;;;
+;;; Run the following command:
+;;;        java org.mozilla.javascript.tools.shell.Main
 (use-package js2-mode
   :ensure t
   :init  (progn
