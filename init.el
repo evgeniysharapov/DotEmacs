@@ -1319,7 +1319,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
              :config (progn
                        ;; Use NodeJS as our repl if it is available
                        ;; otherwise stick to the Rhino
-                       (let* ((node-program (executable-find "node1"))
+                       (let* ((node-program (executable-find "node"))
                               (node-command (if node-program (concat node-program " --interactive")))
                               (js-command  (or node-command "java org.mozilla.javascript.tools.shell.Main")))
                          (setq inferior-js-program-command js-command))))
