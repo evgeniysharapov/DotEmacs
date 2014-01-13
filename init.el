@@ -1023,14 +1023,18 @@ by using nxml's indentation rules."
              (executable-find ispell-program-name))
     (flyspell-prog-mode)))
 
-(defun turn-on-flymake ()
-  (flymake-mode))
+;;;_ , Flymake and Syntax checking
+(use-package flymake
+  :init (progn
+          (use-package flymake-cursor  :ensure t)
+          (defun turn-on-flymake ()
+            (flymake-mode))))
 
-
+;;;_ , Electric and Autopairs
 (defun turn-on-electric-mode ()
   (electric-pair-mode +1))
 
-
+;;;_ , All Programming Modes would benefit from this
 (dolist   (it '(local-column-number-mode
                 local-comment-auto-fill
                 turn-on-hl-line-mode
