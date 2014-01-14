@@ -776,10 +776,11 @@ This function depends on 's and 'dash libraries."
 
 ;;;_. Version Control Systems
 ;;;_ , Git
-(require-package 'magit)
-;;; Added global shortcut to run Magit
-(when (fboundp 'magit-status)
-  (bind-key "C-x g"  'magit-status))
+(use-package magit
+  :ensure t
+  :commands magit-status
+  ;; Added global shortcut to run Magit
+  :bind ("C-x g" . magit-status))
 
 ;;;_. Auto-Complete
 (require-package 'popup)
