@@ -1334,6 +1334,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;;        java org.mozilla.javascript.tools.shell.Main
 (use-package js2-mode
   :ensure t
+  :diminish (js2-minor-mode . "JS2")
   :init  (progn
            (use-package js-comint
              :ensure t
