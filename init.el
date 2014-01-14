@@ -678,7 +678,6 @@ This function depends on 's and 'dash libraries."
 
 ;;;_. Miscellaneous
 ;;; ----------------------------------------------------------------------
-(setq redisplay-dont-pause t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (random t)
 
