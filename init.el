@@ -120,6 +120,16 @@
 ;;; C-x primary map (some defaults)
 ;;; C-c secondary map (modes use it)
 ;;; C-z tertiary map (private custom one)
+
+;;; The sequence continues with quaternary, quinary, senary,
+;;; septenary, octonary, nonary, and denary, although most of these
+;;; terms are rarely used. There's no word relating to the number
+;;; eleven but there is one that relates to the number twelve:
+;;; duodenary.
+
+;;; C-. quaternary map
+;;; C-' quinary map
+
 ;;;
 ;;; Other maps:
 ;;;   C-x f  - map  file operations
@@ -139,7 +149,7 @@
 ;;;   M- ?#
 
 
-;;;_. Create Additional Keymaps (ctl-x-f, ctl-z)
+;;;_. Create Additional Keymaps (ctl-x-f, ctl-z, ctl-. and ctl-quote)
 ;;; ----------------------------------------------------------------------
 (defvar ctl-x-f-map)
 (define-prefix-command 'ctl-x-f-map)
@@ -166,6 +176,15 @@
 (let ((c-x-z (global-key-binding [(control x) ?z])))
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
+(defvar ctl-.-map)
+(define-prefix-command 'ctl-.-map)
+(bind-key "C-." 'ctl-.-map)
+
+(defvar ctl-quote-map)
+(define-prefix-command 'ctl-quote-map)
+(bind-key "C-'" 'ctl-quote-map)
 
 
 ;;;_ Utility functions
