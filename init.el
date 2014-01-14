@@ -477,9 +477,7 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 ;;; TODO: maybe this should be moved to the corresponding modes configuration
 (when (fboundp 'diminish)
   (eval-after-load 'eldoc
-    '(diminish 'eldoc-mode))
-  (eval-after-load 'undo-tree
-    '(diminish 'undo-tree-mode)))
+    '(diminish 'eldoc-mode)))
 
 ;;;_ , Configure powerline if it is available
 (use-package powerline
@@ -611,8 +609,9 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
 ;;;_. Undo settings
 ;;; ----------------------------------------------------------------------
 (use-package undo-tree
-  :config
-  (global-undo-tree-mode))
+  :ensure t
+  :diminish undo-tree-mode
+  :config (global-undo-tree-mode))
 
 ;;;_. Spellcheck setup 
 ;;; ------------------------------------------------------------
