@@ -1348,6 +1348,17 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
            (use-package flymake-jslint :ensure t)
            (use-package flymake-jshint :ensure t)
            (use-package ac-js2 :ensure t)
+           (use-package js2-imenu-extras
+             :config (js2-imenu-extras-setup))
+
+
+           ;; TODO: Add Swank-js
+           ;; http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
+           ;; Install Swank.js by
+           ;;     npm install -g swank-js
+           ;; Test by running
+           ;;     swank-js
+           ;; And directing browser to http://localhost:8009/swank-js/test.html
 
            (defun ffy-js-mode-customizations ()
              "JavaScript customizations"
@@ -1365,6 +1376,9 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
             (add-hook 'js-mode-hook 'js2-minor-mode)
             (add-hook 'js-mode-hook 'turn-on-electric-mode)
             (add-hook 'js-mode-hook 'turn-on-flymake)
+            (add-hook 'js2-mode-hook 'ac-js2-mode)
+            (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
+
             ;;; Add Auto-Complete to JavaScript modes.
             (dolist (mode '(espresso-mode js2-mode))
               (add-to-list 'ac-modes mode))))
