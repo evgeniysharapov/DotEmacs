@@ -1381,7 +1381,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
             (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
 
             ;;; Add Auto-Complete to JavaScript modes.
-            (dolist (mode '(espresso-mode js2-mode))
+            (dolist (mode '(espresso-mode js-mode js2-minor-mode js2-mode))
               (add-to-list 'ac-modes mode))))
 
 ;; (setq inferior-js-mode-hook
