@@ -603,7 +603,7 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
     (bind-key "C-M-y" 'kill-ring-search)))
 
 ;;;_. Enable useful disabled commands
-(dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen))
+(dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
   (put command 'disabled nil))
 
 ;;;_. Undo settings
@@ -681,7 +681,6 @@ This function depends on 's and 'dash libraries."
 (setq redisplay-dont-pause t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (random t)
-(put 'set-goal-column 'disabled nil)
 
 ;;;_. Ack/Grep/RGrep
 ;;; ----------------------------------------------------------------------
