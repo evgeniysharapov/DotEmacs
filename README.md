@@ -19,10 +19,22 @@ After that update git modules this Emacs configuration depends on (`use-package`
 
 Few keymaps are created that seem reasonable
 
+#BEGIN RECEIVE ORGTBL keys
+| Keyboard Shortcut | Keymap | Purpose |
+|---|---|---|
+| <kbd>C-x f</kbd> | ctl-x-f-map | File operations |
+| <kbd>C-z</kbd> | ctl-z-map | Seconday map |
+|  |  |  |
+#END RECEIVE ORGTBL keys
+
+<!---
+#+ORGTBL: SEND keys orgtbl-to-gfm
 | Keyboard Shortcut | Keymap      | Purpose         |
 |-------------------+-------------+-----------------|
 | <kbd>C-x f</kbd>  | ctl-x-f-map | File operations |
+| <kbd>C-z</kbd>    | ctl-z-map   | Seconday map    |
 |                   |             |                 |
+-->
 
 
 # TODO #
