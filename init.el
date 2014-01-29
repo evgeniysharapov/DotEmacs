@@ -113,80 +113,6 @@
   (unless package-archive-contents
     (package-refresh-contents)))
 
-;;;_ Key Bindings Setup
-;;; ----------------------------------------------------------------------
-;;;_. Description of Organization of Key Bindings
-;;;
-;;; C-x primary map (some defaults)
-;;; C-c secondary map (modes use it)
-;;; C-z tertiary map (private custom one)
-
-;;; The sequence continues with quaternary, quinary, senary,
-;;; septenary, octonary, nonary, and denary, although most of these
-;;; terms are rarely used. There's no word relating to the number
-;;; eleven but there is one that relates to the number twelve:
-;;; duodenary.
-
-;;; C-. quaternary map
-;;; C-' quinary map
-
-;;;
-;;; Other maps:
-;;;   C-x f  - map  file operations
-;;;   M-g    - goto map (already exists in Emacs24)
-
-;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
-;;;   M-o
-
-;;;   C-<capital letter>
-;;;   M-<capital letter>
-;;;
-;;;   A-<anything>
-;;;   M-A-<anything>
-;;;
-;;; Single-letter bindings still available:
-;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
-;;;   M- ?#
-
-
-;;;_. Create Additional Keymaps (ctl-x-f, ctl-z, ctl-. and ctl-quote)
-;;; ----------------------------------------------------------------------
-(defvar ctl-x-f-map)
-(define-prefix-command 'ctl-x-f-map)
-
-(bind-key "C-x f" 'ctl-x-f-map)
-
-;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-;;; C-z ctl-z-map
-;;; Make the prefix key `C-z' for my personal keymap.
-;;; On qwerty-keyboards `C-z' is one of the most accessible keys
-;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
-;;; for mode-specific commands (both user-defined and standard Emacs extensions).
-;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
-;;; is reassigned here to double key sequence `C-z C-z'.
-(defvar ctl-z-map)
-(define-prefix-command 'ctl-z-map)
-(let ((c-z (global-key-binding [(control ?z)])))
-  (global-unset-key [(control ?z)])
-  (bind-key "C-z" 'ctl-z-map)
-  (bind-key "C-z C-z" c-z))
-
-;;; almost always hit suspend instead of repeat command
-;;; so `repeat' is both C-x z and C-x C-z
-(let ((c-x-z (global-key-binding [(control x) ?z])))
-  (global-unset-key [(control x) (control ?z)])
-  (define-key ctl-x-map [(control ?z)] c-x-z))
-
-
-(defvar ctl-.-map)
-(define-prefix-command 'ctl-.-map)
-(bind-key "C-." 'ctl-.-map)
-
-(defvar ctl-quote-map)
-(define-prefix-command 'ctl-quote-map)
-(bind-key "C-'" 'ctl-quote-map)
-
-
 ;;;_ Utility functions
 
 ;;;_. eval-and-replace
@@ -423,6 +349,81 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
         (when append
           (rotatef keywords old))
         (setq font-lock-keywords (append keywords old))))))
+
+
+;;;_. keymap-on-key macro
+(defmacro keymap-on-key (name keys)
+  "This is a macro that declares a variable, key prefix and assigns a key to it.
+NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
+  `(progn (defvar ,name)
+          (define-prefix-command (quote ,name))
+          (bind-key ,keys (quote ,name))))
+
+
+;;;_ Key Bindings Setup
+;;; ----------------------------------------------------------------------
+;;;_. Description of Organization of Key Bindings
+;;;
+;;; C-x primary map (some defaults)
+;;; C-c secondary map (modes use it)
+;;; C-z tertiary map (private custom one)
+
+;;; The sequence continues with quaternary, quinary, senary,
+;;; septenary, octonary, nonary, and denary, although most of these
+;;; terms are rarely used. There's no word relating to the number
+;;; eleven but there is one that relates to the number twelve:
+;;; duodenary.
+
+;;; C-. quaternary map
+;;; C-' quinary map
+
+;;;
+;;; Other maps:
+;;;   C-x f  - map  file operations
+;;;   M-g    - goto map (already exists in Emacs24)
+
+;;; TODO: change M-o from facemenu-keymap to outline-mode keymap
+;;;   M-o
+
+;;;   C-<capital letter>
+;;;   M-<capital letter>
+;;;
+;;;   A-<anything>
+;;;   M-A-<anything>
+;;;
+;;; Single-letter bindings still available:
+;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
+;;;   M- ?#
+
+
+;;;_. Create Additional Keymaps (ctl-x-f, ctl-z, ctl-. and ctl-quote)
+;;; ----------------------------------------------------------------------
+(keymap-on-key ctl-x-f-map "C-x f")
+
+;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+;;; C-z ctl-z-map
+;;; Make the prefix key `C-z' for my personal keymap.
+;;; On qwerty-keyboards `C-z' is one of the most accessible keys
+;;; like `C-x' and `C-c', but the prefix key `C-c' is reserved
+;;; for mode-specific commands (both user-defined and standard Emacs extensions).
+;;; The standard binding of `C-z' (`suspend-emacs' or `iconify-or-deiconify-frame')
+;;; is reassigned here to double key sequence `C-z C-z'.
+(defvar ctl-z-map)
+(define-prefix-command 'ctl-z-map)
+(let ((c-z (global-key-binding [(control ?z)])))
+  (global-unset-key [(control ?z)])
+  (bind-key "C-z" 'ctl-z-map)
+  (bind-key "C-z C-z" c-z))
+
+;;; almost always hit suspend instead of repeat command
+;;; so `repeat' is both C-x z and C-x C-z
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
+(keymap-on-key ctl-.-map "C-.")
+(keymap-on-key ctl-quote-map "C-'")
 
 
 ;;;_ Customizing General Emacs Behavior
