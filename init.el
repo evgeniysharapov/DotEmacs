@@ -1005,6 +1005,31 @@ by using nxml's indentation rules."
   (bind-key "C-c b" 'org-iswitchb))
 
 
+;;;_. Orgtbl mode
+(use-package orgtbl
+  :commands orgtbl-mode
+  :config (progn
+            (defun orgtbl-to-gfm (table params)
+      "Convert the Orgtbl mode TABLE to GitHub Flavored Markdown.
+Usage Example:
+  <!--- BEGIN RECEIVE ORGTBL ${1:YOUR_TABLE_NAME} -->
+  <!--- END RECEIVE ORGTBL $1 -->
+
+  <!---
+  #+ORGTBL: SEND $1 orgtbl-to-gfm
+   | $0 |
+  -->
+For more details see https://gist.github.com/grafov/8244792 and https://gist.github.com/yryozo/5807243
+"
+      (let* ((alignment (mapconcat (lambda (x) (if x "|--:" "|---"))
+                                   org-table-last-alignment ""))
+             (params2
+              (list
+               :splice t
+               :hline (concat alignment "|")
+               :lstart "| " :lend " |" :sep " | ")))
+        (orgtbl-to-generic table (org-combine-plists params2 params))))))
+
 ;;;_. Markdown
 (use-package markdown-mode
   :config
@@ -1014,7 +1039,8 @@ by using nxml's indentation rules."
       (make-local-variable 'outline-regexp)
       (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$"))
 
-    (add-hook 'markdown-mode-hook 'set-markdown-mode-outline-regexp)))
+    (add-hook 'markdown-mode-hook 'set-markdown-mode-outline-regexp)
+    (add-hook 'markdown-mode-hook 'orgtbl-mode)))
 
 ;;;_. General Programming Mode
 (autoload 'turn-on-fic-mode "fic-mode")
