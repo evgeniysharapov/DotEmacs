@@ -1006,6 +1006,8 @@ by using nxml's indentation rules."
 
 
 ;;;_. Orgtbl mode
+;;; More about orgtbl:
+;;; http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html
 (use-package orgtbl
   :commands orgtbl-mode
   :config (progn
