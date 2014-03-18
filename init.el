@@ -359,6 +359,19 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
           (define-prefix-command (quote ,name))
           (bind-key ,keys (quote ,name))))
 
+;;; set-keymap-prefix
+;; (defun set-keymap-prefix (keymap keys)
+;;   "Remaps whole KEYMAP to the given KEYS. In other words it will add a key prefix to
+;; all mappings in a given KEYMAP.
+;; KEYS is the argument acceptable by `kbd' or `read-kbd-macro' macro"
+;;   ;; Idea is to create a temporary keymap with the given prefix add
+;;   ;; all the bindingds from the given keymap and then assign given
+;;   ;; keymap temporary keymap
+;;   ;; (let ((tmp-keymap (copy-keymap )))
+;;   ;;   (map-keymap (lambda (k v) ()))
+;;   ;;   )
+;;   ;; (define-key global-map [(control ?`)] 'flyspell-mode-map)
+;;   )
 
 ;;;_ Key Bindings Setup
 ;;; ----------------------------------------------------------------------
@@ -650,24 +663,24 @@ This function depends on 's and 'dash libraries."
             dictionary-path))))))
 
 ;;;_ , loading iSpell
-(eval-after-load "ispell"
-  '(progn
-     ;; Personal dictionary setup
-     ;; if file doesn't exist then create it
-     (setq ispell-personal-dictionary (let ((personal-dictionary-file (concat *data-dir* ".personal.dict")))
-                                        (unless (file-exists-p personal-dictionary-file)
-                                          (with-temp-file personal-dictionary-file t))
-                                        personal-dictionary-file))
-     ;; Aspell Specific
-     (when (executable-find "aspell")
-       (setq ispell-program-name "aspell"
-             ispell-extra-args '("--sug-mode=ultra")))
-     ;; Hunspell Specific
-     (when (executable-find "hunspell")
-       (setq ispell-program-name "hunspell")
-       (let* ((dict-location (find-hunspell-dictionary)))
-         (when dict-location
-           (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
+(use-package ispell
+  :config (progn
+            ;; Personal dictionary setup
+            ;; if file doesn't exist then create it
+            (setq ispell-personal-dictionary (let ((personal-dictionary-file (concat *data-dir* ".personal.dict")))
+                                               (unless (file-exists-p personal-dictionary-file)
+                                                 (with-temp-file personal-dictionary-file t))
+                                               personal-dictionary-file))
+            ;; Aspell Specific
+            (when (executable-find "aspell")
+              (setq ispell-program-name "aspell"
+                    ispell-extra-args '("--sug-mode=ultra")))
+            ;; Hunspell Specific
+            (when (executable-find "hunspell")
+              (setq ispell-program-name "hunspell")
+              (let* ((dict-location (find-hunspell-dictionary)))
+                (when dict-location
+                  (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
 ;;;_. Help and Info
 ;;; ----------------------------------------------------------------------
