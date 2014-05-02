@@ -228,9 +228,11 @@ From http://www.jurta.org/en/emacs/dotemacs"
               " "))))
 
 ;;;_. Load ThingAtPoint+ library
-(eval-after-load "thingatpt"
-  '(when (require-package 'thingatpt+)
-     (tap-redefine-std-fns)))
+(use-package thingatpt
+  :defer t
+  :config (use-package thingatpt+
+            :ensure t
+            :config (tap-redefine-std-fns)))
 
 ;;;_. ffy-tap-number-change
 ;;; This depends on the thingatpt and thingatpt+
