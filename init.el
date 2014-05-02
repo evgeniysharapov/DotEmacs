@@ -39,6 +39,9 @@
 ;;; add recursively all subdirectories of *site-lisp*
 ;;; using temporary recursive function so not to clutter function
 ;;; space
+;;; for cl-labels we need to load up `cl-lib'
+;;; TODO: think about combining it with loading emacs' built-ins
+(require 'cl-lib)
 (cl-labels ((add-directory-to-path (dir)
                                    (add-to-list 'load-path dir)
                                    (dolist (entry (directory-files-and-attributes dir))
@@ -54,9 +57,6 @@
 ;;;_. Emacs built-ins
 ;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
-;;; it is hard to do anything without common-lisp
-(eval-when-compile
-  (require 'cl))
 
 ;;;_. *SITE-LISP* packages
 ;;; our primary library loader is `use-package'
