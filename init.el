@@ -61,6 +61,17 @@
 ;;;_. *SITE-LISP* packages
 ;;; our primary library loader is `use-package'
 (mapc #'require '(use-package bind-key))
+;; consider doing something along these linese:
+;(cl-labels ((update-git-submodules (feat)
+;	     ;; TODO: replace with the directory that has the currently executed file
+;	     (let ((default-directory "~/.emacs.d/"))
+;	       (shell-command "git submodule update --init"))
+;	     (message "Updated use-package libraries"))
+;	    (load-library (lib)
+;	      (unless (require lib nil 'noerror)
+;		(update-git-submodules lib))))
+;  (mapc #'load-library '(use-package bind-key)))
+
 
 ;;;_. ELPA packages
 ;;;_ , Generating autoloads file from the installed packages
