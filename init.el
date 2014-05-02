@@ -12,9 +12,6 @@
 (setq message-log-max 10000)
 ;;; benchmark time
 (defconst *emacs-start-time* (current-time))
-;;; it is hard to do anything without common-lisp
-(eval-when-compile
-  (require 'cl))
 
 ;;;_ Paths configuration
 ;;;_. Constants for paths
@@ -54,19 +51,18 @@
 
 ;;;_ Libraries and Packages
 
-;;;_. built-in Emacs libraries
+;;;_. Emacs built-ins
 ;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
+;;; it is hard to do anything without common-lisp
+(eval-when-compile
+  (require 'cl))
 
-;;;_. packages in site-lisp
+;;;_. *SITE-LISP* packages
+;;; our primary library loader is `use-package'
 (mapc #'require '(use-package bind-key))
 
-
-;;;_. Autoloads file if it's present
-(load *autoload-file* 'noerror)
-
 ;;;_. ELPA packages
-
 ;;;_ , Generating autoloads file from the installed packages
 ;;;_  . close-autoloads advice
 (defadvice package-generate-autoloads (after close-autoloads (name pkg-dir) activate)
@@ -74,22 +70,6 @@
   (let ((path (expand-file-name (concat name "-autoloads.el") pkg-dir)))
     (with-current-buffer (find-file-existing path)
       (kill-buffer nil))))
-
-;;;_  . extract-autoloads
-(defun extract-autoloads ()
-  "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
-  (interactive "f")
-  (let* ((generated-autoload-file *autoload-file*)
-         (buffer-file-coding-system 'no-conversion)
-         ;; avoid generating autoloads for slime - results in error 
-         ;; "Local variables entry is missing the suffix"
-         (dir-list (loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
-                         if (file-directory-p d)
-                         collect d)))
-    (apply 'update-directory-autoloads dir-list)))
-
-;;;_  . Extract autoloads on killing Emacs
-(add-hook 'kill-emacs-hook 'extract-autoloads)
 
 ;;;_ , Add requiring package from ELPA (install if not installed)
 (defun require-package (package &optional min-version)
@@ -104,14 +84,31 @@
 (when (require 'package nil 'noerror)
   ;; all ELPA packages are located here
   (setq package-user-dir (concat *dotfiles-dir* "elpa"))
-;;;_  . Sources for the ELPA repositories 
+  ;; Sources for the ELPA repositories 
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents)))
+
+
+;;;_. Autoloads file
+;;;_ , Extract autoloads on killing Emacs
+(defun extract-autoloads ()
+  "Extract autoloads recursively from *SITE-LISP* and puts it into *AUTOLOAD-FILE*"
+  (interactive "f")
+  (let* ((generated-autoload-file *autoload-file*)
+         (buffer-file-coding-system 'no-conversion)
+         ;; avoid generating autoloads for slime - results in error 
+         ;; "Local variables entry is missing the suffix"
+         (dir-list (loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
+                         if (file-directory-p d)
+                         collect d)))
+    (apply 'update-directory-autoloads dir-list)))
+(add-hook 'kill-emacs-hook 'extract-autoloads)
+;;;_ , Load autoloading file if it is present
+(load *autoload-file* 'noerror)
 
 ;;;_ Utility functions
 
