@@ -59,7 +59,6 @@
 ;;; We would need these throughout the config file
 ;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
-
 ;;;_. *SITE-LISP* packages
 ;;; our primary library loader is `use-package'
 (mapc #'require '(use-package bind-key))
@@ -73,7 +72,6 @@
 ;	      (unless (require lib nil 'noerror)
 ;		(update-git-submodules lib))))
 ;  (mapc #'load-library '(use-package bind-key)))
-
 
 ;;;_. ELPA packages
 ;;;_ , Generating autoloads file from the installed packages
@@ -386,6 +384,12 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ;;   ;;   )
 ;;   ;; (define-key global-map [(control ?`)] 'flyspell-mode-map)
 ;;   )
+
+;;;_. insert-date-and-time
+(defun insert-date-and-time ()
+  "Insert a time-stamp according to locale's date and time format."
+  (interactive)
+  (insert (format-time-string "%d/%m/%Y, %k:%M" (current-time))))
 
 ;;;_ Key Bindings Setup
 ;;; ----------------------------------------------------------------------
