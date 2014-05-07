@@ -371,7 +371,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
           (define-prefix-command (quote ,name))
           (bind-key ,keys (quote ,name))))
 
-;;; set-keymap-prefix
+;;;_. set-keymap-prefix
 ;; (defun set-keymap-prefix (keymap keys)
 ;;   "Remaps whole KEYMAP to the given KEYS. In other words it will add a key prefix to
 ;; all mappings in a given KEYMAP.
@@ -405,8 +405,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ;;; eleven but there is one that relates to the number twelve:
 ;;; duodenary.
 
-;;; C-. quaternary map
-;;; C-' quinary map
+;;; C-' quaternary map
 
 ;;;
 ;;; Other maps:
@@ -426,9 +425,10 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ;;;   C- ,'";:?<>|!#$%^&*`~ <tab>
 ;;;   M- ?#
 
+;;; Usually following keys are easy to press with one hand
+;;; M-f12, M-f11, M-f10, M-f9, M-f8, M-f7
 
-;;;_. Create Additional Keymaps (ctl-x-f, ctl-z, ctl-. and ctl-quote)
-;;; ----------------------------------------------------------------------
+;;;_. Create Additional Keymaps (ctl-x-f, ctl-z and ctl-quote)
 (keymap-on-key ctl-x-f-map "C-x f")
 
 ;;;; Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
@@ -452,8 +452,6 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
-
-(keymap-on-key ctl-.-map "C-.")
 (keymap-on-key ctl-quote-map "C-'")
 
 
