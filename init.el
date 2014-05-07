@@ -13,6 +13,11 @@
 ;;; benchmark time
 (defconst *emacs-start-time* (current-time))
 
+;;; We use some of the CL functions for its convinience
+;;; `cl-labels', `cl-remove-if' and `cl-loop' 
+;;; TODO: think about combining it with loading emacs' built-ins
+(require 'cl-lib)
+
 ;;;_ Paths configuration
 ;;;_. Constants for paths
 (defconst *dotfiles-dir*
@@ -39,9 +44,6 @@
 ;;; add recursively all subdirectories of *site-lisp*
 ;;; using temporary recursive function so not to clutter function
 ;;; space
-;;; for cl-labels we need to load up `cl-lib'
-;;; TODO: think about combining it with loading emacs' built-ins
-(require 'cl-lib)
 (cl-labels ((add-directory-to-path (dir)
                                    (add-to-list 'load-path dir)
                                    (dolist (entry (directory-files-and-attributes dir))
@@ -53,8 +55,8 @@
   (add-directory-to-path *site-lisp*))
 
 ;;;_ Libraries and Packages
-
 ;;;_. Emacs built-ins
+;;; We would need these throughout the config file
 ;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
 
@@ -115,9 +117,9 @@
          (buffer-file-coding-system 'no-conversion)
          ;; avoid generating autoloads for slime - results in error 
          ;; "Local variables entry is missing the suffix"
-         (dir-list (loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
-                         if (file-directory-p d)
-                         collect d)))
+         (dir-list (cl-loop for d in (directory-files *site-lisp* 'full "[^\(^\\.+$\|^slime\)]")
+                            if (file-directory-p d)
+                            collect d)))
     (apply 'update-directory-autoloads dir-list)))
 (add-hook 'kill-emacs-hook 'extract-autoloads)
 ;;;_ , Load autoloading file if it is present
@@ -654,10 +656,10 @@ This function depends on 's and 'dash libraries."
   (when (executable-find "hunspell")
     ;; First, let's see if we can load any dicts by default
     (let* ((hunspell-output (shell-command-to-string "hunspell -D"))
-           (hunspell-output-lines (remove-if #'(lambda (e) (equal e ""))
-                                             (s-lines hunspell-output)))
+           (hunspell-output-lines (cl-remove-if #'(lambda (e) (equal e ""))
+                                                (s-lines hunspell-output)))
            (loaded-dicts (member "LOADED DICTIONARY:"  hunspell-output-lines))
-           (available-dicts (-difference (member-if #'(lambda (e)(s-starts-with? "AVAILABLE DICTIONARIES" e)) hunspell-output-lines)
+           (available-dicts (-difference (cl-member-if #'(lambda (e)(s-starts-with? "AVAILABLE DICTIONARIES" e)) hunspell-output-lines)
                                          loaded-dicts)))
       ;; If we have loaded-dicts we should be fine, otherwise try to
       ;; search for dictionaries
