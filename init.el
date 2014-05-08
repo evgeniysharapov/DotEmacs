@@ -495,8 +495,6 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
 
 ;;;_. Files Settings and Operations
-;;; ----------------------------------------------------------------------
-
 ;;;_ , Backups and saves
 (setq save-place-file (concat *data-dir* "places")
       backup-directory-alist `((".*" . ,*backup-dir*))
@@ -511,10 +509,11 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
       auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
 ;;;_ , Files and Projects
-(require-package 'find-file-in-project)
+(use-package find-file-in-project
+  :ensure t
+  :commands find-file-in-project)
 
 ;;;_ , Files Key-Bindings
-;;; ----------------------------------------------------------------------
 ;;;  C-x C-f is bound to ido-find-file
 ;;;
 ;;;  C-x f <letter> are different file commands
