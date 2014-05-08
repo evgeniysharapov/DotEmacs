@@ -38,6 +38,10 @@
 (defconst *autoload-file*
   (concat *dotfiles-dir* "loaddefs.el")
   "This is file containing all autoloads extracted from Emacs lisp files")
+(defconst *system-specific*
+  (file-name-as-directory (concat *dotfiles-dir* "systems"))
+  "Directory with system specific initialization commands")
+
 ;;;_. Adding paths to `load-path'
 ;;; adding dot files to the load path
 (add-to-list 'load-path *dotfiles-dir*)
@@ -1592,7 +1596,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (load custom-file 'noerror)
 
 ;;;_ Loading machine specific settings
-(let ((system-specific-config (concat *dotfiles-dir* system-name ".el")))
+(let ((system-specific-config (concat *system-specific* system-name ".el")))
   (if (file-exists-p system-specific-config)
       (load system-specific-config)))
 
