@@ -238,38 +238,6 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
-;;;_. Load ThingAtPoint+ library
-(use-package thingatpt
-  :defer t
-  :config (use-package thingatpt+
-            :ensure t
-            :config (tap-redefine-std-fns)))
-
-;;;_. ffy-tap-number-change
-;;; This depends on the thingatpt and thingatpt+
-(defun ffy-tap-number-change (&optional num)
-  "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
-  (interactive "p")
-  (save-excursion
-    (let ((n (tap-number-at-point-decimal))
-          (bounds (tap-bounds-of-number-at-point)))
-      (if (and n bounds)
-          (progn
-            (delete-region (car bounds) (cdr bounds))
-            (insert (number-to-string (+ n (or num 1)))))))))
-
-;;;_. ffy-tap-number-decrease
-(defun ffy-tap-number-decrease (&optional num)
-  "Decreases number at the point by `num' or 1 if argument is not given"
-  (interactive "p")
-  (ffy-tap-number-change (- (or num 1))))
-
-;;;_. ffy-tap-number-increase
-(defun ffy-tap-number-increase (&optional num)
-  "Increases number at the point by `num' or 1 if argument is not given"
-  (interactive "p")
-  (ffy-tap-number-change (or num 1)))
-
 ;;;_. assocs
 (defun assocs (keylist list)
   "like `assoc' but KEYLIST is a list of keys. Returns a subset of alist LIST with keys from KEYLIST"
@@ -705,6 +673,40 @@ This function depends on 's and 'dash libraries."
 (require 'help-fns+ nil t)
 ;;; apropos seems to be more useful than apropos-command
 (bind-key "C-h a" 'apropos)
+
+;;;_. Editing Operations
+;;;_ , 'thingatpt' and `thingatpt+' libraries
+(use-package thingatpt
+  :defer t
+  :config (progn
+            (use-package thingatpt+
+              :ensure t
+              :config (progn
+                        (tap-redefine-std-fns)
+;;;_  . ffy-tap-number-change
+;;; This depends on the thingatpt and thingatpt+
+                        (defun ffy-tap-number-change (&optional num)
+                          "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
+                          (interactive "p")
+                          (save-excursion
+                            (let ((n (tap-number-at-point-decimal))
+                                  (bounds (tap-bounds-of-number-at-point)))
+                              (if (and n bounds)
+                                  (progn
+                                    (delete-region (car bounds) (cdr bounds))
+                                    (insert (number-to-string (+ n (or num 1)))))))))
+
+;;;_  . ffy-tap-number-decrease
+                        (defun ffy-tap-number-decrease (&optional num)
+                          "Decreases number at the point by `num' or 1 if argument is not given"
+                          (interactive "p")
+                          (ffy-tap-number-change (- (or num 1))))
+
+;;;_  . ffy-tap-number-increase
+                        (defun ffy-tap-number-increase (&optional num)
+                          "Increases number at the point by `num' or 1 if argument is not given"
+                          (interactive "p")
+                          (ffy-tap-number-change (or num 1)))))))
 
 ;;;_. Miscellaneous
 ;;; ----------------------------------------------------------------------
