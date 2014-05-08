@@ -717,6 +717,9 @@ This function depends on 's and 'dash libraries."
 (defalias 'yes-or-no-p 'y-or-n-p)
 (random t)
 
+;;;_. URL uses data directory for its stuff
+(setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
+
 ;;;_. Ack/Grep/RGrep
 ;;; ----------------------------------------------------------------------
 (require-package 'ack-and-a-half)
