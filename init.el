@@ -429,10 +429,13 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
 ;;;_ Customizing General Emacs Behavior
 ;;; ----------------------------------------------------------------------
-(require-package 'dash)
-(autoload '-difference "dash")
-(require-package 's)
-(autoload 's-lines "s")
+(use-package dash
+  :ensure t
+  :commands -difference)
+
+(use-package s
+  :ensure t
+  :commands s-lines)
 
 ;;;_. GUI/Look and Feel
 ;;; ----------------------------------------------------------------------
