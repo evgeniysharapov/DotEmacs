@@ -723,12 +723,14 @@ This function depends on 's and 'dash libraries."
 (setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
 
 ;;;_. Ack/Grep/RGrep
-;;; ----------------------------------------------------------------------
-(require-package 'ack-and-a-half)
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+(use-package ack-and-a-half
+  :ensure t
+  :commands (ack-and-a-half ack-and-a-half-same ack-and-a-half-find-file ack-and-a-half-find-file-same)
+  :init (progn
+          (defalias 'ack 'ack-and-a-half)
+          (defalias 'ack-same 'ack-and-a-half-same)
+          (defalias 'ack-find-file 'ack-and-a-half-find-file)
+          (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)))
 
 (use-package grep
   :defer t
