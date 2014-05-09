@@ -789,33 +789,34 @@ This function depends on 's and 'dash libraries."
 
 ;;;_. Ido configuraiton
 ;;; Some IDO settings that have been taken out from the customization file.
-;;; ----------------------------------------------------------------------
-(require-package 'ido-yes-or-no)
-(require-package 'ido-ubiquitous)
+(use-package ido
+  :config
+  (progn
+    (use-package ido-ubiquitous :ensure t)
+    (ido-mode t)
+    (ido-everywhere t)
+    (ido-ubiquitous-mode t)
 
-(ido-mode t)
-(ido-everywhere t)
-(ido-ubiquitous-mode t)
-;;; not every command should could be ido-ed
-;;; kill-ring-search has already set of minibuffer commands that don't
-;;; work well with ido-completing-read
-(setq ido-ubiquitous-command-exceptions '(kill-ring-search))
+    ;; not every command should could be ido-ed
+    ;; kill-ring-search has already set of minibuffer commands that don't
+    ;; work well with ido-completing-read
+    (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
 ;;;_ , ffy--change-ido-override
-(defun ffy--change-ido-override (behavior func-name)
-  "Changes `ido-ubiquitous-function-overrides` variable for a function FUNC-NAME by setting its behavior to BEHAVIOR"
-  (setq ido-ubiquitous-function-overrides
-         (mapcar (lambda (override) (if  (equal (caddr override) ,func-name)
-                                   (cons ,behavior (cdr override))
-                                 override))
-                 ido-ubiquitous-function-overrides)))
+    (defun ffy--change-ido-override (behavior func-name)
+      "Changes `ido-ubiquitous-function-overrides` variable for a function FUNC-NAME by setting its behavior to BEHAVIOR"
+      (setq ido-ubiquitous-function-overrides
+            (mapcar (lambda (override) (if  (equal (caddr override) ,func-name)
+                                      (cons ,behavior (cdr override))
+                                    override))
+                    ido-ubiquitous-function-overrides)))
 ;;;_ , enable-ido-for
-(defmacro enable-ido-for (func-name)
-  "Enables IDO for a function using `ido-ubiquitous' mode"
-  `(ffy--change-ido-override 'enable ,func-name))
+    (defmacro enable-ido-for (func-name)
+      "Enables IDO for a function using `ido-ubiquitous' mode"
+      `(ffy--change-ido-override 'enable ,func-name))
 ;;;_ , disable-ido-for
-(defmacro disable-ido-for (func-name)
-  "Disables IDO for a function using `ido-ubiquitous' mode"
-  `(ffy--change-ido-override 'disable ,func-name))
+    (defmacro disable-ido-for (func-name)
+      "Disables IDO for a function using `ido-ubiquitous' mode"
+      `(ffy--change-ido-override 'disable ,func-name))))
 
 ;;;_. Version Control Systems
 ;;;_ , Git
