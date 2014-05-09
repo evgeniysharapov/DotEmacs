@@ -64,19 +64,17 @@
 ;;; We are trying to explicitly load as few libraries as possible.
 (mapc #'require '(uniquify saveplace))
 ;;;_. *SITE-LISP* packages
-;;; our primary library loader is `use-package'
+;;; our primary library loader is `use-package'. If it can't be loaded
+;;; we should run:
+;;;
+;;;     $ git submodule update --init
+;;;
+;;; from the ~/.emacs.d directory
+(unless (require 'use-package nil 'noerror)
+   (let ((default-directory (file-name-directory load-file-name)))
+ 	 (shell-command "git submodule update --init"))
+   (message "Updated use-package libraries"))
 (mapc #'require '(use-package bind-key))
-;; consider doing something along these linese:
-;(cl-labels ((update-git-submodules (feat)
-;	     ;; TODO: replace with the directory that has the currently executed file
-;	     (let ((default-directory "~/.emacs.d/"))
-;	       (shell-command "git submodule update --init"))
-;	     (message "Updated use-package libraries"))
-;	    (load-library (lib)
-;	      (unless (require lib nil 'noerror)
-;		(update-git-submodules lib))))
-;  (mapc #'load-library '(use-package bind-key)))
-
 ;;;_. ELPA packages
 ;;;_ , Generating autoloads file from the installed packages
 ;;;_  . close-autoloads advice
