@@ -1500,11 +1500,12 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
                               (auto-fill-mode 1)))
 
 ;;;_. Haskell Mode
-(require-package 'haskell-mode)
-(add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
+(use-package haskell-mode
+  :ensure t
+  :init (progn
+          (add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
+          (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+          (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
 ;;;_ Key Bindings
 ;;;_. Windows Operations
