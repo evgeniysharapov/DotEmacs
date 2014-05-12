@@ -1491,7 +1491,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ;;                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
 
 ;;;_. Scala setup
-(require-package 'scala-mode)
 
 ;;;_. Octave Mode
 
