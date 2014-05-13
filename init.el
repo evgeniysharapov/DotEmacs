@@ -1358,17 +1358,47 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
   :mode (("\\.ya?ml$" . yaml-mode)))
 
 ;;;_. HAML/SCSS/SASS setup
-;;; loading ELPA packages
-(require-package 'flymake-haml)
-(require-package 'flymake-sass)
-(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
-(add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
-(add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
-(add-hook 'sass-mode-hook 'flymake-sass-load)
-(add-hook 'scss-mode-hook 'flymake-sass-load)
-(add-hook 'haml-mode-hook 'flymake-haml-load)
-(add-hook 'scss-mode-hook 'ffy-run-programming-hook)
-(add-hook 'sass-mode-hook 'ffy-run-programming-hook)
+(use-package haml-mode
+  :ensure t
+  :commands haml-mode
+  :mode ("\\.haml$" . haml-mode)
+  :init (progn
+          (use-package flymake-haml
+            :ensure t
+            :defer t
+            :config (progn
+                      (add-hook 'haml-mode-hook 'flymake-haml-load)))))
+(use-package scss-mode
+  :ensure t
+  :defer t
+  :commands scss-mode
+  :mode ("\\.scss$" . scss-mode)
+  :init (progn
+          (use-package sass-mode
+            :ensure t
+            :defer t
+            :commands sass-mode
+            :mode ("\\.sass$" . sass-mode)
+            :config (progn
+                      (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
+                      (add-hook 'sass-mode-hook 'ffy-customize-sass-scss-mode)))
+
+          (use-package flymake-sass
+            :ensure t
+            :defer t
+            :config (progn
+                      ;; my own customizations
+                      (defun ffy-customize-sass-scss-mode ()
+                        (interactive)
+                        ;; first of all <ret> sets newline and indent as C-j
+                        (local-set-key [return] 'newline-and-indent)
+                        (local-set-key [(control return)] 'ffy-open-line-indented))
+
+                      (add-hook 'scss-mode-hook 'flymake-sass-load)
+                      (add-hook 'sass-mode-hook 'flymake-sass-load)))
+          (add-hook 'scss-mode-hook 'ffy-run-programming-hook)
+          (add-hook 'scss-mode-hook 'ffy-customize-sass-scss-mode)))
+
 ;;; custom line opening
 (defun ffy-open-line-indented (n)
   "like `open-line' but keeps indentation"
@@ -1377,15 +1407,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
     (newline-and-indent)
     (goto-char loc)))
 
-;;; my own customizations
-(defun ffy-customize-sass-scss-mode ()
-  (interactive)
-  ;; first of all <ret> sets newline and indent as C-j
-  (local-set-key [return] 'newline-and-indent)
-  (local-set-key [(control return)] 'ffy-open-line-indented))
-
-(add-hook 'scss-mode-hook  'ffy-customize-sass-scss-mode)
-(add-hook 'sass-mode-hook  'ffy-customize-sass-scss-mode)
 
 ;;; add Auto-Complete HAML SCSS and SASS modes
 (dolist (mode '(haml-mode sass-mode scss-mode))
