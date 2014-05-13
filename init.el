@@ -1618,8 +1618,9 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
                                (interactive)
                                (join-line 1)) ctl-z-map)
 ;;;_ , mark commands from `thing-cmds'
-(when  (require-package 'thing-cmds)
-  (thgcmd-bind-keys))
+(use-package thing-cmds
+  :ensure t
+  :init (thgcmd-bind-keys))
 
 ;;;_. Outline mode
 ;;; ------------------------------------------------------------
