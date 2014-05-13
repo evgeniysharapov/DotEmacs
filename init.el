@@ -1277,34 +1277,40 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
 
 ;;;_ , Clojure Mode Setup
-(require-package 'clojure-mode)
-(require-package 'clojure-test-mode)
-(require-package 'nrepl)
-(require-package 'ac-nrepl)
+(use-package clojure-mode
+  :ensure t
+  :defer t
+  :config (progn
+            (use-package clojure-test-mode :ensure t :defer t)
+            (use-package nrepl
+              :ensure t
+              :defer t
+              :config (progn
+                        (add-hook 'nrepl-mode-hook 'subword-mode)
+                        (add-hook 'nrepl-mode-hook 'paredit-mode)
+                        (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)))
+            (use-package ac-nrepl
+              :ensure t
+              :config (progn
+                        (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+                        (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+                        (add-to-list 'ac-modes 'nrepl-mode)))
 
-(add-hook 'clojure-mode-hook 'subword-mode)
-(add-hook 'clojure-mode-hook 'clojure-test-mode)
+            (defun ffy-find-file-in-clojure-project ()
+              "For Clojure we are also looking for project.clj file in the project root"
+              (progn
+                (require 'find-file-in-project)
+                (when (boundp 'ffip-project-file)
+                  (set (make-local-variable 'ffip-project-file)
+                       (if (listp 'ffip-project-file)
+                           (cons "project.clj" ffip-project-file)
+                         (list "project.clj" ffip-project-file))))))
 
-(add-hook 'nrepl-mode-hook 'subword-mode)
-(add-hook 'nrepl-mode-hook 'paredit-mode)
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+            (add-hook 'clojure-mode-hook 'ffy-find-file-in-clojure-project)
+            (add-hook 'clojure-mode-hook 'subword-mode)
+            (add-hook 'clojure-mode-hook 'clojure-test-mode)
 
-(eval-after-load "ac-nrepl"
-  '(progn (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-          (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-          (add-to-list 'ac-modes 'nrepl-mode)))
-
-(defun ffy-find-file-in-clojure-project ()
-  "For Clojure we are also looking for project.clj file in the project root"
-  (progn
-    (require 'find-file-in-project)
-    (when (boundp 'ffip-project-file)
-      (set (make-local-variable 'ffip-project-file)
-           (if (listp 'ffip-project-file)
-               (cons "project.clj" ffip-project-file)
-             (list "project.clj" ffip-project-file))))))
-
-(add-hook 'clojure-mode-hook 'ffy-find-file-in-clojure-project)
+            ))
 
 ;;;_. Ruby/Rails setup
 ;;; Loading  Ruby and Rails relate ELPA packages
