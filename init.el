@@ -1414,10 +1414,16 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
   (add-to-list 'ac-modes mode))
 
 ;;;_. Coffee-Script
-;;; loading ELPA package
-(require-package 'flymake-coffee)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+(use-package coffee-mode
+  :ensure t
+  :defer t
+  :commands coffee-mode
+  :mode ("\\.coffee$" . coffee-mode)
+  :config (progn
+            (use-package flymake-coffee
+              :ensure t
+              :config (progn
+                        (add-hook 'coffee-mode-hook 'flymake-coffee-load)))))
 
 ;;;_. JavaScript
 ;;; ----------------------------------------------------------------------
