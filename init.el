@@ -1049,6 +1049,7 @@ by using nxml's indentation rules."
 ;;; More about orgtbl:
 ;;; http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html
 (use-package orgtbl
+  :disabled t
   :commands orgtbl-mode
   :config (progn
             (defun orgtbl-to-gfm (table params)
