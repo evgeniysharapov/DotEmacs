@@ -115,7 +115,8 @@
 ;;;_ , Load autoloading file if it is present
 (load *autoload-file* 'noerror)
 
-;;;_ Add Missing Functionality
+;;;_ Extend Emacs Functionality
+;;;_. Additional Libraries
 (use-package dash
   :ensure t
   :commands -difference)
@@ -125,9 +126,9 @@
   :commands s-lines)
 
 
-;;;_ Utility functions
+;;;_. Utility functions
 
-;;;_. eval-and-replace
+;;;_ , eval-and-replace
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
@@ -138,7 +139,7 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
-;;;_. with-library
+;;;_ , with-library
 (defmacro with-library (symbol &rest body) 
   "A typical use is: you want to load a
  library, and then bind some function from that library to a key. But
@@ -165,26 +166,26 @@
       (message (format "%s is not available." ',symbol))
       nil)))
 
-;;;_. on-win32
+;;;_ , on-win32
 (defmacro on-win32 (&rest body)
   "Leaves code that specifically targets win32 system"
   `(when (equal system-type 'windows-nt)
      ,@body))
 
-;;;_. on-mac
+;;;_ , on-mac
 (defmacro on-mac (&rest body)
   "Leaves code that specifically targets Mac OS X"
   `(when (equal system-type 'darwin)
      ,@body))
 
-;;;_. make-interactive
+;;;_ , make-interactive
 (defmacro make-interactive (func &rest args)
   "Returns a symbol of an anonymous interactive function, suitable for binding to keys."
   `(lambda ()
      (interactive)
      (,func ,@args)))
 
-;;;_. pretty-greek
+;;;_ , pretty-greek
 (defun pretty-greek () 
   (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon"
                  "phi" "chi" "psi" "omega"))) 
@@ -207,13 +208,13 @@
                                    (match-end 2) ,greek-char)
                    nil)))))))))  
 
-;;;_. ido-choose-from-recentf
+;;;_ , ido-choose-from-recentf
 (defun ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"
   (interactive)
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
-;;;_. ffy-display-prev-next-buffers
+;;;_ , ffy-display-prev-next-buffers
 (defun ffy-display-prev-next-buffers ()
   "Show two previous, current and two next buffer names in the echo area.
 Example:
@@ -240,15 +241,15 @@ From http://www.jurta.org/en/emacs/dotemacs"
                 (get-next-valid-buffer (cdr (memq b bl)) t)))
               " "))))
 
-;;;_. assocs
+;;;_ , assocs
 (defun assocs (keylist list)
   "like `assoc' but KEYLIST is a list of keys. Returns a subset of alist LIST with keys from KEYLIST"
   (mapcar (lambda (k) (assoc k list)) keylist))
 
-;;;_. *frame-original-geometry*
+;;;_ , *frame-original-geometry*
 (defvar *frame-original-geometry* nil "Original width, height, left and top of the frame")
 
-;;;_. ffy-save-original-frame-parameters
+;;;_ , ffy-save-original-frame-parameters
 (defun ffy-save-original-frame-parameters ()
   "Writes original frame geometry parameters into a variable to be restored later."
   (setq *frame-original-geometry*
@@ -256,7 +257,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
 
 (add-hook 'after-init-hook 'ffy-save-original-frame-parameters)
 
-;;;_. ffy-frame-maximize
+;;;_ , ffy-frame-maximize
 (defun ffy-frame-maximize ()
   (on-mac
    (set-frame-parameter (selected-frame) 'fullscreen 'maximized))
@@ -265,7 +266,7 @@ From http://www.jurta.org/en/emacs/dotemacs"
   (on-win32
    (w32-send-sys-command #xf030 (selected-frame))))
 
-;;;_. ffy-frame-originalize
+;;;_ , ffy-frame-originalize
 (defun ffy-frame-originalize ()
   (mapc (lambda (param)
           (set-frame-parameter (selected-frame) (car param) (cdr param)))
@@ -277,13 +278,13 @@ From http://www.jurta.org/en/emacs/dotemacs"
    (w32-send-sys-command #xf120 nil)))
 
 
-;;;_. add-to-hooks
+;;;_ , add-to-hooks
 (defmacro add-to-hooks (hooks func)
   "Adds FUNC to HOOKS"
   `(dolist (hook ,hooks)
      (add-hook hook ,func)))
 
-;;;_. font-lock-add-buffer-keywords
+;;;_ , font-lock-add-buffer-keywords
 (defun font-lock-add-buffer-keywords (keywords &optional append)
   "Add highlighting KEYWORDS for the current buffer.
 KEYWORDS should be a list; see the variable `font-lock-keywords'.
@@ -333,7 +334,7 @@ see the variables `c-font-lock-extra-types', `c++-font-lock-extra-types',
         (setq font-lock-keywords (append keywords old))))))
 
 
-;;;_. keymap-on-key macro
+;;;_ , keymap-on-key macro
 (defmacro keymap-on-key (name keys)
   "This is a macro that declares a variable, key prefix and assigns a key to it.
 NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
@@ -341,7 +342,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
           (define-prefix-command (quote ,name))
           (bind-key ,keys (quote ,name))))
 
-;;;_. set-keymap-prefix
+;;;_ , set-keymap-prefix
 ;; (defun set-keymap-prefix (keymap keys)
 ;;   "Remaps whole KEYMAP to the given KEYS. In other words it will add a key prefix to
 ;; all mappings in a given KEYMAP.
@@ -355,7 +356,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ;;   ;; (define-key global-map [(control ?`)] 'flyspell-mode-map)
 ;;   )
 
-;;;_. insert-date-and-time
+;;;_ , insert-date-and-time
 (defun insert-date-and-time ()
   "Insert a time-stamp according to locale's date and time format."
   (interactive)
@@ -425,7 +426,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 (keymap-on-key ctl-quote-map "C-'")
 
 
-;;;_ GUI/Look and Feel
+;;;_ User Interface
 ;;;_. adding packages from ELPA
 ;(use-package base16-theme :ensure t :defer t)
 ;(use-package minimap  :ensure t :defer t)
@@ -463,7 +464,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 (bind-key "<C-f1>" 'imenu-add-menubar-index)
 
 
-;;;_ Files Settings and Operations
+;;;_ Files/Directories
 ;;;_. Backups and saves
 (setq save-place-file (concat *data-dir* "places")
       backup-directory-alist `((".*" . ,*backup-dir*))
@@ -509,7 +510,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
                                (emacs-lisp-byte-compile-and-load))))
 
 
-;;;_ Buffers and Operations on them
+;;;_ Buffers
 ;;;_. show adjacent buffers in the minibuffer on switch
 (defadvice previous-buffer (after my/previous-buffer activate)
   (ffy-display-prev-next-buffers))
@@ -623,7 +624,7 @@ This function depends on 's and 'dash libraries."
 ;;; apropos seems to be more useful than apropos-command
 (bind-key "C-h a" 'apropos)
 
-;;;_ Editing Operations
+;;;_ General Editing
 ;;;_. 'thingatpt' and `thingatpt+' libraries
 (use-package thingatpt
   :defer t
@@ -1599,16 +1600,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
           (add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
           (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
           (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
-
-;;;_ Key Bindings
-
-;;; ------------------------------------------------------------
-
-;;;_. Outline mode
-;;; ------------------------------------------------------------
-;(define-key global-map [(meta ?o)] '...)
-
-;;; ------------------------------------------------------------
 
 ;;;_ Start Server
 (server-start)
