@@ -487,11 +487,11 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ;;;
 ;;;  C-x f <letter> are different file commands
 
-(bind-key "R" 'recentf-open-most-recent-file ctl-x-f-map)
-(bind-key "o" 'ido-find-file-other-window ctl-x-f-map)
-(bind-key "f" 'find-file-in-project ctl-x-f-map)
-(bind-key "r" 'ido-choose-from-recentf ctl-x-f-map)
-(bind-key "RET" 'find-file-at-point ctl-x-f-map)
+(bind-key  "R"   'recentf-open-most-recent-file ctl-x-f-map)
+(bind-key  "o"   'ido-find-file-other-window    ctl-x-f-map)
+(bind-key  "f"   'find-file-in-project          ctl-x-f-map)
+(bind-key  "r"   'ido-choose-from-recentf       ctl-x-f-map)
+(bind-key  "RET" 'find-file-at-point            ctl-x-f-map)
 
 ;;;_. Dired
 ;;; Dired settings that proved useful
