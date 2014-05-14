@@ -545,31 +545,6 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
 
 
-;;;_. Kill-rings
-(use-package browse-kill-ring
-  :ensure t
-  :config
-  (progn
-    (browse-kill-ring-default-keybindings) ; advise M-y
-    (bind-key "C-x C-y" 'browse-kill-ring)))
-
-(use-package kill-ring-search
-  :ensure t
-  :config
-  (progn
-    (bind-key "C-M-y" 'kill-ring-search)))
-
-;;;_. Enable useful disabled commands
-(dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
-  (put command 'disabled nil))
-
-;;;_. Undo settings
-;;; ----------------------------------------------------------------------
-(use-package undo-tree
-  :ensure t
-  :diminish undo-tree-mode
-  :config (global-undo-tree-mode))
-
 ;;;_. Spellcheck setup 
 ;;; ------------------------------------------------------------
 ;;;_ , find-hunspell-dictionary
@@ -667,9 +642,15 @@ This function depends on 's and 'dash libraries."
                           (interactive "p")
                           (ffy-tap-number-change (or num 1)))))))
 
+;;;_. Increment/Decrement number at the point
+(eval-after-load "thingatpt"
+  '(progn
+     (bind-key "C--"  'ffy-tap-number-decrease)
+     (bind-key "C-+"  'ffy-tap-number-increase)))
+
 ;;;_. Highlighting and colouring
 (use-package idle-highlight-mode :ensure t)
-(use-package rainbow-mode  :ensure t)
+(use-package rainbow-mode        :ensure t)
 (use-package rainbow-delimiters  :ensure t)
 
 ;;;_ , highlight the "word" the cursor is on
@@ -677,20 +658,103 @@ This function depends on 's and 'dash libraries."
   :ensure t
   :config  (progn
              (highlight-symbol-mode +1)
-             (bind-key "<C-return>" 'highlight-symbol-at-point  ctl-z-map)
-             (bind-key "<C-up>" 'highlight-symbol-prev  ctl-z-map)
-             (bind-key "<C-down>" 'highlight-symbol-next  ctl-z-map)
-             (bind-key "@" 'highlight-symbol-query-replace  ctl-z-map)))
+             (bind-key "<C-return>" 'highlight-symbol-at-point      ctl-z-map)
+             (bind-key "<C-up>"     'highlight-symbol-prev          ctl-z-map)
+             (bind-key "<C-down>"   'highlight-symbol-next          ctl-z-map)
+             (bind-key "@"          'highlight-symbol-query-replace ctl-z-map)))
 
-;;;_. Editing operations
-;;; IMenu defaults
-(set-default 'imenu-auto-rescan t)
-;;; Zap-up-to char is a better alternative
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR.
+;;;_. Kill-rings
+(use-package browse-kill-ring
+  :ensure t
+  :config  (progn
+             (browse-kill-ring-default-keybindings) ; advises M-y
+             (bind-key "C-x C-y" 'browse-kill-ring)))
 
+(use-package kill-ring-search
+  :ensure t
+  :config  (progn
+             (bind-key "C-M-y" 'kill-ring-search)))
+
+;;;_. Undo settings
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config (global-undo-tree-mode))
+
+
+;;;_. Enable useful disabled Narrow/Widen commands
+(dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
+  (put command 'disabled nil))
+
+;;;_. Completion
+(bind-key "M-/"  'hippie-expand)
+
+;;;_. Zapping
+;;;_ , Zap-up-to char is a better alternative
+(autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.
   \(fn arg char)" 'interactive)
+;;;_ , zap-to-char-backwards
+(defun zap-to-char-backwards (char)
+    (interactive "cZap to char backwards: ")
+    (zap-to-char -1 char))
+;;;_ , zap-up-to-char-backwards
+(defun zap-up-to-char-backwards (char)
+    (interactive "cZap up to char backwards: ")
+    (zap-up-to-char -1 char))
+;;;_ , zapping key bindings
+(bind-key "C-M-z"   'zap-to-char-backwards)
+(bind-key "M-Z"     'zap-up-to-char)
+(bind-key "C-M-S-z" 'zap-up-to-char-backwards)
 
+;;;_. Search
+(bind-key "C-S-r"  'search-backward)
+(bind-key "C-S-s"  'search-forward)
+
+;;;_. Navigation and Positioning
+
+;;;_ , ffy-bol-or-back-to-indent
+(defun ffy-bol-or-back-to-indent ()
+  "In addition to having two different mappings for
+ (move-beginning-of-line ARG) and (back-to-indentation) we
+ will have a function that goes to BOL if we are on the
+ indent position and to the indent if we are at the BOL"
+  (interactive)
+  (if (bolp)
+      (back-to-indentation)
+    (move-beginning-of-line 1)))
+;;;_ , redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
+(bind-key "C-S-a" (key-binding [(control ?a)]))
+(bind-key "C-a"  'ffy-bol-or-back-to-indent)
+
+;;;_. use C-\ to leave one space between words
+(define-key global-map [(control ?\\)] 'just-one-space)
+
+;;;_. Mark/Point machinery
+
+;;; see
+;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
+
+;;; pushes mark into a ring without activating a region
+(bind-key  "M-SPC"
+  (make-interactive (lambda ()
+                      (push-mark (point) t nil)
+                      (message "Position %s pushed to the ring" (point)))))
+
+;;;_. there's default M-^ `delete-indentation' that is an alias to join-line
+(bind-key "j" 'join-line ctl-z-map)
+(bind-key "J" (lambda () "joins next line to this one"
+                               (interactive)
+                               (join-line 1)) ctl-z-map)
+;;;_. mark commands from `thing-cmds'
+(use-package thing-cmds
+  :ensure t
+  :init (thgcmd-bind-keys))
+
+;;;_. miscellaneous
+;;;_ , toggles line numbers in the buffer
+(bind-key "C-S-l"  'linum-mode)
+;;;_ , IMenu defaults
+(set-default 'imenu-auto-rescan t)
 
 ;;;_ Miscellaneous
 ;;; ----------------------------------------------------------------------
@@ -1539,66 +1603,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (define-key global-map [(control x) (super right)] 'winner-redo)
 
 ;;; ------------------------------------------------------------
-;;;_. Editing/Operations In Buffer
-;;; ------------------------------------------------------------
-;;;_ , Completion operations
-(bind-key "M-/"  'hippie-expand)
-;;;_ , toggles line  numbers in the buffer
-(bind-key "C-S-l"  'linum-mode)
-;;;_ , search forward/backward
-(bind-key "C-S-r"  'search-backward)
-(bind-key "C-S-s"  'search-forward)
-
-;;;_ , Zapping backa and forth
-;;;_  . zap-to-char-backwards
-(defun zap-to-char-backwards (char)
-    (interactive "cZap to char backwards: ")
-    (zap-to-char -1 char))
-;;;_  . zap-up-char-backwards
-(defun zap-up-char-backwards (char)
-    (interactive "cZap up to char backwards: ")
-    (zap-up-to-char -1 char))
-;;;_  . M-z is zap-to-char
-(bind-key "C-M-z" 'zap-to-char-backwards)
-(bind-key "M-Z"  'zap-up-to-char)
-(bind-key "C-M-S-z" 'zap-up-char-backwards)
-
-;;;_ , ffy-bol-or-back-to-indent
-(defun ffy-bol-or-back-to-indent ()
-  "In addition to having two different mappings for (move-beginning-of-line ARG) and (back-to-indentation) we will have a function that goes to BOL if we are on the indent position and to the indent if we are at the BOL"
-  (interactive)
-  (if (bolp)
-      (back-to-indentation)
-    (move-beginning-of-line 1)))
-;;;_ , redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
-(bind-key "C-S-a" (key-binding [(control ?a)]))
-(bind-key "C-a"  'ffy-bol-or-back-to-indent)
-;;;_ , use C-\ to leave one space between words
-(define-key global-map [(control ?\\)] 'just-one-space)
-;;;_ , Mark/Point machinery
-
-;;; see
-;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
-
-;;; pushes mark into a ring without activating a region
-(bind-key  "M-SPC"
-  (make-interactive (lambda ()
-                      (push-mark (point) t nil)
-                      (message "Position %s pushed to the ring" (point)))))
-;;;_ , inc/dec number at the point
-(eval-after-load "thingatpt"
-  '(progn
-     (bind-key "C--"  'ffy-tap-number-decrease)
-     (bind-key "C-+"  'ffy-tap-number-increase)))
-;;;_ , there's default M-^ `delete-indentation' that is an alias to join-line
-(bind-key "j" 'join-line ctl-z-map)
-(bind-key "J" (lambda () "joins next line to this one"
-                               (interactive)
-                               (join-line 1)) ctl-z-map)
-;;;_ , mark commands from `thing-cmds'
-(use-package thing-cmds
-  :ensure t
-  :init (thgcmd-bind-keys))
 
 ;;;_. Outline mode
 ;;; ------------------------------------------------------------
