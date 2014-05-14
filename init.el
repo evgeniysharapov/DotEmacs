@@ -703,32 +703,82 @@ This function depends on 's and 'dash libraries."
   (put command 'disabled nil))
 
 ;;;_. Completion
+;;;_ , Regular hippie-expand
+;;; Naturally `hippie-expand-try-functions-list' would be made local
+;;; variable and adjusted for a mode in the mode settings
 (bind-key "M-/"  'hippie-expand)
 
-;;;_. Zapping
-;;;_ , Zap-up-to char is a better alternative
+;;;_ , Auto-Complete
+(use-package auto-complete
+  :ensure t
+  :init (progn
+          (use-package popup :ensure t)
+          (use-package fuzzy :ensure t)
+          (use-package auto-complete-config)
+
+          ;; add our own directory to the end of the list
+          (add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
+          (setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
+          (ac-config-default)
+          (global-auto-complete-mode t)
+          (setq ac-auto-show-menu t)
+          (setq ac-dwim t)
+          (setq ac-use-menu-map t)
+          (setq ac-quick-help-delay 1)
+          (setq ac-quick-help-height 60)
+                                        ;(setq ac-disable-inline t)
+          (setq ac-show-menu-immediately-on-auto-complete t)
+          (setq ac-auto-start 2)
+          (setq ac-candidate-menu-min 0)
+
+          (set-default 'ac-sources
+                       '(
+                         ac-source-abbrev
+                         ac-source-imenu
+                         ac-source-dictionary
+                         ac-source-words-in-buffer
+                         ac-source-words-in-same-mode-buffers
+                         ac-source-yasnippet
+                         ))
+
+          ;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
+          ;; If bounds-of-thing-at-point has been redefined (and we did so)
+          ;; this function will return nil.
+          (defun ac-prefix-symbol ()
+            "Overriden default prefix definition function."
+            (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
+              (if (and (null symbol-start)
+                       (fboundp 'tap-bounds-of-thing-nearest-point))
+                  ;; try tap- function if available
+                  (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
+                ;; else
+                symbol-start)))))
+
+
+;;;_  . Zapping
+;;;_   , Zap-up-to char is a better alternative
 (autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.
   \(fn arg char)" 'interactive)
-;;;_ , zap-to-char-backwards
+;;;_   , zap-to-char-backwards
 (defun zap-to-char-backwards (char)
     (interactive "cZap to char backwards: ")
     (zap-to-char -1 char))
-;;;_ , zap-up-to-char-backwards
+;;;_   , zap-up-to-char-backwards
 (defun zap-up-to-char-backwards (char)
     (interactive "cZap up to char backwards: ")
     (zap-up-to-char -1 char))
-;;;_ , zapping key bindings
+;;;_   , zapping key bindings
 (bind-key "C-M-z"   'zap-to-char-backwards)
 (bind-key "M-Z"     'zap-up-to-char)
 (bind-key "C-M-S-z" 'zap-up-to-char-backwards)
 
-;;;_. Search
+;;;_  . Search
 (bind-key "C-S-r"  'search-backward)
 (bind-key "C-S-s"  'search-forward)
 
-;;;_. Navigation and Positioning
+;;;_  . Navigation and Positioning
 
-;;;_ , ffy-bol-or-back-to-indent
+;;;_   , ffy-bol-or-back-to-indent
 (defun ffy-bol-or-back-to-indent ()
   "In addition to having two different mappings for
  (move-beginning-of-line ARG) and (back-to-indentation) we
@@ -738,14 +788,14 @@ This function depends on 's and 'dash libraries."
   (if (bolp)
       (back-to-indentation)
     (move-beginning-of-line 1)))
-;;;_ , redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
+;;;_   , redefine C-a to C-S-a and C-a to the ffy-bol-or-back-to-indent
 (bind-key "C-S-a" (key-binding [(control ?a)]))
 (bind-key "C-a"  'ffy-bol-or-back-to-indent)
 
-;;;_. use C-\ to leave one space between words
+;;;_  . use C-\ to leave one space between words
 (define-key global-map [(control ?\\)] 'just-one-space)
 
-;;;_. Mark/Point machinery
+;;;_  . Mark/Point machinery
 
 ;;; see
 ;;; http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
@@ -756,20 +806,20 @@ This function depends on 's and 'dash libraries."
                       (push-mark (point) t nil)
                       (message "Position %s pushed to the ring" (point)))))
 
-;;;_. there's default M-^ `delete-indentation' that is an alias to join-line
+;;;_  . there's default M-^ `delete-indentation' that is an alias to join-line
 (bind-key "j" 'join-line ctl-z-map)
 (bind-key "J" (lambda () "joins next line to this one"
                                (interactive)
                                (join-line 1)) ctl-z-map)
-;;;_. mark commands from `thing-cmds'
+;;;_  . mark commands from `thing-cmds'
 (use-package thing-cmds
   :ensure t
   :init (thgcmd-bind-keys))
 
-;;;_. miscellaneous
-;;;_ , toggles line numbers in the buffer
+;;;_  . miscellaneous
+;;;_   , toggles line numbers in the buffer
 (bind-key "C-S-l"  'linum-mode)
-;;;_ , IMenu defaults
+;;;_   , IMenu defaults
 (set-default 'imenu-auto-rescan t)
 
 ;;;_ Miscellaneous
@@ -883,52 +933,6 @@ This function depends on 's and 'dash libraries."
   :commands magit-status
   ;; Added global shortcut to run Magit
   :bind ("C-x g" . magit-status))
-
-;;;_ Auto-Complete
-(use-package auto-complete
-  :ensure t
-  :init (progn
-          (use-package popup :ensure t)
-          (use-package fuzzy :ensure t)
-          (use-package auto-complete-config)
-
-          ;; add our own directory to the end of the list
-          (add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
-          (setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
-          (ac-config-default)
-          (global-auto-complete-mode t)
-          (setq ac-auto-show-menu t)
-          (setq ac-dwim t)
-          (setq ac-use-menu-map t)
-          (setq ac-quick-help-delay 1)
-          (setq ac-quick-help-height 60)
-                                        ;(setq ac-disable-inline t)
-          (setq ac-show-menu-immediately-on-auto-complete t)
-          (setq ac-auto-start 2)
-          (setq ac-candidate-menu-min 0)
-
-          (set-default 'ac-sources
-                       '(
-                         ac-source-abbrev
-                         ac-source-imenu
-                         ac-source-dictionary
-                         ac-source-words-in-buffer
-                         ac-source-words-in-same-mode-buffers
-                         ac-source-yasnippet
-                         ))
-
-          ;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
-          ;; If bounds-of-thing-at-point has been redefined (and we did so)
-          ;; this function will return nil.
-          (defun ac-prefix-symbol ()
-            "Overriden default prefix definition function."
-            (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
-              (if (and (null symbol-start)
-                       (fboundp 'tap-bounds-of-thing-nearest-point))
-                  ;; try tap- function if available
-                  (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
-                ;; else
-                symbol-start)))))
 
 ;;;_ Customizing Modes
 
