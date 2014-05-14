@@ -509,28 +509,13 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
                                (emacs-lisp-byte-compile-and-load))))
 
 
-;;;_ Buffers
-;;; ----------------------------------------------------------------------
-;; Encoding and text related stuff
-;(set-terminal-coding-system 'utf-8)
-;(set-keyboard-coding-system 'utf-8)
-;(prefer-coding-system 'utf-8)
-
-
-(set-default 'imenu-auto-rescan t)
-
+;;;_ Buffers and Operations on them
+;;;_. show adjacent buffers in the minibuffer on switch
 (defadvice previous-buffer (after my/previous-buffer activate)
   (ffy-display-prev-next-buffers))
 
 (defadvice next-buffer (after my/next-buffer activate)
  (ffy-display-prev-next-buffers))
-
-;;; Zap-up-to char is a better alternative
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR.
-
-  \(fn arg char)" 'interactive)
-
 
 (defvar *auto-close-buffers* '("*Completions*"
                                "*Ido Completions*")
@@ -543,11 +528,10 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
                         (if (buffer-live-p buffer)
                             (kill-buffer buffer))) *auto-close-buffers*))))
 
-;;;_. Buffer Operations Keybindings
-;;; ------------------------------------------------------------
+
 (bind-key "C-x C-b" 'ibuffer)
-;;; more direct approach
 (bind-key "<f12>" 'kill-this-buffer)
+
 ;;; other useful combos:
 ;;; `C-x 4 0' - kill-buffer-and-window (works with current buffer
 ;;; only)
@@ -556,6 +540,9 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ;;; Buffer operations in C-z map
 (bind-key "b y" 'bury-buffer  ctl-z-map)
 (bind-key "b r" 'revert-buffer  ctl-z-map)
+;;; revert buffer on f5
+(bind-key "<f5>" 'revert-buffer)
+
 
 
 ;;;_. Kill-rings
@@ -694,6 +681,16 @@ This function depends on 's and 'dash libraries."
              (bind-key "<C-up>" 'highlight-symbol-prev  ctl-z-map)
              (bind-key "<C-down>" 'highlight-symbol-next  ctl-z-map)
              (bind-key "@" 'highlight-symbol-query-replace  ctl-z-map)))
+
+;;;_. Editing operations
+;;; IMenu defaults
+(set-default 'imenu-auto-rescan t)
+;;; Zap-up-to char is a better alternative
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.
+
+  \(fn arg char)" 'interactive)
+
 
 ;;;_ Miscellaneous
 ;;; ----------------------------------------------------------------------
@@ -1578,8 +1575,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (bind-key "C-a"  'ffy-bol-or-back-to-indent)
 ;;;_ , use C-\ to leave one space between words
 (define-key global-map [(control ?\\)] 'just-one-space)
-;;;_ , update buffer with F5
-(bind-key "<f5>" 'revert-buffer)
 ;;;_ , Mark/Point machinery
 
 ;;; see
