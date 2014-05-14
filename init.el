@@ -600,6 +600,21 @@ This function depends on 's and 'dash libraries."
                 (when dict-location
                   (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
+;;;_ Windows
+;;;_. Windmove
+(windmove-default-keybindings 'super) ;; ⌘+direction
+;;;_. Moving in a window
+(bind-key "t" (make-interactive move-to-window-line 0)  goto-map)
+(bind-key "b" (make-interactive move-to-window-line -1)  goto-map)
+;;;_. Typical window operations but faster
+(bind-key "M-0" 'delete-window)
+(bind-key "M-1" 'delete-other-windows)
+(bind-key "M-2" 'split-window-vertically)
+(bind-key "M-3" 'split-window-horizontally)
+;;;_. Windows configurations
+(define-key global-map [(control x) (super left)] 'winner-undo)
+(define-key global-map [(control x) (super right)] 'winner-redo)
+
 ;;;_ Help and Info
 ;;; ----------------------------------------------------------------------
 (require 'help-mode+ nil t)
@@ -1586,21 +1601,6 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
           (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
 ;;;_ Key Bindings
-;;;_. Windows Operations
-;;; ------------------------------------------------------------
-;;;_ , Windmove
-(windmove-default-keybindings 'super) ;; ⌘+direction
-;;;_ , Moving in a window
-(bind-key "t" (make-interactive move-to-window-line 0)  goto-map)
-(bind-key "b" (make-interactive move-to-window-line -1)  goto-map)
-;;;_ , Typical window operations but faster
-(bind-key "M-0" 'delete-window)
-(bind-key "M-1" 'delete-other-windows)
-(bind-key "M-2" 'split-window-vertically)
-(bind-key "M-3" 'split-window-horizontally)
-;;;_ , Windows configurations
-(define-key global-map [(control x) (super left)] 'winner-undo)
-(define-key global-map [(control x) (super right)] 'winner-redo)
 
 ;;; ------------------------------------------------------------
 
