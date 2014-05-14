@@ -425,68 +425,46 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 (keymap-on-key ctl-quote-map "C-'")
 
 
-;;;_ Customizing General Emacs Behavior
-;;;_. GUI/Look and Feel
-;;;_ , adding packages from ELPA
-(use-package idle-highlight-mode
-  :ensure t)
-(use-package rainbow-mode
-  :ensure t)
-(use-package rainbow-delimiters
-  :ensure t)
-(use-package diminish
-  :ensure t)
-(use-package base16-theme
-  :ensure t)
-(use-package minimap
-  :ensure t)
+;;;_ GUI/Look and Feel
+;;;_. adding packages from ELPA
+;(use-package base16-theme :ensure t :defer t)
+;(use-package minimap  :ensure t :defer t)
 
-;;;_ , Turn off some bells and whistles
+;;;_. Turn off some bells and whistles
+;;; turn off menu bar, scroll bars and tool bar.
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-;;;_ , File name into the frame title
+;;;_. File name into the frame title
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
-;;;_ , highlight the "word" the cursor is on
-(use-package highlight-symbol
-  :ensure t
-  :config
-  (progn
-    (highlight-symbol-mode +1)
-    (bind-key "<C-return>" 'highlight-symbol-at-point  ctl-z-map)
-    (bind-key "<C-up>" 'highlight-symbol-prev  ctl-z-map)
-    (bind-key "<C-down>" 'highlight-symbol-next  ctl-z-map)
-    (bind-key "@" 'highlight-symbol-query-replace  ctl-z-map)))
-
-;;;_ , display time in mode-line
+;;;_. display time in mode-line
 (display-time)
 
-;;;_ , Hide some modes from the mode-line
+;;;_. Hide some modes from the mode-line
 ;;; TODO: maybe this should be moved to the corresponding modes configuration
 (when (fboundp 'diminish)
   (eval-after-load 'eldoc
     '(diminish 'eldoc-mode)))
 
-;;;_ , Configure powerline if it is available
+;;;_. Mode line configuration
+(use-package diminish  :ensure t :defer t)
 (use-package powerline
   :ensure t
-  :config
-  (powerline-default-theme))
+  :config (powerline-default-theme))
 
-;;;_ , UI Key-bindings
-;;; ----------------------------------------------------------------------
+;;;_. Menu bar
 ;;; Turn on the menu bar for exploring new modes
 (bind-key "<f1>" 'menu-bar-mode)
 (bind-key "<C-f1>" 'imenu-add-menubar-index)
 
 
-;;;_. Files Settings and Operations
-;;;_ , Backups and saves
+;;;_ Files Settings and Operations
+;;;_. Backups and saves
 (setq save-place-file (concat *data-dir* "places")
       backup-directory-alist `((".*" . ,*backup-dir*))
       savehist-file (concat *data-dir* "history")
@@ -499,12 +477,12 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
       desktop-save t
       auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
-;;;_ , Files and Projects
+;;;_. Files and Projects
 (use-package find-file-in-project
   :ensure t
   :commands find-file-in-project)
 
-;;;_ , Files Key-Bindings
+;;;_. Files Key-Bindings
 ;;;  C-x C-f is bound to ido-find-file
 ;;;
 ;;;  C-x f <letter> are different file commands
@@ -515,7 +493,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 (bind-key "r" 'ido-choose-from-recentf ctl-x-f-map)
 (bind-key "RET" 'find-file-at-point ctl-x-f-map)
 
-;;;_ , Dired
+;;;_. Dired
 ;;; Dired settings that proved useful
 (setq dired-dwim-target t)              ; guess where to copy files
 
@@ -531,7 +509,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
                                (emacs-lisp-byte-compile-and-load))))
 
 
-;;;_. Buffers
+;;;_ Buffers
 ;;; ----------------------------------------------------------------------
 ;; Encoding and text related stuff
 ;(set-terminal-coding-system 'utf-8)
@@ -565,7 +543,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
                         (if (buffer-live-p buffer)
                             (kill-buffer buffer))) *auto-close-buffers*))))
 
-;;;_ , Buffer Operations Keybindings
+;;;_. Buffer Operations Keybindings
 ;;; ------------------------------------------------------------
 (bind-key "C-x C-b" 'ibuffer)
 ;;; more direct approach
@@ -660,7 +638,7 @@ This function depends on 's and 'dash libraries."
                 (when dict-location
                   (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
 
-;;;_. Help and Info
+;;;_ Help and Info
 ;;; ----------------------------------------------------------------------
 (require 'help-mode+ nil t)
 (require 'help+ nil t)
@@ -668,8 +646,8 @@ This function depends on 's and 'dash libraries."
 ;;; apropos seems to be more useful than apropos-command
 (bind-key "C-h a" 'apropos)
 
-;;;_. Editing Operations
-;;;_ , 'thingatpt' and `thingatpt+' libraries
+;;;_ Editing Operations
+;;;_. 'thingatpt' and `thingatpt+' libraries
 (use-package thingatpt
   :defer t
   :config (progn
@@ -677,7 +655,7 @@ This function depends on 's and 'dash libraries."
               :ensure t
               :config (progn
                         (tap-redefine-std-fns)
-;;;_  . ffy-tap-number-change
+;;;_ , ffy-tap-number-change
 ;;; This depends on the thingatpt and thingatpt+
                         (defun ffy-tap-number-change (&optional num)
                           "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
@@ -690,27 +668,42 @@ This function depends on 's and 'dash libraries."
                                     (delete-region (car bounds) (cdr bounds))
                                     (insert (number-to-string (+ n (or num 1)))))))))
 
-;;;_  . ffy-tap-number-decrease
+;;;_ , ffy-tap-number-decrease
                         (defun ffy-tap-number-decrease (&optional num)
                           "Decreases number at the point by `num' or 1 if argument is not given"
                           (interactive "p")
                           (ffy-tap-number-change (- (or num 1))))
 
-;;;_  . ffy-tap-number-increase
+;;;_ , ffy-tap-number-increase
                         (defun ffy-tap-number-increase (&optional num)
                           "Increases number at the point by `num' or 1 if argument is not given"
                           (interactive "p")
                           (ffy-tap-number-change (or num 1)))))))
 
-;;;_. Miscellaneous
+;;;_. Highlighting and colouring
+(use-package idle-highlight-mode :ensure t)
+(use-package rainbow-mode  :ensure t)
+(use-package rainbow-delimiters  :ensure t)
+
+;;;_ , highlight the "word" the cursor is on
+(use-package highlight-symbol
+  :ensure t
+  :config  (progn
+             (highlight-symbol-mode +1)
+             (bind-key "<C-return>" 'highlight-symbol-at-point  ctl-z-map)
+             (bind-key "<C-up>" 'highlight-symbol-prev  ctl-z-map)
+             (bind-key "<C-down>" 'highlight-symbol-next  ctl-z-map)
+             (bind-key "@" 'highlight-symbol-query-replace  ctl-z-map)))
+
+;;;_ Miscellaneous
 ;;; ----------------------------------------------------------------------
 (defalias 'yes-or-no-p 'y-or-n-p)
 (random t)
 
-;;;_. URL uses data directory for its stuff
+;;;_ URL uses data directory for its stuff
 (setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
 
-;;;_. Ack/Grep/RGrep
+;;;_ Ack/Grep/RGrep
 (use-package ack-and-a-half
   :ensure t
   :commands (ack-and-a-half ack-and-a-half-same ack-and-a-half-find-file ack-and-a-half-find-file-same)
@@ -727,7 +720,7 @@ This function depends on 's and 'dash libraries."
     (setq wgrep-enable-key "e")
     (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
 
-;;;_. Minibuffer and Smex
+;;;_ Minibuffer and Smex
 ;;; ----------------------------------------------------------------------
 (use-package smex
   :ensure t
@@ -742,7 +735,7 @@ This function depends on 's and 'dash libraries."
 (bind-key "C-x C-m"  'execute-extended-command)
 
 
-;;;_. Using smerge for merging files
+;;;_ Using smerge for merging files
 ;;; ----------------------------------------------------------------------
 (defun sm-try-smerge ()
   (save-excursion
@@ -752,7 +745,7 @@ This function depends on 's and 'dash libraries."
 
 (add-hook 'find-file-hook 'sm-try-smerge t)
 
-;;;_. Bookmarking
+;;;_ Bookmarking
 ;;; ----------------------------------------------------------------------
 (use-package bm
   :ensure bm)
@@ -764,7 +757,7 @@ This function depends on 's and 'dash libraries."
     (use-package bookmark+
       :ensure t)))
 
-;;;_. Yasnippets
+;;;_ Yasnippets
 ;;; ----------------------------------------------------------------------
 (use-package yasnippet
   :ensure t
@@ -775,7 +768,7 @@ This function depends on 's and 'dash libraries."
     (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
     (yas-global-mode +1)))
 
-;;;_. Ido configuraiton
+;;;_ Ido configuraiton
 ;;; Some IDO settings that have been taken out from the customization file.
 (use-package ido
   :config
@@ -789,7 +782,7 @@ This function depends on 's and 'dash libraries."
     ;; kill-ring-search has already set of minibuffer commands that don't
     ;; work well with ido-completing-read
     (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
-;;;_ , ffy--change-ido-override
+;;;_. ffy--change-ido-override
     (defun ffy--change-ido-override (behavior func-name)
       "Changes `ido-ubiquitous-function-overrides` variable for a function FUNC-NAME by setting its behavior to BEHAVIOR"
       (setq ido-ubiquitous-function-overrides
@@ -797,24 +790,24 @@ This function depends on 's and 'dash libraries."
                                       (cons ,behavior (cdr override))
                                     override))
                     ido-ubiquitous-function-overrides)))
-;;;_ , enable-ido-for
+;;;_. enable-ido-for
     (defmacro enable-ido-for (func-name)
       "Enables IDO for a function using `ido-ubiquitous' mode"
       `(ffy--change-ido-override 'enable ,func-name))
-;;;_ , disable-ido-for
+;;;_. disable-ido-for
     (defmacro disable-ido-for (func-name)
       "Disables IDO for a function using `ido-ubiquitous' mode"
       `(ffy--change-ido-override 'disable ,func-name))))
 
-;;;_. Version Control Systems
-;;;_ , Git
+;;;_ Version Control Systems
+;;;_. Git
 (use-package magit
   :ensure t
   :commands magit-status
   ;; Added global shortcut to run Magit
   :bind ("C-x g" . magit-status))
 
-;;;_. Auto-Complete
+;;;_ Auto-Complete
 (use-package auto-complete
   :ensure t
   :init (progn
