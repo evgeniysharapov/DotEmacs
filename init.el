@@ -115,6 +115,16 @@
 ;;;_ , Load autoloading file if it is present
 (load *autoload-file* 'noerror)
 
+;;;_ Add Missing Functionality
+(use-package dash
+  :ensure t
+  :commands -difference)
+
+(use-package s
+  :ensure t
+  :commands s-lines)
+
+
 ;;;_ Utility functions
 
 ;;;_. eval-and-replace
@@ -416,17 +426,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
 
 ;;;_ Customizing General Emacs Behavior
-;;; ----------------------------------------------------------------------
-(use-package dash
-  :ensure t
-  :commands -difference)
-
-(use-package s
-  :ensure t
-  :commands s-lines)
-
 ;;;_. GUI/Look and Feel
-;;; ----------------------------------------------------------------------
 ;;;_ , adding packages from ELPA
 (use-package idle-highlight-mode
   :ensure t)
