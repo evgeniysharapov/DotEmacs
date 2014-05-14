@@ -83,16 +83,6 @@
   (let ((path (expand-file-name (concat name "-autoloads.el") pkg-dir)))
     (with-current-buffer (find-file-existing path)
       (kill-buffer nil))))
-
-;;;_ , Add requiring package from ELPA (install if not installed)
-(defun require-package (package &optional min-version)
-  "Installs package of desired version using ELPA"
-  ;; TODO: make it work with minimum and maximum version
-  ;; use version-list-= and version-list-> from subr.el
-  (if (package-installed-p package min-version)
-    t
-    (package-install package)))
-
 ;;;_ , ELPA settings
 (when (require 'package nil 'noerror)
   ;; all ELPA packages are located here
