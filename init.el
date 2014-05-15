@@ -1218,7 +1218,7 @@ For more details see https://gist.github.com/grafov/8244792 and https://gist.git
 ;;;_ , Paredit settings
 (use-package paredit
   :ensure t
-  :diminish (paredit-mode . "(P)")
+  :diminish (paredit-mode . "(λ)")
   :config
   (progn
     (defun ffy-paredit-forward-delete ()
