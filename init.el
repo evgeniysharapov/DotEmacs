@@ -710,26 +710,28 @@ This function depends on 's and 'dash libraries."
 
 ;;;_ , Auto-Complete
 (use-package auto-complete
+  :disabled t
   :ensure t
   :init (progn
           (use-package popup :ensure t)
           (use-package fuzzy :ensure t)
-          (use-package auto-complete-config)
+          (use-package auto-complete-config :ensure t)
+          (use-package pos-tip :ensure t)
 
           ;; add our own directory to the end of the list
           (add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
           (setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
           (ac-config-default)
           (global-auto-complete-mode t)
-          (setq ac-auto-show-menu t)
-          (setq ac-dwim t)
-          (setq ac-use-menu-map t)
-          (setq ac-quick-help-delay 1)
-          (setq ac-quick-help-height 60)
-                                        ;(setq ac-disable-inline t)
-          (setq ac-show-menu-immediately-on-auto-complete t)
-          (setq ac-auto-start 2)
-          (setq ac-candidate-menu-min 0)
+          ;(setq ac-auto-show-menu t)
+          ;(setq ac-dwim t)
+          ;(setq ac-use-menu-map t)
+          ;(setq ac-quick-help-delay 1)
+          ;(setq ac-quick-help-height 60)
+          ;;(setq ac-disable-inline t)
+          ;(setq ac-show-menu-immediately-on-auto-complete t)
+          ;(setq ac-auto-start 2)
+          ;(setq ac-candidate-menu-min 0)
 
           (set-default 'ac-sources
                        '(
@@ -821,6 +823,18 @@ This function depends on 's and 'dash libraries."
 (bind-key "C-S-l"  'linum-mode)
 ;;;_   , IMenu defaults
 (set-default 'imenu-auto-rescan t)
+
+;;;_ , Company
+;;; Due to inconveniences of the `auto-complete' package use company
+;;; instead
+(use-package company
+  :ensure t
+  :config (progn
+            (setq company-idle-delay 0.3
+                  company-tooltip-limit 20
+                  company-minimum-prefix-length 2
+                  company-echo-delay 0))
+  :init (global-company-mode 1))
 
 ;;;_ Miscellaneous
 ;;; ----------------------------------------------------------------------
@@ -1020,8 +1034,8 @@ by using nxml's indentation rules."
                ""
                nil))
 ;;; Add auto-complete to the the XML based modes 
-(dolist (mode '(nxml-mode))
-  (add-to-list 'ac-modes mode))
+;(dolist (mode '(nxml-mode))
+;  (add-to-list 'ac-modes mode))
 
 ;;;_. HTML and XHTML and other markup mode setup setup
 ;; (dolist (mode '(html-mode yaml-mode  textile-mode))
@@ -1083,8 +1097,8 @@ by using nxml's indentation rules."
 (add-hook 'org-mode-hook 'turn-on-flyspell)
 (add-hook 'org-mode-hook 'hl-line-mode)
 
-(dolist (mode '(org-mode))
-  (add-to-list 'ac-modes mode))
+;(dolist (mode '(org-mode))
+;  (add-to-list 'ac-modes mode))
 
 ;;
 ;;  Setup iimage working with Org-mode
@@ -1236,7 +1250,8 @@ For more details see https://gist.github.com/grafov/8244792 and https://gist.git
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
     (elisp-slime-nav-mode 1)
-    (add-to-list 'ac-sources 'ac-source-emacs-lisp-features)))
+    ;(add-to-list 'ac-sources 'ac-source-emacs-lisp-features)
+    ))
 
 (dolist (mode *emacs-lisp-modes*)
   (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
@@ -1284,8 +1299,8 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 (bind-key "C-c M-:" 'ffy-ielm)
 
 ;;; add Auto-Complete to the IELM
-(dolist (mode '(inferior-emacs-lisp-mode))
-  (add-to-list 'ac-modes mode))
+;(dolist (mode '(inferior-emacs-lisp-mode))
+;  (add-to-list 'ac-modes mode))
 
 ;;;_ , All Lisps
 (defconst *lisp-modes* (cons 'clojure-mode *emacs-lisp-modes*))
@@ -1354,6 +1369,7 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
                         (add-hook 'nrepl-mode-hook 'paredit-mode)
                         (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)))
             (use-package ac-nrepl
+              :disabled t	
               :ensure t
               :config (progn
                         (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
@@ -1480,8 +1496,8 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
 
 ;;; add Auto-Complete HAML SCSS and SASS modes
-(dolist (mode '(haml-mode sass-mode scss-mode))
-  (add-to-list 'ac-modes mode))
+;(dolist (mode '(haml-mode sass-mode scss-mode))
+;  (add-to-list 'ac-modes mode))
 
 ;;;_. Coffee-Script
 (use-package coffee-mode
@@ -1565,8 +1581,9 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
             (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
 
             ;;; Add Auto-Complete to JavaScript modes.
-            (dolist (mode '(espresso-mode js-mode js2-minor-mode js2-mode))
-              (add-to-list 'ac-modes mode))))
+            ;(dolist (mode '(espresso-mode js-mode js2-minor-mode js2-mode))
+            ;  (add-to-list 'ac-modes mode))
+))
 
 ;; (setq inferior-js-mode-hook
 ;;       (lambda ()
