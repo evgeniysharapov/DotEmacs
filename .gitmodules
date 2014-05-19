@@ -1,3 +1,6 @@
 [submodule "site-lisp/use-package"]
 	path = site-lisp/use-package
 	url = https://github.com/jwiegley/use-package.git
+[submodule "site-lisp/tango-plus-theme"]
+	path = site-lisp/tango-plus-theme
+	url = https://github.com/evgeniysharapov/tango-plus-theme
