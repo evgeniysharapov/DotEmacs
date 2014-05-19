@@ -1263,23 +1263,22 @@ For more details see https://gist.github.com/grafov/8244792 and https://gist.git
     (add-hook mode-hook 'ffy-init-lispish-mode)))
 
 ;;;_ , Emacs Lisps
+;;;_  . Slime-like navigation in emacs
 (use-package elisp-slime-nav
   :ensure t
   :diminish elisp-slime-nav-mode)
-
-(defun ffy-init-lisp-emacs-setup ()
+;;;_  . ffy-init-emacs-lisp-modes
+(defun ffy-init-emacs-lisp-modes ()
   "Only emacs-lisp related things."
   (progn
     (make-local-variable 'hippie-expand-try-functions-list)
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
-    (elisp-slime-nav-mode 1)
-    ;(add-to-list 'ac-sources 'ac-source-emacs-lisp-features)
-    ))
-
+    (elisp-slime-nav-mode 1)))
+;;;_  . Add setup to all emacs-lisp modes
 (dolist (mode *emacs-lisp-modes*)
   (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
-    (add-hook mode-hook 'ffy-init-lisp-emacs-setup)))
+    (add-hook mode-hook 'ffy-init-emacs-lisp-modes)))
 
 ;;;_  . IELM
 ;;;_   , ffy-ielm-return
