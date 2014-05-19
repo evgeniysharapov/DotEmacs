@@ -1238,7 +1238,7 @@ For more details see https://gist.github.com/grafov/8244792 and https://gist.git
 ;;;_ , Emacs Lisps
 (use-package elisp-slime-nav
   :ensure t
-  :diminish t)
+  :diminish elisp-slime-nav-mode)
 
 ;;; modes that deal with EmacsLisp
 (defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
