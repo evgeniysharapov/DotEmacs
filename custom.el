@@ -82,5 +82,4 @@
  '(flyspell-incorrect ((t (:inherit error :underline (:color foreground-color :style wave)))))
  '(highlight ((t (:background "honeydew"))))
  '(magit-item-highlight ((t (:inherit hl-line))))
- '(powerline-active1 ((t (:inherit mode-line :background "grey22" :foreground "ghost white"))))
  '(trailing-whitespace ((t (:background "MistyRose2")))))
