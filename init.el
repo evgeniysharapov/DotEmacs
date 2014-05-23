@@ -1091,36 +1091,70 @@ by using nxml's indentation rules."
 
 
 ;;;_. Org Mode
-(setq org-completion-use-ido t
-      ;; org-completion-use-iswitchb t     ; without it ido completion is
-      ;;                                   ; not going to work for
-      ;;                                   ; org-mode (see `org-read-property-value')
-      org-hide-leading-stars t
-      org-return-follows-link t
-      org-modules '(org-docview org-gnus org-id org-info org-jsinfo org-protocol org-special-blocks org-w3m org-bookmark org-elisp-symbol org-panel)
-      org-empty-line-terminates-plain-lists t)
+(use-package org
+  :defer t
+  :bind (("C-&" . org-mark-ring-goto)
+         ("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c b" . org-iswitchb))
+         ;(bind-key "C-&" 'org-mark-ring-goto  mode-specific-map) ;; due to the conflict with Yasnippet
+  :init (progn
+          (setq org-completion-use-ido t
+                ;; org-completion-use-iswitchb t     ; without it ido completion is
+                ;;                                   ; not going to work for
+                ;;                                   ; org-mode (see `org-read-property-value')
+                org-hide-leading-stars t
+                org-return-follows-link t
+                org-modules '(org-docview
+                              org-gnus
+                              org-id
+                              org-info
+                              org-jsinfo
+                              org-protocol
+                              org-special-blocks
+                              org-w3m
+                              org-bookmark
+                              org-elisp-symbol
+                              org-panel)
+                org-empty-line-terminates-plain-lists t)
 
-;;; Override not working function from org-mode
-(eval-after-load "org"
-  '(defun org-read-property-value (property)
-    "Read PROPERTY value from user."
-    (let* ((completion-ignore-case t)
-           (allowed (org-property-get-allowed-values nil property 'table))
-           (cur (org-entry-get nil property))
-           (prompt (concat property " value"
-                           (if (and cur (string-match "\\S-" cur))
-                               (concat " [" cur "]") "") ": "))
-           (set-function (org-set-property-function property))
-           (val (if allowed
-                    (funcall set-function prompt allowed nil
-                             (not (get-text-property 0 'org-unrestricted
-                                                     (caar allowed))))
-                  (funcall set-function prompt
-                           (mapcar 'list (org-property-values property))
-                           nil nil "" nil cur))))
-      (if (equal val "")
-          cur
-        val))))
+          ;; make company completion work in Org-Mode
+          (defun add-pcomplete-to-capf ()
+            (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+          ;(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+          (dolist (it '(turn-on-font-lock
+                        yas-minor-mode-on
+                        turn-on-auto-fill
+                        turn-on-flyspell
+                        hl-line-mode
+                        add-pcomplete-to-capf
+                        iimage-mode))
+                  (add-hook 'org-mode-hook it))
+
+          )
+  :config (progn
+            ;; Override not working function from org-mode
+            (defun org-read-property-value (property)
+              "Read PROPERTY value from user."
+              (let* ((completion-ignore-case t)
+                     (allowed (org-property-get-allowed-values nil property 'table))
+                     (cur (org-entry-get nil property))
+                     (prompt (concat property " value"
+                                     (if (and cur (string-match "\\S-" cur))
+                                         (concat " [" cur "]") "") ": "))
+                     (set-function (org-set-property-function property))
+                     (val (if allowed
+                              (funcall set-function prompt allowed nil
+                                       (not (get-text-property 0 'org-unrestricted
+                                                               (caar allowed))))
+                            (funcall set-function prompt
+                                     (mapcar 'list (org-property-values property))
+                                     nil nil "" nil cur))))
+                (if (equal val "")
+                    cur
+                  val)))
+            )
 
 ;(setq org-todo-keyword-faces
 ;      (quote (("TODO" :foreground "medium blue" :weight bold)
@@ -1139,36 +1173,24 @@ by using nxml's indentation rules."
 ;  (local-set-key [(control c) ?a] 'org-agenda))
 
 
-(add-hook 'org-mode-hook 'turn-on-font-lock)
-(add-hook 'org-mode-hook 'yas-minor-mode-on)
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
-(add-hook 'org-mode-hook 'turn-on-flyspell)
-(add-hook 'org-mode-hook 'hl-line-mode)
-
 ;(dolist (mode '(org-mode))
 ;  (add-to-list 'ac-modes mode))
 
 ;;
 ;;  Setup iimage working with Org-mode
-;; 
-(add-hook 'org-mode-hook 'turn-on-iimage-mode)
+;;
+;; (add-hook 'org-mode-hook 'turn-on-iimage-mode)
 
-(defun org-toggle-iimage-in-org ()
-  "display images in your org file"
-  (interactive)
-  (if (face-underline-p 'org-link)
-      (set-face-underline-p 'org-link nil)
-    (set-face-underline-p 'org-link t))
-  (iimage-mode))
+;; (defun org-toggle-iimage-in-org ()
+;;   "display images in your org file"
+;;   (interactive)
+;;   (if (face-underline-p 'org-link)
+;;       (set-face-underline-p 'org-link nil)
+;;     (set-face-underline-p 'org-link t))
+;;   (iimage-mode))
 
 
-;;;_ , Org-mode bindings
-(when (fboundp 'org-mode)
-  ;; due to the conflict with Yasnippet
-  (bind-key "C-&" 'org-mark-ring-goto  mode-specific-map)
-  (bind-key "C-c l" 'org-store-link)
-  (bind-key "C-c a" 'org-agenda)
-  (bind-key "C-c b" 'org-iswitchb))
+)
 
 
 ;;;_. Orgtbl mode
