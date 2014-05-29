@@ -66,6 +66,18 @@
             :link t
             :properties '("OpenAir" "Support")
             :inherit-props t))
+(setq org-ditaa-jar-path "C:\\App\\bin\\ditaa0_9.jar")
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t)
+   (ditaa . t)
+   (emacs-lisp . t)
+   (python . t)))
+
+(setq org-confirm-babel-evaluate nil    ; do not ask about evaluating babel
+      org-src-fontify-natively t        ; syntax highlighting
+      ;;       org-export-html-table-tag "<table>"
+)
 
 ;;; Font properties on my work Windows machine
 (set-face-attribute 'default nil :family "Consolas" :height 100)
