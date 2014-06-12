@@ -1,0 +1,445 @@
+#+title: Emacs Configuration
+#+author: Evgeniy Sharapov
+#+email: evgeniy.sharapov@gmail.com
+
+
+* Motivation
+  As much as I liked =allout= mode it is has some quirks and irks and
+  not necessarily works in the way I would like it to work. Plus, it
+  has too many bells and whistles. One thing would be to have
+  something like =allout-= that would reduce the complexity. However
+  it is not so easy to do.
+
+  As the size of the configuration grew and number of comments
+  increased along with some notes and todo's, it seemed as a very
+  logical thing to organize configuration as an Org file.
+
+
+* Initialization
+
+  =init.el= file is kept to the bare minimum - just load the
+  =org-babel= and then go to the =configuration.org=.
+
+** Benchmark
+   We always want to start up as fast as possible. Hence we need to
+   measure this most important KPI at the start.
+
+#+BEGIN_SRC emacs-lisp
+(defconst *emacs-start-time* (current-time))
+#+END_SRC
+
+
+** Paths Configuration
+*** Constants for Paths
+
+#+BEGIN_SRC emacs-lisp
+(defconst *dotfiles-dir*
+  (file-name-directory (or (buffer-file-name) load-file-name))
+  "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
+(defconst *site-lisp*
+  (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
+  "Directory for Emacs Extensions files")
+(defconst *elpa-dir*
+  (file-name-as-directory (concat *dotfiles-dir* "elpa"))
+  "Directory for ELPA packages")
+(defconst *data-dir*
+  (file-name-as-directory (concat *dotfiles-dir* "data"))
+  "Directory for miscellaneous data, s.a. backups, histories and caches")
+(defconst *backup-dir*
+  (file-name-as-directory (concat *data-dir* "backups"))
+  "Directory for backups")
+(defconst *autoload-file*
+  (concat *dotfiles-dir* "loaddefs.el")
+  "This is file containing all autoloads extracted from Emacs lisp files")
+(defconst *system-specific*
+  (file-name-as-directory (concat *dotfiles-dir* "systems"))
+  "Directory with system specific initialization commands")
+#+END_SRC
+
+
+*** Adding Paths to =load-path=
+
+    Adding files from =.emacs.d= to the load path
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path *dotfiles-dir*)
+#+end_src
+
+     Add recursively all subdirectories of =*site-lisp*=. I could have
+     done it using temporary recursive function created via
+     =cl-labels=. But at this point we don't have CL loaded, so I
+     will do that using =fmakunbound=. The whole point is
+     not to clutter function space.
+
+#+begin_src emacs-lisp
+  ;;; create recursive function
+  (defun add-directory-to-path (dir)
+    (add-to-list 'load-path dir)
+    (dolist (entry (directory-files-and-attributes dir))
+      (if (and (cadr entry) ; t for directory
+               (not (member (car entry) '("." "..")))) ; we don't want to deal with . and ..
+          (let ((new-directory (expand-file-name (car entry) dir)))
+            (add-to-list 'load-path new-directory)
+            (add-directory-to-path new-directory)))))
+  ;;; add the directory tree
+  (add-directory-to-path *site-lisp*)
+  ;;; erase the function
+  (fmakunbound #'add-directory-to-path)
+#+end_src
+
+
+** Configure Package Manager
+   ELPA is in between setting up paths and loading up libraries. So
+   we put it right in between.
+#+begin_src emacs-lisp
+(when (require 'package nil 'noerror)
+  ;; all ELPA packages are located here
+  (setq package-user-dir (concat *dotfiles-dir* "elpa"))
+  ;; Sources for the ELPA repositories 
+  (setq package-archives
+        '(("gnu"         . "http://elpa.gnu.org/packages/")
+          ("org"         . "http://orgmode.org/elpa/")
+          ("melpa"       . "http://melpa.milkbox.net/packages/")
+          ("marmalade"   . "http://marmalade-repo.org/packages/")))
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents)))
+#+end_src
+
+
+** Loading Packages and Libraries
+*** Loading Emacs built-in libraries
+   Some of the libraries and packages that come with Emacs are so
+   useful that we use them in this configuration file. Hence we will
+   load them right away.
+
+   We are trying to explicitly load as few libraries as possible.
+
+#+BEGIN_SRC emacs-lisp
+(mapc #'require '(uniquify saveplace))
+#+END_SRC
+
+   We use some of the CL functions for its convenience =cl-labels=,
+   =cl-remove-if= and =cl-loop=. Hence we need to load =cl=
+   library.
+
+#+begin_src emacs-lisp
+(require 'cl-lib)
+#+end_src
+
+*** Loading =use-package= and =bind-key=
+
+    We manage packages and libraries through =use-package=. So it has
+    to be loaded up. However, since we have it as a Git module it may
+    not be available in the freshly cloned repository. If it can't be
+    loaded we should run in the command line:
+#+begin_src sh
+git submodule update --init
+#+end_src
+
+    from the =~/.emacs.d= directory (or whatever other name could be).
+
+#+begin_src emacs-lisp
+(unless (require 'use-package nil 'noerror)
+   (let ((default-directory (file-name-directory load-file-name)))
+ 	 (shell-command "git submodule update --init"))
+   (message "Updated use-package libraries"))
+(mapc #'require '(use-package bind-key))
+#+end_src
+
+
+
+
+* Key Bindings Setup
+
+   Very useful macro to create a keymap:
+
+#+begin_src emacs-lisp
+(defmacro keymap-on-key (name keys)
+  "This is a macro that declares a variable, key prefix and assigns a key to it.
+NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
+  `(progn (defvar ,name)
+          (define-prefix-command (quote ,name))
+          (bind-key ,keys (quote ,name))))
+#+end_src
+
+   Approach to the key binding is laid out below:
+
+   + =C-x= primary map (some defaults)
+   + =C-c= secondary map (modes use it)
+   + =C-z= tertiary map =ctl-z-map= (private custom one)
+     Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+     Make the prefix key =C-z= for my personal keymap.  On
+     qwerty-keyboards =C-z= is one of the most accessible keys like
+     =C-x= and =C-c=, but the prefix key =C-c= is reserved  for
+     mode-specific commands (both user-defined and standard Emacs
+     extensions). The standard binding of =C-z= (=suspend-emacs= or
+     =iconify-or-deiconify-frame=) is reassigned here to double key
+     sequence =C-z C-z=.
+     #+begin_src emacs-lisp
+(defvar ctl-z-map)
+(define-prefix-command 'ctl-z-map)
+(let ((c-z (global-key-binding [(control ?z)])))
+  (global-unset-key [(control ?z)])
+  (bind-key "C-z" 'ctl-z-map)
+  (bind-key "C-z C-z" c-z))
+     #+end_src
+
+   The sequence continues with quaternary, quinary, senary,
+   septenary, octonary, nonary, and denary, although most of these
+   terms are rarely used. There's no word relating to the number
+   eleven but there is one that relates to the number twelve:
+   duodenary.
+
+   Other maps:
+   + =C-x f=  - map  file operations
+     #+begin_src emacs-lisp
+(keymap-on-key ctl-x-f-map "C-x f")
+     #+end_src
+
+   + =M-g=    - goto map (already exists in Emacs24)
+
+** TODO Key Binging To Change:
+   - change =M-o= from =facemenu-keymap= to =outline-mode= keymap  =M-o=
+
+** Possible Key Bindings
+   Some of the more or less possible key binding could be:
+   - =C-<capital letter>=
+   - =M-<capital letter>=
+   - =A-<anything>=
+   - =M-A-<anything>=
+
+   Single-letter bindings still available:
+   + =C- ,'";:?<>|!#$%^&*`~ <tab>=
+   + =M- ?#=
+
+   Usually following keys are easy to press with one hand
+   =M-f12=, =M-f11=, =M-f10=, =M-f9=, =M-f8=, =M-f7=
+
+** Remapping standard commands
+;;; almost always hit suspend instead of repeat command
+;;; so `repeat' is both C-x z and C-x C-z
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
+* General Settings
+** User Interface
+   We turn off some bells and whistles and turn on some useful bits
+   and pieces.
+
+   - Turn off menu bar, scroll bars and tool bar.
+     #+begin_src emacs-lisp
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+     #+end_src
+
+   - File name into the frame title
+     #+begin_src emacs-lisp
+(when window-system
+  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+  (mouse-wheel-mode t)
+  (blink-cursor-mode -1))
+     #+end_src
+
+   - Display time in mode-line
+     #+begin_src emacs-lisp
+(display-time)
+     #+end_src
+
+   - Hide some modes from the mode-line ( maybe this should be moved
+     to the corresponding modes configuration)
+     #+begin_src emacs-lisp
+(when (fboundp 'diminish)
+  (eval-after-load 'eldoc
+    '(diminish 'eldoc-mode)))
+     #+end_src
+
+*** Mode line configuration
+
+    #+begin_src emacs-lisp
+(use-package diminish  :ensure t :defer t)
+(use-package powerline
+  :ensure t
+  :config (progn
+            (defun ffy-powerline-theme ()
+              "Powerline setup for the mode-line."
+              (interactive)
+              (setq-default mode-line-format
+                            '("%e"
+                              (:eval
+                               (let* ((active (powerline-selected-window-active))
+                                      (mode-line (if active 'mode-line 'mode-line-inactive))
+                                      (face1 (if active 'powerline-active1 'powerline-inactive1))
+                                      (face2 (if active 'powerline-active2 'powerline-inactive2))
+                                      (separator-left (intern (format "powerline-%s-%s"
+                                                                      powerline-default-separator
+                                                                      (car powerline-default-separator-dir))))
+                                      (separator-right (intern (format "powerline-%s-%s"
+                                                                       powerline-default-separator
+                                                                       (cdr powerline-default-separator-dir))))
+                                      (lhs (list (powerline-raw "%*" nil 'l)
+                                                 (powerline-buffer-size nil 'l)
+                                                 (powerline-raw mode-line-mule-info nil 'l)
+                                                 (powerline-buffer-id nil 'l)
+                                                 (when (and (boundp 'which-func-mode) which-func-mode)
+                                                   (powerline-raw which-func-format nil 'l))
+                                                 (powerline-raw " ")
+                                                 (funcall separator-left mode-line face1)
+                                                 (when (boundp 'erc-modified-channels-object)
+                                                   (powerline-raw erc-modified-channels-object face1 'l))
+                                                 (powerline-major-mode face1 'l)
+                                                 (powerline-process face1)
+                                                 (powerline-minor-modes face1 'l)
+                                                 (powerline-narrow face1 'l)
+                                                 (powerline-raw " " face1)
+                                                 (funcall separator-left face1 face2)
+                                                 (powerline-vc face2 'r)))
+                                      (rhs (list (powerline-raw global-mode-string face2 'r)
+                                                 (funcall separator-left face2 face1)
+                                                 (powerline-raw "%4l" face1 'l)
+                                                 (powerline-raw ":" face1 'l)
+                                                 (powerline-raw "%3c" face1 'r)
+                                                 (funcall separator-right face1 face2)
+                                                 (powerline-raw " ")
+                                                 (powerline-raw "%6p" nil 'r)
+                                                 (powerline-hud face2 face1))))
+                                 (concat (powerline-render lhs)
+                                         (powerline-fill face2 (powerline-width rhs))
+                                         (powerline-render rhs)))))))
+
+           (ffy-powerline-theme)))
+    #+end_src
+
+*** Menu bar
+    Turn on the menu bar for exploring new modes
+    #+begin_src emacs-lisp
+(bind-key "<f1>" 'menu-bar-mode)
+(bind-key "<C-f1>" 'imenu-add-menubar-index)
+    #+end_src
+
+** Files/Directories
+*** Backups and saves
+    #+begin_src emacs-lisp
+(setq save-place-file (concat *data-dir* "places")
+      backup-directory-alist `((".*" . ,*backup-dir*))
+      savehist-file (concat *data-dir* "history")
+      smex-save-file (concat *data-dir* ".smex-items")
+      recentf-save-file (concat *data-dir* ".recentf")
+      ido-save-directory-list-file (concat *data-dir* ".ido.last")
+      bookmark-default-file (concat *data-dir* "bookmarks")
+      desktop-dirname *data-dir*
+      desktop-path (list desktop-dirname)
+      desktop-save t
+      auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
+    #+end_src
+
+*** Files and Projects
+    #+begin_src emacs-lisp
+(use-package find-file-in-project
+  :ensure t
+  :commands find-file-in-project)
+    #+end_src
+
+*** Files Key-Bindings
+
+    =C-x C-f= is bound to =ido-find-file=
+    =C-x f <letter>= are different file commands
+
+    #+begin_src emacs-lisp
+(bind-key  "R"   'recentf-open-most-recent-file ctl-x-f-map)
+(bind-key  "o"   'ido-find-file-other-window    ctl-x-f-map)
+(bind-key  "f"   'find-file-in-project          ctl-x-f-map)
+(bind-key  "r"   'ido-choose-from-recentf       ctl-x-f-map)
+(bind-key  "RET" 'find-file-at-point            ctl-x-f-map)
+    #+end_src
+
+*** Dired
+    Dired settings that proved useful.
+    Make Dired guess where to copy files
+    #+begin_src emacs-lisp
+(setq dired-dwim-target t)
+    #+end_src
+
+    Switch to "writable" =dired-mode=. It makes it very easy to rename files.
+    #+begin_src emacs-lisp
+(add-hook 'dired-mode-hook
+          '(lambda ()
+              (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
+    #+end_src
+
+** Buffers
+*** Buffer Switching
+
+    Show adjacent buffers in the minibuffer on switch
+    #+begin_src emacs-lisp
+(defadvice previous-buffer (after my/previous-buffer activate)
+  (ffy-display-prev-next-buffers))
+
+(defadvice next-buffer (after my/next-buffer activate)
+ (ffy-display-prev-next-buffers))
+    #+end_src
+
+    Use =ibuffer= for buffer operations
+    #+begin_src emacs-lisp
+(bind-key "C-x C-b" 'ibuffer)
+    #+end_src
+
+*** Minibuffer
+
+    Automatically close certain buffers after exiting from
+    mini-buffer
+    #+begin_src emacs-lisp
+(defvar *auto-close-buffers* '("*Completions*"
+                               "*Ido Completions*")
+  "List of buffers that should be closed after we done with minibuffer. Usually it is various completions buffers")
+
+(add-hook 'minibuffer-exit-hook
+          '(lambda ()
+             (progn
+               (mapc '(lambda (buffer)
+                        (if (buffer-live-p buffer)
+                            (kill-buffer buffer))) *auto-close-buffers*))))
+    #+end_src
+
+*** Operations On Buffers
+
+    #+begin_src emacs-lisp
+(bind-key "<f12>" 'kill-this-buffer)
+;;; Buffer operations in C-z map
+(bind-key "b y" 'bury-buffer  ctl-z-map)
+(bind-key "b r" 'revert-buffer  ctl-z-map)
+;;; revert buffer on f5
+(bind-key "<f5>" 'revert-buffer)
+    #+end_src
+
+    Other useful combos:
+    - =C-x 4 0= - kill-buffer-and-window (works with current buffer
+      only)
+    - =C-x 4 b= - ido open buffer other window
+
+
+** Windows
+
+   Using =Windmove= for switching between windows in Emacs
+   #+begin_src emacs-lisp :tangle yes
+(windmove-default-keybindings 'super) ;; ⌘+direction
+   #+end_src
+
+   Moving in a window
+   #+begin_src emacs-lisp :tangle yes
+(bind-key "t" (make-interactive move-to-window-line 0)  goto-map)
+(bind-key "b" (make-interactive move-to-window-line -1)  goto-map)
+   #+end_src
+
+*** Typical window operations but faster
+(bind-key "M-0" 'delete-window)
+(bind-key "M-1" 'delete-other-windows)
+(bind-key "M-2" 'split-window-vertically)
+(bind-key "M-3" 'split-window-horizontally)
+*** Windows configurations
+(define-key global-map [(control x) (super left)] 'winner-undo)
+(define-key global-map [(control x) (super right)] 'winner-redo)
+
