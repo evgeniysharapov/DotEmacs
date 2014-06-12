@@ -1656,6 +1656,13 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
             ;(dolist (mode '(espresso-mode js-mode js2-minor-mode js2-mode))
             ;  (add-to-list 'ac-modes mode))
 ))
+;;; Good package for remote debugging in the browser
+;;; Read more at https://github.com/segv/jss
+;;;
+(use-package jss
+  :ensure t
+  :defer t)
+
 
 ;; (setq inferior-js-mode-hook
 ;;       (lambda ()
