@@ -327,17 +327,18 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 ** Files/Directories
 *** Backups and saves
     #+begin_src emacs-lisp
-(setq save-place-file (concat *data-dir* "places")
-      backup-directory-alist `((".*" . ,*backup-dir*))
-      savehist-file (concat *data-dir* "history")
-      smex-save-file (concat *data-dir* ".smex-items")
-      recentf-save-file (concat *data-dir* ".recentf")
-      ido-save-directory-list-file (concat *data-dir* ".ido.last")
-      bookmark-default-file (concat *data-dir* "bookmarks")
-      desktop-dirname *data-dir*
-      desktop-path (list desktop-dirname)
-      desktop-save t
-      auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
+      (setq save-place-file (concat *data-dir* "places")
+            backup-directory-alist `((".*" . ,*backup-dir*))
+            savehist-file (concat *data-dir* "history")
+            smex-save-file (concat *data-dir* ".smex-items")
+            recentf-save-file (concat *data-dir* ".recentf")
+            ido-save-directory-list-file (concat *data-dir* ".ido.last")
+            bookmark-default-file (concat *data-dir* "bookmarks")
+            desktop-dirname *data-dir*
+            desktop-path (list desktop-dirname)
+            desktop-save t
+            auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-")
+            abbrev-file-name (concat *data-dir* "abbrev_defs"))
     #+end_src
 
 *** URL Configuration Files
