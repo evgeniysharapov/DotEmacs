@@ -29,3 +29,5 @@ data/.ido.last
 data/.smex-items
 data/.emacs-bmk-bmenu-state.el
 data/.emacs-places
+configuration.el*
+
