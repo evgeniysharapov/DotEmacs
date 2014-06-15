@@ -24,46 +24,46 @@
    We always want to start up as fast as possible. Hence we need to
    measure this most important KPI at the start.
 
-#+BEGIN_SRC emacs-lisp
-(defconst *emacs-start-time* (current-time))
-#+END_SRC
+   #+begin_src emacs-lisp
+     (defconst *emacs-start-time* (current-time))
+   #+end_src
 
 
 ** Paths Configuration
 *** Constants for Paths
 
-#+BEGIN_SRC emacs-lisp
-(defconst *dotfiles-dir*
-  (file-name-directory (or (buffer-file-name) load-file-name))
-  "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
-(defconst *site-lisp*
-  (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
-  "Directory for Emacs Extensions files")
-(defconst *elpa-dir*
-  (file-name-as-directory (concat *dotfiles-dir* "elpa"))
-  "Directory for ELPA packages")
-(defconst *data-dir*
-  (file-name-as-directory (concat *dotfiles-dir* "data"))
-  "Directory for miscellaneous data, s.a. backups, histories and caches")
-(defconst *backup-dir*
-  (file-name-as-directory (concat *data-dir* "backups"))
-  "Directory for backups")
-(defconst *autoload-file*
-  (concat *dotfiles-dir* "loaddefs.el")
-  "This is file containing all autoloads extracted from Emacs lisp files")
-(defconst *system-specific*
-  (file-name-as-directory (concat *dotfiles-dir* "systems"))
-  "Directory with system specific initialization commands")
-#+END_SRC
+    #+begin_src emacs-lisp
+      (defconst *dotfiles-dir*
+        (file-name-directory (or (buffer-file-name) load-file-name))
+        "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
+      (defconst *site-lisp*
+        (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
+        "Directory for Emacs Extensions files")
+      (defconst *elpa-dir*
+        (file-name-as-directory (concat *dotfiles-dir* "elpa"))
+        "Directory for ELPA packages")
+      (defconst *data-dir*
+        (file-name-as-directory (concat *dotfiles-dir* "data"))
+        "Directory for miscellaneous data, s.a. backups, histories and caches")
+      (defconst *backup-dir*
+        (file-name-as-directory (concat *data-dir* "backups"))
+        "Directory for backups")
+      (defconst *autoload-file*
+        (concat *dotfiles-dir* "loaddefs.el")
+        "This is file containing all autoloads extracted from Emacs lisp files")
+      (defconst *system-specific*
+        (file-name-as-directory (concat *dotfiles-dir* "systems"))
+        "Directory with system specific initialization commands")
+    #+end_src
 
 
 *** Adding Paths to =load-path=
 
     Adding files from =.emacs.d= to the load path
 
-#+begin_src emacs-lisp
-(add-to-list 'load-path *dotfiles-dir*)
-#+end_src
+    #+begin_src emacs-lisp
+      (add-to-list 'load-path *dotfiles-dir*)
+    #+end_src
 
      Add recursively all subdirectories of =*site-lisp*=. I could have
      done it using temporary recursive function created via
@@ -71,61 +71,61 @@
      will do that using =fmakunbound=. The whole point is
      not to clutter function space.
 
-#+begin_src emacs-lisp
-  ;;; create recursive function
-  (defun add-directory-to-path (dir)
-    (add-to-list 'load-path dir)
-    (dolist (entry (directory-files-and-attributes dir))
-      (if (and (cadr entry) ; t for directory
-               (not (member (car entry) '("." "..")))) ; we don't want to deal with . and ..
-          (let ((new-directory (expand-file-name (car entry) dir)))
-            (add-to-list 'load-path new-directory)
-            (add-directory-to-path new-directory)))))
-  ;;; add the directory tree
-  (add-directory-to-path *site-lisp*)
-  ;;; erase the function
-  (fmakunbound #'add-directory-to-path)
-#+end_src
+     #+begin_src emacs-lisp
+       ;;; create recursive function
+       (defun add-directory-to-path (dir)
+         (add-to-list 'load-path dir)
+         (dolist (entry (directory-files-and-attributes dir))
+           (if (and (cadr entry) ; t for directory
+                    (not (member (car entry) '("." "..")))) ; we don't want to deal with . and ..
+               (let ((new-directory (expand-file-name (car entry) dir)))
+                 (add-to-list 'load-path new-directory)
+                 (add-directory-to-path new-directory)))))
+       ;;; add the directory tree
+       (add-directory-to-path *site-lisp*)
+       ;;; erase the function
+       (fmakunbound #'add-directory-to-path)
+     #+end_src
 
 
 ** Configure Package Manager
    ELPA is in between setting up paths and loading up libraries. So
    we put it right in between.
-#+begin_src emacs-lisp
-(when (require 'package nil 'noerror)
-  ;; all ELPA packages are located here
-  (setq package-user-dir (concat *dotfiles-dir* "elpa"))
-  ;; Sources for the ELPA repositories 
-  (setq package-archives
-        '(("gnu"         . "http://elpa.gnu.org/packages/")
-          ("org"         . "http://orgmode.org/elpa/")
-          ("melpa"       . "http://melpa.milkbox.net/packages/")
-          ("marmalade"   . "http://marmalade-repo.org/packages/")))
-  (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents)))
-#+end_src
+   #+begin_src emacs-lisp
+     (when (require 'package nil 'noerror)
+       ;; all ELPA packages are located here
+       (setq package-user-dir (concat *dotfiles-dir* "elpa"))
+       ;; Sources for the ELPA repositories 
+       (setq package-archives
+             '(("gnu"         . "http://elpa.gnu.org/packages/")
+               ("org"         . "http://orgmode.org/elpa/")
+               ("melpa"       . "http://melpa.milkbox.net/packages/")
+               ("marmalade"   . "http://marmalade-repo.org/packages/")))
+       (package-initialize)
+       (unless package-archive-contents
+         (package-refresh-contents)))
+   #+end_src
 
 
 ** Loading Packages and Libraries
 *** Loading Emacs built-in libraries
-   Some of the libraries and packages that come with Emacs are so
-   useful that we use them in this configuration file. Hence we will
-   load them right away.
+    Some of the libraries and packages that come with Emacs are so
+    useful that we use them in this configuration file. Hence we will
+    load them right away.
 
-   We are trying to explicitly load as few libraries as possible.
+    We are trying to explicitly load as few libraries as possible.
 
-#+BEGIN_SRC emacs-lisp
-(mapc #'require '(uniquify saveplace))
-#+END_SRC
+    #+begin_src emacs-lisp
+      (mapc #'require '(uniquify saveplace))
+    #+end_src
 
-   We use some of the CL functions for its convenience =cl-labels=,
-   =cl-remove-if= and =cl-loop=. Hence we need to load =cl=
-   library.
+    We use some of the CL functions for its convenience =cl-labels=,
+    =cl-remove-if= and =cl-loop=. Hence we need to load =cl=
+    library.
 
-#+begin_src emacs-lisp
-(require 'cl-lib)
-#+end_src
+    #+begin_src emacs-lisp
+      (require 'cl-lib)
+    #+end_src
 
 *** Loading =use-package= and =bind-key=
 
@@ -133,35 +133,33 @@
     to be loaded up. However, since we have it as a Git module it may
     not be available in the freshly cloned repository. If it can't be
     loaded we should run in the command line:
-#+begin_src sh
-git submodule update --init
-#+end_src
+
+    #+begin_src sh
+      git submodule update --init
+    #+end_src
 
     from the =~/.emacs.d= directory (or whatever other name could be).
 
-#+begin_src emacs-lisp
-(unless (require 'use-package nil 'noerror)
-   (let ((default-directory (file-name-directory load-file-name)))
- 	 (shell-command "git submodule update --init"))
-   (message "Updated use-package libraries"))
-(mapc #'require '(use-package bind-key))
-#+end_src
-
-
+   #+begin_src emacs-lisp
+     (unless (require 'use-package nil 'noerror)
+        (let ((default-directory (file-name-directory load-file-name)))
+              (shell-command "git submodule update --init"))
+        (message "Updated use-package libraries"))
+     (mapc #'require '(use-package bind-key))
+   #+end_src
 
 
 * Key Bindings Setup
+  Very useful macro to create a keymap:
 
-   Very useful macro to create a keymap:
-
-#+begin_src emacs-lisp
-(defmacro keymap-on-key (name keys)
-  "This is a macro that declares a variable, key prefix and assigns a key to it.
-NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
-  `(progn (defvar ,name)
-          (define-prefix-command (quote ,name))
-          (bind-key ,keys (quote ,name))))
-#+end_src
+  #+begin_src emacs-lisp
+    (defmacro keymap-on-key (name keys)
+      "This is a macro that declares a variable, key prefix and assigns a key to it.
+    NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
+      `(progn (defvar ,name)
+              (define-prefix-command (quote ,name))
+              (bind-key ,keys (quote ,name))))
+  #+end_src
 
    Approach to the key binding is laid out below:
 
@@ -177,12 +175,12 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
      =iconify-or-deiconify-frame=) is reassigned here to double key
      sequence =C-z C-z=.
      #+begin_src emacs-lisp
-(defvar ctl-z-map)
-(define-prefix-command 'ctl-z-map)
-(let ((c-z (global-key-binding [(control ?z)])))
-  (global-unset-key [(control ?z)])
-  (bind-key "C-z" 'ctl-z-map)
-  (bind-key "C-z C-z" c-z))
+       (defvar ctl-z-map)
+       (define-prefix-command 'ctl-z-map)
+       (let ((c-z (global-key-binding [(control ?z)])))
+         (global-unset-key [(control ?z)])
+         (bind-key "C-z" 'ctl-z-map)
+         (bind-key "C-z C-z" c-z))
      #+end_src
 
    The sequence continues with quaternary, quinary, senary,
@@ -194,7 +192,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
    Other maps:
    + =C-x f=  - map  file operations
      #+begin_src emacs-lisp
-(keymap-on-key ctl-x-f-map "C-x f")
+       (keymap-on-key ctl-x-f-map "C-x f")
      #+end_src
 
    + =M-g=    - goto map (already exists in Emacs24)
@@ -217,11 +215,13 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
    =M-f12=, =M-f11=, =M-f10=, =M-f9=, =M-f8=, =M-f7=
 
 ** Remapping standard commands
-;;; almost always hit suspend instead of repeat command
-;;; so `repeat' is both C-x z and C-x C-z
-(let ((c-x-z (global-key-binding [(control x) ?z])))
-  (global-unset-key [(control x) (control ?z)])
-  (define-key ctl-x-map [(control ?z)] c-x-z))
+   #+begin_src emacs-lisp :tangle yes
+     ;;; almost always hit suspend instead of repeat command
+     ;;; so `repeat' is both C-x z and C-x C-z
+     (let ((c-x-z (global-key-binding [(control x) ?z])))
+       (global-unset-key [(control x) (control ?z)])
+       (define-key ctl-x-map [(control ?z)] c-x-z))
+   #+end_src
 
 
 * General Settings
@@ -231,30 +231,30 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
    - Turn off menu bar, scroll bars and tool bar.
      #+begin_src emacs-lisp
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+       (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+       (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+       (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      #+end_src
 
    - File name into the frame title
      #+begin_src emacs-lisp
-(when window-system
-  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
-  (mouse-wheel-mode t)
-  (blink-cursor-mode -1))
+       (when window-system
+         (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+         (mouse-wheel-mode t)
+         (blink-cursor-mode -1))
      #+end_src
 
    - Display time in mode-line
      #+begin_src emacs-lisp
-(display-time)
+       (display-time)
      #+end_src
 
    - Hide some modes from the mode-line ( maybe this should be moved
      to the corresponding modes configuration)
      #+begin_src emacs-lisp
-(when (fboundp 'diminish)
-  (eval-after-load 'eldoc
-    '(diminish 'eldoc-mode)))
+       (when (fboundp 'diminish)
+         (eval-after-load 'eldoc
+           '(diminish 'eldoc-mode)))
      #+end_src
 
 *** Mode line configuration
@@ -263,64 +263,64 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
     mode to hide information about some of the modes
 
     #+begin_src emacs-lisp
-(use-package diminish  :ensure t :defer t)
-(use-package powerline
-  :ensure t
-  :config (progn
-            (defun ffy-powerline-theme ()
-              "Powerline setup for the mode-line."
-              (interactive)
-              (setq-default mode-line-format
-                            '("%e"
-                              (:eval
-                               (let* ((active (powerline-selected-window-active))
-                                      (mode-line (if active 'mode-line 'mode-line-inactive))
-                                      (face1 (if active 'powerline-active1 'powerline-inactive1))
-                                      (face2 (if active 'powerline-active2 'powerline-inactive2))
-                                      (separator-left (intern (format "powerline-%s-%s"
-                                                                      powerline-default-separator
-                                                                      (car powerline-default-separator-dir))))
-                                      (separator-right (intern (format "powerline-%s-%s"
-                                                                       powerline-default-separator
-                                                                       (cdr powerline-default-separator-dir))))
-                                      (lhs (list (powerline-raw "%*" nil 'l)
-                                                 (powerline-buffer-size nil 'l)
-                                                 (powerline-raw mode-line-mule-info nil 'l)
-                                                 (powerline-buffer-id nil 'l)
-                                                 (when (and (boundp 'which-func-mode) which-func-mode)
-                                                   (powerline-raw which-func-format nil 'l))
-                                                 (powerline-raw " ")
-                                                 (funcall separator-left mode-line face1)
-                                                 (when (boundp 'erc-modified-channels-object)
-                                                   (powerline-raw erc-modified-channels-object face1 'l))
-                                                 (powerline-major-mode face1 'l)
-                                                 (powerline-process face1)
-                                                 (powerline-minor-modes face1 'l)
-                                                 (powerline-narrow face1 'l)
-                                                 (powerline-raw " " face1)
-                                                 (funcall separator-left face1 face2)
-                                                 (powerline-vc face2 'r)))
-                                      (rhs (list (powerline-raw global-mode-string face2 'r)
-                                                 (funcall separator-left face2 face1)
-                                                 (powerline-raw "%4l" face1 'l)
-                                                 (powerline-raw ":" face1 'l)
-                                                 (powerline-raw "%3c" face1 'r)
-                                                 (funcall separator-right face1 face2)
-                                                 (powerline-raw " ")
-                                                 (powerline-raw "%6p" nil 'r)
-                                                 (powerline-hud face2 face1))))
-                                 (concat (powerline-render lhs)
-                                         (powerline-fill face2 (powerline-width rhs))
-                                         (powerline-render rhs)))))))
-
-           (ffy-powerline-theme)))
+      (use-package diminish  :ensure t :defer t)
+      (use-package powerline
+        :ensure t
+        :config (progn
+                  (defun ffy-powerline-theme ()
+                    "Powerline setup for the mode-line."
+                    (interactive)
+                    (setq-default mode-line-format
+                                  '("%e"
+                                    (:eval
+                                     (let* ((active (powerline-selected-window-active))
+                                            (mode-line (if active 'mode-line 'mode-line-inactive))
+                                            (face1 (if active 'powerline-active1 'powerline-inactive1))
+                                            (face2 (if active 'powerline-active2 'powerline-inactive2))
+                                            (separator-left (intern (format "powerline-%s-%s"
+                                                                            powerline-default-separator
+                                                                            (car powerline-default-separator-dir))))
+                                            (separator-right (intern (format "powerline-%s-%s"
+                                                                             powerline-default-separator
+                                                                             (cdr powerline-default-separator-dir))))
+                                            (lhs (list (powerline-raw "%*" nil 'l)
+                                                       (powerline-buffer-size nil 'l)
+                                                       (powerline-raw mode-line-mule-info nil 'l)
+                                                       (powerline-buffer-id nil 'l)
+                                                       (when (and (boundp 'which-func-mode) which-func-mode)
+                                                         (powerline-raw which-func-format nil 'l))
+                                                       (powerline-raw " ")
+                                                       (funcall separator-left mode-line face1)
+                                                       (when (boundp 'erc-modified-channels-object)
+                                                         (powerline-raw erc-modified-channels-object face1 'l))
+                                                       (powerline-major-mode face1 'l)
+                                                       (powerline-process face1)
+                                                       (powerline-minor-modes face1 'l)
+                                                       (powerline-narrow face1 'l)
+                                                       (powerline-raw " " face1)
+                                                       (funcall separator-left face1 face2)
+                                                       (powerline-vc face2 'r)))
+                                            (rhs (list (powerline-raw global-mode-string face2 'r)
+                                                       (funcall separator-left face2 face1)
+                                                       (powerline-raw "%4l" face1 'l)
+                                                       (powerline-raw ":" face1 'l)
+                                                       (powerline-raw "%3c" face1 'r)
+                                                       (funcall separator-right face1 face2)
+                                                       (powerline-raw " ")
+                                                       (powerline-raw "%6p" nil 'r)
+                                                       (powerline-hud face2 face1))))
+                                       (concat (powerline-render lhs)
+                                               (powerline-fill face2 (powerline-width rhs))
+                                               (powerline-render rhs)))))))
+      
+                 (ffy-powerline-theme)))
     #+end_src
 
 *** Menu bar
     Turn on the menu bar for exploring new modes
     #+begin_src emacs-lisp
-(bind-key "<f1>" 'menu-bar-mode)
-(bind-key "<C-f1>" 'imenu-add-menubar-index)
+      (bind-key "<f1>" 'menu-bar-mode)
+      (bind-key "<C-f1>" 'imenu-add-menubar-index)
     #+end_src
 
 
@@ -343,14 +343,14 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
 *** URL Configuration Files
     #+begin_src emacs-lisp
-(setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
+      (setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
     #+end_src
 
 *** Files and Projects
     #+begin_src emacs-lisp
-(use-package find-file-in-project
-  :ensure t
-  :commands find-file-in-project)
+      (use-package find-file-in-project
+        :ensure t
+        :commands find-file-in-project)
     #+end_src
 
 *** Files Key-Bindings
@@ -359,25 +359,25 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
     =C-x f <letter>= are different file commands
 
     #+begin_src emacs-lisp
-(bind-key  "R"   'recentf-open-most-recent-file ctl-x-f-map)
-(bind-key  "o"   'ido-find-file-other-window    ctl-x-f-map)
-(bind-key  "f"   'find-file-in-project          ctl-x-f-map)
-(bind-key  "r"   'ido-choose-from-recentf       ctl-x-f-map)
-(bind-key  "RET" 'find-file-at-point            ctl-x-f-map)
+      (bind-key  "R"   'recentf-open-most-recent-file ctl-x-f-map)
+      (bind-key  "o"   'ido-find-file-other-window    ctl-x-f-map)
+      (bind-key  "f"   'find-file-in-project          ctl-x-f-map)
+      (bind-key  "r"   'ido-choose-from-recentf       ctl-x-f-map)
+      (bind-key  "RET" 'find-file-at-point            ctl-x-f-map)
     #+end_src
 
 *** Dired
     Dired settings that proved useful.
     Make Dired guess where to copy files
     #+begin_src emacs-lisp
-(setq dired-dwim-target t)
+      (setq dired-dwim-target t)
     #+end_src
 
     Switch to "writable" =dired-mode=. It makes it very easy to rename files.
     #+begin_src emacs-lisp
-(add-hook 'dired-mode-hook
-          '(lambda ()
-              (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
+      (add-hook 'dired-mode-hook
+                '(lambda ()
+                    (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
     #+end_src
 
 
@@ -386,16 +386,16 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
     Show adjacent buffers in the minibuffer on switch
     #+begin_src emacs-lisp
-(defadvice previous-buffer (after my/previous-buffer activate)
-  (ffy-display-prev-next-buffers))
+      (defadvice previous-buffer (after my/previous-buffer activate)
+        (ffy-display-prev-next-buffers))
 
-(defadvice next-buffer (after my/next-buffer activate)
- (ffy-display-prev-next-buffers))
+      (defadvice next-buffer (after my/next-buffer activate)
+       (ffy-display-prev-next-buffers))
     #+end_src
 
     Use =ibuffer= for buffer operations
     #+begin_src emacs-lisp
-(bind-key "C-x C-b" 'ibuffer)
+      (bind-key "C-x C-b" 'ibuffer)
     #+end_src
 
 *** Mini-buffer
@@ -403,49 +403,48 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
     Automatically close certain buffers after exiting from
     mini-buffer
     #+begin_src emacs-lisp
-(defvar *auto-close-buffers* '("*Completions*"
-                               "*Ido Completions*")
-  "List of buffers that should be closed after we done with minibuffer. Usually it is various completions buffers")
+      (defvar *auto-close-buffers* '("*Completions*"
+                                     "*Ido Completions*")
+        "List of buffers that should be closed after we done with minibuffer. Usually it is various completions buffers")
 
-(add-hook 'minibuffer-exit-hook
-          '(lambda ()
-             (progn
-               (mapc '(lambda (buffer)
-                        (if (buffer-live-p buffer)
-                            (kill-buffer buffer))) *auto-close-buffers*))))
+      (add-hook 'minibuffer-exit-hook
+                '(lambda ()
+                   (progn
+                     (mapc '(lambda (buffer)
+                              (if (buffer-live-p buffer)
+                                  (kill-buffer buffer))) *auto-close-buffers*))))
     #+end_src
 
     Use =smex= in the mini-buffer. =M-x= runs command and =M-X= runs
     command for the major mode.
 
     #+begin_src emacs-lisp
-(use-package smex
-  :ensure t
-  :init
-  (smex-initialize)
-  ;; Smex is used in minibuffer M-x
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
-
+      (use-package smex
+        :ensure t
+        :init
+        (smex-initialize)
+        ;; Smex is used in minibuffer M-x
+        :bind (("M-x" . smex)
+               ("M-X" . smex-major-mode-commands)))
     #+end_src
 
     We are trying to make keys working in both Windows and Mac OS X to
     be able to =M-x= without meta
 
     #+begin_src emacs-lisp
-(bind-key "C-x C-m"  'execute-extended-command)
+      (bind-key "C-x C-m"  'execute-extended-command)
     #+end_src
 
 
 *** Operations On Buffers
 
     #+begin_src emacs-lisp
-(bind-key "<f12>" 'kill-this-buffer)
-;;; Buffer operations in C-z map
-(bind-key "b y" 'bury-buffer  ctl-z-map)
-(bind-key "b r" 'revert-buffer  ctl-z-map)
-;;; revert buffer on f5
-(bind-key "<f5>" 'revert-buffer)
+      (bind-key "<f12>" 'kill-this-buffer)
+      ;;; Buffer operations in C-z map
+      (bind-key "b y" 'bury-buffer  ctl-z-map)
+      (bind-key "b r" 'revert-buffer  ctl-z-map)
+      ;;; revert buffer on f5
+      (bind-key "<f5>" 'revert-buffer)
     #+end_src
 
     Other useful combos:
@@ -458,7 +457,7 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
 
    Using =Windmove= for switching between windows in Emacs
    #+begin_src emacs-lisp :preamble # -*- coding: utf-8 -*-
-(windmove-default-keybindings 'super) ;; ⌘+direction
+     (windmove-default-keybindings 'super) ;; ⌘+direction
    #+end_src
 
    Moving in a window
@@ -481,15 +480,15 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
    Some of the useful functions and setting dealing with Info system
    in emacs:
    #+begin_src emacs-lisp
-(require 'help-mode+ nil t)
-(require 'help+ nil t)
-(require 'help-fns+ nil t)
+     (require 'help-mode+ nil t)
+     (require 'help+ nil t)
+     (require 'help-fns+ nil t)
    #+end_src
 
    =apropos= seems to be more useful than =apropos-command=
 
    #+begin_src emacs-lisp
-(bind-key "C-h a" 'apropos)
+     (bind-key "C-h a" 'apropos)
    #+end_src
 
 
@@ -503,64 +502,63 @@ NAME is symbol of the new keymap and KEYS is a string that represents keys as fo
    OS X. It finds a path to the dictionary that
 
    #+begin_src emacs-lisp
-(use-package s :ensure t :commands (s-lines))
+     (use-package s :ensure t :commands (s-lines))
+     (use-package dash :ensure t :commands (-difference))
 
-(use-package dash :ensure t :commands (-difference))
+     (defun find-hunspell-dictionary ()
+       "Searches for hunspell dictionaries using `hunspell -D' first and seeing if ther's
+     any dictionary found. If not then try to check if dictionary exist in the same directory (case for Windows).
 
-(defun find-hunspell-dictionary ()
-  "Searches for hunspell dictionaries using `hunspell -D' first and seeing if ther's
-any dictionary found. If not then try to check if dictionary exist in the same directory (case for Windows).
+     On Mac OS X hunspell should search for dictionaries in at least /Library/Spelling. In fact, on Windows just drop dictionaries next to hunspell binary file.
 
-On Mac OS X hunspell should search for dictionaries in at least /Library/Spelling. In fact, on Windows just drop dictionaries next to hunspell binary file.
+     It returns either nil or path to the dictionary that could be used with `hunspell -d'. Put it in the `ispell-extra-args' variable.
 
-It returns either nil or path to the dictionary that could be used with `hunspell -d'. Put it in the `ispell-extra-args' variable.
-
-This function depends on 's and 'dash libraries."
-  (when (executable-find "hunspell")
-    ;; First, let's see if we can load any dicts by default
-    (let* ((hunspell-output (shell-command-to-string "hunspell -D"))
-           (hunspell-output-lines (cl-remove-if #'(lambda (e) (equal e ""))
-                                                (s-lines hunspell-output)))
-           (loaded-dicts (member "LOADED DICTIONARY:"  hunspell-output-lines))
-           (available-dicts (-difference (cl-member-if #'(lambda (e)(s-starts-with? "AVAILABLE DICTIONARIES" e)) hunspell-output-lines)
-                                         loaded-dicts)))
-      ;; If we have loaded-dicts we should be fine, otherwise try to
-      ;; search for dictionaries
-      (unless
-          (or (cdr loaded-dicts)
-              ;; Could be a message:
-              ;; Can't open affix or dictionary files for dictionary named
-              ;; "default".
-              (not (cdr available-dicts)))
-        ;; let's check if there's dictionary next to the binary
-        (let ((dictionary-path (concat
-                                (file-name-directory
-                                 (executable-find "hunspell")) "en_US")))
-          (when (file-exists-p (concat dictionary-path ".dic"))
-            dictionary-path))))))
+     This function depends on 's and 'dash libraries."
+       (when (executable-find "hunspell")
+         ;; First, let's see if we can load any dicts by default
+         (let* ((hunspell-output (shell-command-to-string "hunspell -D"))
+                (hunspell-output-lines (cl-remove-if #'(lambda (e) (equal e ""))
+                                                     (s-lines hunspell-output)))
+                (loaded-dicts (member "LOADED DICTIONARY:"  hunspell-output-lines))
+                (available-dicts (-difference (cl-member-if #'(lambda (e)(s-starts-with? "AVAILABLE DICTIONARIES" e)) hunspell-output-lines)
+                                              loaded-dicts)))
+           ;; If we have loaded-dicts we should be fine, otherwise try to
+           ;; search for dictionaries
+           (unless
+               (or (cdr loaded-dicts)
+                   ;; Could be a message:
+                   ;; Can't open affix or dictionary files for dictionary named
+                   ;; "default".
+                   (not (cdr available-dicts)))
+             ;; let's check if there's dictionary next to the binary
+             (let ((dictionary-path (concat
+                                     (file-name-directory
+                                      (executable-find "hunspell")) "en_US")))
+               (when (file-exists-p (concat dictionary-path ".dic"))
+                 dictionary-path))))))
    #+end_src
 
 
    Setup =ispell= package
    #+begin_src emacs-lisp
-(use-package ispell
-  :config (progn
-            ;; Personal dictionary setup
-            ;; if file doesn't exist then create it
-            (setq ispell-personal-dictionary (let ((personal-dictionary-file (concat *data-dir* ".personal.dict")))
-                                               (unless (file-exists-p personal-dictionary-file)
-                                                 (with-temp-file personal-dictionary-file t))
-                                               personal-dictionary-file))
-            ;; Aspell Specific
-            (when (executable-find "aspell")
-              (setq ispell-program-name "aspell"
-                    ispell-extra-args '("--sug-mode=ultra")))
-            ;; Hunspell Specific
-            (when (executable-find "hunspell")
-              (setq ispell-program-name "hunspell")
-              (let* ((dict-location (find-hunspell-dictionary)))
-                (when dict-location
-                  (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
+     (use-package ispell
+       :config (progn
+                 ;; Personal dictionary setup
+                 ;; if file doesn't exist then create it
+                 (setq ispell-personal-dictionary (let ((personal-dictionary-file (concat *data-dir* ".personal.dict")))
+                                                    (unless (file-exists-p personal-dictionary-file)
+                                                      (with-temp-file personal-dictionary-file t))
+                                                    personal-dictionary-file))
+                 ;; Aspell Specific
+                 (when (executable-find "aspell")
+                   (setq ispell-program-name "aspell"
+                         ispell-extra-args '("--sug-mode=ultra")))
+                 ;; Hunspell Specific
+                 (when (executable-find "hunspell")
+                   (setq ispell-program-name "hunspell")
+                   (let* ((dict-location (find-hunspell-dictionary)))
+                     (when dict-location
+                       (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
    #+end_src
 
 
@@ -571,8 +569,8 @@ This function depends on 's and 'dash libraries."
    any specific category
 
    #+begin_src emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-(random t)
+     (defalias 'yes-or-no-p 'y-or-n-p)
+     (random t)
    #+end_src
 
 
@@ -580,34 +578,34 @@ This function depends on 's and 'dash libraries."
    IDO mode speeds up some of the tasks. Some of the IDO settings that
    have been taken out from the customization file.
    #+begin_src emacs-lisp
-(use-package ido
-  :config
-  (progn
-    (use-package ido-ubiquitous :ensure t)
-    (ido-mode t)
-    (ido-everywhere t)
-    (ido-ubiquitous-mode t)
+     (use-package ido
+       :config
+       (progn
+         (use-package ido-ubiquitous :ensure t)
+         (ido-mode t)
+         (ido-everywhere t)
+         (ido-ubiquitous-mode t)
 
-    ;; not every command should could be ido-ed
-    ;; kill-ring-search has already set of minibuffer commands that don't
-    ;; work well with ido-completing-read
-    (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
+         ;; not every command should could be ido-ed
+         ;; kill-ring-search has already set of minibuffer commands that don't
+         ;; work well with ido-completing-read
+         (setq ido-ubiquitous-command-exceptions '(kill-ring-search))
 
-    (defun ffy--change-ido-override (behavior func-name)
-      "Changes `ido-ubiquitous-function-overrides` variable for a function FUNC-NAME by setting its behavior to BEHAVIOR"
-      (setq ido-ubiquitous-function-overrides
-            (mapcar (lambda (override) (if  (equal (caddr override) ,func-name)
-                                      (cons ,behavior (cdr override))
-                                    override))
-                    ido-ubiquitous-function-overrides)))
+         (defun ffy--change-ido-override (behavior func-name)
+           "Changes `ido-ubiquitous-function-overrides` variable for a function FUNC-NAME by setting its behavior to BEHAVIOR"
+           (setq ido-ubiquitous-function-overrides
+                 (mapcar (lambda (override) (if  (equal (caddr override) ,func-name)
+                                           (cons ,behavior (cdr override))
+                                         override))
+                         ido-ubiquitous-function-overrides)))
 
-    (defmacro enable-ido-for (func-name)
-      "Enables IDO for a function using `ido-ubiquitous' mode"
-      `(ffy--change-ido-override 'enable ,func-name))
+         (defmacro enable-ido-for (func-name)
+           "Enables IDO for a function using `ido-ubiquitous' mode"
+           `(ffy--change-ido-override 'enable ,func-name))
 
-    (defmacro disable-ido-for (func-name)
-      "Disables IDO for a function using `ido-ubiquitous' mode"
-      `(ffy--change-ido-override 'disable ,func-name))))
+         (defmacro disable-ido-for (func-name)
+           "Disables IDO for a function using `ido-ubiquitous' mode"
+           `(ffy--change-ido-override 'disable ,func-name))))
    #+end_src
 
 
@@ -617,21 +615,21 @@ This function depends on 's and 'dash libraries."
 ** Appearance
    Highlighting and coloring of the buffer
    #+begin_src emacs-lisp
-(use-package idle-highlight-mode :ensure t)
-(use-package rainbow-mode        :ensure t)
-(use-package rainbow-delimiters  :ensure t)
+     (use-package idle-highlight-mode :ensure t)
+     (use-package rainbow-mode        :ensure t)
+     (use-package rainbow-delimiters  :ensure t)
    #+end_src
 
    Also helpful is to highlight the current word
    #+begin_src emacs-lisp
-(use-package highlight-symbol
-  :ensure t
-  :config  (progn
-             (highlight-symbol-mode +1)
-             (bind-key "<C-return>" 'highlight-symbol-at-point      ctl-z-map)
-             (bind-key "<C-up>"     'highlight-symbol-prev          ctl-z-map)
-             (bind-key "<C-down>"   'highlight-symbol-next          ctl-z-map)
-             (bind-key "@"          'highlight-symbol-query-replace ctl-z-map)))
+     (use-package highlight-symbol
+       :ensure t
+       :config  (progn
+                  (highlight-symbol-mode +1)
+                  (bind-key "<C-return>" 'highlight-symbol-at-point      ctl-z-map)
+                  (bind-key "<C-up>"     'highlight-symbol-prev          ctl-z-map)
+                  (bind-key "<C-down>"   'highlight-symbol-next          ctl-z-map)
+                  (bind-key "@"          'highlight-symbol-query-replace ctl-z-map)))
    #+end_src
 
 
@@ -640,7 +638,7 @@ This function depends on 's and 'dash libraries."
     Naturally =hippie-expand-try-functions-list= would be made local
     variable and adjusted for a mode in the mode settings
     #+begin_src emacs-lisp
-(bind-key "M-/"  'hippie-expand)
+      (bind-key "M-/"  'hippie-expand)
     #+end_src
 
 *** Auto-Complete
@@ -651,67 +649,67 @@ This function depends on 's and 'dash libraries."
     disabled =auto-complete= mode.
 
     #+begin_src emacs-lisp
-(use-package auto-complete
-  :disabled t
-  :ensure t
-  :init (progn
-          (use-package popup :ensure t)
-          (use-package fuzzy :ensure t)
-          (use-package auto-complete-config :ensure t)
-          (use-package pos-tip :ensure t)
+      (use-package auto-complete
+        :disabled t
+        :ensure t
+        :init (progn
+                (use-package popup :ensure t)
+                (use-package fuzzy :ensure t)
+                (use-package auto-complete-config :ensure t)
+                (use-package pos-tip :ensure t)
 
-          ;; add our own directory to the end of the list
-          (add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
-          (setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
-          (ac-config-default)
-          (global-auto-complete-mode t)
-          ;(setq ac-auto-show-menu t)
-          ;(setq ac-dwim t)
-          ;(setq ac-use-menu-map t)
-          ;(setq ac-quick-help-delay 1)
-          ;(setq ac-quick-help-height 60)
-          ;;(setq ac-disable-inline t)
-          ;(setq ac-show-menu-immediately-on-auto-complete t)
-          ;(setq ac-auto-start 2)
-          ;(setq ac-candidate-menu-min 0)
+                ;; add our own directory to the end of the list
+                (add-to-list 'ac-dictionary-directories (concat *data-dir* "ac-dict") t)
+                (setq ac-comphist-file (concat *data-dir* "ac-comphist.dat"))
+                (ac-config-default)
+                (global-auto-complete-mode t)
+                ;(setq ac-auto-show-menu t)
+                ;(setq ac-dwim t)
+                ;(setq ac-use-menu-map t)
+                ;(setq ac-quick-help-delay 1)
+                ;(setq ac-quick-help-height 60)
+                ;;(setq ac-disable-inline t)
+                ;(setq ac-show-menu-immediately-on-auto-complete t)
+                ;(setq ac-auto-start 2)
+                ;(setq ac-candidate-menu-min 0)
 
-          (set-default 'ac-sources
-                       '(
-                         ac-source-abbrev
-                         ac-source-imenu
-                         ac-source-dictionary
-                         ac-source-words-in-buffer
-                         ac-source-words-in-same-mode-buffers
-                         ac-source-yasnippet
-                         ))
+                (set-default 'ac-sources
+                             '(
+                               ac-source-abbrev
+                               ac-source-imenu
+                               ac-source-dictionary
+                               ac-source-words-in-buffer
+                               ac-source-words-in-same-mode-buffers
+                               ac-source-yasnippet
+                               ))
 
-          ;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
-          ;; If bounds-of-thing-at-point has been redefined (and we did so)
-          ;; this function will return nil.
-          (defun ac-prefix-symbol ()
-            "Overriden default prefix definition function."
-            (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
-              (if (and (null symbol-start)
-                       (fboundp 'tap-bounds-of-thing-nearest-point))
-                  ;; try tap- function if available
-                  (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
-                ;; else
-                symbol-start)))))
+                ;; FIX: fixing issue with ac-prefix-symbol with thingatpt+
+                ;; If bounds-of-thing-at-point has been redefined (and we did so)
+                ;; this function will return nil.
+                (defun ac-prefix-symbol ()
+                  "Overriden default prefix definition function."
+                  (let ((symbol-start (car-safe (bounds-of-thing-at-point 'symbol))))
+                    (if (and (null symbol-start)
+                             (fboundp 'tap-bounds-of-thing-nearest-point))
+                        ;; try tap- function if available
+                        (car-safe (tap-bounds-of-thing-nearest-point 'symbol))
+                      ;; else
+                      symbol-start)))))
     #+end_src
 
 *** Company
     Due to inconveniences of the =auto-complete= package use =company=
     instead
     #+begin_src emacs-lisp
-(use-package company
-  :ensure t
-  :diminish company-mode
-  :config (progn
-            (setq company-idle-delay 0.3
-                  company-tooltip-limit 20
-                  company-minimum-prefix-length 2
-                  company-echo-delay 0))
-  :init (global-company-mode 1))
+      (use-package company
+        :ensure t
+        :diminish company-mode
+        :config (progn
+                  (setq company-idle-delay 0.3
+                        company-tooltip-limit 20
+                        company-minimum-prefix-length 2
+                        company-echo-delay 0))
+        :init (global-company-mode 1))
     #+end_src
 
 
@@ -721,29 +719,29 @@ This function depends on 's and 'dash libraries."
 
    - =zap-up-to-char= is a better alternative to regular zapping
      #+begin_src emacs-lisp
-(autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.
-  \(fn arg char)" 'interactive)
+       (autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.
+         \(fn arg char)" 'interactive)
      #+end_src
 
    - =zap-to-char-backwards=
      #+begin_src emacs-lisp
-(defun zap-to-char-backwards (char)
-    (interactive "cZap to char backwards: ")
-    (zap-to-char -1 char))
+       (defun zap-to-char-backwards (char)
+           (interactive "cZap to char backwards: ")
+           (zap-to-char -1 char))
      #+end_src
 
    - =zap-up-to-char-backwards=
      #+begin_src emacs-lisp
-(defun zap-up-to-char-backwards (char)
-    (interactive "cZap up to char backwards: ")
-    (zap-up-to-char -1 char))
+       (defun zap-up-to-char-backwards (char)
+           (interactive "cZap up to char backwards: ")
+           (zap-up-to-char -1 char))
      #+end_src
 
   Zapping key bindings
   #+begin_src emacs-lisp
-(bind-key "C-M-z"   'zap-to-char-backwards)
-(bind-key "M-Z"     'zap-up-to-char)
-(bind-key "C-M-S-z" 'zap-up-to-char-backwards)
+    (bind-key "C-M-z"   'zap-to-char-backwards)
+    (bind-key "M-Z"     'zap-up-to-char)
+    (bind-key "C-M-S-z" 'zap-up-to-char-backwards)
   #+end_src
 
 
@@ -751,16 +749,15 @@ This function depends on 's and 'dash libraries."
 
    Searching and browsing through the =kill-ring=
    #+begin_src emacs-lisp
-(use-package browse-kill-ring
-  :ensure t
-  :config  (progn
-             (browse-kill-ring-default-keybindings) ; advises M-y
-             (bind-key "C-x C-y" 'browse-kill-ring)))
-
-(use-package kill-ring-search
-  :ensure t
-  :config  (progn
-             (bind-key "C-M-y" 'kill-ring-search)))
+     (use-package browse-kill-ring
+       :ensure t
+       :config  (progn
+                  (browse-kill-ring-default-keybindings) ; advises M-y
+                  (bind-key "C-x C-y" 'browse-kill-ring)))
+     (use-package kill-ring-search
+       :ensure t
+       :config  (progn
+                  (bind-key "C-M-y" 'kill-ring-search)))
    #+end_src
 
 
@@ -768,26 +765,25 @@ This function depends on 's and 'dash libraries."
 ** Search
 *** Search in a Buffer
     #+begin_src emacs-lisp
-(bind-key "C-S-r"  'search-backward)
-(bind-key "C-S-s"  'search-forward)
+      (bind-key "C-S-r"  'search-backward)
+      (bind-key "C-S-s"  'search-forward)
     #+end_src
 *** Search in Files
     #+begin_src emacs-lisp
-(use-package ack-and-a-half
-  :ensure t
-  :commands (ack-and-a-half ack-and-a-half-same ack-and-a-half-find-file ack-and-a-half-find-file-same)
-  :init (progn
-          (defalias 'ack 'ack-and-a-half)
-          (defalias 'ack-same 'ack-and-a-half-same)
-          (defalias 'ack-find-file 'ack-and-a-half-find-file)
-          (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)))
-
-(use-package grep
-  :defer t
-  :config
-  (progn
-    (setq wgrep-enable-key "e")
-    (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
+      (use-package ack-and-a-half
+        :ensure t
+        :commands (ack-and-a-half ack-and-a-half-same ack-and-a-half-find-file ack-and-a-half-find-file-same)
+        :init (progn
+                (defalias 'ack 'ack-and-a-half)
+                (defalias 'ack-same 'ack-and-a-half-same)
+                (defalias 'ack-find-file 'ack-and-a-half-find-file)
+                (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)))
+      (use-package grep
+        :defer t
+        :config
+        (progn
+          (setq wgrep-enable-key "e")
+          (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
     #+end_src
 
 
@@ -800,22 +796,22 @@ This function depends on 's and 'dash libraries."
    indent and switch between this two positions if necessary
 
      #+begin_src emacs-lisp
-(defun ffy-bol-or-back-to-indent ()
-  "In addition to having two different mappings for
- (move-beginning-of-line ARG) and (back-to-indentation) we
- will have a function that goes to BOL if we are on the
- indent position and to the indent if we are at the BOL"
-  (interactive)
-  (if (bolp)
-      (back-to-indentation)
-    (move-beginning-of-line 1)))
+       (defun ffy-bol-or-back-to-indent ()
+         "In addition to having two different mappings for
+        (move-beginning-of-line ARG) and (back-to-indentation) we
+        will have a function that goes to BOL if we are on the
+        indent position and to the indent if we are at the BOL"
+         (interactive)
+         (if (bolp)
+             (back-to-indentation)
+           (move-beginning-of-line 1)))
      #+end_src
 
    Redefine =C-a= to =C-S-a= and =C-a to the =ffy-bol-or-back-to-indent=
 
    #+begin_src emacs-lisp
-(bind-key "C-S-a" (key-binding [(control ?a)]))
-(bind-key "C-a"  'ffy-bol-or-back-to-indent)
+     (bind-key "C-S-a" (key-binding [(control ?a)]))
+     (bind-key "C-a"  'ffy-bol-or-back-to-indent)
    #+end_src
 
 *** Navigation Using Mark/Point Ring
@@ -824,13 +820,13 @@ This function depends on 's and 'dash libraries."
 
     Pushes mark into a ring without activating a region
     #+begin_src emacs-lisp
-(defun ffy-position-to-ring ()
-  "Pushes current position to the mark-ring"
-  (interactive)
-  (push-mark (point) t nil)
-  (message "Position %s pushed to the ring" (point)))
+      (defun ffy-position-to-ring ()
+        "Pushes current position to the mark-ring"
+        (interactive)
+        (push-mark (point) t nil)
+        (message "Position %s pushed to the ring" (point)))
 
-(bind-key  "M-SPC" 'ffy-position-to-ring)
+      (bind-key  "M-SPC" 'ffy-position-to-ring)
     #+end_src
 
 
@@ -838,19 +834,19 @@ This function depends on 's and 'dash libraries."
 
    Mark commands from =thing-cmds=
    #+begin_src emacs-lisp
-(use-package thing-cmds
-  :ensure t
-  :init (thgcmd-bind-keys))
+     (use-package thing-cmds
+       :ensure t
+       :init (thgcmd-bind-keys))
    #+end_src
 
 
 ** Undo
    Undo/Redo functionality is done through =undo-tree=
    #+begin_src emacs-lisp
-(use-package undo-tree
-  :ensure t
-  :diminish undo-tree-mode
-  :config (global-undo-tree-mode))
+     (use-package undo-tree
+       :ensure t
+       :diminish undo-tree-mode
+       :config (global-undo-tree-mode))
    #+end_src
 
 
@@ -858,33 +854,33 @@ This function depends on 's and 'dash libraries."
 
    - toggles line numbers in the buffer
    #+begin_src emacs-lisp
-(bind-key "C-S-l"  'linum-mode)
+     (bind-key "C-S-l"  'linum-mode)
    #+end_src
 
    - =IMenu= defaults
      #+begin_src emacs-lisp
-(set-default 'imenu-auto-rescan t)
+       (set-default 'imenu-auto-rescan t)
      #+end_src
 
    - use =C-\= to leave one space between words
      #+begin_src emacs-lisp
-(define-key global-map [(control ?\\)] 'just-one-space)
+       (define-key global-map [(control ?\\)] 'just-one-space)
      #+end_src
 
    - there's default =M-^= =delete-indentation= that is an alias to
      =join-line=
      #+begin_src emacs-lisp
-(bind-key "j" 'join-line ctl-z-map)
-(bind-key "J" (lambda () "joins next line to this one"
-                               (interactive)
-                               (join-line 1)) ctl-z-map)
+       (bind-key "j" 'join-line ctl-z-map)
+       (bind-key "J" (lambda () "joins next line to this one"
+                                      (interactive)
+                                      (join-line 1)) ctl-z-map)
      #+end_src
 
 *** Narrowing/Widening
     Enable useful disabled Narrow/Widen commands
     #+begin_src emacs-lisp
-(dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
-  (put command 'disabled nil))
+      (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
+        (put command 'disabled nil))
     #+end_src
 
 *** Thing At the Point
@@ -935,146 +931,144 @@ This function depends on 's and 'dash libraries."
    Snippets allow us to create code quickly
 *** Yasnippets
     #+begin_src emacs-lisp
-(use-package yasnippet
-  :ensure t
-  :config
-  (progn
-    (use-package dropdown-list
-      :ensure t)
-    (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
-    (yas-global-mode +1)))
+      (use-package yasnippet
+        :ensure t
+        :config
+        (progn
+          (use-package dropdown-list
+            :ensure t)
+          (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
+          (yas-global-mode +1)))
     #+end_src
 
 
 ** Bookmarking
 
    #+begin_src emacs-lisp
-(use-package bm
-  :ensure bm)
+     (use-package bm
+       :ensure bm)
 
-(use-package bookmark
-  :defer t
-  :config
-  (progn
-    (use-package bookmark+
-      :ensure t)))
+     (use-package bookmark
+       :defer t
+       :config
+       (progn
+         (use-package bookmark+
+           :ensure t)))
    #+end_src
 
 
 * Version Control Systems
 ** Git
    #+begin_src emacs-lisp
-(use-package magit
-  :ensure t
-  :commands magit-status
-  ;; Added global shortcut to run Magit
-  :bind ("C-x g" . magit-status))
+     (use-package magit
+       :ensure t
+       :commands magit-status
+       ;; Added global shortcut to run Magit
+       :bind ("C-x g" . magit-status))
    #+end_src
 
 
 * Specific Modes
 ** Org Mode
    #+begin_src emacs-lisp
-(use-package org
-  :defer t
-  :bind (("C-&" . org-mark-ring-goto)
-         ("C-c l" . org-store-link)
-         ("C-c a" . org-agenda)
-         ("C-c b" . org-iswitchb))
-         ;(bind-key "C-&" 'org-mark-ring-goto  mode-specific-map) ;; due to the conflict with Yasnippet
-  :init (progn
-          (setq org-completion-use-ido t
-                ;; org-completion-use-iswitchb t     ; without it ido completion is
-                ;;                                   ; not going to work for
-                ;;                                   ; org-mode (see `org-read-property-value')
-                org-hide-leading-stars t
-                org-return-follows-link t
-                org-modules '(org-docview
-                              org-gnus
-                              org-id
-                              org-info
-                              org-jsinfo
-                              org-protocol
-                              org-special-blocks
-                              org-w3m
-                              org-bookmark
-                              org-elisp-symbol
-                              org-panel)
-                org-empty-line-terminates-plain-lists t)
+     (use-package org
+       :defer t
+       :bind (("C-&" . org-mark-ring-goto)
+              ("C-c l" . org-store-link)
+              ("C-c a" . org-agenda)
+              ("C-c b" . org-iswitchb))
+              ;(bind-key "C-&" 'org-mark-ring-goto  mode-specific-map) ;; due to the conflict with Yasnippet
+       :init (progn
+               (setq org-completion-use-ido t
+                     ;; org-completion-use-iswitchb t     ; without it ido completion is
+                     ;;                                   ; not going to work for
+                     ;;                                   ; org-mode (see `org-read-property-value')
+                     org-hide-leading-stars t
+                     org-return-follows-link t
+                     org-modules '(org-docview
+                                   org-gnus
+                                   org-id
+                                   org-info
+                                   org-jsinfo
+                                   org-protocol
+                                   org-special-blocks
+                                   org-w3m
+                                   org-bookmark
+                                   org-elisp-symbol
+                                   org-panel)
+                     org-empty-line-terminates-plain-lists t)
 
-          ;; make company completion work in Org-Mode
-          (defun add-pcomplete-to-capf ()
-            (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+               ;; make company completion work in Org-Mode
+               (defun add-pcomplete-to-capf ()
+                 (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
 
-          ;(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-          (dolist (it '(turn-on-font-lock
-                        yas-minor-mode-on
-                        turn-on-auto-fill
-                        turn-on-flyspell
-                        hl-line-mode
-                        add-pcomplete-to-capf
-                        iimage-mode))
-                  (add-hook 'org-mode-hook it))
+               ;(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+               (dolist (it '(turn-on-font-lock
+                             yas-minor-mode-on
+                             turn-on-auto-fill
+                             turn-on-flyspell
+                             hl-line-mode
+                             add-pcomplete-to-capf
+                             iimage-mode))
+                       (add-hook 'org-mode-hook it)))
+       :config (progn
+                 ;; Override not working function from org-mode
+                 (defun org-read-property-value (property)
+                   "Read PROPERTY value from user."
+                   (let* ((completion-ignore-case t)
+                          (allowed (org-property-get-allowed-values nil property 'table))
+                          (cur (org-entry-get nil property))
+                          (prompt (concat property " value"
+                                          (if (and cur (string-match "\\S-" cur))
+                                              (concat " [" cur "]") "") ": "))
+                          (set-function (org-set-property-function property))
+                          (val (if allowed
+                                   (funcall set-function prompt allowed nil
+                                            (not (get-text-property 0 'org-unrestricted
+                                                                    (caar allowed))))
+                                 (funcall set-function prompt
+                                          (mapcar 'list (org-property-values property))
+                                          nil nil "" nil cur))))
+                     (if (equal val "")
+                         cur
+                       val)))
+                 )
 
-          )
-  :config (progn
-            ;; Override not working function from org-mode
-            (defun org-read-property-value (property)
-              "Read PROPERTY value from user."
-              (let* ((completion-ignore-case t)
-                     (allowed (org-property-get-allowed-values nil property 'table))
-                     (cur (org-entry-get nil property))
-                     (prompt (concat property " value"
-                                     (if (and cur (string-match "\\S-" cur))
-                                         (concat " [" cur "]") "") ": "))
-                     (set-function (org-set-property-function property))
-                     (val (if allowed
-                              (funcall set-function prompt allowed nil
-                                       (not (get-text-property 0 'org-unrestricted
-                                                               (caar allowed))))
-                            (funcall set-function prompt
-                                     (mapcar 'list (org-property-values property))
-                                     nil nil "" nil cur))))
-                (if (equal val "")
-                    cur
-                  val)))
-            )
-
-;(setq org-todo-keyword-faces
-;      (quote (("TODO" :foreground "medium blue" :weight bold)
-;              ("NOTE" :foreground "dark violet" :weight bold)
-;              ("STARTED" :foreground "dark orange" :weight bold)
-;              ("WAITING" :foreground "red" :weight bold)
-;              ("DELEGATED" :foreground "red" :weight bold))))
-
-;(defun my-org-mode-custom-bindings ()
-;  "customize org-mode keys"
-;  (local-set-key [(control up)] 'outline-previous-visible-heading)
-;  (local-set-key [(control down)]  'outline-next-visible-heading)
-;  (local-set-key [(control meta up)]  'outline-up-heading)
-;  (local-set-key [(control c) (meta ?w)] 'org-store-link )
-;  (local-set-key [(control c) (control ?y)] 'org-insert-link)
-;  (local-set-key [(control c) ?a] 'org-agenda))
-
-
-;(dolist (mode '(org-mode))
-;  (add-to-list 'ac-modes mode))
-
-;;
-;;  Setup iimage working with Org-mode
-;;
-;; (add-hook 'org-mode-hook 'turn-on-iimage-mode)
-
-;; (defun org-toggle-iimage-in-org ()
-;;   "display images in your org file"
-;;   (interactive)
-;;   (if (face-underline-p 'org-link)
-;;       (set-face-underline-p 'org-link nil)
-;;     (set-face-underline-p 'org-link t))
-;;   (iimage-mode))
-
-
-)
+     ;(setq org-todo-keyword-faces
+     ;      (quote (("TODO" :foreground "medium blue" :weight bold)
+     ;              ("NOTE" :foreground "dark violet" :weight bold)
+     ;              ("STARTED" :foreground "dark orange" :weight bold)
+     ;              ("WAITING" :foreground "red" :weight bold)
+     ;              ("DELEGATED" :foreground "red" :weight bold))))
+     
+     ;(defun my-org-mode-custom-bindings ()
+     ;  "customize org-mode keys"
+     ;  (local-set-key [(control up)] 'outline-previous-visible-heading)
+     ;  (local-set-key [(control down)]  'outline-next-visible-heading)
+     ;  (local-set-key [(control meta up)]  'outline-up-heading)
+     ;  (local-set-key [(control c) (meta ?w)] 'org-store-link )
+     ;  (local-set-key [(control c) (control ?y)] 'org-insert-link)
+     ;  (local-set-key [(control c) ?a] 'org-agenda))
+     
+     
+     ;(dolist (mode '(org-mode))
+     ;  (add-to-list 'ac-modes mode))
+     
+     ;;
+     ;;  Setup iimage working with Org-mode
+     ;;
+     ;; (add-hook 'org-mode-hook 'turn-on-iimage-mode)
+     
+     ;; (defun org-toggle-iimage-in-org ()
+     ;;   "display images in your org file"
+     ;;   (interactive)
+     ;;   (if (face-underline-p 'org-link)
+     ;;       (set-face-underline-p 'org-link nil)
+     ;;     (set-face-underline-p 'org-link t))
+     ;;   (iimage-mode))
+     
+     
+     )
    #+end_src
 
 
@@ -1082,30 +1076,29 @@ This function depends on 's and 'dash libraries."
    More about orgtbl
    http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html
     #+begin_src emacs-lisp
-(use-package orgtbl
-  :disabled t
-  :commands orgtbl-mode
-  :config (progn
-            (defun orgtbl-to-gfm (table params)
-      "Convert the Orgtbl mode TABLE to GitHub Flavored Markdown.
-Usage Example:
-  <!--- BEGIN RECEIVE ORGTBL ${1:YOUR_TABLE_NAME} -->
-  <!--- END RECEIVE ORGTBL $1 -->
-
-  <!---
-  #+ORGTBL: SEND $1 orgtbl-to-gfm
-   | $0 |
-  -->
-For more details see https://gist.github.com/grafov/8244792 and https://gist.github.com/yryozo/5807243
-"
-      (let* ((alignment (mapconcat (lambda (x) (if x "|--:" "|---"))
-                                   org-table-last-alignment ""))
-             (params2
-              (list
-               :splice t
-               :hline (concat alignment "|")
-               :lstart "| " :lend " |" :sep " | ")))
-        (orgtbl-to-generic table (org-combine-plists params2 params))))))
+      (use-package orgtbl
+        :disabled t
+        :commands orgtbl-mode
+        :config (progn
+                  (defun orgtbl-to-gfm (table params)
+            "Convert the Orgtbl mode TABLE to GitHub Flavored Markdown.
+      Usage Example:
+        <!--- BEGIN RECEIVE ORGTBL ${1:YOUR_TABLE_NAME} -->
+        <!--- END RECEIVE ORGTBL $1 -->
+        <!---
+        ,#+ORGTBL: SEND $1 orgtbl-to-gfm
+         | $0 |
+        -->
+      For more details see https://gist.github.com/grafov/8244792 and https://gist.github.com/yryozo/5807243
+      "
+            (let* ((alignment (mapconcat (lambda (x) (if x "|--:" "|---"))
+                                         org-table-last-alignment ""))
+                   (params2
+                    (list
+                     :splice t
+                     :hline (concat alignment "|")
+                     :lstart "| " :lend " |" :sep " | ")))
+              (orgtbl-to-generic table (org-combine-plists params2 params))))))
     #+end_src
 
 
@@ -1126,72 +1119,72 @@ For more details see https://gist.github.com/grafov/8244792 and https://gist.git
 
 ** XSL/XML Editing
    #+begin_src emacs-lisp
-(defun xml-pretty-print (begin end)
-  "Makes current buffer with XML markup look prettier"
-  (save-excursion
-    (nxml-mode)
-    (goto-char begin)
-    (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
-      (backward-char) (insert "\n"))
-    (indent-region begin end))
-  (message "Ah, much better!"))
-
-(defun xml-pretty-print-region (begin end)
-  "Pretty format XML markup in region. You need to have nxml-mode
-http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
-this.  The function inserts linebreaks to separate tags that have
-nothing but whitespace between them.  It then indents the markup
-by using nxml's indentation rules."
-  (interactive "r")
-  (xml-pretty-print begin end))
-
-(defun xml-pretty-print-buffer ()
-  "Formats whole buffer containing XML"
-  (interactive)
-  (xml-pretty-print-region (point-min) (point-max)))
-
-(setq-default
- ;; Treat elements and contents like S-expressions! Oh, the magic. 
- ;; (if you know S-expression movement commands, it's great) 
- nxml-sexp-element-flag t
-  ;; Whenever you type </ it will fill out the rest. 
- nxml-slash-auto-complete-flag t)
-
-
-;; Causes files with extensions .xml .xsl .rng .xhtml .html and .tal
-;; to invoke nxml-mode.
-(setq auto-mode-alist 
-      (cons '("\\.\\(xml\\|xsl\\|rng\\|tal\\|xsd\\|sch\\|xslt\\|svg\\|rss\\)\\'" . nxml-mode) 
-            (remove-if (lambda (x) (eq (cdr x) 'html-mode)) auto-mode-alist)))
-
-;; another way to recognize XML files 
-(setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
-;(push '("<\\?xml" . nxml-mode) magic-mode-alist)
-
-(defun ffy-customize-nxml-mode ()
-  "This function sets some variables and calls some functions that setup nXML mode."
-  ;; load hide show modes 
-  (local-set-key "\C-c/" 'nxml-finish-element)
-  (local-set-key [return] 'newline-and-indent)
-  ;;(auto-fill-mode)
-  (rng-validate-mode)
-  (unify-8859-on-decoding-mode)
-  (setq ispell-skip-html t)
-  (hs-minor-mode 1)
-  ;; controversial 
-  (make-variable-buffer-local 'ido-use-filename-at-point)
-  (setq ido-use-filename-at-point nil))
-
-(add-hook 'nxml-mode-hook 'ffy-customize-nxml-mode)
-
-(add-to-list 'hs-special-modes-alist
-             '(nxml-mode
-               "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
-               ""
-               nil))
-;;; Add auto-complete to the the XML based modes 
-;(dolist (mode '(nxml-mode))
-;  (add-to-list 'ac-modes mode))
+     (defun xml-pretty-print (begin end)
+       "Makes current buffer with XML markup look prettier"
+       (save-excursion
+         (nxml-mode)
+         (goto-char begin)
+         (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+           (backward-char) (insert "\n"))
+         (indent-region begin end))
+       (message "Ah, much better!"))
+     
+     (defun xml-pretty-print-region (begin end)
+       "Pretty format XML markup in region. You need to have nxml-mode
+     http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+     this.  The function inserts linebreaks to separate tags that have
+     nothing but whitespace between them.  It then indents the markup
+     by using nxml's indentation rules."
+       (interactive "r")
+       (xml-pretty-print begin end))
+     
+     (defun xml-pretty-print-buffer ()
+       "Formats whole buffer containing XML"
+       (interactive)
+       (xml-pretty-print-region (point-min) (point-max)))
+     
+     (setq-default
+      ;; Treat elements and contents like S-expressions! Oh, the magic. 
+      ;; (if you know S-expression movement commands, it's great) 
+      nxml-sexp-element-flag t
+       ;; Whenever you type </ it will fill out the rest. 
+      nxml-slash-auto-complete-flag t)
+     
+     
+     ;; Causes files with extensions .xml .xsl .rng .xhtml .html and .tal
+     ;; to invoke nxml-mode.
+     (setq auto-mode-alist 
+           (cons '("\\.\\(xml\\|xsl\\|rng\\|tal\\|xsd\\|sch\\|xslt\\|svg\\|rss\\)\\'" . nxml-mode) 
+                 (remove-if (lambda (x) (eq (cdr x) 'html-mode)) auto-mode-alist)))
+     
+     ;; another way to recognize XML files 
+     (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
+     ;(push '("<\\?xml" . nxml-mode) magic-mode-alist)
+     
+     (defun ffy-customize-nxml-mode ()
+       "This function sets some variables and calls some functions that setup nXML mode."
+       ;; load hide show modes 
+       (local-set-key "\C-c/" 'nxml-finish-element)
+       (local-set-key [return] 'newline-and-indent)
+       ;;(auto-fill-mode)
+       (rng-validate-mode)
+       (unify-8859-on-decoding-mode)
+       (setq ispell-skip-html t)
+       (hs-minor-mode 1)
+       ;; controversial 
+       (make-variable-buffer-local 'ido-use-filename-at-point)
+       (setq ido-use-filename-at-point nil))
+     
+     (add-hook 'nxml-mode-hook 'ffy-customize-nxml-mode)
+     
+     (add-to-list 'hs-special-modes-alist
+                  '(nxml-mode
+                    "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
+                    ""
+                    nil))
+     ;;; Add auto-complete to the the XML based modes 
+     ;(dolist (mode '(nxml-mode))
+     ;  (add-to-list 'ac-modes mode))
    #+end_src
 
 
@@ -1207,45 +1200,45 @@ by using nxml's indentation rules."
    Most of the setup here will benefit any programming language mode.
 
    #+begin_src emacs-lisp
-(autoload 'turn-on-fic-mode "fic-mode")
+     (autoload 'turn-on-fic-mode "fic-mode")
 
-(defvar *programming-hook* nil
-  "This variable contains functions that we need to run if we are programming ")
+     (defvar *programming-hook* nil
+       "This variable contains functions that we need to run if we are programming ")
 
-(defun local-column-number-mode ()
-  (make-local-variable 'column-number-mode)
-  (column-number-mode t))
+     (defun local-column-number-mode ()
+       (make-local-variable 'column-number-mode)
+       (column-number-mode t))
 
-(defun local-comment-auto-fill ()
-  (set (make-local-variable 'comment-auto-fill-only-comments) t)
-  (auto-fill-mode t))
+     (defun local-comment-auto-fill ()
+       (set (make-local-variable 'comment-auto-fill-only-comments) t)
+       (auto-fill-mode t))
 
-(defun turn-on-hl-line-mode ()
-  (if window-system (hl-line-mode t)))
+     (defun turn-on-hl-line-mode ()
+       (if window-system (hl-line-mode t)))
 
-(defun turn-on-whitespace ()
-  (whitespace-mode t))
+     (defun turn-on-whitespace ()
+       (whitespace-mode t))
 
-(defun turn-on-flyspell-prog-mode ()
-  (when (and (boundp 'ispell-program-name) 
-             (executable-find ispell-program-name))
-    (flyspell-prog-mode)))
+     (defun turn-on-flyspell-prog-mode ()
+       (when (and (boundp 'ispell-program-name)
+                  (executable-find ispell-program-name))
+         (flyspell-prog-mode)))
    #+end_src
 
 *** Flymake and Syntax checking
     #+begin_src emacs-lisp
-(use-package flymake
-  :init (progn
-          (use-package flymake-cursor  :ensure t)
-          (defun turn-on-flymake ()
-            (flymake-mode))))
+      (use-package flymake
+        :init (progn
+                (use-package flymake-cursor  :ensure t)
+                (defun turn-on-flymake ()
+                  (flymake-mode))))
     #+end_src
 
 
 *** Electric and Autopairs
     #+begin_src emacs-lisp
-(defun turn-on-electric-mode ()
-  (electric-pair-mode +1))
+      (defun turn-on-electric-mode ()
+        (electric-pair-mode +1))
     #+end_src
 
 
@@ -1253,19 +1246,19 @@ by using nxml's indentation rules."
     Add the functions to the programming modes via hook
 
     #+begin_src emacs-lisp
-(dolist   (it '(local-column-number-mode
-                local-comment-auto-fill
-                turn-on-hl-line-mode
-                pretty-greek
-                turn-on-fic-mode
-                turn-on-flyspell-prog-mode
-                turn-on-flymake))
-  (if (fboundp it)
-      (add-hook '*programming-hook* it)))
+      (dolist   (it '(local-column-number-mode
+                      local-comment-auto-fill
+                      turn-on-hl-line-mode
+                      pretty-greek
+                      turn-on-fic-mode
+                      turn-on-flyspell-prog-mode
+                      turn-on-flymake))
+        (if (fboundp it)
+            (add-hook '*programming-hook* it)))
 
-(defun ffy-run-programming-hook ()
-  "Enable things that are convenient across all coding buffers."
-  (run-hooks '*programming-hook*))
+      (defun ffy-run-programming-hook ()
+        "Enable things that are convenient across all coding buffers."
+        (run-hooks '*programming-hook*))
     #+end_src
 
 
@@ -1343,37 +1336,37 @@ by using nxml's indentation rules."
     S-expression and execute it if we are at the end.
 
     #+begin_src emacs-lisp
-(defun ffy-ielm-return ()
-  "Like `ielm-return' but more intellectual when it comes to deciding when just
-send `paredit-newline' instead.
-Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/blob/master/init.el"
-  (interactive)
-  (let ((end-of-sexp (save-excursion
-                           (goto-char (point-max))
-                           (skip-chars-backward " \t\n\r")
-                           (point))))
-        (if (>= (point) end-of-sexp)
-            (progn
-              (goto-char (point-max))
-              (skip-chars-backward " \t\n\r")
-              (delete-region (point) (point-max))
-              (call-interactively #'ielm-return))
-          (call-interactively #'paredit-newline))))
+      (defun ffy-ielm-return ()
+        "Like `ielm-return' but more intellectual when it comes to deciding when just
+      send `paredit-newline' instead.
+      Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/blob/master/init.el"
+        (interactive)
+        (let ((end-of-sexp (save-excursion
+                                 (goto-char (point-max))
+                                 (skip-chars-backward " \t\n\r")
+                                 (point))))
+              (if (>= (point) end-of-sexp)
+                  (progn
+                    (goto-char (point-max))
+                    (skip-chars-backward " \t\n\r")
+                    (delete-region (point) (point-max))
+                    (call-interactively #'ielm-return))
+                (call-interactively #'paredit-newline))))
     #+end_src
 
     Hook =ffy-ielm-return= onto the =RET= key
 
     #+begin_src emacs-lisp
-(defun ffy-setup-ielm ()
-  "Sets some IELM defaults and keys."
-  (interactive)
-  (progn
-    (local-set-key [return] 'ffy-ielm-return)))
+      (defun ffy-setup-ielm ()
+        "Sets some IELM defaults and keys."
+        (interactive)
+        (progn
+          (local-set-key [return] 'ffy-ielm-return)))
     #+end_src
 
     And add it to the  IELM setup hook
     #+begin_src emacs-lisp
-(add-hook 'ielm-mode-hook 'ffy-setup-ielm)
+      (add-hook 'ielm-mode-hook 'ffy-setup-ielm)
     #+end_src
 
 
@@ -1382,22 +1375,22 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
     IELM instead
 
     #+begin_src emacs-lisp
-(defun ffy-ielm ()
-  "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
-  (interactive)
-  (let ((buf (current-buffer)))
-    (if (get-buffer "*ielm*")
-        (switch-to-buffer-other-window "*ielm*")
-      (progn
-        (split-window-sensibly (selected-window))
-        (other-window 1)
-        (ielm)))
-    (ielm-change-working-buffer buf)))
+      (defun ffy-ielm ()
+        "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
+        (interactive)
+        (let ((buf (current-buffer)))
+          (if (get-buffer "*ielm*")
+              (switch-to-buffer-other-window "*ielm*")
+            (progn
+              (split-window-sensibly (selected-window))
+              (other-window 1)
+              (ielm)))
+          (ielm-change-working-buffer buf)))
     #+end_src
 
     Press =C-c M-:= to start IELM with current buffer
     #+begin_src emacs-lisp
-(bind-key "C-c M-:" 'ffy-ielm)
+      (bind-key "C-c M-:" 'ffy-ielm)
     #+end_src
 
     Completion in IELM buffer (added Auto-Complete, but now use
@@ -1526,61 +1519,61 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 ** HAML/SCSS/SASS setup
    Closely related to Ruby/Rails development
 
-#+begin_src emacs-lisp
-  (use-package haml-mode
-    :ensure t
-    :commands haml-mode
-    :mode ("\\.haml$" . haml-mode)
-    :init (progn
-            (use-package flymake-haml
-              :ensure t
-              :defer t
-              :config (progn
-                        (add-hook 'haml-mode-hook 'flymake-haml-load)))))
-  (use-package scss-mode
-    :ensure t
-    :defer t
-    :commands scss-mode
-    :mode ("\\.scss$" . scss-mode)
-    :init (progn
-            (use-package sass-mode
-              :ensure t
-              :defer t
-              :commands sass-mode
-              :mode ("\\.sass$" . sass-mode)
-              :config (progn
-                        (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
-                        (add-hook 'sass-mode-hook 'ffy-customize-sass-scss-mode)))
-  
-            (use-package flymake-sass
-              :ensure t
-              :defer t
-              :config (progn
-                        ;; my own customizations
-                        (defun ffy-customize-sass-scss-mode ()
-                          (interactive)
-                          ;; first of all <ret> sets newline and indent as C-j
-                          (local-set-key [return] 'newline-and-indent)
-                          (local-set-key [(control return)] 'ffy-open-line-indented))
-  
-                        (add-hook 'scss-mode-hook 'flymake-sass-load)
-                        (add-hook 'sass-mode-hook 'flymake-sass-load)))
-            (add-hook 'scss-mode-hook 'ffy-run-programming-hook)
-            (add-hook 'scss-mode-hook 'ffy-customize-sass-scss-mode)))
-  
-  ;;; custom line opening
-  (defun ffy-open-line-indented (n)
-    "like `open-line' but keeps indentation"
-    (interactive "*p")
-    (let* ((loc (point-marker)))
-      (newline-and-indent)
-      (goto-char loc)))
-  
-  
-  ;;; add Auto-Complete HAML SCSS and SASS modes
-  ;(dolist (mode '(haml-mode sass-mode scss-mode))
-  ;  (add-to-list 'ac-modes mode))
-#+end_src
+   #+begin_src emacs-lisp
+     (use-package haml-mode
+       :ensure t
+       :commands haml-mode
+       :mode ("\\.haml$" . haml-mode)
+       :init (progn
+               (use-package flymake-haml
+                 :ensure t
+                 :defer t
+                 :config (progn
+                           (add-hook 'haml-mode-hook 'flymake-haml-load)))))
+     (use-package scss-mode
+       :ensure t
+       :defer t
+       :commands scss-mode
+       :mode ("\\.scss$" . scss-mode)
+       :init (progn
+               (use-package sass-mode
+                 :ensure t
+                 :defer t
+                 :commands sass-mode
+                 :mode ("\\.sass$" . sass-mode)
+                 :config (progn
+                           (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
+                           (add-hook 'sass-mode-hook 'ffy-customize-sass-scss-mode)))
+     
+               (use-package flymake-sass
+                 :ensure t
+                 :defer t
+                 :config (progn
+                           ;; my own customizations
+                           (defun ffy-customize-sass-scss-mode ()
+                             (interactive)
+                             ;; first of all <ret> sets newline and indent as C-j
+                             (local-set-key [return] 'newline-and-indent)
+                             (local-set-key [(control return)] 'ffy-open-line-indented))
+     
+                           (add-hook 'scss-mode-hook 'flymake-sass-load)
+                           (add-hook 'sass-mode-hook 'flymake-sass-load)))
+               (add-hook 'scss-mode-hook 'ffy-run-programming-hook)
+               (add-hook 'scss-mode-hook 'ffy-customize-sass-scss-mode)))
+     
+     ;;; custom line opening
+     (defun ffy-open-line-indented (n)
+       "like `open-line' but keeps indentation"
+       (interactive "*p")
+       (let* ((loc (point-marker)))
+         (newline-and-indent)
+         (goto-char loc)))
+     
+     
+     ;;; add Auto-Complete HAML SCSS and SASS modes
+     ;(dolist (mode '(haml-mode sass-mode scss-mode))
+     ;  (add-to-list 'ac-modes mode))
+   #+end_src
 
 
 ** Coffee-Script
@@ -1690,25 +1683,25 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
    Some things I haven't got to yet
    #+begin_src emacs-lisp
-;; (setq inferior-js-mode-hook
-;;       (lambda ()
-;;         ;; We like nice colors
-;;         (ansi-color-for-comint-mode-on)
-;;         ;; Deal with some prompt nonsense
-;;         (add-to-list
-;;          'comint-preoutput-filter-functions
-;;          (lambda (output)
-;;            (replace-regexp-in-string "\033\\[[0-9]+[GK]" "" output)))))
-
-;; (setq inferior-js-mode-hook
-;;       (lambda ()
-;;         ;; We like nice colors
-;;         (ansi-color-for-comint-mode-on)
-;;         ;; Deal with some prompt nonsense
-;;         (add-to-list 'comint-preoutput-filter-functions
-;;                      (lambda (output)
-;;                        (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
-;;                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
+     ;; (setq inferior-js-mode-hook
+     ;;       (lambda ()
+     ;;         ;; We like nice colors
+     ;;         (ansi-color-for-comint-mode-on)
+     ;;         ;; Deal with some prompt nonsense
+     ;;         (add-to-list
+     ;;          'comint-preoutput-filter-functions
+     ;;          (lambda (output)
+     ;;            (replace-regexp-in-string "\033\\[[0-9]+[GK]" "" output)))))
+     
+     ;; (setq inferior-js-mode-hook
+     ;;       (lambda ()
+     ;;         ;; We like nice colors
+     ;;         (ansi-color-for-comint-mode-on)
+     ;;         ;; Deal with some prompt nonsense
+     ;;         (add-to-list 'comint-preoutput-filter-functions
+     ;;                      (lambda (output)
+     ;;                        (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
+     ;;                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
    #+end_src
 
 
@@ -1723,13 +1716,12 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
 ** Haskell Mode
    #+begin_src emacs-lisp
-(use-package haskell-mode
-  :ensure t
-  :init (progn
-          (add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
-          (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-          (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
-
+     (use-package haskell-mode
+       :ensure t
+       :init (progn
+               (add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
+               (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+               (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
    #+end_src
 
 
@@ -1737,23 +1729,23 @@ Implementation shamelessly stolen from: https://github.com/jwiegley/dot-emacs/bl
 
   Load custom variables and faces from the customization file
   #+begin_src emacs-lisp
-(setq custom-file (concat *dotfiles-dir* "custom.el"))
-(load custom-file 'noerror)
+    (setq custom-file (concat *dotfiles-dir* "custom.el"))
+    (load custom-file 'noerror)
   #+end_src
 
   Each workstation I work on has some specific details that are
   described in the file for that machine. They are stored in the
   machine specific folder =systems=. Loading machine specific settings:
 
-#+begin_src emacs-lisp
-(let ((system-specific-config (concat *system-specific* system-name ".el")))
-  (if (file-exists-p system-specific-config)
-      (load system-specific-config)))
-#+end_src
+  #+begin_src emacs-lisp
+    (let ((system-specific-config (concat *system-specific* system-name ".el")))
+      (if (file-exists-p system-specific-config)
+          (load system-specific-config)))
+  #+end_src
 
   How long did it take to load?
 
-#+begin_src emacs-lisp
-(let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
-  (message "Loading Emacs...done (%.3fs)" elapsed))
-#+end_src
+  #+begin_src emacs-lisp
+    (let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
+      (message "Loading Emacs...done (%.3fs)" elapsed))
+  #+end_src
