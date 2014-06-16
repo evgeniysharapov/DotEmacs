@@ -25,4 +25,5 @@
   ;; filename is evaled while macros is expanded, otherwise buffer-file-name would be nil
   (org-babel-load-file (expand-file-name "configuration.org" ,(file-name-directory (or load-file-name (buffer-file-name)))))
   ;; if we loaded it up, use normal error throwing
-  (toggle-debug-on-error)))
+  (toggle-debug-on-error)
+  (desktop-read)))
