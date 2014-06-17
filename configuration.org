@@ -638,6 +638,14 @@
                   (bind-key "@"          'highlight-symbol-query-replace ctl-z-map)))
    #+end_src
 
+   Turn on/off showing trailing whitespace
+
+   #+begin_src emacs-lisp
+     (defun toggle-show-trailing-whitespace ()
+       "Turns on/off showing of the trailing whitespaces in a current buffer"
+       (interactive)
+       (setq show-trailing-whitespace (not show-trailing-whitespace)))
+   #+end_src
 
 ** Completions
 *** Regular hippie-expand
