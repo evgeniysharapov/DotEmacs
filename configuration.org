@@ -1119,6 +1119,7 @@
 ** Markdown
    #+begin_src emacs-lisp
      (use-package markdown-mode
+       :ensure t
        :config  (progn
                   (defun set-markdown-mode-outline-regexp ()
                     "Add Markdown mode specifics.  Make outline-mode navigation work for underline headers as well"
