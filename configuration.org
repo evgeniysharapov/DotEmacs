@@ -1211,6 +1211,47 @@
 
 
 
+** LaTeX
+   LaTeX editing and preview. We are using AucTeX. You can see their
+   web-site for instructions.
+
+   For installing AucTeX on Windows:
+   - Download and install the pre-compiled bundle of [[http://www.gnu.org/software/auctex/download-for-windows.html][AucTeX]].
+   - Unpack that archive into an Emacs directory (even though it says
+     do not use pre-built thing with anything other than Emacs 24.2,
+     it works with Emacs 24.3). Before you do that backup your
+     ~Emacs/info/dir~ file, then compare the two (new dir and backup
+     dir) and copy whatever is missing from the backed up one to the
+     new one.
+
+
+   Links:
+   - http://cseweb.ucsd.edu/~s1pan/install_auctex.html
+   - http://www.gnu.org/software/auctex/download-for-windows.html
+
+
+   Another option is to install it using ELPA
+
+   #+begin_src elisp
+     (use-package auctex
+       :ensure t
+       :init (progn
+               (load "auctex-pkg.el" nil t t)
+               (load "preview.el" nil t t)))
+   #+end_src
+
+
+   For XeTeX use command ~M-x TeX-engine-set~
+
+
+   Good viewer for PDF (and other files) on Windows is
+   [[http://blog.kowalczyk.info/software/sumatrapdf/free-pdf-reader.html][Sumatra PDF]].
+
+   Setting up Tex previewer
+   http://tex.stackexchange.com/questions/119645/emacs-auctex-view-command
+
+
+
 ** General Programming
    Most of the setup here will benefit any programming language mode.
 
@@ -1604,6 +1645,7 @@
                    :config (progn
                              (add-hook 'coffee-mode-hook 'flymake-coffee-load)))))
    #+end_src
+
 
 ** JavaScript
    Good link about setting up Javascript:
