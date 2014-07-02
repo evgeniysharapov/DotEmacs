@@ -668,6 +668,7 @@
        (setq show-trailing-whitespace (not show-trailing-whitespace)))
    #+end_src
 
+
 ** Completions
 *** Regular hippie-expand
     Naturally =hippie-expand-try-functions-list= would be made local
@@ -1232,8 +1233,8 @@
 
 
 
-** LaTeX
-   LaTeX editing and preview. We are using AucTeX. You can see their
+** TeX
+   TeX editing and preview. We are using AucTeX. You can see their
    web-site for instructions.
 
    For installing AucTeX on Windows:
@@ -1271,6 +1272,12 @@
    Setting up Tex previewer
    http://tex.stackexchange.com/questions/119645/emacs-auctex-view-command
 
+
+*** ConTeXt specifics
+    For the Context we assume that version MKiV is used. Then
+    everything is run via =mtxrun= or =context= commands.
+
+    
 
 
 ** General Programming
