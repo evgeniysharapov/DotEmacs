@@ -1,11 +1,19 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'Buffer-menu-mode-abbrev-table '())
 
+(define-abbrev-table 'Custom-mode-abbrev-table '())
+
 (define-abbrev-table 'awk-mode-abbrev-table
   '(
    ))
 
-(define-abbrev-table 'bibtex-mode-abbrev-table '())
+(define-abbrev-table 'bmkp-edit-bookmark-record-mode-abbrev-table '())
+
+(define-abbrev-table 'bmkp-edit-bookmark-records-mode-abbrev-table '())
+
+(define-abbrev-table 'bmkp-edit-tags-mode-abbrev-table '())
+
+(define-abbrev-table 'bookmark-bmenu-mode-abbrev-table '())
 
 (define-abbrev-table 'browse-kill-ring-edit-mode-abbrev-table '())
 
@@ -25,7 +33,11 @@
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
 
+(define-abbrev-table 'context-mode-abbrev-table '())
+
 (define-abbrev-table 'display-time-world-mode-abbrev-table '())
+
+(define-abbrev-table 'doctex-mode-abbrev-table '())
 
 (define-abbrev-table 'emacs-lisp-byte-code-mode-abbrev-table '())
 
@@ -35,13 +47,7 @@
 
 (define-abbrev-table 'gfm-mode-abbrev-table '())
 
-(define-abbrev-table 'global-abbrev-table
-  '(
-    ("mgejb" "MagicalGatheringEJB" nil 0)
-    ("mgweb" "MagicalGatheringWeb" nil 1)
-   ))
-
-(define-abbrev-table 'grep-mode-abbrev-table '())
+(define-abbrev-table 'global-abbrev-table '())
 
 (define-abbrev-table 'haskell-mode-abbrev-table '())
 
@@ -57,13 +63,18 @@
 
 (define-abbrev-table 'js2-mode-abbrev-table '())
 
+(define-abbrev-table 'latex-mode-abbrev-table '())
+
 (define-abbrev-table 'lisp-mode-abbrev-table '())
 
 (define-abbrev-table 'literate-haskell-mode-abbrev-table '())
 
-(define-abbrev-table 'markdown-mode-abbrev-table '())
+(define-abbrev-table 'markdown-mode-abbrev-table
+  '(
+    ("rf" "[Robot Framework](http://robotframework.org/)" nil 3)
+   ))
 
-(define-abbrev-table 'message-mode-abbrev-table '())
+(define-abbrev-table 'nxml-mode-abbrev-table '())
 
 (define-abbrev-table 'objc-mode-abbrev-table
   '(
@@ -75,6 +86,8 @@
 
 (define-abbrev-table 'org-mode-abbrev-table '())
 
+(define-abbrev-table 'orgpan-mode-abbrev-table '())
+
 (define-abbrev-table 'outline-mode-abbrev-table '())
 
 (define-abbrev-table 'package-menu-mode-abbrev-table '())
@@ -82,6 +95,8 @@
 (define-abbrev-table 'pike-mode-abbrev-table
   '(
    ))
+
+(define-abbrev-table 'plain-tex-mode-abbrev-table '())
 
 (define-abbrev-table 'process-menu-mode-abbrev-table '())
 
@@ -94,8 +109,6 @@
 (define-abbrev-table 'ruby-mode-abbrev-table '())
 
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
-
-(define-abbrev-table 'shell-mode-abbrev-table '())
 
 (define-abbrev-table 'skewer-clients-mode-abbrev-table '())
 
