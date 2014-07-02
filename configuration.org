@@ -619,6 +619,27 @@
 * Editing
 
 ** Appearance
+   Visual lines mode makes lines longer than window width can be
+   displayed so that they are wrapped at word boundary. By default it
+   is off and we want it on only for text editing modes, such as
+   =latex-mode=, =markdown-mode=, etc. One can call
+   =visual-line-mode= to toggle on/off.
+
+   Visual line mode actually does several things. From a user's point
+   of view, it:
+   -  Makes lines wrap at word boundaries. (controlled by var
+      =truncate-lines= and =word-wrap=.)
+   -  Makes up/down arrow keys move by a visual line. (controlled by
+      the var =line-move-visual=.)
+   -  Makes the =kill-line= command delete by a visual line, as
+      opposed to a logical line.
+   -  Turns off the display of little return arrow at the edge of
+      window. (controlled by the var =fringe-indicator-alist=.)
+
+   #+begin_src emacs-lisp :tangle yes
+     (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+   #+end_src
+
    Highlighting and coloring of the buffer
    #+begin_src emacs-lisp
      (use-package idle-highlight-mode :ensure t)
