@@ -359,6 +359,16 @@
         :commands find-file-in-project)
     #+end_src
 
+    Opening files from =recentf= list
+
+    #+begin_src emacs-lisp
+      (defun ido-choose-from-recentf ()
+        "Use ido to select a recently opened file from the `recentf-list'"
+        (interactive)
+        (find-file (ido-completing-read "Open file: " recentf-list nil t)))
+    #+end_src
+
+
 *** Files Key-Bindings
 
     =C-x C-f= is bound to =ido-find-file=
@@ -390,7 +400,36 @@
 ** Buffers
 *** Buffer Switching
 
+    #+begin_src emacs-lisp
+      (defun ffy-display-prev-next-buffers ()
+        "Show two previous, current and two next buffer names in the echo area.
+      Example:
+      -2:*Messages* -1:*Help*    0:.emacs      1:*info*  2:*scratch*
+
+      From http://www.jurta.org/en/emacs/dotemacs"
+        (interactive)
+        (let ((i -3) b (bl (buffer-list (selected-frame))) (message-log-max nil))
+          (message "%s"
+                   (mapconcat
+                    (lambda (x)
+                      (setq i (+ i 1))
+                      (format "%d:%-12s"
+                              i (substring (buffer-name x) 0
+                                           (min (length (buffer-name x)) 11))))
+                    (append
+                     (nreverse
+                      (list
+                       (setq b (get-next-valid-buffer (reverse bl) t))
+                       (get-next-valid-buffer (cdr (memq b (reverse bl))) t)))
+                     (list (current-buffer))
+                     (list
+                      (setq b (get-next-valid-buffer (cdr bl) t))
+                      (get-next-valid-buffer (cdr (memq b bl)) t)))
+                    " "))))
+    #+end_src
+
     Show adjacent buffers in the minibuffer on switch
+
     #+begin_src emacs-lisp
       (defadvice previous-buffer (after my/previous-buffer activate)
         (ffy-display-prev-next-buffers))
@@ -400,6 +439,7 @@
     #+end_src
 
     Use =ibuffer= for buffer operations
+
     #+begin_src emacs-lisp
       (bind-key "C-x C-b" 'ibuffer)
     #+end_src
@@ -1800,6 +1840,7 @@
 
 
 ** Haskell Mode
+
    #+begin_src emacs-lisp
      (use-package haskell-mode
        :ensure t
