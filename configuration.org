@@ -95,7 +95,7 @@
      (when (require 'package nil 'noerror)
        ;; all ELPA packages are located here
        (setq package-user-dir (concat *dotfiles-dir* "elpa"))
-       ;; Sources for the ELPA repositories 
+       ;; Sources for the ELPA repositories
        (setq package-archives
              '(("gnu"         . "http://elpa.gnu.org/packages/")
                ("org"         . "http://orgmode.org/elpa/")
@@ -105,8 +105,9 @@
        ;;   (unless package-archive-contents)
        (package-refresh-contents))
    #+end_src
-  
-   This is a workaround for a bug in emacs' http fetching, see http://lists.gnu.org/archive/html/bug-gnu-emacs/2011-12/msg00196.html
+
+   This is a workaround for a bug in emacs' http fetching, see
+   http://lists.gnu.org/archive/html/bug-gnu-emacs/2011-12/msg00196.html
 
    #+begin_src emacs-lisp
      (setq url-http-attempt-keepalives nil)
