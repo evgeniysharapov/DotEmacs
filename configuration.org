@@ -1126,7 +1126,7 @@
                          cur
                        val)))
                  )
-
+     
      ;(setq org-todo-keyword-faces
      ;      (quote (("TODO" :foreground "medium blue" :weight bold)
      ;              ("NOTE" :foreground "dark violet" :weight bold)
@@ -1893,6 +1893,21 @@
 
    More details are available at
    http://www.mew.org/~kazu/proj/ghc-mod/en/
+
+
+
+
+** Python
+   On Mac to use Python one should use MacPorts then one could see
+   available pythons via =port select --list python=. To activate
+   python use =sudo port select --set python python27=. Install =pip=
+   using MacPorts, =sudo port install py-pip=. If installation fails
+   run =clean= command and repeat. It should install =pip= for
+   appropriate version of Python (the one that has been activated).
+
+   When =pip= is installed using =get-pip.py= script it fails to
+   install some packages, probably because of missing deps.
+
 
 
 
