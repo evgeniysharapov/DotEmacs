@@ -1079,12 +1079,22 @@
                                    org-bookmark
                                    org-elisp-symbol
                                    org-panel)
-                     org-empty-line-terminates-plain-lists t)
-
+                     org-empty-line-terminates-plain-lists t
+                     org-confirm-babel-evaluate nil    ; do not ask about evaluating babel
+                     org-src-fontify-natively t        ; syntax highlighting
+                     )
+               ;; TODO: Should it be moved to a :config part ???
+               (org-babel-do-load-languages
+                'org-babel-load-languages
+                '((dot . t)
+                  (ditaa . t)
+                  (emacs-lisp . t)
+                  (python . t)))
+     
                ;; make company completion work in Org-Mode
                (defun add-pcomplete-to-capf ()
                  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-
+     
                ;(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
                (dolist (it '(turn-on-font-lock
                              yas-minor-mode-on
