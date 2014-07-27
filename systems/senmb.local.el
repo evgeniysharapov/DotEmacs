@@ -10,9 +10,11 @@
 ;; and adjust font and theme
 (when (window-system)
   (set-frame-size (selected-frame) 125 40)
-  (set-face-attribute 'default nil :family "Monaco" :height 130)
+  (set-face-attribute 'default nil :family "Monaco" :height 120)
   ;; on Mac emacs typefonts look better in dark
-  (load-theme 'base16-default t))
+  ;;(load-theme 'base16-default t))
+  (load "tango-plus-theme.el")
+  )
 
 (defun ffy-adjust-faces ()
   "This one changes faces that come with tomorrow theme and look better on the Macbook DELL screen. Probably should go into a theme."
@@ -21,7 +23,7 @@
      (face-spec-set (car face-spec)
                     (cdr face-spec))))
 
-(add-hook 'after-init-hook 'ffy-adjust-faces)
+;(add-hook 'after-init-hook 'ffy-adjust-faces)
 
 ;;; Spellchecker setup
 (eval-after-load "ispell"
