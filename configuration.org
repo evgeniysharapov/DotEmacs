@@ -1858,6 +1858,9 @@
 
 ** Haskell Mode
 
+   The easiest way to start with Haskell is to install Haskell
+   Platform. The caveat here is that GHC is a little bit old.
+
    #+begin_src emacs-lisp
      (use-package haskell-mode
        :ensure t
@@ -1868,33 +1871,55 @@
                (add-hook 'haskell-mode-hook 'interactive-haskell-mode)))
    #+end_src
 
+   To provide addition functionality we install =ghc-mod= package
+   using cabal, if it is not installed yet =cabal install ghc-mod=.
+
+   If you use GHC version 7.8 and later, then chances are you have
+   some of the functionality already there (such as =:complete=)
+
    For auto-completion there's a package =company-ghc=
-   (https://github.com/iquiw/company-ghc)
+   (https://github.com/iquiw/company-ghc). It will also install =ghc=
+   package as a dependency
 
    #+begin_src emacs-lisp
      (use-package company-ghc
        :ensure t
        :init (progn
                ;; add as a company back-end
-               (add-to-list 'company-backends 'company-ghc)))
-   #+end_src
-
-   If you use GHC before version 7.8 then a good thiung to add is
-   =ghc-mod= and install ghc-mod package =cabal install ghc-mod=
-
-   #+begin_src emacs-lisp
-     (use-package ghc
-       :ensure t
-       :init (progn
-               (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-               ;; remove flymake-mode from the haskell hook
+               (add-to-list 'company-backends 'company-ghc)
+               ;; TODO: add ghc-ini to haskell-mode-hook and remove
+               ;; flymake-mode from the haskell-mode hook.
                ))
    #+end_src
 
-   More details are available at
+   More details on =ghc-mod= and emacs =ghc= package are available at
    http://www.mew.org/~kazu/proj/ghc-mod/en/
 
+*** GHCi
 
+    Interpreter in haskell is available at =C-c C-l= but only in
+    Cabal projects.
+
+    Install =hoogle= package to search for the Haskell code and
+    documentation in the libraries.
+    
+    Installing hoogle on Mac OS X with GHC 7.6.3 (the one from
+    Haskell Platform ) will most likely fail due to the bug in
+    compiler. It manifests itself as an error while installing
+    =conduit= package (error itself described here :
+    https://github.com/snoyberg/conduit/issues/147 ). To fix it one
+    needs to put a wrapper for llvm preprocessor. Details are here
+http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x-10-9.
+    However binary wrapper is not available anymore. To fix it using
+    bash script go here: https://www.haskell.org/platform/mac.html
+    In short, it will patch haskell platfor (settings file) to make
+    it work with clang.
+
+    After installing =hoogle=, add call to hoogle to ghci (see
+    http://www.haskell.org/haskellwiki/Hoogle#GHCi_Integration).
+
+    If command line works then it will also work =haskell-mode=,
+    check variable =haskell-hoogle-command=
 
 
 ** Python
