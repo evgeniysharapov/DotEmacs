@@ -102,8 +102,8 @@
                ("melpa"       . "http://melpa.milkbox.net/packages/")
                ("marmalade"   . "http://marmalade-repo.org/packages/")))
        (package-initialize)
-       ;;   (unless package-archive-contents)
-       (package-refresh-contents))
+       (unless package-archive-contents
+         (package-refresh-contents)))
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
