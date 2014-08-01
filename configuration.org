@@ -1343,9 +1343,6 @@
    #+begin_src emacs-lisp
      (autoload 'turn-on-fic-mode "fic-mode")
 
-     (defvar *programming-hook* nil
-       "This variable contains functions that we need to run if we are programming ")
-
      (defun local-column-number-mode ()
        (make-local-variable 'column-number-mode)
        (column-number-mode t))
@@ -1384,26 +1381,14 @@
 
 
 *** Programming Modes
-    Add the functions to the programming modes via hook
-
-    #+begin_src emacs-lisp
-      (dolist   (it '(local-column-number-mode
-                      local-comment-auto-fill
-                      turn-on-hl-line-mode
-                      pretty-greek
-                      turn-on-fic-mode
-                      turn-on-flyspell-prog-mode
-                      turn-on-flymake))
-        (if (fboundp it)
-            (add-hook '*programming-hook* it)))
-
-      (defun ffy-run-programming-hook ()
-        "Enable things that are convenient across all coding buffers."
-        (run-hooks '*programming-hook*))
-    #+end_src
-
-
-
+    Add following functions to the programming modes hooks
+    - =local-column-number-mode=
+    - =local-comment-auto-fill=
+    - =turn-on-hl-line-mode=
+    - =pretty-greek=
+    - =turn-on-fic-mode=
+    - =turn-on-flyspell-prog-mode=
+    - =turn-on-flymake=
 
 ** Paredit
    Nice mode for dealing with all those parentheses in lisp modes
@@ -1455,7 +1440,6 @@
          (when (fboundp 'paredit-mode)
            (paredit-mode +1))
          (turn-on-eldoc-mode)
-         (ffy-run-programming-hook)
          (when (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))
          (when (fboundp 'rainbow-delimiters-mode)
@@ -1465,7 +1449,14 @@
 
      (dolist (mode *emacs-lisp-modes*)
        (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
-         (add-hook mode-hook 'ffy-init-emacs-lisp-modes)))
+         (mapc (apply-partially 'add-hook mode-hook)
+               '(ffy-init-emacs-lisp-modes
+                 local-column-number-mode
+                 local-comment-auto-fill
+                 turn-on-hl-line-mode
+                 turn-on-fic-mode
+                 turn-on-flyspell-prog-mode
+                 turn-on-flymake))))
    #+end_src
 
 *** IELM - Emacs Lisp Interpreter
@@ -1616,7 +1607,7 @@
                (use-package rvm :ensure t)
                (use-package yari :ensure t)
                (use-package flymake-ruby :ensure t)
-
+     
                (defun ffy-insert-ruby-string-interpolation ()
                  "In a double quoted string, interpolation is inserted on #."
                  (interactive)
@@ -1631,11 +1622,17 @@
                  (bind-key "<return>" 'reindent-then-newline-and-indent ruby-mode-map)
                  (bind-key "#" 'ffy-insert-ruby-string-interpolation  ruby-mode-map)
                  (bind-key "C-h r" 'yari  ruby-mode-map)
-                 (add-hook 'ruby-mode-hook 'subword-mode)
-                 (add-hook 'ruby-mode-hook 'ruby-electric-mode)
-                 (add-hook 'ruby-mode-hook 'ffy-run-programming-hook)
-                 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
-                 (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
+                 (mapc (apply-partially 'add-hook 'ruby-mode-hook)
+                       '(subword-mode
+                         ruby-electric-mode
+                         local-column-number-mode
+                         local-comment-auto-fill
+                         turn-on-hl-line-mode
+                         turn-on-fic-mode
+                         turn-on-flyspell-prog-mode
+                         turn-on-flymake
+                         flymake-ruby-load
+                         inf-ruby-minor-mode)))
        :mode (("\\.rb$" . ruby-mode)
               ("\\.rake$" . ruby-mode)
               ("\\.gemspec$" . ruby-mode)
@@ -1671,37 +1668,6 @@
                  :defer t
                  :config (progn
                            (add-hook 'haml-mode-hook 'flymake-haml-load)))))
-     (use-package scss-mode
-       :ensure t
-       :defer t
-       :commands scss-mode
-       :mode ("\\.scss$" . scss-mode)
-       :init (progn
-               (use-package sass-mode
-                 :ensure t
-                 :defer t
-                 :commands sass-mode
-                 :mode ("\\.sass$" . sass-mode)
-                 :config (progn
-                           (add-hook 'sass-mode-hook 'ffy-run-programming-hook)
-                           (add-hook 'sass-mode-hook 'ffy-customize-sass-scss-mode)))
-     
-               (use-package flymake-sass
-                 :ensure t
-                 :defer t
-                 :config (progn
-                           ;; my own customizations
-                           (defun ffy-customize-sass-scss-mode ()
-                             (interactive)
-                             ;; first of all <ret> sets newline and indent as C-j
-                             (local-set-key [return] 'newline-and-indent)
-                             (local-set-key [(control return)] 'ffy-open-line-indented))
-     
-                           (add-hook 'scss-mode-hook 'flymake-sass-load)
-                           (add-hook 'sass-mode-hook 'flymake-sass-load)))
-               (add-hook 'scss-mode-hook 'ffy-run-programming-hook)
-               (add-hook 'scss-mode-hook 'ffy-customize-sass-scss-mode)))
-     
      ;;; custom line opening
      (defun ffy-open-line-indented (n)
        "like `open-line' but keeps indentation"
@@ -1709,8 +1675,48 @@
        (let* ((loc (point-marker)))
          (newline-and-indent)
          (goto-char loc)))
-     
-     
+
+     (use-package scss-mode
+       :ensure t
+       :defer t
+       :commands scss-mode
+       :mode ("\\.scss$" . scss-mode)
+       :init (progn
+               ;; my own customizations
+               (defun ffy-customize-sass-scss-mode ()
+                 (interactive)
+                 ;; first of all <ret> sets newline and indent as C-j
+                 (local-set-key [return] 'newline-and-indent)
+                 (local-set-key [(control return)] 'ffy-open-line-indented))
+               (use-package sass-mode
+                 :ensure t
+                 :defer t
+                 :commands sass-mode
+                 :mode ("\\.sass$" . sass-mode)
+                 :config (progn
+                           (mapc (apply-partially 'add-hook 'sass-mode-hook)
+                                 '(local-column-number-mode
+                                   local-comment-auto-fill
+                                   turn-on-hl-line-mode
+                                   turn-on-fic-mode
+                                   turn-on-flyspell-prog-mode
+                                   turn-on-flymake
+                                   ffy-customize-sass-scss-mode))))
+               (use-package flymake-sass
+                 :ensure t
+                 :defer t
+                 :config (progn
+                           (add-hook 'scss-mode-hook 'flymake-sass-load)
+                           (add-hook 'sass-mode-hook 'flymake-sass-load)))
+               (mapc (apply-partially 'add-hook 'scss-mode-hook)
+                     '(local-column-number-mode
+                       local-comment-auto-fill
+                       turn-on-hl-line-mode
+                       turn-on-fic-mode
+                       turn-on-flyspell-prog-mode
+                       turn-on-flymake
+                       ffy-customize-sass-scss-mode))))
+
      ;;; add Auto-Complete HAML SCSS and SASS modes
      ;(dolist (mode '(haml-mode sass-mode scss-mode))
      ;  (add-to-list 'ac-modes mode))
@@ -1865,10 +1871,17 @@
      (use-package haskell-mode
        :ensure t
        :init (progn
-               (add-hook 'haskell-mode-hook 'ffy-run-programming-hook)
-               (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-               (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-               (add-hook 'haskell-mode-hook 'interactive-haskell-mode)))
+     (mapc (apply-partially 'add-hook 'haskell-mode-hook)
+                     '(local-column-number-mode
+                       local-comment-auto-fill
+                       turn-on-hl-line-mode
+                       pretty-greek
+                       turn-on-fic-mode
+                       turn-on-flyspell-prog-mode
+                       ;; turn-on-flymake
+                       turn-on-haskell-doc-mode
+                       turn-on-haskell-indent
+                       interactive-haskell-mode))))
    #+end_src
 
    To provide addition functionality we install =ghc-mod= package
@@ -1902,7 +1915,7 @@
 
     Install =hoogle= package to search for the Haskell code and
     documentation in the libraries.
-    
+
     Installing hoogle on Mac OS X with GHC 7.6.3 (the one from
     Haskell Platform ) will most likely fail due to the bug in
     compiler. It manifests itself as an error while installing
