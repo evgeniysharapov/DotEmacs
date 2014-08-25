@@ -1397,6 +1397,11 @@
      (use-package paredit
        :ensure t
        :diminish paredit-mode
+       :init (progn
+               (defun turn-on-paredit-mode ()
+                 "Turns `paredit-mode' on if it's available"
+                 (when (fboundp 'paredit-mode)
+                   (paredit-mode +1))))
        :config (progn
                  (defun ffy-paredit-forward-delete ()
                    "Forces deleting a character in ParEdit mode"
@@ -1438,8 +1443,6 @@
          (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
          (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
          (elisp-slime-nav-mode 1)
-         (when (fboundp 'paredit-mode)
-           (paredit-mode +1))
          (turn-on-eldoc-mode)
          (when (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))
@@ -1447,7 +1450,7 @@
            (rainbow-delimiters-mode))
          (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
          (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
-
+     
      (dolist (mode *emacs-lisp-modes*)
        (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
          (mapc (apply-partially 'add-hook mode-hook)
@@ -1457,7 +1460,8 @@
                  turn-on-hl-line-mode
                  turn-on-fic-mode
                  turn-on-flyspell-prog-mode
-                 turn-on-flymake))))
+                 turn-on-flymake
+                 turn-on-paredit-mode))))
    #+end_src
 
 *** IELM - Emacs Lisp Interpreter
