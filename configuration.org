@@ -1397,18 +1397,13 @@
      (use-package paredit
        :ensure t
        :diminish paredit-mode
-       :init (progn
-               (defun turn-on-paredit-mode ()
-                 "Turns `paredit-mode' on if it's available"
-                 (when (fboundp 'paredit-mode)
-                   (paredit-mode +1))))
        :config (progn
                  (defun ffy-paredit-forward-delete ()
                    "Forces deleting a character in ParEdit mode"
                    (paredit-forward-delete +1))
-
+     
                  (bind-key "C-S-d" 'ffy-paredit-forward-delete  paredit-mode-map)
-
+     
                  (defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
                    "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
                    (if (eq this-command 'eval-expression)
@@ -1461,7 +1456,7 @@
                  turn-on-fic-mode
                  turn-on-flyspell-prog-mode
                  turn-on-flymake
-                 turn-on-paredit-mode
+                 enable-paredit-mode
                  turn-on-elisp-slime-nav-mode
                  turn-on-eldoc-mode
                  rainbow-delimiters-mode-enable))))
@@ -1567,7 +1562,7 @@
                        '(ffy-find-file-in-clojure-project
                          subword-mode
                          clojure-test-mode
-                         turn-on-paredit-mode
+                         enable-paredit-mode
                          turn-on-hl-line-mode
                          turn-on-fic-mode
                          turn-on-flyspell-prog-mode
