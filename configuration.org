@@ -1446,7 +1446,6 @@
          (make-local-variable 'hippie-expand-try-functions-list)
          (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
          (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
-         (turn-on-eldoc-mode)
          (when (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))
          (when (fboundp 'rainbow-delimiters-mode)
@@ -1465,7 +1464,8 @@
                  turn-on-flyspell-prog-mode
                  turn-on-flymake
                  turn-on-paredit-mode
-                 turn-on-elisp-slime-nav-mode))))
+                 turn-on-elisp-slime-nav-mode
+                 turn-on-eldoc-mode))))
    #+end_src
 
 *** IELM - Emacs Lisp Interpreter
