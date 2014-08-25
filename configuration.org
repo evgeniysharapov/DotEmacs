@@ -1429,7 +1429,11 @@
    #+begin_src emacs-lisp
      (use-package elisp-slime-nav
        :ensure t
-       :diminish elisp-slime-nav-mode)
+       :diminish elisp-slime-nav-mode
+       :init (progn
+               (defun turn-on-elisp-slime-nav-mode ()
+                 "Turns SLIME style navigation on in Emacs-lisp."
+                 (elisp-slime-nav-mode 1))))
    #+end_src
 
    Add Emacs-Lisp specific completions and navigation mode to the
@@ -1442,7 +1446,6 @@
          (make-local-variable 'hippie-expand-try-functions-list)
          (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol 'to-the-end)
          (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially 'to-the-end)
-         (elisp-slime-nav-mode 1)
          (turn-on-eldoc-mode)
          (when (fboundp 'highlight-parentheses-mode)
            (highlight-parentheses-mode +1))
@@ -1461,7 +1464,8 @@
                  turn-on-fic-mode
                  turn-on-flyspell-prog-mode
                  turn-on-flymake
-                 turn-on-paredit-mode))))
+                 turn-on-paredit-mode
+                 turn-on-elisp-slime-nav-mode))))
    #+end_src
 
 *** IELM - Emacs Lisp Interpreter
