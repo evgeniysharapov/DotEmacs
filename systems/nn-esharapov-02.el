@@ -68,7 +68,8 @@
             :inherit-props t))
 
 ;;; Font properties on my work Windows machine
-(set-face-attribute 'default nil :family "Consolas" :height 110)
+(set-face-attribute 'default nil :family "Consolas" :height 100)
+
 ;;; loading up color theme
 ;(load-theme 'tango-plus t) ; need to add it to the 'custom-theme-load-path
 (load "tango-plus-theme.el")
