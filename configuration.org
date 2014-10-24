@@ -1391,6 +1391,7 @@
     - =turn-on-flyspell-prog-mode=
     - =turn-on-flymake=
 
+
 ** Paredit
    Nice mode for dealing with all those parentheses in lisp modes
    #+begin_src emacs-lisp
@@ -1943,6 +1944,20 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
 
 
+
+** C/C++
+
+   Writing C/C++ programs
+
+   #+begin_src emacs-lisp
+     (use-package cc-mode
+       :mode (("\\.h\\(h?\\|xx\\|pp\\)\\'" . c++-mode)
+              ("\\.m\\'"                   . c-mode)
+              ("\\.mm\\'"                  . c++-mode))
+       )
+   #+end_src
+
+   
 
 * Finally
 
