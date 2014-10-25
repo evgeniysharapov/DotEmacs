@@ -1972,6 +1972,22 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
        )
    #+end_src
 
+   Using =company-c-headers=. By default, it adds only C headers.
+   Adding C++ paths needs to be manual and system dependent. In its
+   easiest form figuring out what are the paths is as easy as =g++
+   -v=. More information about preprocessors paths could be found at
+   https://gcc.gnu.org/ml/gcc-help/2007-09/msg00206.html
+
+   On Mac OS X after 10.8 =g++= is actually a =clang=.
+   Another way is =cpp -Wp -v=
+
+   #+begin_src emacs-lisp :tangle yes
+     (use-package company-c-headers
+       :ensure t
+       :config (progn
+                 (add-to-list 'company-backends 'company-c-headers)
+                 (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1")))
+   #+end_src
    
 
 * Finally
