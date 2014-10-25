@@ -1392,6 +1392,20 @@
     - =turn-on-flymake=
 
 
+*** Global tags
+    Make sure GNU Global is installed. Mac has port for that and binaries
+    for Windows are [[http://adoxa.altervista.org/global/][here]]
+    #+begin_src emacs-lisp
+      (use-package ggtags
+        :ensure t
+        :init (progn
+                (defun turn-on-ggtags-mode ()
+                  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                    (ggtags-mode 1)))
+      
+                (add-hook 'c-mode-common-hook 'turn-on-ggtags-mode)))
+    #+end_src
+
 ** Paredit
    Nice mode for dealing with all those parentheses in lisp modes
    #+begin_src emacs-lisp
