@@ -1947,7 +1947,8 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
 ** C/C++
 
-   Writing C/C++ programs
+   Writing C/C++ programs.
+   Good source of information [[http://tuhdo.github.io/c-ide.html]]
 
    #+begin_src emacs-lisp
      (use-package cc-mode
