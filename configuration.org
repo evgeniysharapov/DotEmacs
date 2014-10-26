@@ -627,6 +627,30 @@
      (random t)
    #+end_src
 
+   Pretty Greek functions replaces words like _lambda_ and _alpha_
+   with grek symbols
+   #+begin_src emacs-lisp
+     (defun pretty-greek ()
+       (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon" "phi" "chi" "psi" "omega")))
+         (loop for word in greek for code = 97 then (+ 1 code) do
+               (let ((greek-char (make-char 'greek-iso8859-7 code)))
+                 (font-lock-add-keywords
+                  nil
+                  `((,(concatenate 'string "\\(^\\|[^a-zA-Z0-9]\\)\\(" word "\\)[a-zA-Z]")
+                     (0
+                      (progn
+                        (decompose-region (match-beginning 2)
+                                          (match-end 2))
+                        nil)))))
+                 (font-lock-add-keywords
+                  nil
+                  `((,(concatenate 'string "\\(^\\|[^a-zA-Z0-9]\\)\\(" word "\\)[^a-zA-Z]")
+                     (0
+                      (progn
+                        (compose-region (match-beginning 2)
+                                        (match-end 2) ,greek-char)
+                        nil)))))))))
+   #+end_src
 
 ** IDO settings
    IDO mode speeds up some of the tasks. Some of the IDO settings that
