@@ -1918,6 +1918,15 @@
                        interactive-haskell-mode))))
    #+end_src
 
+   To provide navigation to definitions we need to install =hasktags=
+   via =cabal install hasktags= into a global.
+
+   #+begin_src emacs-lisp
+     (when (executable-find "hasktags")
+       (custom-set-variables
+        '(haskell-tags-on-save t)))
+   #+end_src
+
    To provide addition functionality we install =ghc-mod= package
    using cabal, if it is not installed yet =cabal install ghc-mod=.
 
