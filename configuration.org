@@ -1880,7 +1880,7 @@
      (use-package haskell-mode
        :ensure t
        :init (progn
-     (mapc (apply-partially 'add-hook 'haskell-mode-hook)
+               (mapc (apply-partially 'add-hook 'haskell-mode-hook)
                      '(local-column-number-mode
                        local-comment-auto-fill
                        turn-on-hl-line-mode
@@ -1889,7 +1889,8 @@
                        turn-on-flyspell-prog-mode
                        ;; turn-on-flymake
                        turn-on-haskell-doc-mode
-                       turn-on-haskell-indent
+                       ;; turn-on-haskell-indent
+                       turn-on-haskell-indentation
                        interactive-haskell-mode))))
    #+end_src
 
