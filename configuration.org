@@ -1949,6 +1949,15 @@
    More details on =ghc-mod= and emacs =ghc= package are available at
    http://www.mew.org/~kazu/proj/ghc-mod/en/
 
+   Interesting configurations to look at:
+   - https://github.com/chrisdone/chrisdone-emacs/blob/master/config/haskell.el
+   - https://github.com/serras/emacs-config-2/blob/master/haskell.el
+
+   Configuration tutorial at
+   https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
+
+   
+
    
 *** GHCi
 
