@@ -1957,6 +1957,9 @@
    https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
 
    
+   Keys:
+   - =M-RET= add import
+   - =M-t= add signature to the function missing it.
 
    
 *** GHCi
