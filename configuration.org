@@ -1943,14 +1943,13 @@
        :init (progn
                ;; add as a company back-end
                (add-to-list 'company-backends 'company-ghc)
-               ;; TODO: add ghc-ini to haskell-mode-hook and remove
-               ;; flymake-mode from the haskell-mode hook.
-               ))
+               (add-hook 'haskell-mode-hook 'ghc-init)))
    #+end_src
 
    More details on =ghc-mod= and emacs =ghc= package are available at
    http://www.mew.org/~kazu/proj/ghc-mod/en/
 
+   
 *** GHCi
 
     Interpreter in haskell is available at =C-c C-l= but only in
