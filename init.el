@@ -5,6 +5,25 @@
 ;;; Evgeniy Sharapov <evgeniy.sharapov@gmail.com>
 ;;;
 
+;;;
+;;; Trying to load more recent version of org-mode from the submodule
+;;;
+(let ((org-mode-dir (concat
+                     (file-name-directory (or (buffer-file-name) load-file-name))
+                     "site-lisp/org-mode")))
+  (when (file-exists-p (concat org-mode-dir "/lisp/org-loaddefs.el"))
+    (print load-path)
+    ;; remove path to built-in org from load-path
+    (setq load-path (let ((newlist))
+                      (dolist (path load-path)
+                        (if (not (string-match-p "/org" path))
+                            (setq newlist (cons path newlist))))
+                      newlist))
+    ;; add new org-mode and its plugins to the load-path
+    (add-to-list 'load-path (concat org-mode-dir "/lisp"))
+    (add-to-list 'load-path (concat org-mode-dir "/contrib/lisp"))
+    (print load-path)))
+
 ;;; borrowed from starter-kit and modified. this is neat and it effectively 
 ;;; loads Emacs with all the defaults, so that Org-mode will be available 
 ;;; on the load-path.

@@ -1056,12 +1056,14 @@
 
 * Specific Modes
 ** Org Mode
-   Install =org= package while Emacs is fresh started and no Org
-   buffers visisted, i.e. no org-* functions have been called.
+   Org-mode is a submodule of this repository. More so I had to create a repo on bitbucket.com
+   so it could be successfly cloned on any machine (via https not git protocol).
 
-   That should effectively override built-in package and =org-version=
-   command should return whatever the last version is (8.2.0).
+   First of all go into =site-lisp/org-mode= and run =make autoloads= and =make info=. These
+   commands will create all necessary files: org-loaddefs.el and info files.
 
+   Now Emacs should load new org-mode. 
+   
    #+begin_src emacs-lisp
      (use-package org
        :ensure t
