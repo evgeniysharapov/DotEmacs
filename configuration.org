@@ -1056,8 +1056,15 @@
 
 * Specific Modes
 ** Org Mode
+   Install =org= package while Emacs is fresh started and no Org
+   buffers visisted, i.e. no org-* functions have been called.
+
+   That should effectively override built-in package and =org-version=
+   command should return whatever the last version is (8.2.0).
+
    #+begin_src emacs-lisp
      (use-package org
+       :ensure t
        :defer t
        :bind (("C-&" . org-mark-ring-goto)
               ("C-c l" . org-store-link)
