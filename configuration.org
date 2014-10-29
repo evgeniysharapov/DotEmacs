@@ -1778,30 +1778,37 @@
    Good link about setting up Javascript:
    - [[http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/][Setup Emacs as a JavaScript IDE For Fun and Profit]]
 
-   Setup Rhino
-   - On Windows:
-     + Download rhino1_7R4.zip from Mozilla page.
-     + Unpack it and copy js.jar to %JRE_HOME%\lib\ext
+*** Rhino
+**** Setup Rhino
+       - On Windows:
+         + Download rhino1_7R4.zip from Mozilla page.
+         + Unpack it and copy js.jar to =%JRE_HOME%\lib\ext=
 
-   - On Mac OS X:
-     + Download rhino and unzip it
-     + Make a the library directory if it doesn't exist:
-       #+begin_example
-       mkdir -p ~/Library/Java/Extensions
-       #+end_example
+       - On Mac OS X:
+         + Download rhino and unzip it
+         + Make a the library directory if it doesn't exist:
+           #+begin_example
+            mkdir -p ~/Library/Java/Extensions
+           #+end_example
 
-     + Copy the jar to the extensions directory:
-       #+begin_example
-       cp ~/Downloads/rhino1_7R2/js.jar ~/Library/Java/Extensions/
-       #+end_example
+         + Copy the jar to the extensions directory:
+           #+begin_example
+            cp ~/Downloads/rhino1_7R2/js.jar ~/Library/Java/Extensions/
+           #+end_example
 
-   Test Rhino
+**** Running Rhino
 
-   Run the following command:
-   #+begin_example
-   java org.mozilla.javascript.tools.shell.Main
-   #+end_example
+     Run the following command:
+     #+begin_example
+       java org.mozilla.javascript.tools.shell.Main
+     #+end_example
 
+
+*** Setup Emacs
+
+    Make sure =node.js= and =npm= are installed.
+
+    Install =jshint=, =jslint= and =tern= using =npm=
 
    #+begin_src emacs-lisp
      (use-package js2-mode
