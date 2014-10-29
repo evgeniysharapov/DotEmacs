@@ -1776,7 +1776,7 @@
 
 ** JavaScript
    Good link about setting up Javascript:
-   http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/
+   - [[http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/][Setup Emacs as a JavaScript IDE For Fun and Profit]]
 
    Setup Rhino
    - On Windows:
