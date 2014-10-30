@@ -1062,8 +1062,23 @@
    First of all go into =site-lisp/org-mode= and run =make autoloads= and =make info=. These
    commands will create all necessary files: org-loaddefs.el and info files.
 
-   Now Emacs should load new org-mode. 
-   
+   On Mac OS X there could be a problem, while running make in =site-lisp/org-mode= directory
+   it will break with the dialog "This application will not run on your computer. Sorry!". This
+   is a problem of launching script. Edit =/Application/Emacs.app/Contents/MacOS/Emacs= file - replace
+   line
+#+begin_src ruby
+  exec versions[highest_compatible_version], *ARGV
+#+end_src
+ With
+#+begin_src ruby
+  executable = versions[highest_compatible_version], *ARGV
+  exec %("#{executable}")
+#+end_src
+
+   If that doesn't help just update Emacs.
+
+   Now Emacs should load new org-mode.
+
    #+begin_src emacs-lisp
      (use-package org
        :ensure t
