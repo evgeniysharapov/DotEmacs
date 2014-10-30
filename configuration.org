@@ -62,7 +62,7 @@
     Adding files from =.emacs.d= to the load path
 
     #+begin_src emacs-lisp
-      (add-to-list 'load-path *dotfiles-dir*)
+      ;; (add-to-list 'load-path *dotfiles-dir*)
     #+end_src
 
      Add recursively all subdirectories of =*site-lisp*=. I could have
