@@ -1194,6 +1194,49 @@
      
      )
    #+end_src
+*** Using OX-REVEAL
+
+#+begin_src emacs-lisp
+  (use-package ox-reveal
+    :config (progn
+              ;; Overriding the org-reveal-src-block
+              ;; to make it work with highlight.js
+              (when nil
+                (defun org-reveal-src-block (src-block contents info)
+                  "Transcode a SRC-BLOCK element from Org to Reveal.
+  CONTENTS holds the contents of the item.  INFO is a plist holding
+  contextual information."
+                  (if (org-export-read-attribute :attr_html src-block :textarea)
+                      (org-html--textarea-block src-block)
+                    (let ((lang (org-element-property :language src-block))
+                          (caption (org-export-get-caption src-block))
+                          (code (org-html-format-code src-block info))
+                          (frag (org-export-read-attribute :attr_reveal src-block :frag))
+                          (label (let ((lbl (org-element-property :name src-block)))
+                                   (if (not lbl) ""
+                                     (format " id=\"%s\""
+                                             (org-export-solidify-link-text lbl))))))
+                      (if (not lang)
+                          (format "<pre %s%s>\n%s</pre>"
+                                  (or (frag-class frag) " class=\"example\"")
+                                  label
+                                  code)
+                        ;;        (format
+                        ;;         "<div class=\"org-src-container\">\n%s%s\n</div>"
+                        ;;         (if (not caption) ""
+                        ;;           (format "<label class=\"org-src-name\">%s</label>"
+                        ;;                   (org-export-data caption info)))
+                        ;;          ;; Formatting code for highlight.js
+                        ;; )
+                        (format "\n<pre><code class=\"hljs %s\">%s</code></pre>"
+                                ;; (or (frag-class frag)
+                                ;;     (format " class=\"src src-%s\"" lang))
+                                ;; label
+                                lang
+                                (car (org-export-unravel-code src-block)))))))
+
+                )))
+#+end_src
 
 
 ** Orgtbl mode
