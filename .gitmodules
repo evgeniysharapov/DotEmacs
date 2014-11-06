@@ -9,4 +9,4 @@
 	url = https://bitbucket.org/evgeniysharapov/org-mode.git
 [submodule "site-lisp/org/org-reveal"]
 	path = site-lisp/org/org-reveal
-	url = https://github.com/yjwen/org-reveal.git
+	url = https://github.com/evgeniysharapov/org-reveal.git
