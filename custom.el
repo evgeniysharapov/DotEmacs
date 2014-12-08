@@ -21,6 +21,7 @@
  '(font-lock-verbose nil)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
+ '(haskell-tags-on-save t)
  '(hippie-expand-try-functions-list (quote (try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-expand-all-abbrevs try-complete-file-name-partially try-complete-file-name try-expand-list try-expand-line)))
  '(history-delete-duplicates t)
  '(history-length t)
@@ -77,8 +78,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(flyspell-duplicate ((t (:inherit warning :underline (:color foreground-color :style wave)))))
- '(flyspell-incorrect ((t (:inherit error :underline (:color foreground-color :style wave)))))
- '(highlight ((t (:background "honeydew"))))
- '(magit-item-highlight ((t (:inherit hl-line))))
- '(trailing-whitespace ((t (:background "MistyRose2")))))
+ '(flymake-errline ((t (:inherit error :underline (:color foreground-color :style wave)))))
+ '(flymake-warnline ((t (:inherit warning :underline (:color foreground-color :style wave)))))
+ '(magit-item-highlight ((t (:inherit hl-line)))))

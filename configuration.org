@@ -1881,8 +1881,36 @@
 
     Install =jshint=, =jslint= and =tern= using =npm=
 
+    #+begin_src emacs-lisp :tangle yes
+      (use-package js3-mode
+        :ensure t
+        :diminish (js3-mode . "JS3")
+        :config (progn
+                  (use-package flymake-jslint :ensure t)
+                  (use-package flymake-jshint :ensure t)
+
+                  (defun js3-mode-configuration ()
+                    (setq js3-auto-indent-p t
+                          js3-curly-indent-offset 0
+                          js3-enter-indents-newline t
+                          js3-expr-indent-offset 2
+                          js3-indent-on-enter-key t
+                          js3-lazy-commas t
+                          js3-lazy-dots t
+                          js3-lazy-operators t
+                          js3-paren-indent-offset 2
+                          js3-square-indent-offset 4))
+
+                  (add-hook 'js3-mode-hook 'js3-mode-configuration)
+                  (add-hook 'js3-mode-hook 'turn-on-eldoc-mode)
+                  (add-hook 'js3-mode-hook 'turn-on-flymake)
+                  (add-hook 'js3-mode-hook 'turn-on-electric-mode)
+                  (add-hook 'js3-mode-hook 'hs-minor-mode)))
+    #+end_src
+
    #+begin_src emacs-lisp
      (use-package js2-mode
+       :disabled t
        :ensure t
        :diminish (js2-minor-mode . "JS2")
        :init  (progn
@@ -1939,6 +1967,7 @@
    more at https://github.com/segv/jss
    #+begin_src emacs-lisp
      (use-package jss
+       :disabled t
        :ensure t
        :defer t)
    #+end_src
