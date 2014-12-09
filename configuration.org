@@ -1881,10 +1881,11 @@
 
     Install =jshint=, =jslint= and =tern= using =npm=
 
+**** Using JS3 Mode
     #+begin_src emacs-lisp :tangle yes
       (use-package js3-mode
         :ensure t
-        :diminish (js3-mode . "JS3")
+        :disabled t
         :config (progn
                   (use-package flymake-jslint :ensure t)
                   (use-package flymake-jshint :ensure t)
@@ -1908,28 +1909,15 @@
                   (add-hook 'js3-mode-hook 'hs-minor-mode)))
     #+end_src
 
+**** Using JS2 Mode
    #+begin_src emacs-lisp
      (use-package js2-mode
-       :disabled t
        :ensure t
        :diminish (js2-minor-mode . "JS2")
        :init  (progn
-                (use-package js-comint
-                  :ensure t
-                  :config (progn
-                            ;; Use NodeJS as our repl if it is available
-                            ;; otherwise stick to the Rhino
-                            (let* ((node-program (executable-find "node"))
-                                   (node-command (if node-program (concat node-program " --interactive")))
-                                   (js-command  (or node-command "java org.mozilla.javascript.tools.shell.Main")))
-                              (setq inferior-js-program-command js-command))))
-
                 (use-package flymake-jslint :ensure t)
                 (use-package flymake-jshint :ensure t)
-                (use-package ac-js2 :ensure t)
-                (use-package js2-imenu-extras
-                  :config (js2-imenu-extras-setup))
-
+                (use-package js-comint :ensure t)
                 ;; TODO: Add Swank-js
                 ;; http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
                 ;; Install Swank.js by
@@ -1938,8 +1926,13 @@
                 ;;     swank-js
                 ;; And directing browser to http://localhost:8009/swank-js/test.html
 
-                (defun ffy-js-mode-customizations ()
+                (defun ffy-js2-mode-customizations ()
                   "JavaScript customizations"
+                  (setq-default
+                   js2-basic-offset 2
+                   js2-bounce-indent-p nil
+                   js2-global-externs '("module" "process" "require" "console"))
+
                   ;; Scan the file for nested code blocks
                   (imenu-add-menubar-index)
                   ;; Activate the folding mode
@@ -1950,17 +1943,11 @@
                 (add-to-list 'auto-mode-alist '("\\.json$" . js-mode)))
 
        :config (progn
-                 (add-hook 'js-mode-hook 'ffy-js-mode-customizations)
+                 (add-hook 'js-mode-hook 'ffy-js2-mode-customizations)
                  (add-hook 'js-mode-hook 'js2-minor-mode)
                  (add-hook 'js-mode-hook 'turn-on-electric-mode)
                  (add-hook 'js-mode-hook 'turn-on-flymake)
-                 (add-hook 'js2-mode-hook 'ac-js2-mode)
-                 (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
-
-                 ;;; Add Auto-Complete to JavaScript modes.
-                 ;(dolist (mode '(espresso-mode js-mode js2-minor-mode js2-mode))
-                 ;  (add-to-list 'ac-modes mode))
-     ))
+                 (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)))
    #+end_src
 
    Good package for remote debugging in the browser is =jss=. Read
@@ -1970,29 +1957,6 @@
        :disabled t
        :ensure t
        :defer t)
-   #+end_src
-
-   Some things I haven't got to yet
-   #+begin_src emacs-lisp
-     ;; (setq inferior-js-mode-hook
-     ;;       (lambda ()
-     ;;         ;; We like nice colors
-     ;;         (ansi-color-for-comint-mode-on)
-     ;;         ;; Deal with some prompt nonsense
-     ;;         (add-to-list
-     ;;          'comint-preoutput-filter-functions
-     ;;          (lambda (output)
-     ;;            (replace-regexp-in-string "\033\\[[0-9]+[GK]" "" output)))))
-     
-     ;; (setq inferior-js-mode-hook
-     ;;       (lambda ()
-     ;;         ;; We like nice colors
-     ;;         (ansi-color-for-comint-mode-on)
-     ;;         ;; Deal with some prompt nonsense
-     ;;         (add-to-list 'comint-preoutput-filter-functions
-     ;;                      (lambda (output)
-     ;;                        (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
-     ;;                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
    #+end_src
 
 
