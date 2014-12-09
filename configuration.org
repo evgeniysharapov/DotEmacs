@@ -1931,7 +1931,8 @@
                   (setq-default
                    js2-basic-offset 2
                    js2-bounce-indent-p nil
-                   js2-global-externs '("module" "process" "require" "console"))
+                   ;;js2-global-externs '("module" "process" "require" "console")
+                   )
 
                   ;; Scan the file for nested code blocks
                   (imenu-add-menubar-index)
@@ -1943,10 +1944,13 @@
                 (add-to-list 'auto-mode-alist '("\\.json$" . js-mode)))
 
        :config (progn
-                 (add-hook 'js-mode-hook 'ffy-js2-mode-customizations)
-                 (add-hook 'js-mode-hook 'js2-minor-mode)
-                 (add-hook 'js-mode-hook 'turn-on-electric-mode)
-                 (add-hook 'js-mode-hook 'turn-on-flymake)
+                 (mapc (apply-partially 'add-hook 'js-mode-hook)
+                       '(ffy-js2-mode-customizations
+                         js2-minor-mode
+                         turn-on-electric-mode
+                         flymake-jshint-load
+                         flymake-jslint-load
+                         turn-on-flymake))
                  (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)))
    #+end_src
 
