@@ -56,6 +56,13 @@
      (setq ispell-program-name "hunspell"
            ispell-extra-args '("-d" "C:\\App\\hunspell\\bin\\en_US" "-i" "utf-8"))))
 
+;;; manage PATH for running Git from MsysGit (Cygwin doesn't work
+;;; properly with Magit). Important we should sneak MsysGit path in
+;;; front
+(let ((msysGitPaths '("C:/PF86/Git/bin" "C:/PF86/Git/cmd")))
+  (setenv "PATH" (mapconcat  'identity (append msysGitPaths (list (getenv "PATH"))) ";"))
+  (mapc (apply-partially 'add-to-list 'exec-path) msysGitPaths))
+
 ;;; Org-mode hackery
 (setq org-clock-clocktable-default-properties
       (list :maxlevel 4
