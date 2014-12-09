@@ -1443,7 +1443,7 @@
         :init (progn
                 (use-package flymake-cursor  :ensure t)
                 (defun turn-on-flymake ()
-                  (flymake-mode))))
+                  (flymake-mode +1))))
     #+end_src
 
 
