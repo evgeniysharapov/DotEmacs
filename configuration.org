@@ -1023,14 +1023,12 @@
     #+begin_src emacs-lisp
       (use-package yasnippet
         :ensure t
-        :config
-        (progn
-          (use-package dropdown-list
-            :ensure t)
-          (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
-          (yas-global-mode +1)))
+        :config  (progn
+                   (use-package dropdown-list :ensure t)
+                   (setq-default yas-wrap-around-region t)
+                   (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
+                   (yas-global-mode +1)))
     #+end_src
-
 
 ** Bookmarking
 
