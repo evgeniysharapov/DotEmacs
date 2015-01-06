@@ -1844,7 +1844,7 @@
 
 
 ** JavaScript
-   Good link about setting up Javascript:
+   Good link about setting up JavaScript:
    - [[http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/][Setup Emacs as a JavaScript IDE For Fun and Profit]]
 
 *** Rhino
@@ -1950,6 +1950,12 @@
                          flymake-jslint-load
                          turn-on-flymake))
                  (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)))
+   #+end_src
+
+   Setting up completion using =company-mode= and =ternjs=
+
+   #+begin_src emacs-lisp
+
    #+end_src
 
    Good package for remote debugging in the browser is =jss=. Read
