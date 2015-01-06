@@ -2115,7 +2115,20 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
                  (add-to-list 'company-backends 'company-c-headers)
                  (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1")))
    #+end_src
-   
+
+
+** Modes for specific files
+   For getting the text content of the word documents:
+
+   #+begin_src emacs-lisp
+     (when (executable-find "docx2txt")
+       (add-to-list 'auto-mode-alist '("\\.docx\\'" . docx2txt))
+
+       (defun docx2txt ()
+         "Run docx2txt on the entire buffer."
+         (shell-command-on-region (point-min) (point-max) "docx2txt" t t)))
+   #+end_src
+
 
 * Finally
 
