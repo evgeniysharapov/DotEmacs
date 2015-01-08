@@ -2117,6 +2117,19 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    #+end_src
 
 
+** Scala
+   Settings for working with Scala.
+   Information for setting up Ensime and SBT:
+   - http://www.troikatech.com/blog/2014/11/26/ensime-and-emacs-as-a-scala-ide
+   - https://github.com/ensime/ensime-server/wiki/Quick-Start-Guide
+
+   #+begin_src emacs-lisp
+     (use-package ensime
+       :ensure t
+       :init (progn
+              (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
+   #+end_src
+
 ** Modes for specific files
    For getting the text content of the word documents:
 
