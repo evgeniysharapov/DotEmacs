@@ -96,15 +96,32 @@
        ;; all ELPA packages are located here
        (setq package-user-dir (concat *dotfiles-dir* "elpa"))
        ;; Sources for the ELPA repositories
-       (setq package-archives
-             '(("gnu"         . "http://elpa.gnu.org/packages/")
-               ("org"         . "http://orgmode.org/elpa/")
-               ("melpa"       . "http://melpa.milkbox.net/packages/")
-               ;; ("marmalade"   . "http://marmalade-repo.org/packages/")
-               ))
+       (mapc (apply-partially 'add-to-list 'package-archives)
+             '(
+               ;; ("gnu"         . "http://elpa.gnu.org/packages/")
+               ;; ("org"         . "http://orgmode.org/elpa/")
+               ("melpa-stable" . "http://stable.melpa.org/packages/")
+               ("melpa"       . "http://melpa.org/packages/")
+               ;;("marmalade"   . "http://marmalade-repo.org/packages/")
+              ))
        (package-initialize)
        (unless package-archive-contents
-         (package-refresh-contents)))
+         (package-refresh-contents))
+
+       (if (boundp 'package-pinned-package)
+           ;; use 'package-pinned-package on Emacs 24.4
+           (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+           ;; We will use package-filter on Emacs 24.3
+           (progn
+             (require 'package-filter)
+             (add-to-list 'package-archive-exclude-alist '("melpa" cider))
+            )
+             ;(use-package package-filter
+             ;:ensure t
+             ;:init (progn
+             ;        (add-to-list 'package-archive-exclude-alist '("melpa" cider))))
+        )
+       )
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
@@ -1662,7 +1679,8 @@
                   (list "project.clj" ffip-project-file))))))
    #+end_src
 
-   #+begin_src emacs-lisp
+
+   #+begin_example emacs-lisp
      (use-package clojure-mode
        :ensure t
        :defer t
@@ -1689,8 +1707,31 @@
                ;; TODO: add this to the :bind directive
                (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
                (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
-   #+end_src
+   #+end_example
 
+   #+begin_src emacs-lisp
+     (use-package cider
+       :ensure t
+       :defer t
+       :init (progn
+               (mapc (apply-partially 'add-hook 'clojure-mode-hook)
+                          '(ffy-find-file-in-clojure-project
+                            subword-mode
+                            clojure-test-mode
+                            enable-paredit-mode
+                            turn-on-hl-line-mode
+                            turn-on-fic-mode
+                            turn-on-flyspell-prog-mode
+                            turn-on-flymake
+                            local-column-number-mode
+                            local-comment-auto-fill
+                            turn-on-eldoc-mode
+                            rainbow-delimiters-mode-enable))))
+
+   ;  (use-package company-cider
+   ;    :ensure t
+   ;    :defer t)
+   #+end_src
 
 ** Ruby/Rails setup
    Loading  Ruby and Rails relate ELPA packages
