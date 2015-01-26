@@ -1654,27 +1654,25 @@
    #+end_example
 
    #+begin_src emacs-lisp
-     (use-package cider
-       :ensure t
-       :defer t
-       :init (progn
-               (mapc (apply-partially 'add-hook 'clojure-mode-hook)
-                          '(ffy-find-file-in-clojure-project
-                            subword-mode
-                            clojure-test-mode
-                            enable-paredit-mode
-                            turn-on-hl-line-mode
-                            turn-on-fic-mode
-                            turn-on-flyspell-prog-mode
-                            turn-on-flymake
-                            local-column-number-mode
-                            local-comment-auto-fill
-                            turn-on-eldoc-mode
-                            rainbow-delimiters-mode-enable))))
-
-   ;  (use-package company-cider
-   ;    :ensure t
-   ;    :defer t)
+       (use-package cider
+         :ensure t
+         :defer t
+         :init (progn
+                 (mapc (apply-partially 'add-hook 'clojure-mode-hook)
+                            '(ffy-find-file-in-clojure-project
+                              subword-mode
+                              ;clojure-test-mode
+                              enable-paredit-mode
+                              turn-on-hl-line-mode
+                              turn-on-fic-mode
+                              turn-on-flyspell-prog-mode
+                              turn-on-flymake
+                              local-column-number-mode
+                              local-comment-auto-fill
+                              turn-on-eldoc-mode
+                              rainbow-delimiters-mode-enable))
+                 (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
+                 (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
    #+end_src
 
 ** Ruby/Rails setup
