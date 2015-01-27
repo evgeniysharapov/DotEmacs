@@ -821,14 +821,6 @@
     #+end_src
 *** Search in Files
     #+begin_src emacs-lisp
-      (use-package ack-and-a-half
-        :ensure t
-        :commands (ack-and-a-half ack-and-a-half-same ack-and-a-half-find-file ack-and-a-half-find-file-same)
-        :init (progn
-                (defalias 'ack 'ack-and-a-half)
-                (defalias 'ack-same 'ack-and-a-half-same)
-                (defalias 'ack-find-file 'ack-and-a-half-find-file)
-                (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)))
       (use-package grep
         :defer t
         :config
