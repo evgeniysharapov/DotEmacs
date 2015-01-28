@@ -1469,9 +1469,9 @@
                  (defun ffy-paredit-forward-delete ()
                    "Forces deleting a character in ParEdit mode"
                    (paredit-forward-delete +1))
-     
+
                  (bind-key "C-S-d" 'ffy-paredit-forward-delete  paredit-mode-map)
-     
+
                  (defun ffy-init-lisp-minibuffer-enable-paredit-mode ()
                    "Enable function `paredit-mode' during `eval-expression'. Adding `paredit-mode' for an `eval-expression' in minibuffer. RET  works as an exit minibuffer with evaluation."
                    (if (eq this-command 'eval-expression)
