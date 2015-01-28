@@ -937,7 +937,11 @@
                   (use-package thingatpt+
                     :ensure t
                     :config (progn
-                              (tap-redefine-std-fns)
+                              ;; Rectifying the problem with some code (e.g.
+                              ;; CIDER) that relies on standard behaviour
+                              ;; of the tap functions
+                              (tap-put-thing-at-point-props)
+                              ;;(tap-redefine-std-fns) ;; This breaks CIDER
                               ;; This depends on the thingatpt and thingatpt+
                               (defun ffy-tap-number-change (&optional num)
                                 "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
@@ -1604,6 +1608,26 @@
 ** Clojure
 
    #+begin_src emacs-lisp
+     (use-package clojure-mode
+       :ensure t
+       :init (progn
+               (mapc (apply-partially 'add-hook 'clojure-mode-hook)
+                     '(ffy-find-file-in-clojure-project
+                       subword-mode
+                       enable-paredit-mode
+                       turn-on-hl-line-mode
+                       turn-on-fic-mode
+                       turn-on-flyspell-prog-mode
+                       turn-on-flymake
+                       local-column-number-mode
+                       local-comment-auto-fill
+                       turn-on-eldoc-mode
+                       rainbow-delimiters-mode-enable))))
+     (use-package elein
+       :ensure t)
+   #+end_src
+
+   #+begin_src emacs-lisp
      (defun ffy-find-file-in-clojure-project ()
        "For Clojure we are also looking for project.clj file in the project root"
        (progn
@@ -1615,56 +1639,19 @@
                   (list "project.clj" ffip-project-file))))))
    #+end_src
 
-
-   #+begin_example emacs-lisp
-     (use-package clojure-mode
+   #+begin_src emacs-lisp
+     (use-package cider
        :ensure t
-       :defer t
        :init (progn
-               (use-package clojure-test-mode :ensure t :defer t)
-               (use-package cider
-                 :ensure t
-                 :defer t
-                 :config (progn
-                           (use-package company-cider :ensure t :defer t)))
-               (mapc (apply-partially 'add-hook 'clojure-mode-hook)
-                     '(ffy-find-file-in-clojure-project
-                       subword-mode
-                       clojure-test-mode
-                       enable-paredit-mode
-                       turn-on-hl-line-mode
-                       turn-on-fic-mode
-                       turn-on-flyspell-prog-mode
-                       turn-on-flymake
-                       local-column-number-mode
-                       local-comment-auto-fill
+               (mapc (apply-partially 'add-hook 'cider-mode-hook)
+                     '(cider-turn-on-eldoc-mode))
+               (mapc (apply-partially 'add-hook 'cider-repl-mode-hook)
+                     '(subword-mode
                        turn-on-eldoc-mode
-                       rainbow-delimiters-mode-enable))
-               ;; TODO: add this to the :bind directive
+                       enable-paredit-mode))
+               (add-to-list 'company-backends 'cider-complete-at-point)
                (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
                (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
-   #+end_example
-
-   #+begin_src emacs-lisp
-       (use-package cider
-         :ensure t
-         :defer t
-         :init (progn
-                 (mapc (apply-partially 'add-hook 'clojure-mode-hook)
-                            '(ffy-find-file-in-clojure-project
-                              subword-mode
-                              ;clojure-test-mode
-                              enable-paredit-mode
-                              turn-on-hl-line-mode
-                              turn-on-fic-mode
-                              turn-on-flyspell-prog-mode
-                              turn-on-flymake
-                              local-column-number-mode
-                              local-comment-auto-fill
-                              turn-on-eldoc-mode
-                              rainbow-delimiters-mode-enable))
-                 (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
-                 (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
    #+end_src
 
 ** Ruby/Rails setup
