@@ -734,6 +734,11 @@
        "Turns on/off showing of the trailing whitespaces in a current buffer"
        (interactive)
        (setq show-trailing-whitespace (not show-trailing-whitespace)))
+
+     (defun turn-off-show-trailing-whitespace ()
+       "Turns off trailing-whitespace mode - useful for REPLs"
+       (interactive)
+       (setq show-trailing-whitespace nil))
    #+end_src
 
 
@@ -1648,7 +1653,8 @@
                (mapc (apply-partially 'add-hook 'cider-repl-mode-hook)
                      '(subword-mode
                        turn-on-eldoc-mode
-                       enable-paredit-mode))
+                       enable-paredit-mode
+                       turn-off-show-trailing-whitespace))
                (add-to-list 'company-backends 'cider-complete-at-point)
                (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
                (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
