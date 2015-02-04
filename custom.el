@@ -18,6 +18,7 @@
  '(desktop-save-mode t)
  '(echo-keystrokes 0.1)
  '(enable-recursive-minibuffers t)
+ '(flyspell-use-meta-tab nil)
  '(font-lock-verbose nil)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
