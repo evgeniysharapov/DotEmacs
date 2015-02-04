@@ -834,6 +834,12 @@
           (bind-key "e" 'wgrep-change-to-wgrep-mode  grep-mode-map)))
     #+end_src
 
+    In addition to =grep= we use =ag=
+    #+begin_src emacs-lisp
+      (use-package ag
+        :ensure t)
+    #+end_src
+
 
 ** Navigation and Positioning
 
