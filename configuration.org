@@ -113,7 +113,12 @@
    ='package-pinned-package=
 
    #+begin_src emacs-lisp
-     (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+     (mapc (lambda (arg) (apply (apply-partially 'add-to-list 'package-pinned-packages) arg))
+           '(
+             ;; if t at the end then append it, otherwise prepend
+             ((cider . "melpa-stable") t)
+             ((flycheck . "melpa-stable"))
+             ))
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
@@ -1395,15 +1400,12 @@
          (flyspell-prog-mode)))
    #+end_src
 
-*** Flymake and Syntax checking
-    #+begin_src emacs-lisp
-      (use-package flymake
-        :init (progn
-                (use-package flymake-cursor  :ensure t)
-                (defun turn-on-flymake ()
-                  (flymake-mode +1))))
+*** Flycheck
+    Using =flycheck= instead of =flymake=
+    #+begin_src emacs-lisp :tangle yes
+      (use-package flycheck
+        :ensure t)
     #+end_src
-
 
 *** Electric and Autopairs
     #+begin_src emacs-lisp
@@ -1421,7 +1423,6 @@
     - =pretty-greek= this one is added below
     - =turn-on-fic-mode=
     - =turn-on-flyspell-prog-mode=
-    - =turn-on-flymake=
 
    Pretty Greek functions replaces words like _lambda_ and _alpha_
    with grek symbols
@@ -1526,7 +1527,6 @@
                  turn-on-hl-line-mode
                  turn-on-fic-mode
                  turn-on-flyspell-prog-mode
-                 turn-on-flymake
                  enable-paredit-mode
                  turn-on-elisp-slime-nav-mode
                  turn-on-eldoc-mode
@@ -1621,7 +1621,6 @@
                        turn-on-hl-line-mode
                        turn-on-fic-mode
                        turn-on-flyspell-prog-mode
-                       turn-on-flymake
                        local-column-number-mode
                        local-comment-auto-fill
                        turn-on-eldoc-mode
@@ -1677,8 +1676,7 @@
                            (defalias 'ruby-insert-end 'ruby-end-insert-end)))
                (use-package rvm :ensure t)
                (use-package yari :ensure t)
-               (use-package flymake-ruby :ensure t)
-     
+
                (defun ffy-insert-ruby-string-interpolation ()
                  "In a double quoted string, interpolation is inserted on #."
                  (interactive)
@@ -1701,8 +1699,6 @@
                          turn-on-hl-line-mode
                          turn-on-fic-mode
                          turn-on-flyspell-prog-mode
-                         turn-on-flymake
-                         flymake-ruby-load
                          inf-ruby-minor-mode)))
        :mode (("\\.rb$" . ruby-mode)
               ("\\.rake$" . ruby-mode)
@@ -1732,13 +1728,8 @@
      (use-package haml-mode
        :ensure t
        :commands haml-mode
-       :mode ("\\.haml$" . haml-mode)
-       :init (progn
-               (use-package flymake-haml
-                 :ensure t
-                 :defer t
-                 :config (progn
-                           (add-hook 'haml-mode-hook 'flymake-haml-load)))))
+       :mode ("\\.haml$" . haml-mode))
+
      ;;; custom line opening
      (defun ffy-open-line-indented (n)
        "like `open-line' but keeps indentation"
@@ -1771,21 +1762,14 @@
                                    turn-on-hl-line-mode
                                    turn-on-fic-mode
                                    turn-on-flyspell-prog-mode
-                                   turn-on-flymake
                                    ffy-customize-sass-scss-mode))))
-               (use-package flymake-sass
-                 :ensure t
-                 :defer t
-                 :config (progn
-                           (add-hook 'scss-mode-hook 'flymake-sass-load)
-                           (add-hook 'sass-mode-hook 'flymake-sass-load)))
+
                (mapc (apply-partially 'add-hook 'scss-mode-hook)
                      '(local-column-number-mode
                        local-comment-auto-fill
                        turn-on-hl-line-mode
                        turn-on-fic-mode
                        turn-on-flyspell-prog-mode
-                       turn-on-flymake
                        ffy-customize-sass-scss-mode))))
 
      ;;; add Auto-Complete HAML SCSS and SASS modes
@@ -1800,12 +1784,7 @@
        :ensure t
        :defer t
        :commands coffee-mode
-       :mode ("\\.coffee$" . coffee-mode)
-       :config (progn
-                 (use-package flymake-coffee
-                   :ensure t
-                   :config (progn
-                             (add-hook 'coffee-mode-hook 'flymake-coffee-load)))))
+       :mode ("\\.coffee$" . coffee-mode))
    #+end_src
 
 
@@ -1851,9 +1830,6 @@
         :ensure t
         :disabled t
         :config (progn
-                  (use-package flymake-jslint :ensure t)
-                  (use-package flymake-jshint :ensure t)
-
                   (defun js3-mode-configuration ()
                     (setq js3-auto-indent-p t
                           js3-curly-indent-offset 0
@@ -1868,7 +1844,6 @@
 
                   (add-hook 'js3-mode-hook 'js3-mode-configuration)
                   (add-hook 'js3-mode-hook 'turn-on-eldoc-mode)
-                  (add-hook 'js3-mode-hook 'turn-on-flymake)
                   (add-hook 'js3-mode-hook 'turn-on-electric-mode)
                   (add-hook 'js3-mode-hook 'hs-minor-mode)))
     #+end_src
@@ -1879,8 +1854,6 @@
        :ensure t
        :diminish (js2-minor-mode . "JS2")
        :init  (progn
-                (use-package flymake-jslint :ensure t)
-                (use-package flymake-jshint :ensure t)
                 (use-package js-comint :ensure t)
                 ;; TODO: Add Swank-js
                 ;; http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
@@ -1911,10 +1884,7 @@
                  (mapc (apply-partially 'add-hook 'js-mode-hook)
                        '(ffy-js2-mode-customizations
                          js2-minor-mode
-                         turn-on-electric-mode
-                         flymake-jshint-load
-                         flymake-jslint-load
-                         turn-on-flymake))
+                         turn-on-electric-mode))
                  (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)))
    #+end_src
 
