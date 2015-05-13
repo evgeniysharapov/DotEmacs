@@ -110,15 +110,10 @@
    #+end_src
 
    We want to filter particular packages. For that use
-   ='package-pinned-package= on Emacs 24.4 and we will use
-   =package-filter= on Emacs 24.3
+   ='package-pinned-package=
 
    #+begin_src emacs-lisp
-     (if (boundp 'package-pinned-packages)
-         (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
-       (progn
-         (require 'package-filter)
-         (add-to-list 'package-archive-exclude-alist '("melpa" cider))))
+     (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
