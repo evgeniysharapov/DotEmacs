@@ -630,7 +630,7 @@
                    (setq ispell-program-name "hunspell")
                    (let* ((dict-location (find-hunspell-dictionary)))
                      (when dict-location
-                       (setq  ispell-extra-args '("-d" dict-location "-i" "utf-8")))))))
+                       (setq  ispell-extra-args `("-d" ,dict-location "-i" "utf-8")))))))
    #+end_src
 
 
