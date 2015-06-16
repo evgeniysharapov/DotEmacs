@@ -2069,6 +2069,13 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
          (shell-command-on-region (point-min) (point-max) "docx2txt" t t)))
    #+end_src
 
+   Mercurial settings are edited using =conf-mod=
+   #+begin_src emacs-lisp
+     (dolist (pattern '("\\.hgrc\\'"
+                        "\\.hg/hgrc\\'"
+                        "Mercurial\\.ini\\'"))
+       (add-to-list 'auto-mode-alist (cons pattern 'conf-mode)))
+   #+end_src
 
 * Finally
 
