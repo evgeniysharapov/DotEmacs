@@ -38,7 +38,7 @@
 ;; return
 ;;
 
-;;; Now, using `key-translation-map' we are translating those key
+;;; Now, using `input-decode-map' we are translating those key
 ;;; combinations sent by Autohotkey back into Win-Arrow (assuming that
 ;;; Win key is mapped to Super (see `w32-lwindow-modifier' and `w32-rwindow-modifier'))
 
@@ -48,8 +48,8 @@
          (keypress-numlock-off (concat  "<C-M-S-kp-"  direction ">"))
          (keypress-numlock-on (concat  "<C-M-kp-" direction ">"))
          (super-direction-keypress (concat  "<s-" direction ">")))
-    (define-key key-translation-map (kbd  keypress-numlock-off) (kbd super-direction-keypress) )
-    (define-key key-translation-map (kbd  keypress-numlock-on) (kbd super-direction-keypress))))
+    (define-key input-decode-map (kbd  keypress-numlock-off) (kbd super-direction-keypress) )
+    (define-key input-decode-map (kbd  keypress-numlock-on) (kbd super-direction-keypress))))
 
 (eval-after-load "ispell"
   '(progn
