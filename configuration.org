@@ -467,7 +467,8 @@
     Use =ibuffer= for buffer operations
 
     #+begin_src emacs-lisp
-      (bind-key "C-x C-b" 'ibuffer)
+      (use-package ibuffer
+        :bind ("C-x C-b" . ibuffer))
     #+end_src
 
 *** Mini-buffer
