@@ -468,7 +468,12 @@
 
     #+begin_src emacs-lisp
       (use-package ibuffer
-        :bind ("C-x C-b" . ibuffer))
+        :bind ("C-x C-b" . ibuffer)
+        :init (progn
+                (defface ibuffer-custom-deletion-face '((t (:inherit error :strike-through t :underline nil))) "Buffers to be deleted")
+                (defface ibuffer-custom-marked-face '((t (:inherit warning :inverse-video t :underline nil))) "Marked buffers")
+                (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face)
+                (setq ibuffer-marked-face 'ibuffer-custom-marked-face)))
     #+end_src
 
 *** Mini-buffer
