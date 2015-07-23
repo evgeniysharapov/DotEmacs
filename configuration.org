@@ -472,8 +472,12 @@
         :init (progn
                 (defface ibuffer-custom-deletion-face '((t (:inherit error :strike-through t :underline nil))) "Buffers to be deleted")
                 (defface ibuffer-custom-marked-face '((t (:inherit warning :inverse-video t :underline nil))) "Marked buffers")
-                (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face)
-                (setq ibuffer-marked-face 'ibuffer-custom-marked-face)))
+                (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
+                      ibuffer-marked-face 'ibuffer-custom-marked-face
+                      ;; don't ask to kill buffers
+                      ibuffer-expert t)
+                ;; auto updateable ibuffer
+                (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
     #+end_src
 
 *** Mini-buffer
