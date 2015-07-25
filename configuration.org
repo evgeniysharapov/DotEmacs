@@ -519,6 +519,11 @@
         (ffy-display-prev-next-buffers))
      #+end_src
 
+     Adding typical switch combinations =C-tab= and =C-S-tab=
+     #+begin_src emacs-lisp
+       (bind-key "<C-tab>" 'next-buffer)
+       (bind-key "<C-S-tab>" 'previous-buffer)
+     #+end_src
 
 **** Other Operations
      #+begin_src emacs-lisp
