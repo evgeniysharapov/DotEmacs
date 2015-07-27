@@ -2073,6 +2073,30 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    #+end_src
 
 
+** Golang
+
+   Installation is just download distribution and correct PATH and
+   GOPATH environment variables.
+
+   For autocompletion and eldoc functionality install =gocode= from
+   https://github.com/nsf/gocode
+
+   #+begin_src emacs-lisp
+     (use-package go-mode
+       :ensure t)
+     (use-package go-eldoc
+       :ensure t)
+     (use-package company-go
+       :ensure t
+       :init (progn
+               (add-hook 'go-mode-hook (lambda ()
+                                         (set (make-local-variable 'company-backends) '(company-go))
+                                         (company-mode)))))
+   #+end_src
+
+   Other things to look at:
+   - =go-oracle= ([[https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view][Documentation]]).
+
 ** Modes for specific files
    For getting the text content of the word documents:
 
