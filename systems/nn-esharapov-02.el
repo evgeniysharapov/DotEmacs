@@ -59,7 +59,9 @@
 ;;; manage PATH for running Git from MsysGit (Cygwin doesn't work
 ;;; properly with Magit). Important we should sneak MsysGit path in
 ;;; front
-(let ((msysGitPaths '("C:/PF86/Git/bin" "C:/PF86/Git/cmd")))
+;;; Turns out that msysGit contains older gnu tools (e.g. Grep version
+;;; 2.4). Add more recent path upfront
+(let ((msysGitPaths '("C:/App/gnuw32/bin" "C:/PF86/Git/bin" "C:/PF86/Git/cmd")))
   (setenv "PATH" (mapconcat  'identity (append msysGitPaths (list (getenv "PATH"))) ";"))
   (mapc (apply-partially 'add-to-list 'exec-path) msysGitPaths))
 
