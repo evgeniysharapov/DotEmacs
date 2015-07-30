@@ -1498,6 +1498,15 @@
      (defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
    #+end_src
 
+
+   #+begin_src emacs-lisp
+     (use-package eldoc
+       :defer t
+       :diminish eldoc-mode
+       :commands eldoc-mode)
+   #+end_src
+
+
    SLIME-like navigation in emacs
    #+begin_src emacs-lisp
      (use-package elisp-slime-nav
