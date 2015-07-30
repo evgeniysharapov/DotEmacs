@@ -248,17 +248,16 @@
 
 * General Settings
 ** User Interface
-   We turn off some bells and whistles and turn on some useful bits
-   and pieces.
+*** Appearance
 
-   - Turn off menu bar, scroll bars and tool bar.
+    Turn off menu bar, scroll bars and tool bar.
      #+begin_src emacs-lisp
        (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
        (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
        (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      #+end_src
 
-   - File name into the frame title
+     File name into the frame title
      #+begin_src emacs-lisp
        (when window-system
          (setq frame-title-format '(buffer-file-name "%f" ("%b")))
@@ -266,26 +265,20 @@
          (blink-cursor-mode -1))
      #+end_src
 
-   - Display time in mode-line
-     #+begin_src emacs-lisp
+*** Modeline Configuration
+
+    Display time in mode-line
+    #+begin_src emacs-lisp
        (display-time)
-     #+end_src
-
-   - Hide some modes from the mode-line ( maybe this should be moved
-     to the corresponding modes configuration)
-     #+begin_src emacs-lisp
-       (when (fboundp 'diminish)
-         (eval-after-load 'eldoc
-           '(diminish 'eldoc-mode)))
-     #+end_src
-
-*** Mode line configuration
+    #+end_src
 
     Modeline is configured using =powerline= package and =diminish=
     mode to hide information about some of the modes
 
     #+begin_src emacs-lisp
-      (use-package diminish  :ensure t :defer t)
+      (use-package diminish
+        :ensure t
+        :defer t)
       (use-package powerline
         :ensure t
         :config (progn
@@ -348,7 +341,6 @@
       (bind-key "<f1>" 'menu-bar-mode)
       (bind-key "<C-f1>" 'imenu-add-menubar-index)
     #+end_src
-
 
 ** Files/Directories
 *** Backups and saves
