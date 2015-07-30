@@ -526,6 +526,16 @@
        only)
      - =C-x 4 b= - ido open buffer other window
 
+     Often I need to create temporary buffer
+
+     #+begin_src emacs-lisp
+       (defun ffy-create-temp-buffer ()
+         "Creates temporary buffer"
+         (interactive)
+         (switch-to-buffer "*temp* "))
+
+       (bind-key "b t" 'ffy-create-temp-buffer ctl-z-map)
+     #+end_src
 
 ** Windows
 
