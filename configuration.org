@@ -513,7 +513,7 @@
 
 **** Other Operations
      #+begin_src emacs-lisp
-       (bind-key "<f12>" 'kill-this-buffer)
+       (bind-key "b k" 'kill-this-buffer ctl-z-map)
        ;;; Buffer operations in C-z map
        (bind-key "b y" 'bury-buffer  ctl-z-map)
        (bind-key "b r" 'revert-buffer  ctl-z-map)
