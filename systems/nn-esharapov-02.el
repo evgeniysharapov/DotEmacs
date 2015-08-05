@@ -51,11 +51,8 @@
     (define-key input-decode-map (kbd  keypress-numlock-off) (kbd super-direction-keypress) )
     (define-key input-decode-map (kbd  keypress-numlock-on) (kbd super-direction-keypress))))
 
-(eval-after-load "ispell"
-  '(progn
-     (setq ispell-program-name "hunspell"
-           ispell-extra-args '("-d" "C:\\App\\hunspell\\bin\\en_US" "-i" "utf-8"))))
-
+;;; Trick from http://www.emacswiki.org/emacs/InteractiveSpell
+(setenv "DICTIONARY" "en_US")
 ;;; manage PATH for running Git from MsysGit (Cygwin doesn't work
 ;;; properly with Magit). Important we should sneak MsysGit path in
 ;;; front
