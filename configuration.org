@@ -586,6 +586,7 @@
 
    #+begin_src emacs-lisp
      (use-package flyspell
+       :bind-keymap ("C-z i" . flyspell-mode-map)
        :init
        (use-package ispell
          :config (progn
