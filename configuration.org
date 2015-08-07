@@ -16,9 +16,14 @@
 
 
 * Initialization
-
   =init.el= file is kept to the bare minimum - just load the
   =org-babel= and then go to the =configuration.org=.
+
+  By default all =src= blocks with Emacs Lisp are _tangled_. That is
+  all of them will go into =configuration.el= file that gets loaded.
+  One can turn off a particular bit by adding =:tangle no= to an =src=
+  block header. Or setting a property for  a whole subtree. For
+  instance by pressing =C-c C-x p= or by calling =org-set-property=.
 
 ** Benchmark
    We always want to start up as fast as possible. Hence we need to
