@@ -2059,18 +2059,33 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    #+begin_src emacs-lisp
      (use-package go-mode
        :ensure t
-       :init
-       (use-package go-eldoc
-         :ensure t
-         :config
-         (add-hook 'go-mode-hook 'go-eldoc-setup))
-       (use-package company-go
-         :ensure t
-         :init (progn
-                 (add-to-list 'company-backends 'company-go)))
+       :init (progn
+               (use-package go-eldoc
+                 :ensure t
+                 :config
+                 (add-hook 'go-mode-hook 'go-eldoc-setup))
+               (use-package company-go
+                 :ensure t
+                 :init (progn
+                         (add-to-list 'company-backends 'company-go)))
+               (defun go-run-buffer ()
+                 "This will run buffer on the Go"
+                 (interactive)
+                 (compile (concat "go run " (buffer-file-name))))
+
+               (add-hook 'go-mode-hook (lambda ()
+                                         ;; customize  compile command for go-mode
+                                         (set (make-local-variable 'compile-command)
+                                              "go build")
+                                         ;; make before-save-hook local for go-mode buffer
+                                         (add-hook 'before-save-hook 'gofmt nil t))))
        :config (progn
                  (setq gofmt-command "goimports"))
-       :bind ("C-c C-f" . gofmt))
+       :bind
+       ("C-c C-f" . gofmt)
+       ("C-c ?"  . godoc-at-point)
+       ("C-c d" . godoc)
+       ("C-c C-r" . go-run-buffer))
    #+end_src
 
    Other things to look at:
