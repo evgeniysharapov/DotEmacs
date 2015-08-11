@@ -1813,11 +1813,14 @@
 
     Install =jshint=, =jslint= and =tern= using =npm=
 
-**** Using JS3 Mode
-    #+begin_src emacs-lisp :tangle yes
+**** Using JS3 Mode                                                     :off:
+     :PROPERTIES:
+     :tangle:   no
+     :END:
+
+    #+begin_src emacs-lisp
       (use-package js3-mode
         :ensure t
-        :disabled t
         :config (progn
                   (defun js3-mode-configuration ()
                     (setq js3-auto-indent-p t
