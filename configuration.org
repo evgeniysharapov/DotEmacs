@@ -1852,44 +1852,60 @@
     #+end_src
 
 **** Using JS2 Mode
+     Necessary tools initialization:
+     - =tern-mode=
+     - =swank.js=
+
+     Add Swank-js from http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
+     Install Swank.js by
+     #+begin_example
+        npm install -g swank-js
+     #+end_example
+
+     Test by running
+
+     #+begin_example
+        swank-js
+     #+end_example
+
+     And directing browser to http://localhost:8009/swank-js/test.html
+
    #+begin_src emacs-lisp
      (use-package js2-mode
        :ensure t
        :diminish (js2-minor-mode . "JS2")
        :init  (progn
-                (use-package js-comint :ensure t)
-                ;; TODO: Add Swank-js
-                ;; http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
-                ;; Install Swank.js by
-                ;;     npm install -g swank-js
-                ;; Test by running
-                ;;     swank-js
-                ;; And directing browser to http://localhost:8009/swank-js/test.html
+                (use-package js-comint
+                  :ensure t
+                  :config (setq inferior-js-program-command "node --interactive"))
 
-                (defun ffy-js2-mode-customizations ()
-                  "JavaScript customizations"
-                  (setq-default
-                   js2-basic-offset 2
-                   js2-bounce-indent-p nil
-                   ;;js2-global-externs '("module" "process" "require" "console")
-                   )
+                (setq-default js2-basic-offset 2
+                              js2-bounce-indent-p nil)
 
-                  ;; Scan the file for nested code blocks
-                  (imenu-add-menubar-index)
-                  ;; Activate the folding mode
-                  (hs-minor-mode t))
+                ;; Scan the file for nested code blocks
+                (imenu-add-menubar-index)
 
-                (add-to-list 'interpreter-mode-alist '("node" . js-mode))
-                (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
-                (add-to-list 'auto-mode-alist '("\\.json$" . js-mode)))
+                (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
-       :config (progn
-                 (mapc (apply-partially 'add-hook 'js-mode-hook)
-                       '(ffy-js2-mode-customizations
+                (use-package tern
+                  :ensure t
+                  :config (progn
+                            (use-package company-tern
+                              :ensure t
+                              :config (add-to-list 'company-backends 'company-tern))
+                            (add-hook 'js2-mode-hook (lambda () (tern-mode 1))))))
+
+         :config (progn
+                 (mapc (apply-partially 'add-hook 'js2-mode-hook)
+                       '(js2-imenu-extras-mode
                          js2-minor-mode
-                         turn-on-electric-mode))
-                 (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)))
+                         turn-on-electric-mode))))
    #+end_src
+
+   Additional packages:
+   - =js-doc=
+   - =json-mode=
+   - =js2-refactor=
 
    Setting up completion using =company-mode= and =ternjs=
 
