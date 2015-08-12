@@ -2079,11 +2079,11 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    Some of the helpful tools to install
    - =goimports= To automatically resolve imports and formatting
-     go get golang.org/x/tools/cmd/goimports
+     =go get golang.org/x/tools/cmd/goimports=
    - =gocode=  For autocompletion and eldoc functionality
-     go get github.com/nsf/gocode
+     =go get github.com/nsf/gocode=
    - =godef= to navigate code/definitions
-     go get github.com/rogpeppe/godef
+     =go get github.com/rogpeppe/godef=
 
 
    #+begin_src emacs-lisp
