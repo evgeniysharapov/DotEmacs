@@ -176,6 +176,17 @@
    #+end_src
 
 
+** Some Windows Specific
+   Make sure that you have following DLL libraries in you =Emacs/bin=
+   directory:
+   - libcharset.dll
+   - libiconv.dll
+   - libxml2.dll
+   - libXpm.dll
+   - zlib1.dll
+
+  You can download them from: http://xmlsoft.org/sources/win32/64bit/
+
 * Key Bindings Setup
   Very useful macro to create a keymap:
 
