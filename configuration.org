@@ -2110,12 +2110,11 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
                                          ;; make before-save-hook local for go-mode buffer
                                          (add-hook 'before-save-hook 'gofmt nil t))))
        :config (progn
-                 (setq gofmt-command "goimports"))
-       :bind
-       ("C-c C-f" . gofmt)
-       ("C-c ?"  . godoc-at-point)
-       ("C-c d" . godoc)
-       ("C-c C-r" . go-run-buffer))
+                 (setq gofmt-command "goimports")
+                 (bind-key "C-c C-f" 'gofmt go-mode-map)
+                 (bind-key "C-c ?"  'godoc-at-point go-mode-map)
+                 (bind-key "C-c d" 'godoc go-mode-map)
+                 (bind-key "C-c C-r" 'go-run-buffer go-mode-map)))
    #+end_src
 
    Other things to look at:
