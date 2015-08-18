@@ -1369,79 +1369,85 @@
 * Programming
 
 ** General Programming
-   Most of the setup here will benefit any programming language mode.
 
-   #+begin_src emacs-lisp
-     (autoload 'turn-on-fic-mode "fic-mode")
+*** Programming Modes Hook
 
-     (defun local-column-number-mode ()
-       (make-local-variable 'column-number-mode)
-       (column-number-mode t))
+    All programming modes will benefit from following functions:
 
-     (defun local-comment-auto-fill ()
-       (set (make-local-variable 'comment-auto-fill-only-comments) t)
-       (auto-fill-mode t))
-
-     (defun turn-on-hl-line-mode ()
-       (if window-system (hl-line-mode t)))
-
-     (defun turn-on-whitespace ()
-       (whitespace-mode t))
-
-     (defun turn-on-flyspell-prog-mode ()
-       (when (and (boundp 'ispell-program-name)
-                  (executable-find ispell-program-name))
-         (flyspell-prog-mode)))
-   #+end_src
-
-*** Flycheck
-    Using =flycheck= instead of =flymake=
-    #+begin_src emacs-lisp :tangle yes
-      (use-package flycheck
-        :ensure t)
-    #+end_src
-
-*** Electric and Autopairs
-    #+begin_src emacs-lisp
-      (defun turn-on-electric-mode ()
-        (electric-pair-mode +1))
-    #+end_src
-
-
-*** Programming Modes
-
-    Add following functions to the programming modes hooks
     - =local-column-number-mode=
-    - =local-comment-auto-fill=
-    - =turn-on-hl-line-mode=
-    - =pretty-greek= this one is added below
-    - =turn-on-fic-mode=
-    - =turn-on-flyspell-prog-mode=
+      #+begin_src emacs-lisp
+        (defun local-column-number-mode ()
+          (make-local-variable 'column-number-mode)
+          (column-number-mode t))
 
-   Pretty Greek functions replaces words like _lambda_ and _alpha_
-   with grek symbols
-   #+begin_src emacs-lisp
-     (defun pretty-greek ()
-       (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon" "phi" "chi" "psi" "omega")))
-         (loop for word in greek for code = 97 then (+ 1 code) do
-               (let ((greek-char (make-char 'greek-iso8859-7 code)))
-                 (font-lock-add-keywords
-                  nil
-                  `((,(concatenate 'string "\\(^\\|[^a-zA-Z0-9]\\)\\(" word "\\)[a-zA-Z]")
-                     (0
-                      (progn
-                        (decompose-region (match-beginning 2)
-                                          (match-end 2))
-                        nil)))))
-                 (font-lock-add-keywords
-                  nil
-                  `((,(concatenate 'string "\\(^\\|[^a-zA-Z0-9]\\)\\(" word "\\)[^a-zA-Z]")
-                     (0
-                      (progn
-                        (compose-region (match-beginning 2)
-                                        (match-end 2) ,greek-char)
-                        nil)))))))))
-   #+end_src
+        (add-hook 'prog-mode #'local-column-number-mode)
+      #+end_src
+    - =local-comment-auto-fill=
+      #+begin_src emacs-lisp
+        (defun local-comment-auto-fill ()
+          (set (make-local-variable 'comment-auto-fill-only-comments) t)
+          (auto-fill-mode t))
+
+        (add-hook 'prog-mode #'local-comment-auto-fill)
+      #+end_src
+    - =turn-on-hl-line-mode=
+      #+begin_src emacs-lisp
+        (defun turn-on-hl-line-mode ()
+          (if window-system (hl-line-mode t)))
+
+        (add-hook 'prog-mode-hook #'turn-on-hl-line-mode)
+      #+end_src
+    - =pretty-greek=  replaces words like
+      _lambda_ and _alpha_ with Greek symbols
+      #+begin_src emacs-lisp
+        (defun pretty-greek ()
+          (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon" "phi" "chi" "psi" "omega")))
+            (loop for word in greek for code = 97 then (+ 1 code) do
+                  (let ((greek-char (make-char 'greek-iso8859-7 code)))
+                    (font-lock-add-keywords
+                     nil
+                     `((,(concatenate 'string "\\(^\\|[^a-zA-Z0-9]\\)\\(" word "\\)[a-zA-Z]")
+                        (0
+                         (progn
+                           (decompose-region (match-beginning 2)
+                                             (match-end 2))
+                           nil)))))
+                    (font-lock-add-keywords
+                     nil
+                     `((,(concatenate 'string "\\(^\\|[^a-zA-Z0-9]\\)\\(" word "\\)[^a-zA-Z]")
+                        (0
+                         (progn
+                           (compose-region (match-beginning 2)
+                                           (match-end 2) ,greek-char)
+                           nil)))))))))
+
+        (add-hook 'prog-mode-hook #'pretty-greek)
+      #+end_src
+    - =turn-on-fic-mode= highlights FIXME and XXX in the comments
+      #+begin_src emacs-lisp
+        (autoload 'turn-on-fic-mode "fic-mode")
+        (add-hook 'prog-mode-hook #'turn-on-fic-mode)
+      #+end_src
+    - =turn-on-flyspell-prog-mode=
+      #+begin_src emacs-lisp
+        (defun turn-on-flyspell-prog-mode ()
+          (when (and (boundp 'ispell-program-name)
+                     (executable-find ispell-program-name))
+            (flyspell-prog-mode)))
+
+        (add-hook 'prog-mode-hook #'turn-on-flyspell-prog-mode)
+      #+end_src
+    - =flycheck= checking the code on the fly
+      #+begin_src emacs-lisp
+        (use-package flycheck
+          :ensure t
+          :config (add-hook 'prog-mode-hook #'flycheck-mode))
+      #+end_src
+    - =turn-on-electric-mode= inserts pair symbol
+      #+begin_src emacs-lisp
+        (defun turn-on-electric-mode ()
+          (electric-pair-mode +1))
+      #+end_src
 
 *** Global tags
     Make sure GNU Global is installed. Mac has port for that and binaries
@@ -1456,6 +1462,7 @@
       
                 (add-hook 'c-mode-common-hook 'turn-on-ggtags-mode)))
     #+end_src
+
 
 ** Paredit
    Nice mode for dealing with all those parentheses in lisp modes
