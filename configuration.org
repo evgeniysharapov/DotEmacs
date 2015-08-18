@@ -580,9 +580,9 @@
    Some of the useful functions and setting dealing with Info system
    in emacs:
    #+begin_src emacs-lisp
-     (require 'help-mode+ nil t)
-     (require 'help+ nil t)
-     (require 'help-fns+ nil t)
+     (use-package help-mode+ :ensure t)
+     (use-package help+ :ensure t)
+     (use-package help-fns+ :ensure t)
    #+end_src
 
    =apropos= seems to be more useful than =apropos-command=
