@@ -1901,9 +1901,9 @@
    - =json-mode=
    - =js2-refactor=
 
-   Configure =tern.js= and autocompletion using =company-tern=.
+   Configure =tern.js=
 
-   #+begin_src emacs-lisp :tangle yes
+   #+begin_src emacs-lisp
      (use-package tern
        :ensure t
        :config (progn (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
@@ -1911,12 +1911,22 @@
                                 (lambda ()
                                   "Changes tern command for the tern-mode"
                                   (setq-default tern-command '("tern"))))))
+   #+end_src
 
+   and autocompletion using =company-tern=
+
+   #+begin_src emacs-lisp
      (use-package company-tern
        :ensure t
-       :config (progn 
-                 (add-to-list 'company-backends 'company-tern)
-                 (add-hook 'js2-mode (lambda () (company-mode t)))))
+       :config (progn
+
+                 (defun ffy-company-js ()
+                   "Localizes and modifies COMPANY-BACKENDS for the Javascript buffer"
+                   (set (make-local-variable 'company-backends)
+                        '((company-tern company-semantic company-capf company-yasnippet)))
+                   (company-mode t))
+
+                 (add-hook 'js2-mode-hook #'ffy-company-js)))
    #+end_src
 
    Good package for remote debugging in the browser is =jss=. Read
