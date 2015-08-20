@@ -1380,7 +1380,7 @@
           (make-local-variable 'column-number-mode)
           (column-number-mode t))
 
-        (add-hook 'prog-mode #'local-column-number-mode)
+        (add-hook 'prog-mode-hook #'local-column-number-mode)
       #+end_src
     - =local-comment-auto-fill=
       #+begin_src emacs-lisp
@@ -1388,7 +1388,7 @@
           (set (make-local-variable 'comment-auto-fill-only-comments) t)
           (auto-fill-mode t))
 
-        (add-hook 'prog-mode #'local-comment-auto-fill)
+        (add-hook 'prog-mode-hook #'local-comment-auto-fill)
       #+end_src
     - =turn-on-hl-line-mode=
       #+begin_src emacs-lisp
