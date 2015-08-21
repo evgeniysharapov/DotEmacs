@@ -1366,6 +1366,12 @@
 
 
 
+** Shell
+   Setup for the shell window in the Emacs
+   #+begin_src emacs-lisp :tangle yes
+     (add-hook 'shell-mode-hook #'turn-off-show-trailing-whitespace)
+   #+end_src
+
 * Programming
 
 ** General Programming
