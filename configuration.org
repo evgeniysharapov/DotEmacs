@@ -2083,13 +2083,22 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    On Mac OS X after 10.8 =g++= is actually a =clang=.
    Another way is =cpp -Wp -v=
 
-   #+begin_src emacs-lisp :tangle yes
+   Finding paths with Clang =clang -E -x c++ -v test.c=
+
+   #+begin_src emacs-lisp
      (use-package company-c-headers
        :ensure t
        :config (progn
                  (add-to-list 'company-backends 'company-c-headers)
-                 (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1")))
+                 (dolist (dir (list "/usr/include/c++/4.2.1"
+                                    "C:/PF86/LLVM/lib/clang/3.6.2/include"
+                                    "C:/PF86/LLVM/i686-w64-mingw32/include"
+                                    "C:/PF86/LLVM/include/"))
+                   (add-to-list 'company-c-headers-path-system dir))))
    #+end_src
+
+   Configuring Clang and Mingw on Windows
+   https://yongweiwu.wordpress.com/2014/12/24/installing-clang-3-5-for-windows/
 
 
 ** Golang
