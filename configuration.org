@@ -2100,6 +2100,38 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    Configuring Clang and Mingw on Windows
    https://yongweiwu.wordpress.com/2014/12/24/installing-clang-3-5-for-windows/
 
+   Adding =c-eldoc=
+
+   #+begin_src emacs-lisp
+     (use-package c-eldoc
+       :ensure t)
+   #+end_src
+
+   =cc-mode= has a bug that makes =c-mode-hook= run twice
+   (http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759). This is some
+   defensive programming.
+
+   #+begin_src emacs-lisp
+     (defun ffy-c-mode-hook ()
+       "This is settings for the C/C++ mode"
+       (when (memq major-mode '(c-mode c++-mode))
+         (message "ffy-c-mode-hook executed")
+         (message (format "mode-name = %s" major-mode))
+         (electric-pair-mode +1)
+         (electric-indent-local-mode +1)
+         (if electric-indent-mode
+             (let ((binding (key-binding (kbd "RET"))))
+               ;;  (message (format "Current Map: %s" (current-local-map)))
+               (local-set-key (kbd "RET") (key-binding (kbd "C-j")))
+               (local-set-key (kbd "C-j") binding)))
+         (c-toggle-hungry-state +1)
+         (c-set-style "gnu")
+         (setq c-basic-offset 4)))
+     ;;; due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 we
+     ;;; add it to a c-mode-common-hook
+     (add-hook 'c-mode-common-hook #'ffy-c-mode-hook)
+   #+end_src
+
 
 ** Golang
 
