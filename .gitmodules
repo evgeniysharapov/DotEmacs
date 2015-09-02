@@ -10,3 +10,6 @@
 [submodule "site-lisp/org/org-reveal"]
 	path = site-lisp/org/org-reveal
 	url = https://github.com/evgeniysharapov/org-reveal.git
+[submodule "site-lisp/c-eldoc"]
+	path = site-lisp/c-eldoc
+	url = https://github.com/evgeniysharapov/c-eldoc.git
