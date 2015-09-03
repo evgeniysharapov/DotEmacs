@@ -2133,15 +2133,8 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
      (defun ffy-c-mode-hook ()
        "This is settings for the C/C++ mode"
        (when (memq major-mode '(c-mode c++-mode))
-         (message "ffy-c-mode-hook executed")
-         (message (format "mode-name = %s" major-mode))
          (electric-pair-mode +1)
          (electric-indent-local-mode +1)
-         (if electric-indent-mode
-             (let ((binding (key-binding (kbd "RET"))))
-               ;;  (message (format "Current Map: %s" (current-local-map)))
-               (local-set-key (kbd "RET") (key-binding (kbd "C-j")))
-               (local-set-key (kbd "C-j") binding)))
          (c-toggle-hungry-state +1)
          (c-set-style "gnu")
          (setq c-basic-offset 4)))
