@@ -2137,7 +2137,13 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
          (electric-indent-local-mode +1)
          (c-toggle-hungry-state +1)
          (c-set-style "gnu")
-         (setq c-basic-offset 4)))
+         (setq c-basic-offset 4)
+         (set (make-local-variable 'compile-command)
+              (let ((f (file-name-nondirectory (buffer-file-name))))
+                (case major-mode
+                  ('c-mode (format "gcc -g -O2 -std=gnu99 -static -lm %s" f))
+                  ('c++-mode (format "g++ -g -O2 -static -std=gnu++11 %s" f))
+                  (t compile-command))))))
      ;;; due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 we
      ;;; add it to a c-mode-common-hook
      (add-hook 'c-mode-common-hook #'ffy-c-mode-hook)
