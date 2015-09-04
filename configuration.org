@@ -2085,10 +2085,10 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    make it system specific).
 
    #+begin_src emacs-lisp
-     (setq ffy-c-headers-location '("/usr/include/c++/4.2.1"
-                                    "C:/PF86/LLVM/lib/clang/3.6.2/include"
-                                    "C:/PF86/LLVM/i686-w64-mingw32/include"
-                                    "C:/PF86/LLVM/include/"))
+     (setq ffy-c-headers-locations '("/usr/include/c++/4.2.1"
+                                     "C:/PF86/LLVM/lib/clang/3.6.2/include"
+                                     "C:/PF86/LLVM/i686-w64-mingw32/include"
+                                     "C:/PF86/LLVM/include/"))
    #+end_src
 
 
@@ -2102,7 +2102,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
        :ensure t
        :config (progn
                  (add-to-list 'company-backends 'company-c-headers)
-                 (dolist (dir (list ffy-c-headers-location))
+                 (dolist (dir ffy-c-headers-locations)
                    (add-to-list 'company-c-headers-path-system dir))))
    #+end_src
 
@@ -2120,7 +2120,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
                                 (cons ;c-eldoc-includes
                                       "-I. -I.."
                                       (mapcar (apply-partially #'concat "-I")
-                                              ffy-c-headers-location))
+                                              ffy-c-headers-locations))
                                 " ")
                      c-eldoc-cpp-command "cpp"))
    #+end_src
