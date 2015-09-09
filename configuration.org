@@ -2088,6 +2088,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
      (setq ffy-c-headers-locations '("/usr/include/c++/4.2.1"
                                      "C:/PF86/LLVM/lib/clang/3.6.2/include"
                                      "C:/PF86/LLVM/i686-w64-mingw32/include"
+                                     "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
                                      "C:/PF86/LLVM/include/"))
    #+end_src
 
