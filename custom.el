@@ -56,7 +56,16 @@
  '(recentf-mode t)
  '(require-final-newline t)
  '(rspec-use-rvm t)
- '(safe-local-variable-values (quote ((scss-compile-at-save) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
+ '(safe-local-variable-values
+   (quote
+    ((flycheck-gcc-language-standard . c++11)
+     (flycheck-clang-language-standard . c++11)
+     (scss-compile-at-save)
+     (ruby-compilation-executable . "ruby")
+     (ruby-compilation-executable . "ruby1.8")
+     (ruby-compilation-executable . "ruby1.9")
+     (ruby-compilation-executable . "rbx")
+     (ruby-compilation-executable . "jruby"))))
  '(save-place t nil (saveplace))
  '(savehist-mode t nil (savehist))
  '(scalable-fonts-allowed t)
