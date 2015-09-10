@@ -1,0 +1,3 @@
+# name : vector<type>
+# --
+vector<${1:int}> $2;$0
