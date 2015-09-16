@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: typedef
+# key: type
+# binding: direct-keybinding
+# --
+typedef ${1:type} ${2:alias}; $0
