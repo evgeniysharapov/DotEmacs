@@ -871,6 +871,12 @@
       (bind-key  "M-SPC" 'ffy-position-to-ring)
     #+end_src
 
+*** Ace Jumping
+    #+begin_src emacs-lisp
+      (use-package ace-jump-mode
+        :ensure t
+        :bind ("C-z SPC" . ace-jump-mode))
+    #+end_src
 
 ** Marking
 
