@@ -1,10 +1,12 @@
 #name: Kattis program
 # --
 #include <algorithm>
-#include <cstdio>
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <numeric>
 #include <set>
 #include <stack>
