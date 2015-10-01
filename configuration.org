@@ -2101,6 +2101,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
                                      "C:/PF86/LLVM/lib/clang/3.6.2/include"
                                      "C:/PF86/LLVM/i686-w64-mingw32/include"
                                      "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
+                                     "C:/PF86/LLVM/i686-w64-mingw32/include/c++/i686-w64-mingw32"
                                      "C:/PF86/LLVM/include/"))
    #+end_src
 
@@ -2210,6 +2211,9 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    Other things to look at:
    - =go-oracle= ([[https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view][Documentation]]).
+
+
+
 
 ** Modes for specific files
    For getting the text content of the word documents:
