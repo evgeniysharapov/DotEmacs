@@ -753,7 +753,10 @@
                         company-minimum-prefix-length 2
                         company-tooltip-align-annotations t
                         company-echo-delay 0))
-        :init (global-company-mode 1))
+        :init
+        (global-company-mode 1)
+        (bind-key "C-d" #'company-show-doc-buffer  company-active-map)
+        (bind-key "M-?" #'company-complete))
     #+end_src
 
 
