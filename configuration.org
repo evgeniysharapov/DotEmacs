@@ -402,6 +402,14 @@
         (find-file (ido-completing-read "Open file: " recentf-list nil t)))
     #+end_src
 
+    Using Projectile
+    #+begin_src emacs-lisp
+      (use-package projectile
+        :ensure t
+        :defer t
+        :diminish projectile-mode)
+    #+end_src
+
 
 *** Files Key-Bindings
 
