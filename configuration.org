@@ -1031,7 +1031,10 @@
        :ensure t
        :commands magit-status
        ;; Added global shortcut to run Magit
-       :bind ("C-x g" . magit-status))
+       :bind ("C-x g" . magit-status)
+       :config (progn
+                   ;(setq magit-auto-revert-mode nil)
+                   (setq magit-last-seen-setup-instructions "1.4.0")))
    #+end_src
 
 
