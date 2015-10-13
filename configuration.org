@@ -386,7 +386,7 @@
       (setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
     #+end_src
 
-*** Files and Projects
+*** COMMENT Files and Projects
     #+begin_src emacs-lisp
       (use-package find-file-in-project
         :ensure t
@@ -597,6 +597,7 @@
 
    #+begin_src emacs-lisp
      (bind-key "C-h a" 'apropos)
+     (bind-key "C-b" #'describe-personal-keybindings help-map)
    #+end_src
 
 
