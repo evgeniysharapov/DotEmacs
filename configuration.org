@@ -381,12 +381,12 @@
     =after-init-hook= (see =init.el=).
 
 
-*** URL Configuration Files
+*** Configuration Files
     #+begin_src emacs-lisp
       (setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
     #+end_src
 
-*** COMMENT Files and Projects
+*** Files and Projects
     #+begin_src emacs-lisp
       (use-package find-file-in-project
         :ensure t
@@ -1526,12 +1526,14 @@
      (defconst *emacs-lisp-modes* '(emacs-lisp-mode lisp-mode ielm-mode))
    #+end_src
 
+   Use ~eldoc-mode~ for buffer and mini-buffer
 
    #+begin_src emacs-lisp
      (use-package eldoc
        :defer t
        :diminish eldoc-mode
-       :commands eldoc-mode)
+       :commands eldoc-mode
+       :init (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode))
    #+end_src
 
 
@@ -2084,7 +2086,28 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    When =pip= is installed using =get-pip.py= script it fails to
    install some packages, probably because of missing deps.
 
+   #+begin_src emacs-lisp
+     (use-package python
+       :config
+       (let ((ipython (executable-find "ipython")))
+         (if ipython
+             (setq python-shell-interpreter ipython)
+           (warn "No IPython Found"))))
+   #+end_src
 
+   Completion and navigation is done using ~anaconda~. Install it
+   using ~pip install anaconda_mode~
+
+   #+begin_src emacs-lisp
+     (use-package anaconda-mode
+       :ensure t
+       :init (add-hook 'python-mode-hook #'anaconda-mode))
+
+     (use-package company-anaconda
+       :ensure t
+       :init (with-eval-after-load 'company
+               (add-to-list 'company-backends 'company-anaconda)))
+   #+end_src
 
 
 
