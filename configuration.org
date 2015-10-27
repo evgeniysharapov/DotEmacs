@@ -563,7 +563,19 @@
 
 ** Windows
 
+   Let's put window operations on =C-z w=
+   #+begin_src emacs-lisp
+     (keymap-on-key ctl-z-w-map "C-z w")
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package window
+       :bind (("C-z w k" . delete-window)
+              ("C-z w m" . delete-other-windows)))
+   #+end_src
+
    Using =Windmove= for switching between windows in Emacs
+
    #+begin_src emacs-lisp :preamble # -*- coding: utf-8 -*-
      (windmove-default-keybindings 'super) ;; ⌘+direction
    #+end_src
@@ -579,6 +591,7 @@
 (bind-key "M-1" 'delete-other-windows)
 (bind-key "M-2" 'split-window-vertically)
 (bind-key "M-3" 'split-window-horizontally)
+
 *** Windows configurations
 (define-key global-map [(control x) (super left)] 'winner-undo)
 (define-key global-map [(control x) (super right)] 'winner-redo)
