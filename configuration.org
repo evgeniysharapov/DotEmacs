@@ -852,7 +852,9 @@
     In addition to =grep= we use =ag=
     #+begin_src emacs-lisp
       (use-package ag
-        :ensure t)
+        :ensure t
+        :config (setq ag-highlight-search t
+                      ag-reuse-buffers t))
     #+end_src
 
 
