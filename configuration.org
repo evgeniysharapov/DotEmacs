@@ -118,12 +118,13 @@
    ='package-pinned-package=
 
    #+begin_src emacs-lisp
-     (mapc (lambda (arg) (apply (apply-partially 'add-to-list 'package-pinned-packages) arg))
+      (when (boundp 'package-pinned-packages)
+        (mapc (lambda (arg) (apply (apply-partially 'add-to-list 'package-pinned-packages) arg))
            '(
              ;; if t at the end then append it, otherwise prepend
              ((cider . "melpa-stable") t)
              ((flycheck . "melpa-stable"))
-             ))
+             )))
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
@@ -2047,7 +2048,7 @@
        :ensure t
        :init (progn
                ;; add as a company back-end
-               (add-to-list 'company-backends 'company-ghc)
+               (add-to-list 'company-backends #'company-ghc)
                (add-hook 'haskell-mode-hook 'ghc-init)))
    #+end_src
 
@@ -2124,8 +2125,11 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
      (use-package company-anaconda
        :ensure t
-       :init (with-eval-after-load 'company
-               (add-to-list 'company-backends 'company-anaconda)))
+       :init (if (fboundp 'with-eval-after-load)
+                (with-eval-after-load 'company
+                  (add-to-list 'company-backends 'company-anaconda)))
+                (eval-after-load "company"
+                  '(add-to-list 'company-backends 'company-anaconda)))           
    #+end_src
 
 
