@@ -31,3 +31,5 @@ data/.emacs-bmk-bmenu-state.el
 data/.emacs-places
 configuration.el*
 
+/data/projectile-bookmarks.eld
+/data/projectile.cache
