@@ -33,7 +33,7 @@
      (defconst *emacs-start-time* (current-time))
    #+end_src
 
-
+   
 ** Paths Configuration
 *** Constants for Paths
 
@@ -582,7 +582,13 @@
    Using =Windmove= for switching between windows in Emacs
 
    #+begin_src emacs-lisp :preamble # -*- coding: utf-8 -*-
-     (windmove-default-keybindings 'super) ;; ⌘+direction
+     (use-package windmove
+       :ensure t
+       :defer t
+       :bind (("C-z w <left>" . windmove-left)
+              ("C-z w <right>" . windmove-right)
+              ("C-z w <up>" . windmove-up)
+              ("C-z w <down>" . windmove-down)))
    #+end_src
 
    Moving in a window

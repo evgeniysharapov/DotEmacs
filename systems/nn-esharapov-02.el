@@ -16,41 +16,6 @@
        w32-pass-alt-to-system nil
        w32-scroll-lock-modifier nil))
 
-;;; Windows machine doesn't let us use Win + arrow keys
-;;; So, use the following Autohotkey script to remap Win+Arrow for
-;;; Emacs application and circumvent Windows specific keys 
-
-;; $#Right::
-;; IfWinActive ahk_class Emacs
-;; 	Send, ^!+{NumpadRight}
-;; return
-;; $#Left::
-;; IfWinActive ahk_class Emacs
-;; 	Send, ^!+{NumpadLeft}
-;; return
-;; $#Up::
-;; IfWinActive ahk_class Emacs
-;; 	Send, ^!+{NumpadUp}
-;; return
-;; $#Down::
-;; IfWinActive ahk_class Emacs
-;; 	Send, ^!+{NumpadDown}
-;; return
-;;
-
-;;; Now, using `input-decode-map' we are translating those key
-;;; combinations sent by Autohotkey back into Win-Arrow (assuming that
-;;; Win key is mapped to Super (see `w32-lwindow-modifier' and `w32-rwindow-modifier'))
-
-(dolist (direction-symbol '(left right up down))
-  (let* ((direction (symbol-name direction-symbol))
-         (windmove-command (intern  (concat  "windmove-"  direction)))
-         (keypress-numlock-off (concat  "<C-M-S-kp-"  direction ">"))
-         (keypress-numlock-on (concat  "<C-M-kp-" direction ">"))
-         (super-direction-keypress (concat  "<s-" direction ">")))
-    (define-key input-decode-map (kbd  keypress-numlock-off) (kbd super-direction-keypress) )
-    (define-key input-decode-map (kbd  keypress-numlock-on) (kbd super-direction-keypress))))
-
 ;;; Trick from http://www.emacswiki.org/emacs/InteractiveSpell
 (setenv "DICTIONARY" "en_US")
 ;;; manage PATH for running Git from MsysGit (Cygwin doesn't work
