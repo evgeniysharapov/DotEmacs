@@ -118,13 +118,14 @@
    ='package-pinned-package=
 
    #+begin_src emacs-lisp
-      (when (boundp 'package-pinned-packages)
-        (mapc (lambda (arg) (apply (apply-partially 'add-to-list 'package-pinned-packages) arg))
-           '(
-             ;; if t at the end then append it, otherwise prepend
-             ((cider . "melpa-stable") t)
-             ((flycheck . "melpa-stable"))
-             )))
+     (when (boundp 'package-pinned-packages)
+       (mapc (lambda (arg) (apply (apply-partially 'add-to-list 'package-pinned-packages) arg))
+          '(
+            ;; if t at the end then append it, otherwise prepend
+            ((cider . "melpa-stable") t)
+            ((ace-window . "melpa-stable"))
+            ((flycheck . "melpa-stable"))
+            )))
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
@@ -575,8 +576,9 @@
 
    #+begin_src emacs-lisp
      (use-package window
-       :bind (("C-z w k" . delete-window)
-              ("C-z w m" . delete-other-windows)))
+       :bind (:map ctl-z-w-map
+              ("D" . delete-window)
+              ("M" . delete-other-windows)))
    #+end_src
 
    Using =Windmove= for switching between windows in Emacs
@@ -585,23 +587,20 @@
      (use-package windmove
        :ensure t
        :defer t
-       :bind (("C-z w <left>" . windmove-left)
-              ("C-z w <right>" . windmove-right)
-              ("C-z w <up>" . windmove-up)
-              ("C-z w <down>" . windmove-down)))
+       :bind (:map ctl-z-w-map
+              ("<left>" . windmove-left)
+              ("<right>" . windmove-right)
+              ("<up>" . windmove-up)
+              ("<down>" . windmove-down)))
    #+end_src
 
-   Moving in a window
-   #+begin_src emacs-lisp
-;(bind-key "t" (make-interactive move-to-window-line 0)  goto-map)
-;(bind-key "b" (make-interactive move-to-window-line -1)  goto-map)
-   #+end_src
+*** Ace-Window
 
-*** Typical window operations but faster
-(bind-key "M-0" 'delete-window)
-(bind-key "M-1" 'delete-other-windows)
-(bind-key "M-2" 'split-window-vertically)
-(bind-key "M-3" 'split-window-horizontally)
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :bind ("C-x o" . ace-window))
+#+end_src
 
 *** Windows configurations
 (define-key global-map [(control x) (super left)] 'winner-undo)
