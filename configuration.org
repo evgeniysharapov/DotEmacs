@@ -3,7 +3,7 @@
 #+email: evgeniy.sharapov@gmail.com
 
 
-* Motivation
+* Introduction
   As much as I liked =allout= mode it is has some quirks and irks and
   not necessarily works in the way I would like it to work. Plus, it
   has too many bells and whistles. One thing would be to have
@@ -14,8 +14,6 @@
   increased along with some notes and todo's, it seemed as a very
   logical thing to organize configuration as an Org file.
 
-
-* Initialization
   =init.el= file is kept to the bare minimum - just load the
   =org-babel= and then go to the =configuration.org=.
 
@@ -25,6 +23,7 @@
   block header. Or setting a property for  a whole subtree. For
   instance by pressing =C-c C-x p= or by calling =org-set-property=.
 
+* Initialization
 ** Benchmark
    We always want to start up as fast as possible. Hence we need to
    measure this most important KPI at the start.
@@ -33,9 +32,10 @@
      (defconst *emacs-start-time* (current-time))
    #+end_src
 
-   
 ** Paths Configuration
 *** Constants for Paths
+    Instead of string literals in file path related code we will use
+    these named constants.
 
     #+begin_src emacs-lisp
       (defconst *dotfiles-dir*
@@ -62,21 +62,16 @@
     #+end_src
 
 
-*** Adding Paths to =load-path=
-
+*** Add =*site-lisp*= Recursively to =load-path=
     Adding files from =.emacs.d= to the load path
 
+    Add recursively all subdirectories of =*site-lisp*=. I could have
+    done it using temporary recursive function created via
+    =cl-labels=. But at this point we don't have CL loaded, so I
+    will do that using =fmakunbound=. The whole point is
+    not to clutter function space.
+
     #+begin_src emacs-lisp
-      ;; (add-to-list 'load-path *dotfiles-dir*)
-    #+end_src
-
-     Add recursively all subdirectories of =*site-lisp*=. I could have
-     done it using temporary recursive function created via
-     =cl-labels=. But at this point we don't have CL loaded, so I
-     will do that using =fmakunbound=. The whole point is
-     not to clutter function space.
-
-     #+begin_src emacs-lisp
        ;;; create recursive function
        (defun add-directory-to-path (dir)
          (add-to-list 'load-path dir)
@@ -90,7 +85,7 @@
        (add-directory-to-path *site-lisp*)
        ;;; erase the function
        (fmakunbound #'add-directory-to-path)
-     #+end_src
+    #+end_src
 
 
 ** Configure Package Manager
@@ -178,7 +173,7 @@
    #+end_src
 
 
-** Some Windows Specific
+** Notes on Windows
    Make sure that you have following DLL libraries in you =Emacs/bin=
    directory:
    - libcharset.dll
