@@ -41,8 +41,16 @@
           (lambda ()
 	    (setq default-buffer-file-coding-system 'utf-8)))
   ;; load up Emacs configuraion from the Org file next to init.el
-  ;; filename is evaled while macros is expanded, otherwise buffer-file-name would be nil
-  (org-babel-load-file (expand-file-name "configuration.org" ,(file-name-directory (or load-file-name (buffer-file-name)))))
+  ;; filename is evaled while macros is expanded, otherwise
+  ;; buffer-file-name would be nil
+  ;; we check whether we need to babel load org file or
+  ;; load converted emacs-lisp file
+  (let* ((dir ,(file-name-directory (or load-file-name (buffer-file-name))))
+         (org-file (expand-file-name "configuration.org" dir))
+         (el-file (expand-file-name "configuration.el" dir)))
+    (if (not (file-newer-than-file-p el-file org-file))
+        (org-babel-load-file org-file t)
+      (load-file el-file)))
   ;; if we loaded it up, use normal error throwing
   (toggle-debug-on-error)
   (desktop-read)))
