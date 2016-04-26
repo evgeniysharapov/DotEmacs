@@ -98,7 +98,7 @@
        ;; Sources for the ELPA repositories
        (mapc (apply-partially 'add-to-list 'package-archives)
              '(
-               ;; ("gnu"         . "http://elpa.gnu.org/packages/")
+               ("gnu"         . "http://elpa.gnu.org/packages/")
                ;; ("org"         . "http://orgmode.org/elpa/")
                ("melpa-stable" . "http://stable.melpa.org/packages/")
                ("melpa"       . "http://melpa.org/packages/")
