@@ -185,52 +185,59 @@
   You can download them from: http://xmlsoft.org/sources/win32/64bit/
 
 * Key Bindings Setup
-  Very useful macro to create a keymap:
+** Overview
+    Approach to the key binding is laid out below:
 
-  #+begin_src emacs-lisp
-    (defmacro keymap-on-key (name keys)
-      "This is a macro that declares a variable, key prefix and assigns a key to it.
-    NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
-      `(progn (defvar ,name)
-              (define-prefix-command (quote ,name))
-              (bind-key ,keys (quote ,name))))
-  #+end_src
+    + =C-x= primary map (some defaults)
+    + =C-c= secondary map (modes use it)
+    + =C-z= tertiary map =ctl-z-map= (private custom one)
+      Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
+      Make the prefix key =C-z= for my personal keymap.  On
+      qwerty-keyboards =C-z= is one of the most accessible keys like
+      =C-x= and =C-c=, but the prefix key =C-c= is reserved  for
+      mode-specific commands (both user-defined and standard Emacs
+      extensions). The standard binding of =C-z= (=suspend-emacs= or
+      =iconify-or-deiconify-frame=) is reassigned here to double key
+      sequence =C-z C-z=.
+      #+begin_src emacs-lisp
+        (defvar ctl-z-map)
+        (define-prefix-command 'ctl-z-map)
+        (let ((c-z (global-key-binding [(control ?z)])))
+          (global-unset-key [(control ?z)])
+          (bind-key "C-z" 'ctl-z-map)
+          (bind-key "C-z C-z" c-z))
+      #+end_src
 
-   Approach to the key binding is laid out below:
+    The sequence continues with quaternary, quinary, senary,
+    septenary, octonary, nonary, and denary, although most of these
+    terms are rarely used. There's no word relating to the number
+    eleven but there is one that relates to the number twelve:
+    duodenary.
 
-   + =C-x= primary map (some defaults)
-   + =C-c= secondary map (modes use it)
-   + =C-z= tertiary map =ctl-z-map= (private custom one)
-     Borrowed this idea from http://www.jurta.org/en/emacs/dotemacs
-     Make the prefix key =C-z= for my personal keymap.  On
-     qwerty-keyboards =C-z= is one of the most accessible keys like
-     =C-x= and =C-c=, but the prefix key =C-c= is reserved  for
-     mode-specific commands (both user-defined and standard Emacs
-     extensions). The standard binding of =C-z= (=suspend-emacs= or
-     =iconify-or-deiconify-frame=) is reassigned here to double key
-     sequence =C-z C-z=.
-     #+begin_src emacs-lisp
-       (defvar ctl-z-map)
-       (define-prefix-command 'ctl-z-map)
-       (let ((c-z (global-key-binding [(control ?z)])))
-         (global-unset-key [(control ?z)])
-         (bind-key "C-z" 'ctl-z-map)
-         (bind-key "C-z C-z" c-z))
-     #+end_src
+** Key-binding Utilities
+   Useful macro to create a keymap on a key
 
-   The sequence continues with quaternary, quinary, senary,
-   septenary, octonary, nonary, and denary, although most of these
-   terms are rarely used. There's no word relating to the number
-   eleven but there is one that relates to the number twelve:
-   duodenary.
+   #+begin_src emacs-lisp
+     (defmacro keymap-on-key (name keys)
+       "This is a macro that declares a variable, key prefix and assigns a key to it.
+     NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
+       `(progn (defvar ,name)
+               (define-prefix-command (quote ,name))
+               (bind-key ,keys (quote ,name))))
+   #+end_src
 
+
+** Custom Keymaps
    Other maps:
-   + =C-x f=  - map  file operations
-     #+begin_src emacs-lisp
-       (keymap-on-key ctl-x-f-map "C-x f")
-     #+end_src
-
-   + =M-g=    - goto map (already exists in Emacs24)
+    + =C-x f=  - map  file operations
+      #+begin_src emacs-lisp
+        (keymap-on-key ctl-x-f-map "C-x f")
+      #+end_src
+    + =M-g=    - goto map (already exists in Emacs24)
+    + =C-x t=  - toggling map
+      #+begin_src emacs-lisp
+        (keymap-on-key ctl-x-t-map "C-x t")
+      #+end_src
 
 ** TODO Key Binging To Change:
    - change =M-o= from =facemenu-keymap= to =outline-mode= keymap  =M-o=
@@ -250,9 +257,11 @@
    =M-f12=, =M-f11=, =M-f10=, =M-f9=, =M-f8=, =M-f7=
 
 ** Remapping standard commands
+
+   I rarely want to suspend Emacs but almost always hit suspend
+   instead of repeat command so =repeat= is both =C-x z= and =C-x C-z=
+
    #+begin_src emacs-lisp :tangle yes
-     ;;; almost always hit suspend instead of repeat command
-     ;;; so `repeat' is both C-x z and C-x C-z
      (let ((c-x-z (global-key-binding [(control x) ?z])))
        (global-unset-key [(control x) (control ?z)])
        (define-key ctl-x-map [(control ?z)] c-x-z))
