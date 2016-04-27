@@ -571,44 +571,48 @@
        (bind-key "b t" 'ffy-create-temp-buffer ctl-z-map)
      #+end_src
 
+
 ** Windows
 
-   Let's put window operations on =C-z w=
-   #+begin_src emacs-lisp
-     (keymap-on-key ctl-z-w-map "C-z w")
-   #+end_src
+*** Window Keymap
+    Let's put window operations on =C-z w=
+    #+begin_src emacs-lisp
+      (keymap-on-key ctl-z-w-map "C-z w")
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (use-package window
-       :bind (:map ctl-z-w-map
-              ("D" . delete-window)
-              ("M" . delete-other-windows)))
-   #+end_src
+*** Operations With Windows
+    #+begin_src emacs-lisp
+      (use-package window
+        :bind (:map ctl-z-w-map
+               ("D" . delete-window)
+               ("M" . delete-other-windows)))
+    #+end_src
 
-   Using =Windmove= for switching between windows in Emacs
+*** Navigation
+    Using =Windmove= for switching between windows in Emacs
 
-   #+begin_src emacs-lisp :preamble # -*- coding: utf-8 -*-
-     (use-package windmove
-       :ensure t
-       :defer t
-       :bind (:map ctl-z-w-map
-              ("<left>" . windmove-left)
-              ("<right>" . windmove-right)
-              ("<up>" . windmove-up)
-              ("<down>" . windmove-down)))
-   #+end_src
+    #+begin_src emacs-lisp :preamble # -*- coding: utf-8 -*-
+      (use-package windmove
+        :ensure t
+        :defer t
+        :bind (:map ctl-z-w-map
+                    ("<left>" . windmove-left)
+                    ("h" . windmove-left)
+                    ("<right>" . windmove-right)
+                    ("l" . windmove-right)
+                    ("<up>" . windmove-up)
+                    ("j" . windmove-up)
+                    ("<down>" . windmove-down)
+                    ("k" . windmove-down)))
+    #+end_src
 
-*** Ace-Window
+    For somewhat different navigation between windows use =Ace-Window=
 
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :ensure t
-    :bind ("C-x o" . ace-window))
-#+end_src
-
-*** Windows configurations
-(define-key global-map [(control x) (super left)] 'winner-undo)
-(define-key global-map [(control x) (super right)] 'winner-redo)
+    #+begin_src emacs-lisp
+      (use-package ace-window
+        :ensure t
+        :bind ("C-x o" . ace-window))
+    #+end_src
 
 
 ** Help System
