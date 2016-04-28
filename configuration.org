@@ -882,7 +882,8 @@
    position either to the beginning of the line or beginning of the
    indent and switch between this two positions if necessary
 
-     #+begin_src emacs-lisp
+   #+name: ffy-bol-or-back-to-indent
+   #+begin_src emacs-lisp
        (defun ffy-bol-or-back-to-indent ()
          "In addition to having two different mappings for
         (move-beginning-of-line ARG) and (back-to-indentation) we
@@ -892,7 +893,7 @@
          (if (bolp)
              (back-to-indentation)
            (move-beginning-of-line 1)))
-     #+end_src
+   #+end_src
 
    Redefine =C-a= to =C-S-a= and =C-a to the =ffy-bol-or-back-to-indent=
 
@@ -906,17 +907,30 @@
     http://www.masteringemacs.org/articles/2010/12/22/fixing-mark-commands-transient-mark-mode/
 
     Pushes mark into a ring without activating a region
+
+    #+name: ffy-position-to-ring
     #+begin_src emacs-lisp
       (defun ffy-position-to-ring ()
         "Pushes current position to the mark-ring"
         (interactive)
         (push-mark (point) t nil)
         (message "Position %s pushed to the ring" (point)))
+    #+end_src
 
+    Now =M-SPC= pushes point onto a mark ring and =C-u C-SPC= pops it
+    off effectively positioning point
+
+    #+begin_src emacs-lisp
       (bind-key  "M-SPC" 'ffy-position-to-ring)
     #+end_src
 
 *** Ace Jumping
+
+    Now we use =ace-jump-mode= and it makes =C-z SPC= and then
+    character to jump to a word that starts from that character.
+    =C-u C-z SPC= and a character to jump to that character and
+    =C-u C-u C-z SPC= to jump to a line.
+
     #+begin_src emacs-lisp
       (use-package ace-jump-mode
         :ensure t
