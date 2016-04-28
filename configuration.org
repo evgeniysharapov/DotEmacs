@@ -1026,22 +1026,21 @@
 
 ** Snippets
    Snippets allow us to create code quickly
-*** Yasnippets
-    #+begin_src emacs-lisp
-      (use-package yasnippet
-        :ensure t
-        :config  (progn
-                   (use-package dropdown-list :ensure t)
-                   (setq-default yas-wrap-around-region t)
-                   (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
-                   ;; Prevent Yasnippet from loading default c++ snippets
-                   (let ((file (concat yas-installed-snippets-dir "/c++-mode" "/.yas-skip")))
-                     (when (not (file-exists-p file))
-                       (write-region "" nil file)))
-                   (yas-global-mode +1)
-                   ;; add to hippie-expand
-                   (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)))
-    #+end_src
+   #+begin_src emacs-lisp
+     (use-package yasnippet
+       :ensure t
+       :config  (progn
+                  (use-package dropdown-list :ensure t)
+                  (setq-default yas-wrap-around-region t)
+                  (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
+                  ;; Prevent Yasnippet from loading default c++ snippets
+                  (let ((file (concat yas-installed-snippets-dir "/c++-mode" "/.yas-skip")))
+                    (when (not (file-exists-p file))
+                      (write-region "" nil file)))
+                  (yas-global-mode +1)
+                  ;; add to hippie-expand
+                  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)))
+   #+end_src
 
 ** Bookmarking
 
