@@ -721,6 +721,11 @@
    =latex-mode=, =markdown-mode=, etc. One can call
    =visual-line-mode= to toggle on/off.
 
+   #+begin_src emacs-lisp
+     (bind-key "RET" 'visual-line-mode ctl-x-t-map)
+   #+end_src
+
+
    Visual line mode actually does several things. From a user's point
    of view, it:
    -  Makes lines wrap at word boundaries. (controlled by var
@@ -767,6 +772,11 @@
        "Turns off trailing-whitespace mode - useful for REPLs"
        (interactive)
        (setq show-trailing-whitespace nil))
+   #+end_src
+
+   Add it to the toggle-map
+   #+begin_src emacs-lisp
+     (bind-key "SPC" 'toggle-show-trailing-whitespace ctl-x-t-map)
    #+end_src
 
 
@@ -960,9 +970,9 @@
 ** Miscellaneous
 
    - toggles line numbers in the buffer
-   #+begin_src emacs-lisp
-     (bind-key "C-S-l"  'linum-mode)
-   #+end_src
+     #+begin_src emacs-lisp
+       (bind-key "l"  'linum-mode ctl-x-t-map)
+     #+end_src
 
    - =IMenu= defaults
      #+begin_src emacs-lisp
