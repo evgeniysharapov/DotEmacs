@@ -30,7 +30,7 @@
          (org-file (expand-file-name "configuration.org" dir))
          (el-file (expand-file-name "configuration.el" dir)))
     (if (not (file-newer-than-file-p el-file org-file))
-        (org-babel-load-file org-file t)
+        (org-babel-load-file org-file)
       (load-file el-file)))
   ;; if we loaded it up, use normal error throwing
   (toggle-debug-on-error)
