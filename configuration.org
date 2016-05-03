@@ -2223,6 +2223,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    #+begin_src emacs-lisp
      (use-package c-eldoc
+       :ensure t
        :config (setq c-eldoc-includes
                      (mapconcat #'identity
                                 ;; on Windows `pkg-config` .... leads to an
