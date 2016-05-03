@@ -10,6 +10,3 @@
 [submodule "site-lisp/c-eldoc"]
 	path = site-lisp/c-eldoc
 	url = https://github.com/evgeniysharapov/c-eldoc.git
-[submodule "site-lisp/ag.el"]
-	path = site-lisp/ag.el
-	url = https://github.com/evgeniysharapov/ag.el.git
