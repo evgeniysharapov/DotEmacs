@@ -2197,16 +2197,16 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    https://gcc.gnu.org/ml/gcc-help/2007-09/msg00206.html
 
 
-   Location of header files for C/C++ (perhaps, one thing to do is to
-   make it system specific).
+   Location of header files for C/C++. =ffy-c-headers-locations= may
+   be defined in the system specific file. If it is not, then we use
+   empty list
 
    #+begin_src emacs-lisp
-     (setq ffy-c-headers-locations '("/usr/include/c++/4.2.1"
-                                     "C:/PF86/LLVM/lib/clang/3.6.2/include"
-                                     "C:/PF86/LLVM/i686-w64-mingw32/include"
-                                     "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
-                                     "C:/PF86/LLVM/i686-w64-mingw32/include/c++/i686-w64-mingw32"
-                                     "C:/PF86/LLVM/include/"))
+     (setq ffy-c-headers-locations
+           (append '("/usr/include/c++/4.2.1" )
+                   (if (boundp 'ffy-c-headers-locations)
+                       ffy-c-headers-locations
+                     ())))
    #+end_src
 
 

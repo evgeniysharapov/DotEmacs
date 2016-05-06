@@ -27,6 +27,13 @@
   (setenv "PATH" (mapconcat  'identity (append paths (list (getenv "PATH"))) ";"))
   (mapc (apply-partially 'add-to-list 'exec-path) paths))
 
+;;; C/C++ Headers Locations
+(setq ffy-c-headers-locations '("C:/PF86/LLVM/lib/clang/3.6.2/include"
+                                "C:/PF86/LLVM/i686-w64-mingw32/include"
+                                "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
+                                "C:/PF86/LLVM/i686-w64-mingw32/include/c++/i686-w64-mingw32"
+                                "C:/PF86/LLVM/include/"))
+
 ;;; Org-mode hackery
 (setq org-clock-clocktable-default-properties
       (list :maxlevel 4
