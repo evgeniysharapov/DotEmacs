@@ -1321,7 +1321,7 @@
 
 
 
-** XSL/XML Editing
+** XML Based Editing
 *** Pretty Print Functions
     #+name: xml-pretty-print
     #+begin_src emacs-lisp
@@ -1357,25 +1357,9 @@
     #+end_src
 
 *** XML Mode Setup
+
+    #+name: ffy-customize-nxml-mode
     #+begin_src emacs-lisp
-      (setq-default
-       ;; Treat elements and contents like S-expressions! Oh, the magic.
-       ;; (if you know S-expression movement commands, it's great)
-       nxml-sexp-element-flag t
-       ;; Whenever you type </ it will fill out the rest.
-       nxml-slash-auto-complete-flag t)
-
-
-      ;; Causes files with extensions .xml .xsl .rng .xhtml .html and .tal
-      ;; to invoke nxml-mode.
-      (setq auto-mode-alist
-            (cons '("\\.\\(xml\\|xsl\\|rng\\|tal\\|xsd\\|sch\\|xslt\\|svg\\|rss\\)\\'" . nxml-mode)
-                  (remove-if (lambda (x) (eq (cdr x) 'html-mode)) auto-mode-alist)))
-
-      ;; another way to recognize XML files
-      (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
-                                              ;(push '("<\\?xml" . nxml-mode) magic-mode-alist)
-
       (defun ffy-customize-nxml-mode ()
         "This function sets some variables and calls some functions that setup nXML mode."
         ;; load hide show modes
@@ -1389,14 +1373,32 @@
         ;; controversial
         (make-variable-buffer-local 'ido-use-filename-at-point)
         (setq ido-use-filename-at-point nil))
+    #+end_src
 
-      (add-hook 'nxml-mode-hook 'ffy-customize-nxml-mode)
+    #+begin_src emacs-lisp
+      (use-package nxml-mode
+        :defer t
+        :config
+        (setq
+         ;; Treat elements and contents like S-expressions! Oh, the magic.
+         ;; (if you know S-expression movement commands, it's great)
+         nxml-sexp-element-flag t
+         ;; Whenever you type </ it will fill out the rest.
+         nxml-slash-auto-complete-flag t
+         ;; Causes files with extensions .xml .xsl .rng .xhtml .html and .tal
+         ;; to invoke nxml-mode.
+         auto-mode-alist
+         (cons '("\\.\\(xml\\|xsl\\|rng\\|tal\\|xsd\\|sch\\|xslt\\|svg\\|rss\\)\\'" . nxml-mode)
+               (remove-if (lambda (x) (eq (cdr x) 'html-mode)) auto-mode-alist))
+         ;; another way to recognize XML files
+         magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
 
-      (add-to-list 'hs-special-modes-alist
-                   '(nxml-mode
-                     "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
-                     ""
-                     nil))
+        (add-hook 'nxml-mode-hook 'ffy-customize-nxml-mode)
+        (add-to-list 'hs-special-modes-alist
+                     '(nxml-mode
+                       "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
+                       ""
+                       nil)))
     #+end_src
 
 
