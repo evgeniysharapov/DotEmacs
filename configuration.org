@@ -570,7 +570,6 @@
 
 
 ** Windows
-
 *** Operations With Windows
     #+begin_src emacs-lisp
       (use-package window
@@ -605,6 +604,9 @@
         :bind ("C-x o" . ace-window))
     #+end_src
 
+    Now since we are using =ace-window= we also get
+    - =C-u C-x o= swapping windows
+    - =C-u C-u C-x o= delete window
 
 ** Help System
    Some of the useful functions and setting dealing with Info system
