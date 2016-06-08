@@ -916,7 +916,6 @@
 
 
 ** Navigation and Positioning
-
 *** Better BOL positioning
 
    First define better function =ffy-bol-or-back-to-indent= to
@@ -977,6 +976,20 @@
         :ensure t
         :bind ("C-z SPC" . ace-jump-mode))
     #+end_src
+
+*** Word navigation
+Sometimes rather than moving to the end of the work via =forward-word=
+I want to move to the beginning of the next word. 
+#+begin_src emacs-lisp
+  (defun next-word (&optional n)
+    "Move point to the beginning of the word N words to the right"
+    (interactive "^p")
+    (forward-word (+ n 1))
+    (backward-word))
+
+  (bind-key "M-F" #'next-word)
+#+end_src
+
 
 ** Marking
 
