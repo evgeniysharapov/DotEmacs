@@ -708,7 +708,6 @@
 
 
 * Editing
-
 ** Appearance
    Visual lines mode makes lines longer than window width can be
    displayed so that they are wrapped at word boundary. By default it
@@ -809,9 +808,7 @@
         (bind-key "M-?" #'company-complete))
     #+end_src
 
-
 ** Zapping
-
    Some of the zapping functions:
 
    - =zap-up-to-char= is a better alternative to regular zapping
@@ -841,9 +838,7 @@
     (bind-key "C-M-S-z" 'zap-up-to-char-backwards)
   #+end_src
 
-
 ** Kill-rings
-
    Searching and browsing through the =kill-ring=
    #+begin_src emacs-lisp
      (use-package browse-kill-ring
@@ -856,8 +851,6 @@
        :config  (progn
                   (bind-key "C-M-y" 'kill-ring-search)))
    #+end_src
-
-
 
 ** Search
 *** Search in a Buffer
@@ -881,7 +874,6 @@
         :ensure t
         :config (setq ag-reuse-buffers t))
     #+end_src
-
 
 ** Folding and Hiding
 
@@ -917,7 +909,6 @@
                 ("<left>" . hs-hide-block)
                 ("<right>" . hs-show-block))
    #+end_src
-
 
 ** Navigation and Positioning
 *** Better BOL positioning
@@ -994,16 +985,13 @@ I want to move to the beginning of the next word.
   (bind-key "M-F" #'next-word)
 #+end_src
 
-
 ** Marking
-
    Mark commands from =thing-cmds=
    #+begin_src emacs-lisp
      (use-package thing-cmds
        :ensure t
        :init (thgcmd-bind-keys))
    #+end_src
-
 
 ** Undo
    Undo/Redo functionality is done through =undo-tree=
