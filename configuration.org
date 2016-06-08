@@ -1300,7 +1300,6 @@ I want to move to the beginning of the next word.
                 )))
 #+end_src
 
-
 ** Orgtbl mode
    More about orgtbl
    http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html
@@ -1330,7 +1329,6 @@ I want to move to the beginning of the next word.
               (orgtbl-to-generic table (org-combine-plists params2 params))))))
     #+end_src
 
-
 ** Markdown
    #+begin_src emacs-lisp
      (use-package markdown-mode
@@ -1344,7 +1342,6 @@ I want to move to the beginning of the next word.
                   (add-hook 'markdown-mode-hook 'set-markdown-mode-outline-regexp)
                   (add-hook 'markdown-mode-hook 'orgtbl-mode)))
    #+end_src
-
 
 
 ** XML Based Editing
@@ -1426,7 +1423,6 @@ I want to move to the beginning of the next word.
                        ""
                        nil)))
     #+end_src
-
 
 ** TeX
    TeX editing and preview. We are using AucTeX. You can see their
