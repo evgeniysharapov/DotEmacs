@@ -444,6 +444,8 @@
                  '(lambda ()
                      (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
      #+end_src
+**** TODO Things to consider
+     Interesting addition to the Dired [[https://github.com/emacs-jp/bf-mode/blob/master/bf-mode.el][Browse-File Mode]]
 
 ** Buffers
 *** Using =IBuffer=
