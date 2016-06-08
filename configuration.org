@@ -1471,11 +1471,30 @@ I want to move to the beginning of the next word.
     
 
 
-
 ** Shell
    Setup for the shell window in the Emacs
    #+begin_src emacs-lisp :tangle yes
      (add-hook 'shell-mode-hook #'turn-off-show-trailing-whitespace)
+   #+end_src
+
+** Modes for specific files
+   For getting the text content of the word documents:
+
+   #+begin_src emacs-lisp
+     (when (executable-find "docx2txt")
+       (add-to-list 'auto-mode-alist '("\\.docx\\'" . docx2txt))
+
+       (defun docx2txt ()
+         "Run docx2txt on the entire buffer."
+         (shell-command-on-region (point-min) (point-max) "docx2txt" t t)))
+   #+end_src
+
+   Mercurial settings are edited using =conf-mod=
+   #+begin_src emacs-lisp
+     (dolist (pattern '("\\.hgrc\\'"
+                        "\\.hg/hgrc\\'"
+                        "Mercurial\\.ini\\'"))
+       (add-to-list 'auto-mode-alist (cons pattern 'conf-mode)))
    #+end_src
 
 * Programming
@@ -2335,26 +2354,6 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
 
 
-
-** Modes for specific files
-   For getting the text content of the word documents:
-
-   #+begin_src emacs-lisp
-     (when (executable-find "docx2txt")
-       (add-to-list 'auto-mode-alist '("\\.docx\\'" . docx2txt))
-
-       (defun docx2txt ()
-         "Run docx2txt on the entire buffer."
-         (shell-command-on-region (point-min) (point-max) "docx2txt" t t)))
-   #+end_src
-
-   Mercurial settings are edited using =conf-mod=
-   #+begin_src emacs-lisp
-     (dolist (pattern '("\\.hgrc\\'"
-                        "\\.hg/hgrc\\'"
-                        "Mercurial\\.ini\\'"))
-       (add-to-list 'auto-mode-alist (cons pattern 'conf-mode)))
-   #+end_src
 
 * Finally
 
