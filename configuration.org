@@ -677,6 +677,7 @@
        :config
        (progn
          (use-package ido-ubiquitous :ensure t)
+         (use-package flx-ido :ensure t :config (flx-ido-mode t))
          (ido-mode t)
          (ido-everywhere t)
          (ido-ubiquitous-mode t)
