@@ -214,47 +214,41 @@
     eleven but there is one that relates to the number twelve:
     duodenary.
 
-** Key-binding Utilities
-   Useful macro to create a keymap on a key
-
-   #+begin_src emacs-lisp
-     (defmacro keymap-on-key (name keys)
-       "This is a macro that declares a variable, key prefix and assigns a key to it.
-     NAME is symbol of the new keymap and KEYS is a string that represents keys as for macro `kbd'"
-       `(progn (defvar ,name)
-               (define-prefix-command (quote ,name))
-               (bind-key ,keys (quote ,name))))
-   #+end_src
-
-
-** Custom Keymaps
-   Other maps:
-    + =C-x f=  - map  file operations
-      #+begin_src emacs-lisp
-        (keymap-on-key ctl-x-f-map "C-x f")
-      #+end_src
-    + =M-g=    - goto map (already exists in Emacs24)
-    + =C-x t=  - toggling map
-      #+begin_src emacs-lisp
-        (keymap-on-key ctl-x-t-map "C-x t")
-      #+end_src
-
-** TODO Key Binging To Change:
-   - change =M-o= from =facemenu-keymap= to =outline-mode= keymap  =M-o=
-
 ** Possible Key Bindings
    Some of the more or less possible key binding could be:
    - =C-<capital letter>=
    - =M-<capital letter>=
-   - =A-<anything>=
-   - =M-A-<anything>=
+   - =C-M-<capital letter>=
 
-   Single-letter bindings still available:
-   + =C- ,'";:?<>|!#$%^&*`~ <tab>=
-   + =M- ?#=
+   Single-letter bindings:
+   - =C-= ":<>|!$%^*~=
+   - =M-= "#+
+   - =M-C-= '"=+()[]{}*&^$#!`~
 
-   Usually following keys are easy to press with one hand
+   Following keys are easy to press with one hand:
    =M-f12=, =M-f11=, =M-f10=, =M-f9=, =M-f8=, =M-f7=
+
+** Custom Keymaps
+    + =C-x f=  - file operations map
+      #+begin_src emacs-lisp
+        (bind-keys :prefix-map ctl-x-f-map
+                   :prefix "C-x f"
+                   :prefix-docstring "File operations map")
+      #+end_src
+    + =M-g=    - goto map (already exists in Emacs24)
+    + =C-x t=  - toggling map
+      #+begin_src emacs-lisp
+        (bind-keys :prefix-map ctl-x-t-map
+                   :prefix "C-x t"
+                   :prefix-docstring "Toggle map")
+      #+end_src
+
+    + =C-x w=  - window operations keymap
+      #+begin_src emacs-lisp
+        (bind-keys :prefix-map ctl-x-w-map
+                   :prefix "C-x w"
+                   :prefix-docstring "Window operations map")
+      #+end_src
 
 ** Remapping standard commands
 
@@ -266,6 +260,9 @@
        (global-unset-key [(control x) (control ?z)])
        (define-key ctl-x-map [(control ?z)] c-x-z))
    #+end_src
+
+** TODO Key Binging To Change:
+   - change =M-o= from =facemenu-keymap= to =outline-mode= keymap  =M-o=
 
 
 * General Settings
@@ -574,16 +571,10 @@
 
 ** Windows
 
-*** Window Keymap
-    Let's put window operations on =C-z w=
-    #+begin_src emacs-lisp
-      (keymap-on-key ctl-z-w-map "C-z w")
-    #+end_src
-
 *** Operations With Windows
     #+begin_src emacs-lisp
       (use-package window
-        :bind (:map ctl-z-w-map
+        :bind (:map ctl-x-w-map
                ("D" . delete-window)
                ("M" . delete-other-windows)))
     #+end_src
@@ -595,7 +586,7 @@
       (use-package windmove
         :ensure t
         :defer t
-        :bind (:map ctl-z-w-map
+        :bind (:map ctl-x-w-map
                     ("<left>" . windmove-left)
                     ("h" . windmove-left)
                     ("<right>" . windmove-right)
