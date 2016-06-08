@@ -775,6 +775,10 @@
      (bind-key "SPC" 'toggle-show-trailing-whitespace ctl-x-t-map)
    #+end_src
 
+   Toggles line numbers in the buffer
+   #+begin_src emacs-lisp
+     (bind-key "l"  'linum-mode ctl-x-t-map)
+   #+end_src
 
 ** Completions
 *** Regular hippie-expand
