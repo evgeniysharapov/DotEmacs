@@ -2,7 +2,6 @@
 #+author: Evgeniy Sharapov
 #+email: evgeniy.sharapov@gmail.com
 
-
 * Introduction
   As much as I liked =allout= mode it is has some quirks and irks and
   not necessarily works in the way I would like it to work. Plus, it
@@ -87,7 +86,6 @@
        (fmakunbound #'add-directory-to-path)
     #+end_src
 
-
 ** Configure Package Manager
    ELPA is in between setting up paths and loading up libraries. So
    we put it right in between.
@@ -130,7 +128,6 @@
      (setq url-http-attempt-keepalives nil)
    #+end_src
 
-
 ** Loading Packages and Libraries
 *** Loading Emacs built-in libraries
     Some of the libraries and packages that come with Emacs are so
@@ -171,7 +168,6 @@
         (message "Updated use-package libraries"))
      (mapc #'require '(use-package bind-key))
    #+end_src
-
 
 ** Notes on Windows
    Make sure that you have following DLL libraries in you =Emacs/bin=
@@ -263,7 +259,6 @@
 
 ** TODO Key Binging To Change:
    - change =M-o= from =facemenu-keymap= to =outline-mode= keymap  =M-o=
-
 
 * General Settings
 ** User Interface
@@ -569,7 +564,6 @@
        (bind-key "b t" 'ffy-create-temp-buffer ctl-z-map)
      #+end_src
 
-
 ** Windows
 *** Operations With Windows
     #+begin_src emacs-lisp
@@ -625,7 +619,6 @@
      (bind-key "C-b" #'describe-personal-keybindings help-map)
    #+end_src
 
-
 ** Spell checker
    We could use Hunspell or Aspell. Hunspell seems to be better for
    spellchecking. Even though it requires building up from the
@@ -659,7 +652,6 @@
    Some =Hunspell= related settings to a modern emacs (version >=
    24.4) is here
    http://lists.gnu.org/archive/html/help-gnu-emacs/2014-04/msg00030.html
-
 
 ** Miscellaneous
    Here we collect settings and commands that don't really fall into
@@ -704,8 +696,6 @@
            "Disables IDO for a function using `ido-ubiquitous' mode"
            `(ffy--change-ido-override 'disable ,func-name))))
    #+end_src
-
-
 
 * Editing
 ** Appearance
@@ -1119,7 +1109,6 @@ I want to move to the beginning of the next word.
                    (setq magit-last-seen-setup-instructions "1.4.0")))
    #+end_src
 
-
 * Specific Modes
 ** Org Mode
    Org-mode is a submodule of this repository. More so I had to create a repo on bitbucket.com
@@ -1343,7 +1332,6 @@ I want to move to the beginning of the next word.
                   (add-hook 'markdown-mode-hook 'orgtbl-mode)))
    #+end_src
 
-
 ** XML Based Editing
 *** Pretty Print Functions
     #+name: xml-pretty-print
@@ -1463,13 +1451,9 @@ I want to move to the beginning of the next word.
    Setting up Tex previewer
    http://tex.stackexchange.com/questions/119645/emacs-auctex-view-command
 
-
 *** ConTeXt specifics
     For the Context we assume that version MKiV is used. Then
     everything is run via =mtxrun= or =context= commands.
-
-    
-
 
 ** Shell
    Setup for the shell window in the Emacs
@@ -1498,9 +1482,7 @@ I want to move to the beginning of the next word.
    #+end_src
 
 * Programming
-
 ** General Programming
-
 *** Programming Modes Hook
 
     All programming modes will benefit from following functions:
@@ -1594,7 +1576,6 @@ I want to move to the beginning of the next word.
                 (add-hook 'c-mode-common-hook 'turn-on-ggtags-mode)))
     #+end_src
 
-
 ** Paredit
    Nice mode for dealing with all those parentheses in lisp modes
    #+begin_src emacs-lisp
@@ -1616,7 +1597,6 @@ I want to move to the beginning of the next word.
                  ;; this will enable paredit in mini-buffer
                  (add-hook 'minibuffer-setup-hook 'ffy-init-lisp-minibuffer-enable-paredit-mode)))
    #+end_src
-
 
 ** Emacs Lisp
    Modes that deal with Emacs-Lisp
@@ -1741,9 +1721,7 @@ I want to move to the beginning of the next word.
       (bind-key "C-c M-:" 'ffy-ielm)
     #+end_src
 
-
 ** Clojure
-
    #+begin_src emacs-lisp
      (use-package clojure-mode
        :ensure t
@@ -1844,7 +1822,6 @@ I want to move to the beginning of the next word.
               ("Guardfile$" . ruby-mode)))
    #+end_src
 
-
 ** YAML
    This is closely related to Ruby/Rails
    #+begin_src emacs-lisp
@@ -1852,8 +1829,6 @@ I want to move to the beginning of the next word.
        :ensure t
        :mode (("\\.ya?ml$" . yaml-mode)))
    #+end_src
-
-
 
 ** HAML/SCSS/SASS setup
    Closely related to Ruby/Rails development
@@ -1911,7 +1886,6 @@ I want to move to the beginning of the next word.
      ;  (add-to-list 'ac-modes mode))
    #+end_src
 
-
 ** Coffee-Script
    #+begin_src emacs-lisp
      (use-package coffee-mode
@@ -1920,7 +1894,6 @@ I want to move to the beginning of the next word.
        :commands coffee-mode
        :mode ("\\.coffee$" . coffee-mode))
    #+end_src
-
 
 ** JavaScript
    Good link about setting up JavaScript:
@@ -2069,7 +2042,6 @@ I want to move to the beginning of the next word.
        :defer t)
    #+end_src
 
-
 ** Octave Mode
    #+begin_src emacs-lisp
      (setq auto-mode-alist
@@ -2078,9 +2050,7 @@ I want to move to the beginning of the next word.
                                    (auto-fill-mode 1)))
    #+end_src
 
-
 ** Haskell Mode
-
    The easiest way to start with Haskell is to install Haskell
    Platform. The caveat here is that GHC is a little bit old.
 
@@ -2172,7 +2142,6 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
     If command line works then it will also work =haskell-mode=,
     check variable =haskell-hoogle-command=
 
-
 ** Python
    On Mac to use Python one should use MacPorts then one could see
    available pythons via =port select --list python=. To activate
@@ -2210,10 +2179,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
                   '(add-to-list 'company-backends 'company-anaconda)))           
    #+end_src
 
-
-
 ** C/C++
-
    Writing C/C++ programs.
    Good source of information [[http://tuhdo.github.io/c-ide.html]]
 
@@ -2303,9 +2269,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
      (add-hook 'c-mode-common-hook #'ffy-c-mode-hook)
    #+end_src
 
-
 ** Golang
-
    Installation is just download distribution and correct =PATH= and
    =GOPATH= environment variables.
 
@@ -2352,11 +2316,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
    Other things to look at:
    - =go-oracle= ([[https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view][Documentation]]).
 
-
-
-
 * Finally
-
   Load custom variables and faces from the customization file
   #+begin_src emacs-lisp
     (setq custom-file (concat *dotfiles-dir* "custom.el"))
