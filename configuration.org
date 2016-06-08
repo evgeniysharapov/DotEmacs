@@ -383,7 +383,6 @@
     the end. We execute =desktop-read= in the initialization part in
     =after-init-hook= (see =init.el=).
 
-
 *** Configuration Files
     #+begin_src emacs-lisp
       (setq url-configuration-directory (file-name-as-directory (concat *data-dir* "url")))
@@ -417,7 +416,6 @@
                         projectile-indexing-method 'alien)))
     #+end_src
 
-
 *** Files Key-Bindings
 
     =C-x C-f= is bound to =ido-find-file=
@@ -432,19 +430,20 @@
     #+end_src
 
 *** Dired
-    Dired settings that proved useful.
-    Make Dired guess where to copy files
-    #+begin_src emacs-lisp
-      (setq dired-dwim-target t)
-    #+end_src
+**** Dired cheat sheet
+     Here's the list useful keys used in Dired: [[http://harryrschwartz.com/assets/documents/dired-cheatsheet.pdf][Dired Cheat Sheet]] 
+**** Dired settings that proved useful.
+     Make Dired guess where to copy files
+     #+begin_src emacs-lisp
+       (setq dired-dwim-target t)
+     #+end_src
 
-    Switch to "writable" =dired-mode=. It makes it very easy to rename files.
-    #+begin_src emacs-lisp
-      (add-hook 'dired-mode-hook
-                '(lambda ()
-                    (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
-    #+end_src
-
+     Switch to "writable" =dired-mode=. It makes it very easy to rename files.
+     #+begin_src emacs-lisp
+       (add-hook 'dired-mode-hook
+                 '(lambda ()
+                     (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
+     #+end_src
 
 ** Buffers
 *** Using =IBuffer=
