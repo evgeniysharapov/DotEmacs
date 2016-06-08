@@ -24,6 +24,7 @@
  '(enable-recursive-minibuffers t)
  '(flyspell-use-meta-tab nil)
  '(font-lock-verbose nil)
+ '(gc-cons-threshold 4000000)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(haskell-tags-on-save t)
