@@ -1002,87 +1002,57 @@ I want to move to the beginning of the next word.
        :config (global-undo-tree-mode))
    #+end_src
 
+** Narrowing/Widening
+   Enable useful disabled Narrow/Widen commands
+   #+begin_src emacs-lisp
+     (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
+       (put command 'disabled nil))
+   #+end_src
 
-** Miscellaneous
+** Thing At the Point
+   Let's load up =thingatpt= and =thingatpt+= libraries and create
+   additional functions that will change number at the point (if
+   point is at the number):
+   #+begin_src emacs-lisp
+     (use-package thingatpt
+       :defer t
+       :config (progn
+                 (use-package thingatpt+
+                   :ensure t
+                   :config (progn
+                             ;; Rectifying the problem with some code (e.g.
+                             ;; CIDER) that relies on standard behaviour
+                             ;; of the tap functions
+                             (tap-put-thing-at-point-props)
+                             ;;(tap-redefine-std-fns) ;; This breaks CIDER
+                             ;; This depends on the thingatpt and thingatpt+
+                             (defun ffy-tap-number-change (&optional num)
+                               "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
+                               (interactive "p")
+                               (save-excursion
+                                 (let ((n (tap-number-at-point-decimal))
+                                       (bounds (tap-bounds-of-number-at-point)))
+                                   (if (and n bounds)
+                                       (progn
+                                         (delete-region (car bounds) (cdr bounds))
+                                         (insert (number-to-string (+ n (or num 1)))))))))
 
-   - toggles line numbers in the buffer
-     #+begin_src emacs-lisp
-       (bind-key "l"  'linum-mode ctl-x-t-map)
-     #+end_src
+                             (defun ffy-tap-number-decrease (&optional num)
+                               "Decreases number at the point by `num' or 1 if argument is not given"
+                               (interactive "p")
+                               (ffy-tap-number-change (- (or num 1))))
 
-   - =IMenu= defaults
-     #+begin_src emacs-lisp
-       (set-default 'imenu-auto-rescan t)
-     #+end_src
+                             (defun ffy-tap-number-increase (&optional num)
+                               "Increases number at the point by `num' or 1 if argument is not given"
+                               (interactive "p")
+                               (ffy-tap-number-change (or num 1)))
 
-   - use =C-\= to leave one space between words
-     #+begin_src emacs-lisp
-       (define-key global-map [(control ?\\)] 'just-one-space)
-     #+end_src
+                             (bind-key "C--"  'ffy-tap-number-decrease)
+                             (bind-key "C-+"  'ffy-tap-number-increase)))))
+   #+end_src
 
-   - there's default =M-^= =delete-indentation= that is an alias to
-     =join-line=
-     #+begin_src emacs-lisp
-       (bind-key "j" 'join-line ctl-z-map)
-       (bind-key "J" (lambda () "joins next line to this one"
-                                      (interactive)
-                                      (join-line 1)) ctl-z-map)
-     #+end_src
-
-*** Narrowing/Widening
-    Enable useful disabled Narrow/Widen commands
-    #+begin_src emacs-lisp
-      (dolist (command '(narrow-to-region narrow-to-defun narrow-to-page widen set-goal-column))
-        (put command 'disabled nil))
-    #+end_src
-
-*** Thing At the Point
-    Let's load up =thingatpt= and =thingatpt+= libraries and create
-    additional functions that will change number at the point (if
-    point is at the number):
-    #+begin_src emacs-lisp
-      (use-package thingatpt
-        :defer t
-        :config (progn
-                  (use-package thingatpt+
-                    :ensure t
-                    :config (progn
-                              ;; Rectifying the problem with some code (e.g.
-                              ;; CIDER) that relies on standard behaviour
-                              ;; of the tap functions
-                              (tap-put-thing-at-point-props)
-                              ;;(tap-redefine-std-fns) ;; This breaks CIDER
-                              ;; This depends on the thingatpt and thingatpt+
-                              (defun ffy-tap-number-change (&optional num)
-                                "Changes the number at the point by `num' passed as a prefix argument. If no argument is passed then it uses 1, i.e. decrements and increments number at the point. If it is not a number at the point, then nothing happens."
-                                (interactive "p")
-                                (save-excursion
-                                  (let ((n (tap-number-at-point-decimal))
-                                        (bounds (tap-bounds-of-number-at-point)))
-                                    (if (and n bounds)
-                                        (progn
-                                          (delete-region (car bounds) (cdr bounds))
-                                          (insert (number-to-string (+ n (or num 1)))))))))
-
-                              (defun ffy-tap-number-decrease (&optional num)
-                                "Decreases number at the point by `num' or 1 if argument is not given"
-                                (interactive "p")
-                                (ffy-tap-number-change (- (or num 1))))
-
-                              (defun ffy-tap-number-increase (&optional num)
-                                "Increases number at the point by `num' or 1 if argument is not given"
-                                (interactive "p")
-                                (ffy-tap-number-change (or num 1)))
-
-                              (bind-key "C--"  'ffy-tap-number-decrease)
-                              (bind-key "C-+"  'ffy-tap-number-increase)))))
-    #+end_src
-
-    At the end we have keys =C--= and =C-+= bound to decreasing
-    number at the point and increasing number at the point.
-
-
-
+   At the end we have keys =C--= and =C-+= bound to decreasing
+   number at the point and increasing number at the point.
 
 ** Snippets
    Snippets allow us to create code quickly
@@ -1116,6 +1086,25 @@ I want to move to the beginning of the next word.
            :ensure t)))
    #+end_src
 
+** Miscellaneous
+   - =IMenu= defaults
+     #+begin_src emacs-lisp
+       (set-default 'imenu-auto-rescan t)
+     #+end_src
+
+   - use =C-\= to leave one space between words
+     #+begin_src emacs-lisp
+       (define-key global-map [(control ?\\)] 'just-one-space)
+     #+end_src
+
+   - there's default =M-^= =delete-indentation= that is an alias to
+     =join-line=
+     #+begin_src emacs-lisp
+       (bind-key "j" 'join-line ctl-z-map)
+       (bind-key "J" (lambda () "joins next line to this one"
+                                      (interactive)
+                                      (join-line 1)) ctl-z-map)
+     #+end_src
 
 * Version Control Systems
 ** Git
