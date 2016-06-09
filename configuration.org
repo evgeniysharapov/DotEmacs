@@ -612,10 +612,7 @@
      (use-package help-fns+ :ensure t)
    #+end_src
 
-   =apropos= seems to be more useful than =apropos-command=
-
    #+begin_src emacs-lisp
-     (bind-key "C-h a" 'apropos)
      (bind-key "C-b" #'describe-personal-keybindings help-map)
    #+end_src
 
