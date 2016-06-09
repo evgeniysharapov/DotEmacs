@@ -1108,20 +1108,28 @@ I want to move to the beginning of the next word.
 
 * Specific Modes
 ** Org Mode
-   Org-mode is a submodule of this repository. More so I had to create a repo on bitbucket.com
-   so it could be successfly cloned on any machine (via https not git protocol).
+*** Using Bleeding-Edge Version
+   If decided to use =Org-mode= latest version then you could use it
+   as a submodule of this repository. Before I had to create
+   a repo on bitbucket.com so it could be successfly cloned on any
+   machine (via https not git protocol).
 
-   First of all go into =site-lisp/org-mode= and run =make autoloads= and =make info=. These
-   commands will create all necessary files: org-loaddefs.el and info files.
+   First of all go into =site-lisp/org-mode= and run =make autoloads=
+   and =make info=. These commands will create all necessary files:
+   =org-loaddefs.el= and info files.
 
-   On Mac OS X there could be a problem, while running make in =site-lisp/org-mode= directory
-   it will break with the dialog "This application will not run on your computer. Sorry!". This
-   is a problem of launching script. Edit =/Application/Emacs.app/Contents/MacOS/Emacs= file - replace
-   line
+   On Mac OS X there could be a problem, while running make in
+   =site-lisp/org-mode= directory it will break with the dialog "This
+   application will not run on your computer. Sorry!". This is a
+   problem of launching script. Edit
+   =/Application/Emacs.app/Contents/MacOS/Emacs= file - replace line
+
 #+begin_src ruby
   exec versions[highest_compatible_version], *ARGV
 #+end_src
- With
+ 
+With
+
 #+begin_src ruby
   executable = versions[highest_compatible_version], *ARGV
   exec %("#{executable}")
@@ -1131,119 +1139,145 @@ I want to move to the beginning of the next word.
 
    Now Emacs should load new org-mode.
 
-   #+begin_src emacs-lisp
-     (use-package org
-       :ensure t
-       :defer t
-       :bind (("C-&" . org-mark-ring-goto)
-              ("C-c l" . org-store-link)
-              ("C-c a" . org-agenda)
-              ("C-c b" . org-iswitchb))
-              ;(bind-key "C-&" 'org-mark-ring-goto  mode-specific-map) ;; due to the conflict with Yasnippet
-       :init (progn
-               (setq org-completion-use-ido t
-                     ;; org-completion-use-iswitchb t     ; without it ido completion is
-                     ;;                                   ; not going to work for
-                     ;;                                   ; org-mode (see `org-read-property-value')
-                     org-hide-leading-stars t
-                     org-return-follows-link t
-                     org-modules '(org-docview
-                                   org-gnus
-                                   org-id
-                                   org-info
-                                   org-jsinfo
-                                   org-protocol
-                                   org-special-blocks
-                                   org-w3m
-                                   org-bookmark
-                                   org-elisp-symbol
-                                   org-panel)
-                     org-empty-line-terminates-plain-lists t
-                     org-confirm-babel-evaluate nil    ; do not ask about evaluating babel
-                     org-src-fontify-natively t        ; syntax highlighting
-                     )
-               ;; TODO: Should it be moved to a :config part ???
-               (org-babel-do-load-languages
-                'org-babel-load-languages
-                '((dot . t)
-                  (ditaa . t)
-                  (emacs-lisp . t)
-                  (python . t)))
-     
-               ;; make company completion work in Org-Mode
-               (defun add-pcomplete-to-capf ()
-                 (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-     
-               ;(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-               (dolist (it '(turn-on-font-lock
-                             yas-minor-mode-on
-                             turn-on-auto-fill
-                             turn-on-flyspell
-                             hl-line-mode
-                             add-pcomplete-to-capf
-                             iimage-mode))
-                       (add-hook 'org-mode-hook it)))
-       :config (progn
-                 ;; Override not working function from org-mode
-                 (defun org-read-property-value (property)
-                   "Read PROPERTY value from user."
-                   (let* ((completion-ignore-case t)
-                          (allowed (org-property-get-allowed-values nil property 'table))
-                          (cur (org-entry-get nil property))
-                          (prompt (concat property " value"
-                                          (if (and cur (string-match "\\S-" cur))
-                                              (concat " [" cur "]") "") ": "))
-                          (set-function (org-set-property-function property))
-                          (val (if allowed
-                                   (funcall set-function prompt allowed nil
-                                            (not (get-text-property 0 'org-unrestricted
-                                                                    (caar allowed))))
-                                 (funcall set-function prompt
-                                          (mapcar 'list (org-property-values property))
-                                          nil nil "" nil cur))))
-                     (if (equal val "")
-                         cur
-                       val)))
-                 )
-     
-     ;(setq org-todo-keyword-faces
-     ;      (quote (("TODO" :foreground "medium blue" :weight bold)
-     ;              ("NOTE" :foreground "dark violet" :weight bold)
-     ;              ("STARTED" :foreground "dark orange" :weight bold)
-     ;              ("WAITING" :foreground "red" :weight bold)
-     ;              ("DELEGATED" :foreground "red" :weight bold))))
-     
-     ;(defun my-org-mode-custom-bindings ()
-     ;  "customize org-mode keys"
-     ;  (local-set-key [(control up)] 'outline-previous-visible-heading)
-     ;  (local-set-key [(control down)]  'outline-next-visible-heading)
-     ;  (local-set-key [(control meta up)]  'outline-up-heading)
-     ;  (local-set-key [(control c) (meta ?w)] 'org-store-link )
-     ;  (local-set-key [(control c) (control ?y)] 'org-insert-link)
-     ;  (local-set-key [(control c) ?a] 'org-agenda))
-     
-     
-     ;(dolist (mode '(org-mode))
-     ;  (add-to-list 'ac-modes mode))
-     
-     ;;
-     ;;  Setup iimage working with Org-mode
-     ;;
-     ;; (add-hook 'org-mode-hook 'turn-on-iimage-mode)
-     
-     ;; (defun org-toggle-iimage-in-org ()
-     ;;   "display images in your org file"
-     ;;   (interactive)
-     ;;   (if (face-underline-p 'org-link)
-     ;;       (set-face-underline-p 'org-link nil)
-     ;;     (set-face-underline-p 'org-link t))
-     ;;   (iimage-mode))
-     
-     
-     )
-   #+end_src
-*** Using OX-REVEAL
+*** Org-mode Setup 
+**** Modules
+    Modules to use with =org-mode=
+    #+begin_src emacs-lisp
+      (setq org-modules
+            '(org-docview
+              org-gnus
+              org-id
+              org-info
+              org-jsinfo
+              org-protocol
+              org-special-blocks
+              org-w3m
+              org-bookmark
+              org-elisp-symbol
+              org-panel))
+    #+end_src
 
+**** Completion
+     Without it ido completion is not going to work for org-mode (see
+     =org-read-property-value=). Alternative completion uses
+     =org-completion-use-iswitchb=
+
+     #+begin_src emacs-lisp
+       (setq org-completion-use-ido t)
+     #+end_src
+
+     Make company completion work in Org-Mode (this function will be
+     added to the =org-mode-hook=)
+
+     #+name: add-pcomplete-to-capf
+     #+begin_src emacs-lisp
+       (defun add-pcomplete-to-capf ()
+         (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+     #+end_src
+
+**** Key Binding
+     This is global binding. For binding to the =org-mode-map= see
+     Loading org-mode or use =eval-after-load=
+     #+begin_src emacs-lisp
+       (bind-key "C-c b" 'org-iswitchb)
+     #+end_src
+
+     Consider binding following functions: =org-mark-ring-goto=,
+      =org-store-link=, =org-agenda=,
+      =outline-previous-visible-heading=,
+      =outline-next-visible-heading=, =outline-up-heading=,
+      =org-store-link=, =org-insert-link=
+
+**** Appearance
+
+     Customize TODO faces
+
+     #+begin_src emacs-lisp
+                                        ;(setq org-todo-keyword-faces
+;      (quote (("TODO" :foreground "medium blue" :weight bold)
+;              ("NOTE" :foreground "dark violet" :weight bold)
+;              ("STARTED" :foreground "dark orange" :weight bold)
+;              ("WAITING" :foreground "red" :weight bold)
+;              ("DELEGATED" :foreground "red" :weight bold))))
+
+     #+end_src
+
+     Display images
+     #+begin_src emacs-lisp
+;;
+;;  Setup iimage working with Org-mode
+;;
+;; (add-hook 'org-mode-hook 'turn-on-iimage-mode)
+
+;; (defun org-toggle-iimage-in-org ()
+;;   "display images in your org file"
+;;   (interactive)
+;;   (if (face-underline-p 'org-link)
+;;       (set-face-underline-p 'org-link nil)
+;;     (set-face-underline-p 'org-link t))
+;;   (iimage-mode))
+
+     #+end_src
+     
+**** Miscelaneous
+     Override not working function from org-mode
+     #+name: org-read-property-value
+     #+begin_src emacs-lisp
+       (defun org-read-property-value (property)
+         "Read PROPERTY value from user."
+         (let* ((completion-ignore-case t)
+                (allowed (org-property-get-allowed-values nil property 'table))
+                (cur (org-entry-get nil property))
+                (prompt (concat property " value"
+                                (if (and cur (string-match "\\S-" cur))
+                                    (concat " [" cur "]") "") ": "))
+                (set-function (org-set-property-function property))
+                (val (if allowed
+                         (funcall set-function prompt allowed nil
+                                  (not (get-text-property 0 'org-unrestricted
+                                                          (caar allowed))))
+                       (funcall set-function prompt
+                                (mapcar 'list (org-property-values property))
+                                nil nil "" nil cur))))
+           (if (equal val "")
+               cur
+             val)))
+     #+end_src
+
+**** Loading =org-mode=
+
+ #+begin_src emacs-lisp
+   (use-package org
+     :ensure t
+     :defer t
+     :init
+     (progn
+       (setq org-hide-leading-stars t
+             org-return-follows-link t
+             org-empty-line-terminates-plain-lists t
+             org-confirm-babel-evaluate nil
+             org-src-fontify-natively t)
+       (mapc (apply-partially 'add-hook 'org-mode-hook)
+             '(turn-on-font-lock
+               yas-minor-mode-on
+               turn-on-auto-fill
+               turn-on-flyspell
+               hl-line-mode
+               add-pcomplete-to-capf
+               iimage-mode)))
+     :config
+     (progn
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((dot . t)
+          (ditaa . t)
+          (emacs-lisp . t)
+          (python . t))))
+     :bind (:map org-mode-map
+                 ("C-c k" . org-cut-subtree)))
+   #+end_src
+*** Export
+**** Using OX-REVEAL
 #+begin_src emacs-lisp
   (use-package ox-reveal
     :config (progn
@@ -1286,34 +1320,34 @@ I want to move to the beginning of the next word.
                 )))
 #+end_src
 
-** Orgtbl mode
-   More about orgtbl
-   http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html
-    #+begin_src emacs-lisp
-      (use-package orgtbl
-        :disabled t
-        :commands orgtbl-mode
-        :config (progn
-                  (defun orgtbl-to-gfm (table params)
-            "Convert the Orgtbl mode TABLE to GitHub Flavored Markdown.
-      Usage Example:
-        <!--- BEGIN RECEIVE ORGTBL ${1:YOUR_TABLE_NAME} -->
-        <!--- END RECEIVE ORGTBL $1 -->
-        <!---
-        ,#+ORGTBL: SEND $1 orgtbl-to-gfm
-         | $0 |
-        -->
-      For more details see https://gist.github.com/grafov/8244792 and https://gist.github.com/yryozo/5807243
-      "
-            (let* ((alignment (mapconcat (lambda (x) (if x "|--:" "|---"))
-                                         org-table-last-alignment ""))
-                   (params2
-                    (list
-                     :splice t
-                     :hline (concat alignment "|")
-                     :lstart "| " :lend " |" :sep " | ")))
-              (orgtbl-to-generic table (org-combine-plists params2 params))))))
-    #+end_src
+*** Orgtbl mode
+    More about orgtbl
+    http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html
+     #+begin_src emacs-lisp
+       (use-package orgtbl
+         :disabled t
+         :commands orgtbl-mode
+         :config (progn
+                   (defun orgtbl-to-gfm (table params)
+             "Convert the Orgtbl mode TABLE to GitHub Flavored Markdown.
+       Usage Example:
+         <!--- BEGIN RECEIVE ORGTBL ${1:YOUR_TABLE_NAME} -->
+         <!--- END RECEIVE ORGTBL $1 -->
+         <!---
+         ,#+ORGTBL: SEND $1 orgtbl-to-gfm
+          | $0 |
+         -->
+       For more details see https://gist.github.com/grafov/8244792 and https://gist.github.com/yryozo/5807243
+       "
+             (let* ((alignment (mapconcat (lambda (x) (if x "|--:" "|---"))
+                                          org-table-last-alignment ""))
+                    (params2
+                     (list
+                      :splice t
+                      :hline (concat alignment "|")
+                      :lstart "| " :lend " |" :sep " | ")))
+               (orgtbl-to-generic table (org-combine-plists params2 params))))))
+     #+end_src
 
 ** Markdown
    #+begin_src emacs-lisp
