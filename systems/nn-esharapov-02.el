@@ -51,7 +51,7 @@
 ;; (set-default-font  "Consolas-10")
 ;; (set-default-font "Source Code Pro-10")
 ;; (set-default-font  "Monaco-10")
-(set-default-font "Meslo LG L DZ-10")
+(set-frame-font "Meslo LG L DZ-10")
 ;; (set-default-font "Bitstream Vera Sans Mono-10")
 ;; (set-default-font "Anonymous Pro-10")
 ;; (set-default-font "Inconsolata LGC-10")
