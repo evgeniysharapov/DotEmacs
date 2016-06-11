@@ -1156,7 +1156,8 @@ With
     Modules to use with =org-mode=
     #+begin_src emacs-lisp
       (setq org-modules
-            '(org-docview
+            '(org-crypt
+              org-docview
               org-gnus
               org-id
               org-info
@@ -1285,9 +1286,24 @@ With
           (ditaa . t)
           (emacs-lisp . t)
           (python . t))))
+
      :bind (:map org-mode-map
                  ("C-c k" . org-cut-subtree)))
    #+end_src
+**** Encryption
+     Encryption of the entries
+
+     #+begin_src emacs-lisp
+       (use-package org-crypt
+         :config (progn
+                   (org-crypt-use-before-save-magic)
+                   (setq org-tags-exclude-from-inheritance
+                         (append '("crypt") org-tags-exclude-from-inheritance)))
+         :bind (:map org-mode-map
+                ("C-c e" . org-encrypt-entry)
+                ("C-c d" . org-decrypt-entry)))
+     #+end_src
+
 *** Export
 **** Using OX-REVEAL
 #+begin_src emacs-lisp
