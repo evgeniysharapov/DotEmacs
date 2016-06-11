@@ -425,22 +425,34 @@
     #+end_src
 
 *** Dired
-**** Dired cheat sheet
-     Here's the list useful keys used in Dired: [[http://harryrschwartz.com/assets/documents/dired-cheatsheet.pdf][Dired Cheat Sheet]] 
-**** Dired settings that proved useful.
-     Make Dired guess where to copy files
-     #+begin_src emacs-lisp
-       (setq dired-dwim-target t)
-     #+end_src
+    Here's the list useful keys used in Dired: [[http://harryrschwartz.com/assets/documents/dired-cheatsheet.pdf][Dired Cheat Sheet]].
 
-     Switch to "writable" =dired-mode=. It makes it very easy to rename files.
-     #+begin_src emacs-lisp
+    - This will make Dired guess where to copy files:
+      #+begin_src emacs-lisp
+        (setq dired-dwim-target t)
+      #+end_src
+    - Human friendly listing
+      #+begin_src emacs-lisp
+        (setq dired-listing-switches  "-alhG" )
+      #+end_src
+    - List directories first
+      #+begin_src emacs-lisp
+        (setq ls-lisp-dirs-first t)
+      #+end_src
+    - Show human sizes of directories
+      #+begin_src emacs-lisp
+        (setq directory-free-space-args "-Pmh")
+      #+end_src
+
+
+    Switch to "writable" =dired-mode=. It makes it very easy to rename files.
+    #+begin_src emacs-lisp
        (add-hook 'dired-mode-hook
                  '(lambda ()
                      (bind-key "W" 'wdired-change-to-wdired-mode dired-mode-map)))
-     #+end_src
-**** TODO Things to consider
-     Interesting addition to the Dired [[https://github.com/emacs-jp/bf-mode/blob/master/bf-mode.el][Browse-File Mode]]
+    #+end_src
+
+    Interesting addition to the Dired [[https://github.com/emacs-jp/bf-mode/blob/master/bf-mode.el][Browse-File Mode]]
 
 ** Buffers
 *** Using =IBuffer=
