@@ -23,7 +23,7 @@
 ;;; front
 ;;; Turns out that msysGit contains older gnu tools (e.g. Grep version
 ;;; 2.4). Add more recent path upfront
-(let ((paths '("C:/App/EZWin/bin" "C:/App/gnuw32/bin" "C:/PF/Git/bin" "C:/PF/Git/cmd")))
+(let ((paths '("C:/App/EZWin/bin" "C:/App/gnuw32/bin" "C:/PF/Git/bin" "C:/PF/Git/usr/bin" "C:/PF/Git/cmd")))
   (setenv "PATH" (mapconcat  'identity (append paths (list (getenv "PATH"))) ";"))
   (mapc (apply-partially 'add-to-list 'exec-path) paths))
 
