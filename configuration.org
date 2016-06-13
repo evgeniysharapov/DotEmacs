@@ -387,7 +387,9 @@
     #+begin_src emacs-lisp
       (use-package find-file-in-project
         :ensure t
-        :commands find-file-in-project)
+        :commands find-file-in-project
+        :config (setq ffip-prefer-ido-mode t
+                      ffip-match-path-instead-of-filename t))
     #+end_src
 
     Opening files from =recentf= list
