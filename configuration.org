@@ -1231,7 +1231,12 @@ With
 ;;   (iimage-mode))
 
      #+end_src
-     
+
+     Do not re-organize windows when edit source blocks
+     #+begin_src emacs-lisp
+       (setq org-src-window-setup 'other-window)
+     #+end_src
+
 **** Miscelaneous
      Override not working function from org-mode
      #+name: org-read-property-value
