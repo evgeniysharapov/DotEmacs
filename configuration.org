@@ -682,6 +682,10 @@
        (progn
          (use-package ido-ubiquitous :ensure t)
          (use-package flx-ido :ensure t :config (flx-ido-mode t))
+         (use-package ido-vertical-mode
+           :ensure t
+           :init (add-hook 'ido-minibuffer-setup-hook 'turn-off-show-trailing-whitespace)
+           :config (ido-vertical-mode t))
          (ido-mode t)
          (ido-everywhere t)
          (ido-ubiquitous-mode t)

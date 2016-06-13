@@ -40,6 +40,8 @@
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point (quote guess))
  '(ido-use-virtual-buffers t)
+ '(ido-vertical-define-keys (quote C-n-C-p-up-and-down))
+ '(ido-vertical-show-count t)
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
