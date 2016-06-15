@@ -1800,11 +1800,6 @@ With
                      '(ffy-find-file-in-clojure-project
                        subword-mode
                        enable-paredit-mode
-                       turn-on-hl-line-mode
-                       turn-on-fic-mode
-                       turn-on-flyspell-prog-mode
-                       local-column-number-mode
-                       local-comment-auto-fill
                        turn-on-eldoc-mode
                        rainbow-delimiters-mode-enable))))
      (use-package elein
