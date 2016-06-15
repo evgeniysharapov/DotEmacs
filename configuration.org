@@ -877,7 +877,33 @@
     #+begin_src emacs-lisp
       (use-package ag
         :ensure t
-        :config (setq ag-reuse-buffers t))
+        :config (setq ag-reuse-buffers t
+                      ag-highlight-search t)
+        :init (progn
+                ;; add ag-filter for windows
+                (defun ag-windows-filter ()
+                  "Handle match highlighting escape sequences inserted by the ag process.
+      This function is called from `compilation-filter-hook'. This works only when `ag-highlight-search' is NIL"
+                  (unless ag-highlight-search
+                    (save-excursion
+                      (forward-line 0)
+                      (let ((end (point)) beg)
+                        (goto-char compilation-filter-start)
+                        (forward-line 0)
+                        (setq beg (point))
+                        ;; Only operate on whole lines so we don't get caught with part of an
+                        ;; escape sequence in one chunk and the rest in another.
+                        (when (< (point) end)
+                          (setq end (copy-marker end))
+                          ;; Highlight match to the regex taken from
+                          ;; minibuffer history
+                          (while (re-search-forward (concat "\\(" (car minibuffer-history) "\\)") end 1)
+                            (replace-match (propertize (match-string 1)
+                                                       'face nil 'font-lock-face 'ag-match-face)
+                                           t t)))))))
+
+                ;; advise ag-filter function
+                (add-function :after (symbol-function 'ag-filter) #'ag-windows-filter)))
     #+end_src
 
 ** Folding and Hiding
