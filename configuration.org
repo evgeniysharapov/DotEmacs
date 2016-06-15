@@ -1270,36 +1270,36 @@ With
 
 **** Loading =org-mode=
 
- #+begin_src emacs-lisp
-   (use-package org
-     :ensure t
-     :defer t
-     :init
-     (progn
-       (setq org-hide-leading-stars t
-             org-return-follows-link t
-             org-empty-line-terminates-plain-lists t
-             org-confirm-babel-evaluate nil
-             org-src-fontify-natively t)
-       (mapc (apply-partially 'add-hook 'org-mode-hook)
-             '(turn-on-font-lock
-               yas-minor-mode-on
-               turn-on-auto-fill
-               turn-on-flyspell
-               hl-line-mode
-               add-pcomplete-to-capf
-               iimage-mode)))
-     :config
-     (progn
-       (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((dot . t)
-          (ditaa . t)
-          (emacs-lisp . t)
-          (python . t))))
+     #+begin_src emacs-lisp
+       (use-package org
+         :ensure t
+         :defer t
+         :init
+         (progn
+           (setq org-hide-leading-stars t
+                 org-return-follows-link t
+                 org-empty-line-terminates-plain-lists t
+                 org-confirm-babel-evaluate nil
+                 org-src-fontify-natively t)
+           (mapc (apply-partially 'add-hook 'org-mode-hook)
+                 '(turn-on-font-lock
+                   yas-minor-mode-on
+                   turn-on-auto-fill
+                   turn-on-flyspell
+                   hl-line-mode
+                   add-pcomplete-to-capf
+                   iimage-mode)))
+         :config
+         (progn
+           (org-babel-do-load-languages
+            'org-babel-load-languages
+            '((dot . t)
+              (ditaa . t)
+              (emacs-lisp . t)
+              (python . t))))
 
-     :bind (:map org-mode-map
-                 ("C-c k" . org-cut-subtree)))
+         :bind (:map org-mode-map
+                     ("C-c k" . org-cut-subtree)))
    #+end_src
 **** Encryption
      Encryption of the entries
