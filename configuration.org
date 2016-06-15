@@ -1301,6 +1301,15 @@ With
          :bind (:map org-mode-map
                      ("C-c k" . org-cut-subtree)))
    #+end_src
+**** Babel
+     Do not run documentation fly checker on pieces of code
+     #+begin_src emacs-lisp
+       (add-hook 'org-src-mode-hook
+                 (lambda ()
+                   (if (eq major-mode 'emacs-lisp-mode)
+                       (flycheck-disable-checker 'emacs-lisp-checkdoc))))
+     #+end_src
+
 **** Encryption
      Encryption of the entries
 
