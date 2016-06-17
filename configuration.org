@@ -1424,6 +1424,18 @@ With
                (orgtbl-to-generic table (org-combine-plists params2 params))))))
      #+end_src
 
+** Presentations
+   We will use =epresent= mode for presentations right in the Emacs
+   #+BEGIN_SRC emacs-lisp
+     (use-package epresent
+       :ensure t
+       :defer t
+       :init (progn
+               ;; compatibility issues that are not covered in `org-compat.el'
+               (when (< emacs-major-version 25)
+                 (defalias 'outline-hide-body 'hide-body))))
+   #+END_SRC
+
 ** Markdown
    #+begin_src emacs-lisp
      (use-package markdown-mode
