@@ -2382,6 +2382,24 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
      (add-hook 'c-mode-common-hook #'ffy-c-mode-hook)
    #+end_src
 
+** Groovy
+   #+begin_src emacs-lisp
+     (use-package groovy-mode
+       :ensure t
+       :commands groovy-mode
+       :mode (("\\.groovy\\'" . groovy-mode))
+       :config (progn
+                 (fset 'stringify
+                       (lambda (&optional arg) "Turns buffer into a string." (interactive "p") (kmacro-exec-ring-item (quote ([134217765 17 10 return 92 114 92 110 return 33 134217788 134217765 34 delete return 92 34 return 33 134217788 34 delete 5 34] 0 "%d")) arg)))
+
+                 (fset 'unstringify
+                       (lambda (&optional arg) "Turns string in a buffer into a code" (interactive "p") (kmacro-exec-ring-item (quote ([delete 5 backspace 134217788 134217765 92 114 92 110 return 17 10 return 33 134217788 134217765 92 34 return 34 delete return 33 134217790] 0 "%d")) arg)))
+                 )
+       :bind (:map groovy-mode-map
+                   ("C-c s" . stringify)
+                   ("C-c S" . unstringify)))
+   #+end_src
+
 ** Golang
    Installation is just download distribution and correct =PATH= and
    =GOPATH= environment variables.
