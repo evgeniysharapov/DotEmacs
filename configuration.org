@@ -1530,6 +1530,28 @@ With
                        nil)))
     #+end_src
 
+** JSON
+   Editing JSON files using =json-mode=
+   #+begin_src emacs-lisp
+     (defun json-mode-insert-semicolon ()
+       "Smart insertion of `:` while point is on a key. Point goes to the : or inserts new one after the key. This is helpful if keys are quoted strings."
+       (interactive)
+       (insert ":"))
+
+     (defun json-mode-insert-open-brace ()
+       "Smart insertion of `{'"
+       (interactive)
+       (insert "{"))
+
+     (use-package json-mode
+       :ensure t
+       :commands json-mode
+       :bind (:map json-mode-map
+                   (":" . json-mode-insert-semicolon)
+                   ("{" . json-mode-insert-open-brace)
+              ))
+   #+end_src
+
 ** TeX
    TeX editing and preview. We are using AucTeX. You can see their
    web-site for instructions.
