@@ -2411,11 +2411,42 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
        :commands groovy-mode
        :mode (("\\.groovy\\'" . groovy-mode))
        :config (progn
-                 (fset 'stringify
-                       (lambda (&optional arg) "Turns buffer into a string." (interactive "p") (kmacro-exec-ring-item (quote ([134217765 17 10 return 92 114 92 110 return 33 134217788 134217765 34 delete return 92 34 return 33 134217788 34 delete 5 34] 0 "%d")) arg)))
+                 (defun unstringify ()
+                   (interactive)
+                   (save-excursion
+                     (beginning-of-buffer)
+                     (while (re-search-forward "\\\\r\\\\n" nil t)
+                       (replace-match "
+     "))
+                     (beginning-of-buffer)
+                     (while (re-search-forward "\\\\/" nil t)
+                       (replace-match "/"))
+                     (beginning-of-buffer)
+                     (while (re-search-forward "\\\\\""  nil t)
+                       (replace-match "\""))
+                     (beginning-of-buffer)
+                     (zap-to-char 1 ?\")
+                     (end-of-buffer)
+                     (zap-to-char-backwards ?\")))
 
-                 (fset 'unstringify
-                       (lambda (&optional arg) "Turns string in a buffer into a code" (interactive "p") (kmacro-exec-ring-item (quote ([delete 5 backspace 134217788 134217765 92 114 92 110 return 17 10 return 33 134217788 134217765 92 34 return 34 delete return 33 134217790] 0 "%d")) arg)))
+                 (defun stringify ()
+                   (interactive)
+                   (save-excursion
+                     (beginning-of-buffer)
+                     (while (re-search-forward "
+     " nil t)
+                       (replace-match "\\\\r\\\\n"))
+                     (beginning-of-buffer)
+                     (while (re-search-forward "/" nil t)
+                       (replace-match "\\\\/"))
+                     (beginning-of-buffer)
+                     (while (re-search-forward "\""  nil t)
+                       (replace-match "\\\\\""))
+                     (beginning-of-buffer)
+                     (insert-char ?\")
+                     (end-of-buffer)
+                     (insert ?\")))
+
                  )
        :bind (:map groovy-mode-map
                    ("C-c s" . stringify)
