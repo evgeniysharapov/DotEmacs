@@ -627,7 +627,10 @@
    #+end_src
 
    #+begin_src emacs-lisp
-     (bind-key "C-b" #'describe-personal-keybindings help-map)
+     (bind-keys :map help-map
+                ("C-b" . describe-personal-keybindings)
+                ("C-k" . describe-key-briefly)
+                ("C-c" . describe-char))
    #+end_src
 
 ** Spell checker
