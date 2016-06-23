@@ -46,16 +46,17 @@
             :inherit-props t))
 
 ;;; Font properties on my work Windows machine
-;; (set-face-attribute 'default nil :family "Consolas" :height 100)
-;; (set-default-font "DejaVu LGC Sans Mono-10")
-;; (set-default-font  "Consolas-10")
-;; (set-default-font "Source Code Pro-10")
-;; (set-default-font  "Monaco-10")
-(set-frame-font "Meslo LG L DZ-10")
-;; (set-default-font "Bitstream Vera Sans Mono-10")
-;; (set-default-font "Anonymous Pro-10")
-;; (set-default-font "Inconsolata LGC-10")
-;; (set-default-font "Envy Code R-10")
+;; (set-frame-font "Monaco-10" t)
+;; (set-frame-font "Menlo-11" t)
+;; (set-frame-font "DejaVu LGC Sans Mono-10" t)
+;;(set-frame-font "Meslo LG M DZ-10" t)
+;; (set-frame-font "Input-12" t)
+(set-frame-font "Iosevka Light-12" t)
+;; (set-frame-font "Source Code Pro-10" t)
+;; (set-frame-font "Consolas-11" t)
+;; (set-frame-font "M+ 1m-12" t)
+;; (set-frame-font "PragmataPro-12" t)
+;; (set-frame-font "Anonymous Pro-11" t)
 
 ;;; loading up color theme
 ;(load-theme 'tango-plus t) ; need to add it to the 'custom-theme-load-path

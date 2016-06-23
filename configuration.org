@@ -356,6 +356,83 @@
       (bind-key "<C-f1>" 'imenu-add-menubar-index)
     #+end_src
 
+*** TypeFaces and Fonts
+    Typefaces and fonts are important. Here are some favorites:
+
+    #+begin_src emacs-lisp
+      (setq ffy-type-faces '("DejaVu LGC Sans Mono"
+                             "Consolas"
+                             "Source Code Pro"
+                             "Monaco"
+                             "Menlo"
+                             "Meslo LG L DZ"
+                             "Meslo LG M DZ"
+                             "Meslo LG S DZ"
+                             "Bitstream Vera Sans Mono"
+                             "Anonymous Pro"
+                             "Inconsolata LGC"
+                             "Envy Code R"
+                             "PragmataPro"
+                             "Pragmata TT"
+                             "NotCourierSans"
+                             "Liberation Mono"
+                             "Hack"
+                             "Fira Code"
+                             "Code New Roman"
+                             "Audimat Mono:light"
+                             "CamingoCode"
+                             "Input"
+                             "IosevkaCC"
+                             "Iosevka"
+                             "mononoki"
+                             "Monoid"
+                             "Lucida Console"
+                             "M+ 1mn"
+                             "M+ 1m"
+                             "M+ 1c"
+                             "M+ 1p"
+                             "M+ 2mn"
+                             "M+ 2m"
+                             "M+ 2c"
+                             "M+ 2p"))
+    #+end_src
+
+    Setting font as a frame font
+
+    #+begin_src emacs-lisp
+      (defun ffy-select-typeface ()
+        "Choose typefaces for the frame"
+        (interactive)
+        (set-frame-font (ido-completing-read+ "Choose font:" ffy-type-faces nil nil) t))
+
+      (bind-key "f" #'ffy-select-typeface ctl-x-t-map)
+    #+end_src
+
+
+    Links to the fonts pages:
+    - Inconsolata: http://www.levien.com/type/myfonts/inconsolata.html
+    - Monospaced, Coding, Programming Fonts:
+      http://www.1001fonts.com/monospaced+coding+programming-fonts.html
+    - Programmer's Fonts: http://www.lowing.org/fonts/
+    - Top 10 Programmer's Fonts:
+      http://hivelogic.com/articles/top-10-programming-fonts/
+    - Programmer's Font Comparison: https://s9w.github.io/font_compare/
+    - Anonymous Pro:
+      http://www.marksimonson.com/fonts/view/anonymous-pro
+    - Programming Fonts: http://programmingfonts.org/
+    - Iosevka: https://be5invis.github.io/Iosevka/
+    - Input: http://input.fontbureau.com/
+    - M+ font: http://mplus-fonts.osdn.jp/index.html
+    - Monnoki: http://madmalik.github.io/mononoki/
+    - Proggy: http://www.proggyfonts.net/
+    - FiraCode: https://github.com/tonsky/FiraCode
+    - Consolamono: https://fontlibrary.org/en/font/consolamono
+    - Audimat-Mono: https://www.fontsquirrel.com/fonts/Audimat-Mono
+    - Anka-Coder-Fonts: https://github.com/fitojb/anka-coder-fonts
+    - NotCourierSans: https://fontlibrary.org/en/font/notcouriersans
+
+
+
 ** Files/Directories
 *** Backups and saves
     #+begin_src emacs-lisp
@@ -1809,7 +1886,6 @@ With
     #+end_src
 
     
-
 *** IELM - Emacs Lisp Interpreter
     Interpreter of Emacs-Lisp running in Emacs. Very helpful if we
     want run some command or change settings or instrument
