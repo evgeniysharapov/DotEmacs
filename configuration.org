@@ -1773,30 +1773,42 @@ With
    setup of Emacs-Lisp modes
 
    #+begin_src emacs-lisp
-     (defun ffy-init-emacs-lisp-modes ()
-       "Only emacs-lisp related things."
+     (defun ffy-emacs-lisp-modes-completions-setup ()
+       "Emacs-lisp related completions."
        (progn
          (make-local-variable 'hippie-expand-try-functions-list)
-         (add-to-list 'hippie-expand-try-functions-list
-                      'try-complete-lisp-symbol
-                      'to-the-end)
-         (add-to-list 'hippie-expand-try-functions-list
-                      'try-complete-lisp-symbol-partially
-                      'to-the-end)
-         (when (fboundp 'highlight-parentheses-mode)
-           (highlight-parentheses-mode +1))
-         (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
-         (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
-
-     (dolist (mode *emacs-lisp-modes*)
-       (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
-         (mapc (apply-partially 'add-hook mode-hook)
-               '(ffy-init-emacs-lisp-modes
-                 enable-paredit-mode
-                 turn-on-elisp-slime-nav-mode
-                 turn-on-eldoc-mode
-                 rainbow-delimiters-mode-enable))))
+         (dolist (func '(try-complete-lisp-symbol try-complete-lisp-symbol-partially))
+           (add-to-list 'hippie-expand-try-functions-list
+                        func
+                        'to-the-end))))
    #+end_src
+
+*** Highlighting
+
+    Enrich highlighting in Emacs-Lisp
+
+    #+begin_src emacs-lisp
+      (use-package highlight-cl
+        :ensure t
+        :config (progn
+                  (defun turn-on-highlight-cl ()
+                    (when (fboundp 'highlight-cl-add-font-lock-keywords)
+                      (highlight-cl-add-font-lock-keywords)))))
+    #+end_src
+
+    Parentheses
+    #+begin_src emacs-lisp
+      (use-package highlight-parentheses
+        :ensure t
+        :commands highlight-parentheses-mode)
+    #+end_src
+
+    add highlighting quoted symbols
+    #+begin_src emacs-lisp
+      (font-lock-add-keywords 'emacs-lisp-mode '(("'\\(\\sw\\|\\s_\\)+" . font-lock-constant-face)))
+    #+end_src
+
+    
 
 *** IELM - Emacs Lisp Interpreter
     Interpreter of Emacs-Lisp running in Emacs. Very helpful if we
@@ -1862,6 +1874,29 @@ With
     Press =C-c M-:= to start IELM with current buffer
     #+begin_src emacs-lisp
       (bind-key "C-c M-:" 'ffy-ielm)
+    #+end_src
+
+*** Finally add the hooks
+    #+begin_src emacs-lisp
+      (dolist (mode *emacs-lisp-modes*)
+        (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
+          (mapc (apply-partially 'add-hook mode-hook)
+                '(ffy-emacs-lisp-modes-completions-setup
+                  enable-paredit-mode
+                  turn-on-elisp-slime-nav-mode
+                  turn-on-eldoc-mode
+                  rainbow-delimiters-mode-enable
+                  highlight-parentheses-mode
+                  turn-on-highlight-cl
+                  ))))
+    #+end_src
+
+*** Key Binding
+
+    #+begin_src emacs-lisp
+      (bind-keys :map lisp-mode-shared-map
+                 ("<M-return>" . reindent-then-newline-and-indent)
+                 ("C-x x" . eval-print-last-sexp))
     #+end_src
 
 ** Clojure
