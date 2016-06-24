@@ -90,6 +90,7 @@
  '(user-full-name "Evgeniy Sharapov")
  '(user-mail-address "evgeniy.sharapov@gmail.com")
  '(visible-bell t)
+ '(visual-line-fringe-indicators (quote (nil right-curly-arrow)))
  '(winner-mode t nil (winner))
  '(yas-global-mode t nil (yasnippet)))
 (custom-set-faces
