@@ -352,8 +352,9 @@
 *** Menu bar
     Turn on the menu bar for exploring new modes
     #+begin_src emacs-lisp
-      (bind-key "<f1>" 'menu-bar-mode)
-      (bind-key "<C-f1>" 'imenu-add-menubar-index)
+      (bind-keys :map ctl-x-t-map
+                 ("m" . menu-bar-mode)
+                 ("i" . imenu-add-menubar-index))
     #+end_src
 
 *** TypeFaces and Fonts
