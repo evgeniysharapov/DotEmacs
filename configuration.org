@@ -2128,6 +2128,21 @@ With
     Good link about setting up JavaScript:
     - [[http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/][Setup Emacs as a JavaScript IDE For Fun and Profit]]
 *** JavaScript
+    #+begin_src emacs-lisp
+      (use-package js2-mode :defer t :ensure t
+        :mode (("\\.js\\'" . js2-mode)
+               ("\\.jsx\\'" . js2-jsx-mode))
+        :init
+        (mapc (apply-partially 'add-hook 'js2-mode-hook)
+              '(js2-imenu-extras-mode
+                imenu-add-menubar-index))
+        :config
+        (setq js2-mode-show-parse-errors nil  ; disable parser errors
+              js2-mode-show-strict-warnings nil ; disable strict warnings.
+              js2-highlight-level 3   ; highlight ECMA built-ins
+              ))
+    #+end_src
+
 *** Rhino
 **** Setup Rhino
        - On Windows:
@@ -2160,21 +2175,6 @@ With
     #+BEGIN_SRC shell
       npm install jshint jslint tern -g
     #+END_SRC
-
-    #+begin_src emacs-lisp
-      (use-package js2-mode :defer t :ensure t
-        :mode (("\\.js\\'" . js2-mode)
-               ("\\.jsx\\'" . js2-jsx-mode))
-        :init
-        (mapc (apply-partially 'add-hook 'js2-mode-hook)
-              '(js2-imenu-extras-mode
-                imenu-add-menubar-index))
-        :config
-        (setq js2-mode-show-parse-errors nil  ; disable parser errors
-              js2-mode-show-strict-warnings nil ; disable strict warnings.
-              js2-highlight-level 3   ; highlight ECMA built-ins
-              ))
-    #+end_src
 
     Configure =tern.js=
 
