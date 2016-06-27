@@ -1626,10 +1626,11 @@ With
      (use-package json-mode
        :ensure t
        :commands json-mode
-       :bind (:map json-mode-map
-                   (":" . json-mode-insert-semicolon)
-                   ("{" . json-mode-insert-open-brace)
-              ))
+       ;; :bind (:map json-mode-map
+       ;;             (":" . json-mode-insert-semicolon)
+       ;;             ("{" . json-mode-insert-open-brace)
+       ;;             )
+       )
    #+end_src
 
 ** TeX
