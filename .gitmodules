@@ -7,3 +7,6 @@
 [submodule "site-lisp/org/org-reveal"]
 	path = site-lisp/org/org-reveal
 	url = https://github.com/evgeniysharapov/org-reveal.git
+[submodule "site-lisp/ag-el"]
+	path = site-lisp/ag-el
+	url = https://github.com/evgeniysharapov/ag.el.git
