@@ -98,8 +98,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(error ((t (:underline (:color "red1" :style wave)))))
- '(font-lock-warning-face ((t (:underline (:color "orange1" :style wave)))))
+ '(dired-directory ((t (:inherit font-lock-type-face))))
  '(js2-warning ((t (:underline (:color "orange" :style wave)))))
- '(magit-item-highlight ((t (:inherit hl-line))))
- '(warning ((t (:foreground "#ce5c00" :underline t)))))
+ '(magit-item-highlight ((t (:inherit hl-line)))))
