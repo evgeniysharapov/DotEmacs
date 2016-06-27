@@ -2146,9 +2146,11 @@ With
    #+end_src
 
 ** JavaScript
-   Good link about setting up JavaScript:
-   - [[http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/][Setup Emacs as a JavaScript IDE For Fun and Profit]]
+*** Additional Reading
 
+    Good link about setting up JavaScript:
+    - [[http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/][Setup Emacs as a JavaScript IDE For Fun and Profit]]
+*** JavaScript
 *** Rhino
 **** Setup Rhino
        - On Windows:
@@ -2174,118 +2176,103 @@ With
        java org.mozilla.javascript.tools.shell.Main
      #+end_example
 
-
-*** Setup Emacs
-
+*** Node.js
     Make sure =node.js= and =npm= are installed.
+    Install =jshint=, =jslint= and =tern= _globally_ using =npm=
 
-    Install =jshint=, =jslint= and =tern= using =npm=
-
-**** Using JS3 Mode                                                     :off:
-     :PROPERTIES:
-     :tangle:   no
-     :END:
+    #+BEGIN_SRC shell
+      npm install jshint jslint tern -g
+    #+END_SRC
 
     #+begin_src emacs-lisp
-      (use-package js3-mode
-        :ensure t
-        :config (progn
-                  (defun js3-mode-configuration ()
-                    (setq js3-auto-indent-p t
-                          js3-curly-indent-offset 0
-                          js3-enter-indents-newline t
-                          js3-expr-indent-offset 2
-                          js3-indent-on-enter-key t
-                          js3-lazy-commas t
-                          js3-lazy-dots t
-                          js3-lazy-operators t
-                          js3-paren-indent-offset 2
-                          js3-square-indent-offset 4))
-
-                  (add-hook 'js3-mode-hook 'js3-mode-configuration)
-                  (add-hook 'js3-mode-hook 'turn-on-eldoc-mode)
-                  (add-hook 'js3-mode-hook 'turn-on-electric-mode)
-                  (add-hook 'js3-mode-hook 'hs-minor-mode)))
+      (use-package js2-mode :defer t :ensure t
+        :mode (("\\.js\\'" . js2-mode)
+               ("\\.jsx\\'" . js2-jsx-mode))
+        :init
+        (mapc (apply-partially 'add-hook 'js2-mode-hook)
+              '(js2-imenu-extras-mode
+                imenu-add-menubar-index))
+        :config
+        (setq js2-mode-show-parse-errors nil  ; disable parser errors
+              js2-mode-show-strict-warnings nil ; disable strict warnings.
+              js2-highlight-level 3   ; highlight ECMA built-ins
+              ))
     #+end_src
 
-**** Using JS2 Mode
-     Necessary tools initialization:
-     - =tern-mode=
-     - =swank.js=
+    Configure =tern.js=
 
-     Add Swank-js from http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
-     Install Swank.js by
-     #+begin_example
-        npm install -g swank-js
-     #+end_example
+    #+begin_src emacs-lisp
+      (use-package tern :defer t :ensure t
+        :init
+        (add-hook 'js2-mode-hook #'tern-mode))
+    #+end_src
 
-     Test by running
+    Auto-completion using =company-tern= and =company=
 
-     #+begin_example
-        swank-js
-     #+end_example
+    #+begin_src emacs-lisp
+      (use-package company-tern :defer t  :ensure t
+        :init (progn
+                  (defun ffy-company-js ()
+                    "Localizes and modifies COMPANY-BACKENDS for the Javascript buffer"
+                    (set (make-local-variable 'company-backends)
+                         '((company-tern company-semantic company-capf company-yasnippet)))
+                    (company-mode t))
 
-     And directing browser to http://localhost:8009/swank-js/test.html
+                  (add-hook 'js2-mode-hook #'ffy-company-js)))
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (use-package js2-mode
-       :ensure t
-       :mode "\\.js\\'"
-       :interpreter "node"
-       :init  (progn
-                (setq-default js2-basic-offset 2
-                              js2-bounce-indent-p nil))
+*** Documentation
 
-       :config (progn
-                 (mapc (apply-partially 'add-hook 'js2-mode-hook)
-                       '(js2-imenu-extras-mode
-                         imenu-add-menubar-index
-                         flycheck-mode
-                                             ;turn-on-electric-mode
-                         ))))
+    Writing JSDoc comments
+    #+begin_src emacs-lisp
+      (use-package js-doc  :ensure t :defer t
+        :init
+        (defun ffy-js-doc-insert-tag ()
+          "Inserts @ or calls js-doc insert tag if in JsDoc comment"
+          (interactive)
+          (if (js-doc-in-document-p (point))
+            (js-doc-insert-tag)
+          (insert "@")))
+        :bind (:map js2-mode-map
+                    ("C-c C-d d" . js-doc-insert-file-doc)
+                    ("C-c C-d f" . js-doc-insert-file-doc)
+                    ("C-c C-d h" . js-doc-describe-tag)
+                    ("@" . ffy-js-doc-insert-tag )))
+    #+end_src
 
+
+*** TODO Consider More Functionality
+**** Swank.JS
+     using  =swank.js=
+
+
+      Add Swank-js from http://www.idryman.org/blog/2013/03/23/installing-swank-dot-js/
+      Install Swank.js by
+      #+begin_example
+         npm install -g swank-js
+      #+end_example
+
+      Test by running
+
+      #+begin_example
+         swank-js
+      #+end_example
+
+      And directing browser to http://localhost:8009/swank-js/test.html
+
+**** Js-Comint
+
+     #+begin_src emacs-lisp tangle:no
      (use-package js-comint
-       :ensure t
-       :config (setq inferior-js-program-command "node --interactive"))
+     :disabled t
+     :ensure t
+     :config (setq inferior-js-program-command "node --interactive"))
+     #+end_src
 
-   #+end_src
-
-   Additional packages:
-   - =js-doc=
-   - =json-mode=
-   - =js2-refactor=
-
-   Configure =tern.js=
-
-   #+begin_src emacs-lisp
-     (use-package tern
-       :ensure t
-       :config (progn (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-                      (add-hook 'tern-mode-hook
-                                (lambda ()
-                                  "Changes tern command for the tern-mode"
-                                  (setq-default tern-command '("tern"))))))
-   #+end_src
-
-   and autocompletion using =company-tern=
-
-   #+begin_src emacs-lisp
-     (use-package company-tern
-       :ensure t
-       :config (progn
-
-                 (defun ffy-company-js ()
-                   "Localizes and modifies COMPANY-BACKENDS for the Javascript buffer"
-                   (set (make-local-variable 'company-backends)
-                        '((company-tern company-semantic company-capf company-yasnippet)))
-                   (company-mode t))
-
-                 (add-hook 'js2-mode-hook #'ffy-company-js)))
-   #+end_src
-
+**** Remote debugging in a browser
    Good package for remote debugging in the browser is =jss=. Read
    more at https://github.com/segv/jss
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp tangle:no
      (use-package jss
        :disabled t
        :ensure t
