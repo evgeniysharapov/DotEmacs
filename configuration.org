@@ -879,7 +879,7 @@
       (use-package company
         :ensure t
         :diminish company-mode
-        :config (progn
+        :init (progn
                   (setq company-idle-delay 0.2
                         company-tooltip-limit 20
                         company-show-numbers t
@@ -887,7 +887,7 @@
                         company-minimum-prefix-length 2
                         company-tooltip-align-annotations t
                         company-echo-delay 0))
-        :init
+        :config
         (global-company-mode 1)
         (bind-key "C-d" #'company-show-doc-buffer  company-active-map)
         (bind-key "M-?" #'company-complete))
