@@ -885,7 +885,7 @@
                         company-tooltip-limit 20
                         company-show-numbers t
                         company-selection-wrap-around t
-                        company-minimum-prefix-length 2
+                        company-minimum-prefix-length 1
                         company-tooltip-align-annotations t
                         company-echo-delay 0)
                   (use-package company-quickhelp
@@ -894,9 +894,22 @@
                     :init (add-hook 'company-mode-hook #'company-quickhelp-mode)
                     :pin melpa-stable))
         :config
-        (global-company-mode 1)
-        (bind-key "C-d" #'company-show-doc-buffer  company-active-map)
-        (bind-key "M-?" #'company-complete))
+        (progn
+          ;; default `company-backends'
+          (setq company-backends '(company-files
+                                   company-capf
+                                   company-yasnippet
+                                   (company-dabbrev-code company-gtags company-etags company-keywords)
+                                   company-dabbrev
+                                   ))
+          (defun ffy-add-company-backends (&rest backends)
+            "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
+            (set (make-local-variable 'company-backends)
+                 (append backends company-backends)))
+
+          (global-company-mode 1)
+          (bind-key "C-d" #'company-show-doc-buffer  company-active-map)
+          (bind-key "M-?" #'company-complete)))
     #+end_src
 
 ** Zapping
@@ -1152,10 +1165,12 @@ I want to move to the beginning of the next word.
    Snippets allow us to create code quickly
    #+begin_src emacs-lisp
      (use-package yasnippet
+       :commands (yas-minor-mode yas-global-mode)
        :ensure t
+       :init (setq yas-triggers-in-field t
+                   yas-wrap-around-region t
+                   yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
        :config  (progn
-                  (use-package dropdown-list :ensure t)
-                  (setq-default yas-wrap-around-region t)
                   (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
                   ;; Prevent Yasnippet from loading default c++ snippets
                   (let ((file (concat yas-installed-snippets-dir "/c++-mode" "/.yas-skip")))
@@ -1996,7 +2011,7 @@ With
                        turn-on-eldoc-mode
                        enable-paredit-mode
                        turn-off-show-trailing-whitespace))
-               (add-to-list 'company-backends 'cider-complete-at-point)
+               (ffy-add-company-backends 'cider-complete-at-point)
                (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
                (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
    #+end_src
@@ -2194,13 +2209,9 @@ With
     #+begin_src emacs-lisp
       (use-package company-tern :defer t  :ensure t
         :init (progn
-                  (defun ffy-company-js ()
-                    "Localizes and modifies COMPANY-BACKENDS for the Javascript buffer"
-                    (set (make-local-variable 'company-backends)
-                         '((company-tern company-semantic company-capf company-yasnippet)))
-                    (company-mode t))
-
-                  (add-hook 'js2-mode-hook #'ffy-company-js)))
+                (defun ffy-js2-mode-company-hook ()
+                  (ffy-add-company-backends 'company-tern 'company-semantic))
+                  (add-hook 'js2-mode-hook #'ffy-js2-mode-company-hook)))
     #+end_src
 
 *** Documentation
@@ -2314,8 +2325,7 @@ With
      (use-package company-ghc
        :ensure t
        :init (progn
-               ;; add as a company back-end
-               (add-to-list 'company-backends #'company-ghc)
+               (ffy-add-company-backends 'company-ghc)
                (add-hook 'haskell-mode-hook 'ghc-init)))
    #+end_src
 
@@ -2386,16 +2396,21 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    #+begin_src emacs-lisp
      (use-package anaconda-mode
+       :defer t
        :ensure t
-       :init (add-hook 'python-mode-hook #'anaconda-mode))
+       :init (progn
+               (add-hook 'python-mode-hook #'anaconda-mode)
+               (add-hook 'python-mode-hook #'anaconda-eldoc-mode))
+       :config (progn
+                 (bind-key "C-M-i" nil anaconda-mode-map)
+                 (bind-key "M-?" nil anaconda-mode-map)
+                 (bind-key "C-c C-d" 'anaconda-mode-show-doc anaconda-mode-map)))
 
      (use-package company-anaconda
+       :defer t
        :ensure t
-       :init (if (fboundp 'with-eval-after-load)
-                (with-eval-after-load 'company
-                  (add-to-list 'company-backends 'company-anaconda)))
-                (eval-after-load "company"
-                  '(add-to-list 'company-backends 'company-anaconda)))           
+       :init (progn
+               (add-hook 'python-mode-hook (lambda () (ffy-add-company-backends 'company-anaconda)))))
    #+end_src
 
 ** C/C++
@@ -2419,16 +2434,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    Location of header files for C/C++. =ffy-c-headers-locations= may
    be defined in the system specific file. If it is not, then we use
-   empty list
-
-   #+begin_src emacs-lisp
-     (setq ffy-c-headers-locations
-           (append '("/usr/include/c++/4.2.1" )
-                   (if (boundp 'ffy-c-headers-locations)
-                       ffy-c-headers-locations
-                     ())))
-   #+end_src
-
+   empty list.
 
    On Mac OS X after 10.8 =g++= is actually a =clang=.
    Another way is =cpp -Wp -v=
@@ -2437,10 +2443,12 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    #+begin_src emacs-lisp
      (use-package company-c-headers
+       :defer t
        :ensure t
        :config (progn
-                 (add-to-list 'company-backends 'company-c-headers)
-                 (dolist (dir ffy-c-headers-locations)
+                 (dolist (dir (if (boundp 'ffy-c-headers-locations)
+                                  ffy-c-headers-locations
+                                ()))
                    (add-to-list 'company-c-headers-path-system dir))))
    #+end_src
 
@@ -2451,6 +2459,7 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
 
    #+begin_src emacs-lisp
      (use-package c-eldoc
+       :defer t
        :ensure t
        :config (setq c-eldoc-includes
                      (mapconcat #'identity
@@ -2482,7 +2491,8 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
                 (case major-mode
                   ('c-mode (format "gcc -g -O2 -std=gnu99 -static -lm %s" f))
                   ('c++-mode (format "g++ -g -O2 -static -std=gnu++11 %s" f))
-                  (t compile-command))))))
+                  (t compile-command))))
+         (ffy-add-company-backends 'company-c-headers 'company-semantic 'company-clang 'company-xcode)))
      ;;; due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 we
      ;;; add it to a c-mode-common-hook
      (add-hook 'c-mode-common-hook #'ffy-c-mode-hook)
@@ -2556,12 +2566,13 @@ http://justtesting.org/post/64947952690/the-glasgow-haskell-compiler-ghc-on-os-x
        :init (progn
                (use-package go-eldoc
                  :ensure t
-                 :config
+                 :init
                  (add-hook 'go-mode-hook 'go-eldoc-setup))
                (use-package company-go
                  :ensure t
-                 :init (progn
-                         (add-to-list 'company-backends 'company-go)))
+                 :init
+                 (add-hook 'go-mode-hook (lambda () (ffy-add-company-backends 'company-go))))
+
                (defun go-run-buffer ()
                  "This will run buffer on the Go"
                  (interactive)
