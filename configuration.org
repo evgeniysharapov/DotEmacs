@@ -180,6 +180,14 @@
 
   You can download them from: http://xmlsoft.org/sources/win32/64bit/
 
+** Utility Functions
+
+   #+begin_src emacs-lisp
+     (defun ffy-add-hooks (hook &rest functions)
+       "Like `add-hook' method but can add multiple FUNCTIONS to a HOOK"
+       (mapc (apply-partially 'add-hook hook) functions))
+   #+end_src
+
 * Key Bindings Setup
 ** Overview
     Approach to the key binding is laid out below:
@@ -1385,14 +1393,14 @@ With
                  org-empty-line-terminates-plain-lists t
                  org-confirm-babel-evaluate nil
                  org-src-fontify-natively t)
-           (mapc (apply-partially 'add-hook 'org-mode-hook)
-                 '(turn-on-font-lock
-                   yas-minor-mode-on
-                   turn-on-auto-fill
-                   turn-on-flyspell
-                   hl-line-mode
-                   add-pcomplete-to-capf
-                   iimage-mode)))
+           (ffy-add-hooks 'org-mode-hook
+                          'turn-on-font-lock
+                          'yas-minor-mode-on
+                          'turn-on-auto-fill
+                          'turn-on-flyspell
+                          'hl-line-mode
+                          'add-pcomplete-to-capf
+                          'iimage-mode))
          :config
          (progn
            (org-babel-do-load-languages
@@ -1954,15 +1962,14 @@ With
     #+begin_src emacs-lisp
       (dolist (mode *emacs-lisp-modes*)
         (let ((mode-hook (intern (concat (symbol-name mode) "-hook"))))
-          (mapc (apply-partially 'add-hook mode-hook)
-                '(ffy-emacs-lisp-modes-completions-setup
-                  enable-paredit-mode
-                  turn-on-elisp-slime-nav-mode
-                  turn-on-eldoc-mode
-                  rainbow-delimiters-mode-enable
-                  highlight-parentheses-mode
-                  turn-on-highlight-cl
-                  ))))
+          (ffy-add-hooks  mode-hook
+                          'ffy-emacs-lisp-modes-completions-setup
+                          'enable-paredit-mode
+                          'turn-on-elisp-slime-nav-mode
+                          'turn-on-eldoc-mode
+                          'rainbow-delimiters-mode-enable
+                          'highlight-parentheses-mode
+                          'turn-on-highlight-cl)))
     #+end_src
 
 *** Key Binding
@@ -1978,12 +1985,12 @@ With
      (use-package clojure-mode
        :ensure t
        :init (progn
-               (mapc (apply-partially 'add-hook 'clojure-mode-hook)
-                     '(ffy-find-file-in-clojure-project
-                       subword-mode
-                       enable-paredit-mode
-                       turn-on-eldoc-mode
-                       rainbow-delimiters-mode-enable))))
+               (ffy-add-hooks 'clojure-mode-hook
+                              'ffy-find-file-in-clojure-project
+                              'subword-mode
+                              'enable-paredit-mode
+                              'turn-on-eldoc-mode
+                              'rainbow-delimiters-mode-enable)))
      (use-package elein
        :ensure t)
    #+end_src
@@ -2004,13 +2011,12 @@ With
      (use-package cider
        :ensure t
        :init (progn
-               (mapc (apply-partially 'add-hook 'cider-mode-hook)
-                     '(cider-turn-on-eldoc-mode))
-               (mapc (apply-partially 'add-hook 'cider-repl-mode-hook)
-                     '(subword-mode
-                       turn-on-eldoc-mode
-                       enable-paredit-mode
-                       turn-off-show-trailing-whitespace))
+                (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+                (ffy-add-hooks 'cider-repl-mode-hook
+                               'subword-mode
+                               'turn-on-eldoc-mode
+                               'enable-paredit-mode
+                               'turn-off-show-trailing-whitespace)
                (ffy-add-company-backends 'cider-complete-at-point)
                (bind-key "<M-return>" 'reindent-then-newline-and-indent  lisp-mode-shared-map)
                (bind-key "C-x x" 'eval-print-last-sexp  lisp-mode-shared-map)))
@@ -2050,15 +2056,15 @@ With
                  (bind-key "<return>" 'reindent-then-newline-and-indent ruby-mode-map)
                  (bind-key "#" 'ffy-insert-ruby-string-interpolation  ruby-mode-map)
                  (bind-key "C-h r" 'yari  ruby-mode-map)
-                 (mapc (apply-partially 'add-hook 'ruby-mode-hook)
-                       '(subword-mode
-                         ruby-electric-mode
-                         local-column-number-mode
-                         local-comment-auto-fill
-                         turn-on-hl-line-mode
-                         turn-on-fic-mode
-                         turn-on-flyspell-prog-mode
-                         inf-ruby-minor-mode)))
+                 (ffy-add-hooks 'ruby-mode-hook
+                                'subword-mode
+                                'ruby-electric-mode
+                                'local-column-number-mode
+                                'local-comment-auto-fill
+                                'turn-on-hl-line-mode
+                                'turn-on-fic-mode
+                                'turn-on-flyspell-prog-mode
+                                'inf-ruby-minor-mode))
        :mode (("\\.rb$" . ruby-mode)
               ("\\.rake$" . ruby-mode)
               ("\\.gemspec$" . ruby-mode)
@@ -2112,21 +2118,21 @@ With
                  :commands sass-mode
                  :mode ("\\.sass$" . sass-mode)
                  :config (progn
-                           (mapc (apply-partially 'add-hook 'sass-mode-hook)
-                                 '(local-column-number-mode
-                                   local-comment-auto-fill
-                                   turn-on-hl-line-mode
-                                   turn-on-fic-mode
-                                   turn-on-flyspell-prog-mode
-                                   ffy-customize-sass-scss-mode))))
+                           (ffy-add-hooks 'sass-mode-hook
+                                          'local-column-number-mode
+                                          'local-comment-auto-fill
+                                          'turn-on-hl-line-mode
+                                          'turn-on-fic-mode
+                                          'turn-on-flyspell-prog-mode
+                                          'ffy-customize-sass-scss-mode)))
 
-               (mapc (apply-partially 'add-hook 'scss-mode-hook)
-                     '(local-column-number-mode
-                       local-comment-auto-fill
-                       turn-on-hl-line-mode
-                       turn-on-fic-mode
-                       turn-on-flyspell-prog-mode
-                       ffy-customize-sass-scss-mode))))
+               (ffy-add-hooks 'scss-mode-hook
+                              'local-column-number-mode
+                              'local-comment-auto-fill
+                              'turn-on-hl-line-mode
+                              'turn-on-fic-mode
+                              'turn-on-flyspell-prog-mode
+                              'ffy-customize-sass-scss-mode)))
 
      ;;; add Auto-Complete HAML SCSS and SASS modes
      ;(dolist (mode '(haml-mode sass-mode scss-mode))
@@ -2153,9 +2159,9 @@ With
         :mode (("\\.js\\'" . js2-mode)
                ("\\.jsx\\'" . js2-jsx-mode))
         :init
-        (mapc (apply-partially 'add-hook 'js2-mode-hook)
-              '(js2-imenu-extras-mode
-                imenu-add-menubar-index))
+        (ffy-add-hooks 'js2-mode-hook
+                       'js2-imenu-extras-mode
+                       'imenu-add-menubar-index)
         :config
         (setq js2-mode-show-parse-errors nil  ; disable parser errors
               js2-mode-show-strict-warnings nil ; disable strict warnings.
@@ -2288,18 +2294,20 @@ With
      (use-package haskell-mode
        :ensure t
        :init (progn
-               (mapc (apply-partially 'add-hook 'haskell-mode-hook)
-                     '(local-column-number-mode
-                       local-comment-auto-fill
-                       turn-on-hl-line-mode
-                       pretty-greek
-                       turn-on-fic-mode
-                       turn-on-flyspell-prog-mode
+               (ffy-add-hooks  'haskell-mode-hook
+                      'local-column-number-mode
+                      'local-comment-auto-fill
+                      'turn-on-hl-line-mode
+                      'pretty-greek
+                      'turn-on-fic-mode
+                      'turn-on-flyspell-prog-mode
                        ;; turn-on-flymake
-                       turn-on-haskell-doc-mode
+
+                      'turn-on-haskell-doc-mode
                        ;; turn-on-haskell-indent
-                       turn-on-haskell-indentation
-                       interactive-haskell-mode))))
+
+                     'turn-on-haskell-indentation
+                     'interactive-haskell-mode)))
    #+end_src
 
    To provide navigation to definitions we need to install =hasktags=
