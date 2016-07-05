@@ -99,5 +99,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(dired-directory ((t (:inherit font-lock-type-face))))
+ '(dired-flagged ((t (:inherit error :strike-through t :underline nil))))
  '(js2-warning ((t (:underline (:color "orange" :style wave)))))
  '(magit-item-highlight ((t (:inherit hl-line)))))
