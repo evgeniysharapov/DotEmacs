@@ -10,3 +10,6 @@
 [submodule "site-lisp/ag-el"]
 	path = site-lisp/ag-el
 	url = https://github.com/evgeniysharapov/ag.el.git
+[submodule "site-lisp/grunt-el"]
+	path = site-lisp/grunt-el
+	url = https://github.com/evgeniysharapov/grunt.el.git
