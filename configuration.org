@@ -707,9 +707,9 @@
    Some of the useful functions and setting dealing with Info system
    in emacs:
    #+begin_src emacs-lisp
-     (use-package help-mode+ :ensure t :defer t)
-     (use-package help+ :ensure t :defer t)
-     (use-package help-fns+ :ensure t :defer t)
+     (use-package help-mode+ :ensure t)
+     (use-package help+ :ensure t)
+     (use-package help-fns+ :ensure t)
    #+end_src
 
    #+begin_src emacs-lisp
