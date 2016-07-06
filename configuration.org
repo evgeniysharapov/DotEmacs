@@ -441,7 +441,6 @@
     - NotCourierSans: https://fontlibrary.org/en/font/notcouriersans
 
 
-
 ** Files/Directories
 *** Backups and saves
     #+begin_src emacs-lisp
@@ -541,6 +540,11 @@
     #+end_src
 
     Interesting addition to the Dired [[https://github.com/emacs-jp/bf-mode/blob/master/bf-mode.el][Browse-File Mode]]
+
+    =dired-jump-other-window= is bound to =C-x 4 C-j=
+    #+begin_src emacs-lisp
+      (bind-key "j" #'dired-jump ctl-x-map)
+    #+end_src
 
 ** Buffers
 *** Using =IBuffer=
