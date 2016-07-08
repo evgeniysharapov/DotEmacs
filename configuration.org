@@ -267,6 +267,7 @@
 
 ** TODO Key Binging To Change:
    - change =M-o= from =facemenu-keymap= to =outline-mode= keymap  =M-o=
+   - change =M-f10= from =toggle-frame-maximized=
 
 * General Settings
 ** User Interface
