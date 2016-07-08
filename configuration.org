@@ -878,52 +878,73 @@
      (bind-key "l"  'linum-mode ctl-x-t-map)
    #+end_src
 
-** Completions
-*** Regular hippie-expand
-    Naturally =hippie-expand-try-functions-list= would be made local
-    variable and adjusted for a mode in the mode settings
-    #+begin_src emacs-lisp
+** Completions / Snippets / Abbreviations
+
+   Various types of speeding up typing - completions, snippets and
+   abbreviations.
+
+   Naturally =hippie-expand-try-functions-list= would be made local
+   variable and adjusted for a mode in the mode settings
+   #+begin_src emacs-lisp
       (bind-key "M-/"  'hippie-expand)
-    #+end_src
+   #+end_src
 
-*** Company
-    Due to inconveniences of the =auto-complete= package use =company=
-    instead
-    #+begin_src emacs-lisp
-      (use-package company
-        :ensure t
-        :diminish company-mode
-        :init (progn
-                  (setq company-idle-delay 0.1
-                        company-tooltip-limit 20
-                        company-show-numbers t
-                        company-selection-wrap-around t
-                        company-minimum-prefix-length 1
-                        company-tooltip-align-annotations t
-                        company-echo-delay 0)
-                  (use-package company-quickhelp
-                    :defer t
-                    :ensure t
-                    :init (add-hook 'company-mode-hook #'company-quickhelp-mode)
-                    :pin melpa-stable))
-        :config
-        (progn
-          ;; default `company-backends'
-          (setq company-backends '(company-files
-                                   company-capf
-                                   company-yasnippet
-                                   (company-dabbrev-code company-gtags company-etags company-keywords)
-                                   company-dabbrev
-                                   ))
-          (defun ffy-add-company-backends (&rest backends)
-            "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
-            (set (make-local-variable 'company-backends)
-                 (append backends company-backends)))
+   Due to inconveniences of the =auto-complete= package use =company=
+   instead
+   #+begin_src emacs-lisp
+     (use-package company
+       :ensure t
+       :diminish company-mode
+       :init (progn
+                 (setq company-idle-delay 0.1
+                       company-tooltip-limit 20
+                       company-show-numbers t
+                       company-selection-wrap-around t
+                       company-minimum-prefix-length 1
+                       company-tooltip-align-annotations t
+                       company-echo-delay 0)
+                 (use-package company-quickhelp
+                   :defer t
+                   :ensure t
+                   :init (add-hook 'company-mode-hook #'company-quickhelp-mode)
+                   :pin melpa-stable))
+       :config
+       (progn
+         ;; default `company-backends'
+         (setq company-backends '(company-files
+                                  company-capf
+                                  company-yasnippet
+                                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                                  company-dabbrev
+                                  ))
+         (defun ffy-add-company-backends (&rest backends)
+           "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
+           (set (make-local-variable 'company-backends)
+                (append backends company-backends)))
 
-          (global-company-mode 1)
-          (bind-key "C-d" #'company-show-doc-buffer  company-active-map)
-          (bind-key "M-?" #'company-complete)))
-    #+end_src
+         (global-company-mode 1)
+         (bind-key "C-d" #'company-show-doc-buffer  company-active-map)
+         (bind-key "M-?" #'company-complete)))
+   #+end_src
+
+   Snippets allow us to create code quickly
+   #+begin_src emacs-lisp
+     (use-package yasnippet
+       :commands (yas-minor-mode yas-global-mode)
+       :ensure t
+       :init (setq yas-triggers-in-field t
+                   yas-wrap-around-region t
+                   yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
+       :config  (progn
+                  (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
+                  ;; Prevent Yasnippet from loading default c++ snippets
+                  (let ((file (concat yas-installed-snippets-dir "/c++-mode" "/.yas-skip")))
+                    (when (not (file-exists-p file))
+                      (write-region "" nil file)))
+                  (yas-global-mode +1)
+                  ;; add to hippie-expand
+                  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)))
+   #+end_src
 
 ** Zapping
    Some of the zapping functions:
@@ -1173,26 +1194,6 @@ I want to move to the beginning of the next word.
 
    At the end we have keys =C--= and =C-+= bound to decreasing
    number at the point and increasing number at the point.
-
-** Snippets
-   Snippets allow us to create code quickly
-   #+begin_src emacs-lisp
-     (use-package yasnippet
-       :commands (yas-minor-mode yas-global-mode)
-       :ensure t
-       :init (setq yas-triggers-in-field t
-                   yas-wrap-around-region t
-                   yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
-       :config  (progn
-                  (add-to-list 'yas-snippet-dirs (concat *data-dir*  "snippets"))
-                  ;; Prevent Yasnippet from loading default c++ snippets
-                  (let ((file (concat yas-installed-snippets-dir "/c++-mode" "/.yas-skip")))
-                    (when (not (file-exists-p file))
-                      (write-region "" nil file)))
-                  (yas-global-mode +1)
-                  ;; add to hippie-expand
-                  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)))
-   #+end_src
 
 ** Bookmarking
 
