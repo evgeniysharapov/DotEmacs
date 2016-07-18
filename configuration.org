@@ -415,7 +415,6 @@
             (setq save-place-file (concat *data-dir* "places")
                   backup-directory-alist `((".*" . ,*backup-dir*))
                   savehist-file (concat *data-dir* "history")
-                  smex-save-file (concat *data-dir* ".smex-items")
                   recentf-save-file (concat *data-dir* ".recentf")
                   ido-save-directory-list-file (concat *data-dir* ".ido.last")
                   bookmark-default-file (concat *data-dir* "bookmarks")
@@ -584,8 +583,10 @@
       (use-package smex
         :ensure t
         :init
+        (setq smex-save-file (concat *data-dir* ".smex-items")
+              smex-history-length 20)
+        :config
         (smex-initialize)
-        ;; Smex is used in minibuffer M-x
         :bind (("M-x" . smex)
                ("M-X" . smex-major-mode-commands)))
     #+end_src
