@@ -460,10 +460,11 @@
         :ensure t
         :defer t
         :diminish projectile-mode
-        :config (progn
-                  (setq projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
-                        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
-                        projectile-indexing-method 'alien)))
+        :init
+        (setq projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
+              projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
+              projectile-sort-order 'recentf
+              projectile-indexing-method 'alien))
     #+end_src
 
 *** Files Key-Bindings
