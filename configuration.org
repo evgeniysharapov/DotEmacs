@@ -516,24 +516,51 @@
     #+end_src
 
 ** Buffers
-*** Using =IBuffer=
-    Use =ibuffer= for buffer operations
+   Use =ibuffer= for buffer operations
 
-    #+begin_src emacs-lisp
-      (use-package ibuffer
-        :bind ("C-x C-b" . ibuffer)
-        :init (progn
-                (defface ibuffer-custom-deletion-face '((t (:inherit error :strike-through t :underline nil))) "Buffers to be deleted")
-                (defface ibuffer-custom-marked-face '((t (:inherit warning :inverse-video t :underline nil))) "Marked buffers")
-                (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
-                      ibuffer-marked-face 'ibuffer-custom-marked-face
-                      ;; don't ask to kill buffers
-                      ibuffer-expert t)
-                ;; auto updateable ibuffer
-                (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
-    #+end_src
+   #+begin_src emacs-lisp
+     (use-package ibuffer
+       :bind ("C-x C-b" . ibuffer)
+       :init (progn
+               (defface ibuffer-custom-deletion-face '((t (:inherit error :strike-through t :underline nil))) "Buffers to be deleted")
+               (defface ibuffer-custom-marked-face '((t (:inherit warning :inverse-video t :underline nil))) "Marked buffers")
+               (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
+                     ibuffer-marked-face 'ibuffer-custom-marked-face
+                     ;; don't ask to kill buffers
+                     ibuffer-expert t)
+               ;; auto updateable ibuffer
+               (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
+   #+end_src
 
-*** Mini-buffer
+   Often I need to create temporary buffer
+
+   #+name: ffy-create-temp-buffer
+   #+begin_src emacs-lisp
+      (defun ffy-create-temp-buffer ()
+        "Creates temporary buffer"
+        (interactive)
+        (switch-to-buffer "*temp* "))
+   #+end_src
+
+   Key bindings:
+
+   #+begin_src emacs-lisp
+     (bind-keys :prefix-map buffer-operations-map
+                :prefix "C-z b"
+                :prefix-docstring "Operations on buffers"
+                ("y" . bury-buffer)
+                ("g" . revert-buffer)
+                ("t" . ffy-create-temp-buffer))
+     (bind-key "C-x K" 'kill-this-buffer)
+     (bind-key "<f5>" 'revert-buffer)
+   #+end_src
+
+    Other useful keys:
+    - =C-x 4 0= - kill-buffer-and-window (works with current buffer
+      only)
+    - =C-x 4 b= - ido open buffer other window
+
+** Mini-buffer
 
     Automatically close certain buffers after exiting from
     mini-buffer
@@ -569,73 +596,6 @@
     #+begin_src emacs-lisp
       (bind-key "C-x C-m"  'execute-extended-command)
     #+end_src
-
-*** Operations On Buffers
-**** Buffer Switching
-
-     #+begin_src emacs-lisp
-       (defun ffy-display-prev-next-buffers ()
-         "Show two previous, current and two next buffer names in the echo area.
-       Example:
-       -2:*Messages* -1:*Help*    0:.emacs      1:*info*  2:*scratch*
-
-       From http://www.jurta.org/en/emacs/dotemacs"
-         (interactive)
-         (let ((i -3) b (bl (buffer-list (selected-frame))) (message-log-max nil))
-           (message "%s"
-                    (mapconcat
-                     (lambda (x)
-                       (setq i (+ i 1))
-                       (format "%d:%-12s"
-                               i (substring (buffer-name x) 0
-                                            (min (length (buffer-name x)) 11))))
-                     (append
-                      (nreverse
-                       (list
-                        (setq b (get-next-valid-buffer (reverse bl) t))
-                        (get-next-valid-buffer (cdr (memq b (reverse bl))) t)))
-                      (list (current-buffer))
-                      (list
-                       (setq b (get-next-valid-buffer (cdr bl) t))
-                       (get-next-valid-buffer (cdr (memq b bl)) t)))
-                     " "))))
-     #+end_src
-
-     Show adjacent buffers in the minibuffer on switch
-
-     #+begin_src emacs-lisp
-       (defadvice previous-buffer (after my/previous-buffer activate)
-         (ffy-display-prev-next-buffers))
-
-       (defadvice next-buffer (after my/next-buffer activate)
-        (ffy-display-prev-next-buffers))
-     #+end_src
-
-**** Other Operations
-     #+begin_src emacs-lisp
-       (bind-key "C-x K" 'kill-this-buffer)
-       ;;; Buffer operations in C-z map
-       (bind-key "b y" 'bury-buffer  ctl-z-map)
-       (bind-key "b r" 'revert-buffer  ctl-z-map)
-       ;;; revert buffer on f5
-       (bind-key "<f5>" 'revert-buffer)
-     #+end_src
-
-     Other useful combos:
-     - =C-x 4 0= - kill-buffer-and-window (works with current buffer
-       only)
-     - =C-x 4 b= - ido open buffer other window
-
-     Often I need to create temporary buffer
-
-     #+begin_src emacs-lisp
-       (defun ffy-create-temp-buffer ()
-         "Creates temporary buffer"
-         (interactive)
-         (switch-to-buffer "*temp* "))
-
-       (bind-key "b t" 'ffy-create-temp-buffer ctl-z-map)
-     #+end_src
 
 ** Windows
 *** Operations With Windows
