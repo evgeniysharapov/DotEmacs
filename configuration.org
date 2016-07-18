@@ -3,15 +3,7 @@
 #+email: evgeniy.sharapov@gmail.com
 
 * Introduction
-  As much as I liked =allout= mode it is has some quirks and irks and
-  not necessarily works in the way I would like it to work. Plus, it
-  has too many bells and whistles. One thing would be to have
-  something like =allout-= that would reduce the complexity. However
-  it is not so easy to do.
-
-  As the size of the configuration grew and number of comments
-  increased along with some notes and todo's, it seemed as a very
-  logical thing to organize configuration as an Org file.
+  Configuration works with Emacs 24.5
 
   =init.el= file is kept to the bare minimum - just load the
   =org-babel= and then go to the =configuration.org=.
@@ -86,39 +78,14 @@
        (fmakunbound #'add-directory-to-path)
     #+end_src
 
-** Configure Package Manager
+** Package Manager
    ELPA is in between setting up paths and loading up libraries. So
    we put it right in between.
    #+begin_src emacs-lisp
-     (when (require 'package nil 'noerror)
-       ;; all ELPA packages are located here
-       (setq package-user-dir (concat *dotfiles-dir* "elpa"))
-       ;; Sources for the ELPA repositories
-       (mapc (apply-partially 'add-to-list 'package-archives)
-             '(
-               ("gnu"         . "http://elpa.gnu.org/packages/")
-               ;; ("org"         . "http://orgmode.org/elpa/")
-               ("melpa-stable" . "http://stable.melpa.org/packages/")
-               ("melpa"       . "http://melpa.org/packages/")
-               ;;("marmalade"   . "http://marmalade-repo.org/packages/")
-              ))
-       (package-initialize)
-       (unless package-archive-contents
-         (package-refresh-contents)))
-   #+end_src
-
-   We want to filter particular packages. For that use
-   ='package-pinned-package=
-
-   #+begin_src emacs-lisp
-     (when (boundp 'package-pinned-packages)
-       (mapc (lambda (arg) (apply (apply-partially 'add-to-list 'package-pinned-packages) arg))
-          '(
-            ;; if t at the end then append it, otherwise prepend
-            ((cider . "melpa-stable") t)
-            ((ace-window . "melpa-stable"))
-            ((flycheck . "melpa-stable"))
-            )))
+     (setq package-user-dir (concat *dotfiles-dir* "elpa")
+           package-archives '(("gnu"          . "http://elpa.gnu.org/packages/")
+                              ("melpa-stable" . "http://stable.melpa.org/packages/")
+                              ("melpa"        . "http://melpa.org/packages/")))
    #+end_src
 
    This is a workaround for a bug in emacs' http fetching, see
@@ -701,6 +668,7 @@
     #+begin_src emacs-lisp
       (use-package ace-window
         :ensure t
+        :pin melpa-stable
         :bind ("C-x o" . ace-window))
     #+end_src
 
@@ -1786,6 +1754,7 @@ With
       #+begin_src emacs-lisp
         (use-package flycheck
           :ensure t
+          :pin melpa-stable
           :config (add-hook 'prog-mode-hook #'flycheck-mode))
       #+end_src
     - =turn-on-electric-mode= inserts pair symbol
@@ -2016,6 +1985,7 @@ With
    #+begin_src emacs-lisp
      (use-package cider
        :ensure t
+       :pin melpa-stable
        :init (progn
                 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
                 (ffy-add-hooks 'cider-repl-mode-hook
