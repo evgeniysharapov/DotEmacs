@@ -599,7 +599,6 @@
     #+end_src
 
 ** Windows
-*** Operations With Windows
     #+begin_src emacs-lisp
       (use-package window
         :bind (:map ctl-x-w-map
@@ -607,7 +606,6 @@
                ("M" . delete-other-windows)))
     #+end_src
 
-*** Navigation
     Using =Windmove= for switching between windows in Emacs
 
     #+begin_src emacs-lisp :preamble # -*- coding: utf-8 -*-
