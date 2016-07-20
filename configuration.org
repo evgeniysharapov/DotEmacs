@@ -1625,6 +1625,18 @@ With
        (add-to-list 'auto-mode-alist (cons pattern 'conf-mode)))
    #+end_src
 
+   NGINX configuration files
+   #+begin_src emacs-lisp
+     (use-package nginx-mode :ensure t :commands nginx-mode)
+   #+end_src
+
+   Docker configuration files
+   #+begin_src emacs-lisp
+     (use-package dockerfile-mode :ensure t :commands dockerfile-mode)
+   #+end_src
+
+
+
 * Programming
 ** General Programming
 *** Programming Modes Hook
