@@ -1442,6 +1442,7 @@ With
 ** Markdown
    #+begin_src emacs-lisp
      (use-package markdown-mode
+       :defer t
        :ensure t
        :config  (progn
                   (defun set-markdown-mode-outline-regexp ()
@@ -1449,8 +1450,9 @@ With
                     (make-local-variable 'outline-regexp)
                     (setq outline-regexp "#+\\|^\\(.*\\)\n\\(===+\\|---+\\)$"))
 
-                  (add-hook 'markdown-mode-hook 'set-markdown-mode-outline-regexp)
-                  (add-hook 'markdown-mode-hook 'orgtbl-mode)))
+                  (ffy-add-hooks 'markdown-mode-hook
+                                 'set-markdown-mode-outline-regexp
+                                 'outline-minor-mode)))
    #+end_src
 
 ** XML Based Editing
