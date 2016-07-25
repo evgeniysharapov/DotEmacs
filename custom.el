@@ -33,6 +33,8 @@
     (try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-expand-all-abbrevs try-complete-file-name-partially try-complete-file-name try-expand-list try-expand-line)))
  '(history-delete-duplicates t)
  '(history-length t)
+ '(ibuffer-saved-filter-groups nil)
+ '(ibuffer-saved-filters (quote (("Mozart" ((filename . "Mozart\\.Hg"))))))
  '(ido-auto-merge-work-directories-length -1)
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
