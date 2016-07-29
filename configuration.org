@@ -1329,7 +1329,11 @@ With
               (python . t))))
 
          :bind (:map org-mode-map
-                     ("C-c k" . org-cut-subtree)))
+                     ("C-c k" . org-cut-subtree)
+                     ;;  Swap C-j and RET
+                     ([remap org-return-indent] . org-return)
+                     ([remap org-return] . org-return-indent)))
+
    #+end_src
 **** Babel
      Do not run documentation fly checker on pieces of code
