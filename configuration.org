@@ -746,6 +746,13 @@
      (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
    #+end_src
 
+   Sometimes (diff mode, or looking at big text tables) i don't want
+   to have visual line mode. I will use =truncate-lines=
+
+   #+begin_src emacs-lisp
+     (bind-key "t" 'toggle-truncate-lines ctl-x-t-map)
+   #+end_src
+
    Highlighting and coloring of the buffer
    #+begin_src emacs-lisp
      (use-package idle-highlight-mode :ensure t)
