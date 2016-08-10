@@ -458,11 +458,14 @@
         :ensure t
         :defer t
         :diminish projectile-mode
+        :commands projectile-global-mode
         :init
         (setq projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
               projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
               projectile-sort-order 'recentf
-              projectile-indexing-method 'alien))
+              projectile-indexing-method 'alien)
+        :config
+        (projectile-global-mode t))
     #+end_src
 
 *** Files Key-Bindings
