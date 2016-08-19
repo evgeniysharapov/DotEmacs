@@ -456,7 +456,7 @@
     #+begin_src emacs-lisp
       (use-package projectile
         :ensure t
-        :defer t
+        :defer 5
         :diminish projectile-mode
         :commands projectile-global-mode
         :init
