@@ -2031,7 +2031,7 @@ With
        :mode (("\\.ya?ml$" . yaml-mode)))
    #+end_src
 
-** HAML/SCSS/SASS setup
+** HAML/SCSS/SASS/Less
    Closely related to Ruby/Rails development
 
    #+begin_src emacs-lisp
@@ -2086,6 +2086,15 @@ With
      ;(dolist (mode '(haml-mode sass-mode scss-mode))
      ;  (add-to-list 'ac-modes mode))
    #+end_src
+
+   adding [[http://lesscss.org/][LESS]] files editing
+
+   #+begin_src emacs-lisp
+     (use-package less-css-mode
+       :ensure t
+       :defer t)
+   #+end_src
+
 
 ** Coffee-Script
    #+begin_src emacs-lisp
