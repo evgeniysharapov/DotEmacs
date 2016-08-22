@@ -771,16 +771,27 @@
        :config  (use-package hl-line+ :ensure t))
    #+end_src
 
-   Also helpful is to highlight the current word
+   Highlighting on demand using `hi-lock` is already bound to =M-s h=
+   prefix. We will move it to =M-h=  enhance it with few more things
+
    #+begin_src emacs-lisp
-     (use-package highlight-symbol
-       :ensure t
-       :config  (progn
-                  (highlight-symbol-mode +1)
-                  (bind-key "<C-return>" 'highlight-symbol-at-point      ctl-z-map)
-                  (bind-key "<C-up>"     'highlight-symbol-prev          ctl-z-map)
-                  (bind-key "<C-down>"   'highlight-symbol-next          ctl-z-map)
-                  (bind-key "@"          'highlight-symbol-query-replace ctl-z-map)))
+     (use-package hi-lock
+       :config
+       (use-package highlight-symbol
+         :ensure t
+         :config  (progn
+                    (highlight-symbol-mode +1)
+                    (bind-keys :prefix-map highlight-map
+                               :prefix "M-h"
+                               ("."    . highlight-symbol-at-point )
+                               ("M-p"  . highlight-symbol-prev)
+                               ("M-n"  . highlight-symbol-next)
+                               ("l"    . highlight-lines-matching-regexp)
+                               ("r"    . highlight-regexp)
+                               ("p"    . highlight-phrase)
+                               ("u"    . unhighlight-regexp)
+                               ("C-g"  . highlight-symbol-remove-all)
+                               ("M-r"  . highlight-symbol-query-replace)))))
    #+end_src
 
    Turn on/off showing trailing whitespace
@@ -837,6 +848,7 @@
                    :defer t
                    :ensure t
                    :init (add-hook 'company-mode-hook #'company-quickhelp-mode)
+                   :config (unbind-key "M-h" company-quickhelp-mode-map)
                    :pin melpa-stable))
        :config
        (progn
@@ -1344,7 +1356,9 @@ With
             '((dot . t)
               (ditaa . t)
               (emacs-lisp . t)
-              (python . t))))
+              (python . t)))
+
+           (unbind-key "M-h" org-mode-map))
 
          :bind (:map org-mode-map
                      ("C-c k" . org-cut-subtree)
