@@ -763,6 +763,14 @@
      (use-package rainbow-delimiters  :ensure t)
    #+end_src
 
+   Highlighting current line
+   #+begin_src emacs-lisp
+     (use-package hl-line
+       :commands hl-line-mode
+       :bind ("C-x t h" . hl-line-mode)
+       :config  (use-package hl-line+ :ensure t))
+   #+end_src
+
    Also helpful is to highlight the current word
    #+begin_src emacs-lisp
      (use-package highlight-symbol
