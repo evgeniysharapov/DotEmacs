@@ -953,7 +953,6 @@
     #+begin_src emacs-lisp
       (use-package ag
         :load-path "site-lisp/ag-el"
-        :ensure t
         :config (setq ag-reuse-buffers t
                       ag-highlight-search t))
     #+end_src
