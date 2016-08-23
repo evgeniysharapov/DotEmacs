@@ -932,7 +932,7 @@
                   (bind-key "C-M-y" 'kill-ring-search)))
    #+end_src
 
-** Search
+** Search/Navigation/Positioning
 *** Search in a Buffer
     #+begin_src emacs-lisp
       (bind-key "C-S-r"  'search-backward)
@@ -957,42 +957,6 @@
                       ag-highlight-search t))
     #+end_src
 
-** Folding and Hiding
-
-   Visualizing HideShow mode folding. *IMPORTANT*: enabling =hideshowvis= in =nxml
-   mode hangs up Emacs
-
-   #+begin_src emacs-lisp
-     (use-package hideshowvis
-       :ensure t)
-   #+end_src
-
-   Useful folding commands that use =hideshow= or =TeX= folding.
-
-   #+begin_src emacs-lisp
-     (use-package fold-dwim
-       :ensure t)
-   #+end_src
-
-   Good key-bindings i think could be in =Esc-Esc-...= keymap. I don't
-   use =Esc= instead of =Meta= so it should work great. One can
-   trigger =Esc= with =C-[=
-
-   Assign keys for operations on folding and Hide/Show operations
-   #+begin_src emacs-lisp
-     (bind-keys :prefix-map esc-esc-map
-                :prefix "<escape> <escape>"
-                ;; save original keys
-                ("<escape>" . keyboard-escape-quit)
-                ;; now folding keys
-                ("<up>" . fold-dwim-hide-all)
-                ("<down>" . fold-dwim-show-all)
-                ("<tab>" . fold-dwim-toggle)
-                ("<left>" . hs-hide-block)
-                ("<right>" . hs-show-block))
-   #+end_src
-
-** Navigation and Positioning
 *** Better BOL positioning
 
    First define better function =ffy-bol-or-back-to-indent= to
@@ -1066,6 +1030,41 @@ I want to move to the beginning of the next word.
 
   (bind-key "M-F" #'next-word)
 #+end_src
+
+** Folding and Hiding
+
+   Visualizing HideShow mode folding. *IMPORTANT*: enabling =hideshowvis= in =nxml
+   mode hangs up Emacs
+
+   #+begin_src emacs-lisp
+     (use-package hideshowvis
+       :ensure t)
+   #+end_src
+
+   Useful folding commands that use =hideshow= or =TeX= folding.
+
+   #+begin_src emacs-lisp
+     (use-package fold-dwim
+       :ensure t)
+   #+end_src
+
+   Good key-bindings i think could be in =Esc-Esc-...= keymap. I don't
+   use =Esc= instead of =Meta= so it should work great. One can
+   trigger =Esc= with =C-[=
+
+   Assign keys for operations on folding and Hide/Show operations
+   #+begin_src emacs-lisp
+     (bind-keys :prefix-map esc-esc-map
+                :prefix "<escape> <escape>"
+                ;; save original keys
+                ("<escape>" . keyboard-escape-quit)
+                ;; now folding keys
+                ("<up>" . fold-dwim-hide-all)
+                ("<down>" . fold-dwim-show-all)
+                ("<tab>" . fold-dwim-toggle)
+                ("<left>" . hs-hide-block)
+                ("<right>" . hs-show-block))
+   #+end_src
 
 ** Marking
    Mark commands from =thing-cmds=
