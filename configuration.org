@@ -654,6 +654,28 @@
                 ("C-c" . describe-char))
    #+end_src
 
+   Some key help
+
+   #+begin_src emacs-lisp
+     (use-package which-key
+       :ensure t
+       :defer 10
+       :diminish which-key-mode
+       :commands which-key-mode
+       :init (setq which-key-sort-order 'which-key-local-then-key-order
+                   which-key-max-description-length 32)
+       :config
+       ;(which-key-mode t)
+       (mapc (apply-partially 'add-to-list 'which-key-key-replacement-alist)
+             '(("up" . "⇑")
+               ("right" . "⇒")
+               ("left" . "⇐")
+               ("down" . "⇓")))
+       (mapc (apply-partially 'add-to-list 'which-key-description-replacement-alist)
+             '(("projectile-" . "prj-"))))
+   #+end_src
+
+
 ** Spell checker
    We could use Hunspell or Aspell. Hunspell seems to be better for
    spellchecking. Even though it requires building up from the
