@@ -938,6 +938,20 @@
       (bind-key "C-S-r"  'search-backward)
       (bind-key "C-S-s"  'search-forward)
     #+end_src
+
+    Occur =M-s o= and multi-occur =M-s O=. Same keys will call =occur=
+    and =moccur= from =isearch-mode=
+    
+    #+begin_src emacs-lisp
+      (use-package color-moccur
+        :ensure t
+        :commands isearch-moccur-all
+        :bind ("M-s O" . moccur)
+        :init
+        (bind-key "M-s O" #'isearch-moccur-all isearch-mode-map))
+
+    #+end_src
+
 *** Search in Files
     #+begin_src emacs-lisp
       (use-package grep
