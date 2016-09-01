@@ -2229,6 +2229,15 @@ With
                   (add-hook 'js2-mode-hook #'ffy-js2-mode-company-hook)))
     #+end_src
 
+    Testing with mocha
+    #+begin_src emacs-lisp
+      (use-package mocha
+        :commands (mocha-test-at-point mocha-test-file mocha-test-project)
+        :ensure t
+        :pin melpa-stable)
+    #+end_src
+
+
 *** Documentation
 
     Writing JSDoc comments

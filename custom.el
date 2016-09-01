@@ -79,7 +79,12 @@
  '(rspec-use-rvm t)
  '(safe-local-variable-values
    (quote
-    ((flycheck-gcc-language-standard . c++11)
+    ((mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
+     (mocha-which-node)
+     (mocha-reporter . "spec")
+     (mocha-options . "--recursive --compilers js:babel-core/register")
+     (mocha-project-test-directory . "test/server")
+     (flycheck-gcc-language-standard . c++11)
      (flycheck-clang-language-standard . c++11)
      (scss-compile-at-save)
      (ruby-compilation-executable . "ruby")
