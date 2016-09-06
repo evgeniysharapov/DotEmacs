@@ -1,7 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: pair<int, int>
-# key: ii
-# binding: direct-keybinding
-# --
-typedef pair<int, int> ii;
-

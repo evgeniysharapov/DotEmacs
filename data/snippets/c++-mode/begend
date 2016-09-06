@@ -1,3 +1,0 @@
-# name : begin(v),end(v)
-# --
-begin(${1:v}), end($1)$0

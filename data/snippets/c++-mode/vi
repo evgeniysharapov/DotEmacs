@@ -1,6 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: vector<int>
-# key: vi
-# binding: direct-keybinding
-# --
-typedef vector<int> vi;
