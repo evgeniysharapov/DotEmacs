@@ -1,3 +1,0 @@
-[submodule "site-lisp/ag-el"]
-	path = site-lisp/ag-el
-	url = https://github.com/evgeniysharapov/ag.el.git
