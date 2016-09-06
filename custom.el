@@ -79,7 +79,8 @@
  '(rspec-use-rvm t)
  '(safe-local-variable-values
    (quote
-    ((mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
+    ((js2-basic-offset . 2)
+     (mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
      (mocha-which-node)
      (mocha-reporter . "spec")
      (mocha-options . "--recursive --compilers js:babel-core/register")

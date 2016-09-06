@@ -2234,7 +2234,11 @@ With
       (use-package mocha
         :commands (mocha-test-at-point mocha-test-file mocha-test-project)
         :ensure t
-        :pin melpa-stable)
+        :pin melpa-stable
+        :bind (:map js2-mode-map
+                    ("C-c C-c ." . mocha-test-at-point)
+                    ("C-c C-c f" . mocha-test-file)
+                    ("C-c C-c p" . mocha-test-project)))
     #+end_src
 
 
