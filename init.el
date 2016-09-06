@@ -8,6 +8,13 @@
 ;;; borrowed from starter-kit and modified. this is neat and it effectively 
 ;;; loads Emacs with all the defaults, so that Org-mode will be available 
 ;;; on the load-path.
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (add-hook 'after-init-hook
  `(lambda ()
   ;; toggling on debug-on-error will start debugging in case of the error.
