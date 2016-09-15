@@ -46,6 +46,33 @@
 ;; the rest of the package installation is hinged on this one
 (package-install 'use-package)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;		     Keymap and keys organization 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar ctl-z-map)
+(define-prefix-command 'ctl-z-map)
+(let ((c-z (global-key-binding [(control ?z)])))
+  (global-unset-key [(control ?z)])
+  (bind-key "C-z" 'ctl-z-map)
+  (bind-key "C-z C-z" c-z))
+
+(bind-keys :prefix-map ctl-x-f-map
+           :prefix "C-x f"
+           :prefix-docstring "File operations map")
+
+(bind-keys :prefix-map ctl-x-t-map
+           :prefix "C-x t"
+           :prefix-docstring "Toggle map")
+
+(bind-keys :prefix-map ctl-x-w-map
+           :prefix "C-x w"
+           :prefix-docstring "Window operations map")
+
+(let ((c-x-z (global-key-binding [(control x) ?z])))
+  (global-unset-key [(control x) (control ?z)])
+  (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			        Files
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
@@ -87,6 +114,99 @@
     (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
     (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'")))
 
+(use-package find-file-in-project
+  :ensure t
+  :commands find-file-in-project
+  :config (setq ffip-prefer-ido-mode t
+                ffip-match-path-instead-of-filename t))
+(use-package projectile
+  :ensure t
+  :defer 5
+  :diminish projectile-mode
+  :commands projectile-global-mode
+  :init
+  (setq projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
+        projectile-sort-order 'recentf
+        projectile-indexing-method 'alien
+	projectile-switch-project-action (lambda () (dired (projectile-project-root))))
+  :config
+  (projectile-global-mode t))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;				Dired	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package bookmark
+  :defer t
+  :init
+  (setq bookmark-default-file (concat *data-dir* "bookmarks")
+	bookmark-save-flag 1))
+
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config (global-undo-tree-mode))
+
+(use-package browse-kill-ring+
+  :ensure t
+  :defer 10
+  :commands browse-kill-ring
+  :bind (("C-x C-y" . browse-kill-ring)))
+
+;;; TODO: make moccur windows work like occur
+(use-package color-moccur
+  :ensure t
+  :commands isearch-moccur-all
+  :bind ("M-s O" . moccur)
+  :init
+  (bind-key "M-s O" #'isearch-moccur-all isearch-mode-map))
+
+(use-package ffy-ui)
+
+(use-package windmove
+  :ensure t
+  :defer t
+  :bind (:map ctl-x-w-map
+              ("<left>" . windmove-left)
+              ("h" . windmove-left)
+              ("<right>" . windmove-right)
+              ("l" . windmove-right)
+              ("<up>" . windmove-up)
+              ("j" . windmove-up)
+              ("<down>" . windmove-down)
+              ("k" . windmove-down)))
+
+(use-package ace-window
+  :ensure t
+  :pin melpa-stable
+  :bind ("C-x o" . ace-window))
+
+(use-package help-mode+ :ensure t)
+(use-package help+	:ensure t)
+(use-package help-fns+	:ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;			   Version Control
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package magit
+  :ensure t
+  :commands magit-status
+  :bind ("C-x g" . magit-status)
+  :config (setq magit-last-seen-setup-instructions "1.4.0"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;			      Minibuffer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package smex
+  :ensure t
+  :init
+  (setq smex-save-file (concat *data-dir* ".smex-items")
+        smex-history-length 20)
+  :config
+  (smex-initialize)
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)))
 ;; Minibuffer history
 (use-package savehist
   :init
@@ -101,35 +221,28 @@
 					  extended-command-history)
 	  savehist-autosave-interval 60)
     (savehist-mode t)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;			  Programming modes
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package eldoc
+  :diminish eldoc-mode
+  :commands eldoc-mode
+  :init  (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package bookmark
-  :defer t
-  :init
-  (setq bookmark-default-file (concat *data-dir* "bookmarks")
-	bookmark-save-flag 1))
+(use-package hl-line-mode
+  :commands hl-line-mode
+  :init (add-hook 'prog-mode-hook #'hl-line-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			      UI changes
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-minor-mode 'menu-bar-mode nil)
-(custom-set-minor-mode 'tool-bar-mode nil)
-(custom-set-minor-mode 'scroll-bar-mode nil)
-
-(when (display-graphic-p)
-  (custom-set-minor-mode 'mouse-wheel-mode t)
-  (custom-set-minor-mode 'blink-cursor-mode nil))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package smex
+(use-package paredit
   :ensure t
-  :init
-  (setq smex-save-file (concat *data-dir* ".smex-items")
-        smex-history-length 20)
-  :config
-  (smex-initialize)
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
-
+  :diminish paredit-mode
+  :commands paredit-mode
+  :config (progn (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
+		 ;; we use M-s for searching stuff
+		 (unbind-key "M-s" paredit-mode-map)
+		 ;; bind splice onto M-k since we shouldn't use it in lisp
+		 ;; mode anyway
+		 (bind-key "M-k" #'paredit-splice-sexp paredit-mode-map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Load custom-vars File
