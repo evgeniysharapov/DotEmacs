@@ -162,6 +162,16 @@
   :init
   (bind-key "M-s O" #'isearch-moccur-all isearch-mode-map))
 
+;;; This is a custom version of the library that should be loaded from
+;;; the git submodule
+(use-package ag
+  :init (progn
+	  ;; since we use our custom `ag` package we need to load its deps
+	  (use-package s :ensure t :defer t)
+	  (use-package dash :ensure t :defer t))
+  :config (setq ag-reuse-buffers t
+                ag-highlight-search t))
+
 (use-package ffy-ui)
 
 (use-package windmove
@@ -185,10 +195,9 @@
 (use-package help-mode+ :ensure t)
 (use-package help+	:ensure t)
 (use-package help-fns+	:ensure t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit
   :ensure t
   :commands magit-status
