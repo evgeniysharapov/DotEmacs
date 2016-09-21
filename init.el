@@ -154,24 +154,7 @@
   :commands browse-kill-ring
   :bind (("C-x C-y" . browse-kill-ring)))
 
-;;; TODO: make moccur windows work like occur
-(use-package color-moccur
-  :ensure t
-  :commands isearch-moccur-all
-  :bind ("M-s O" . moccur)
-  :init
-  (bind-key "M-s O" #'isearch-moccur-all isearch-mode-map))
-
-;;; This is a custom version of the library that should be loaded from
-;;; the git submodule
-(use-package ag
-  :init (progn
-	  ;; since we use our custom `ag` package we need to load its deps
-	  (use-package s :ensure t :defer t)
-	  (use-package dash :ensure t :defer t))
-  :config (setq ag-reuse-buffers t
-                ag-highlight-search t))
-
+(use-package ffy-search)
 (use-package ffy-ui)
 
 (use-package windmove
