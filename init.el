@@ -239,6 +239,16 @@
 					  extended-command-history)
 	  savehist-autosave-interval 60)
     (savehist-mode t)))
+
+(defun ffy-auto-close-buffers ()
+  "Closes buffers that should be closed after we done with minibuffer. Usually it is various completions buffers"
+  (mapc #'(lambda (buf-name)
+	   (let ((buffer (get-buffer buf-name)))
+	     (if (buffer-live-p buffer)
+		 (kill-buffer buffer)))) '("*Completions*" "*Ido Completions*")))
+
+(add-hook 'minibuffer-exit-hook #'ffy-auto-close-buffers)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			  Programming modes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
