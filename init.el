@@ -178,6 +178,9 @@
 (use-package help-mode+ :ensure t)
 (use-package help+	:ensure t)
 (use-package help-fns+	:ensure t)
+
+(use-package ffy-ido)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
