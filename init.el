@@ -132,6 +132,14 @@
 	projectile-switch-project-action (lambda () (dired (projectile-project-root))))
   :config
   (projectile-global-mode t))
+
+(defun find-recent-file ())
+
+(bind-key  "R" 'recentf-open-most-recent-file ctl-x-f-map)
+(bind-key  "f" 'find-file-in-project          ctl-x-f-map)
+(bind-key  "r" 'find-recent-file              ctl-x-f-map)
+(bind-key  "." 'find-file-at-point            ctl-x-f-map)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				Dired	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,8 +1,29 @@
-;; Configuration of IDO
+;; Configuration of IDO Completion system
 
 (use-package ido
-  :init (setq ido-save-directory-list-file (concat *data-dir* ".ido.last"))
-  :config
-  (ido-mode t))
+  :defer 10
+  :init (progn
+	  (setq ido-save-directory-list-file (concat *data-dir* ".ido.last"))
+	  (use-package ido-ubiquitous
+	    :ensure t
+	    :commands ido-ubiquitous-mode)
+	  (use-package flx-ido
+	    :ensure t
+	    :commands flx-ido-mode))
+  :config (progn
+	    (ido-mode t)
+	    (ido-everywhere t)
+	    (ido-ubiquitous-mode t)
+	    (flx-ido-mode t)
+	    (setq-default org-completion-use-ido t)
+
+	    (defun ido-find-recent-file ()
+	      "Use `ido-completing-read' to \\[find-file] a recent file"
+	      (interactive)
+	      (if (find-file (ido-completing-read+ "Find recent file: " recentf-list))
+		  (message "Opening file...")
+		(message "Aborting")))
+
+	    (fset 'find-recent-file 'ido-find-recent-file)))
 
 (provide 'ffy-ido)
