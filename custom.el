@@ -8,6 +8,7 @@
  '(emacs-lisp-mode-hook (quote (eldoc-mode imenu-add-menubar-index)))
  '(global-auto-revert-mode t)
  '(history-delete-duplicates t)
+ '(ibuffer-expert t)
  '(inhibit-startup-screen nil)
  '(initial-scratch-message nil)
  '(load-prefer-newer t)
