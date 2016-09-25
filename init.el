@@ -259,7 +259,10 @@
 
 (use-package hl-line-mode
   :commands hl-line-mode
-  :init (add-hook 'prog-mode-hook #'hl-line-mode))
+  :init (add-hook 'prog-mode-hook #'hl-line-mode)
+  :bind (:map ctl-x-t-map
+	      ("h" . hl-line-mode)))
+
 
 (use-package paredit
   :ensure t
@@ -283,6 +286,7 @@
   (add-hook mode-hook #'paredit-mode)
   (add-hook mode-hook #'elisp-slime-nav-mode)
   (add-hook mode-hook #'eldoc-mode))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Load custom-vars File
