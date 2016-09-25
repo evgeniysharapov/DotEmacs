@@ -263,6 +263,10 @@
   :bind (:map ctl-x-t-map
 	      ("h" . hl-line-mode)))
 
+(use-package flycheck
+  :ensure t
+  :pin melpa-stable
+  :config (add-hook 'prog-mode-hook #'flycheck-mode))
 
 (use-package paredit
   :ensure t
