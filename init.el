@@ -268,6 +268,32 @@
   :pin melpa-stable
   :config (add-hook 'prog-mode-hook #'flycheck-mode))
 
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :init (progn
+            (setq company-idle-delay 0.1
+                  company-tooltip-limit 20
+                  company-show-numbers t
+                  company-selection-wrap-around t
+                  company-minimum-prefix-length 1
+                  company-tooltip-align-annotations t
+                  company-echo-delay 0))
+  :config
+  (progn
+    ;; default `company-backends'
+    (setq company-backends '(company-capf
+                             (company-dabbrev-code company-gtags company-etags company-keywords)
+                             company-files
+			     company-dabbrev))
+
+    (defun ffy-add-company-backends (&rest backends)
+      "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
+      (set (make-local-variable 'company-backends)
+           (append backends company-backends)))
+
+    (global-company-mode 1)))
+
 (use-package paredit
   :ensure t
   :diminish paredit-mode
