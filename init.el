@@ -203,6 +203,7 @@
           ;; auto updateable ibuffer
           (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
 
+(bind-key "C-x K" #'kill-this-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
