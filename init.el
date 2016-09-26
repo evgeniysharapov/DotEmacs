@@ -95,12 +95,12 @@
     (setq desktop-dirname *data-dir*)
     (push *data-dir* desktop-path)))
 (use-package recentf
-  :commands (recentf-open-most-recent-file)
+  :commands (recentf-mode recentf-open-most-recent-file)
   :init
   (progn
     ;; lazy load recentf
     (add-hook 'find-file-hook (lambda () (unless recentf-mode
-					   (recentf-mode)
+					   (recentf-mode t)
 					   (recentf-track-opened-file))))
     (setq recentf-save-file (concat *data-dir* ".recentf")
 	  recentf-max-saved-items 1000

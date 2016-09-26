@@ -20,6 +20,8 @@
 	    (defun ido-find-recent-file ()
 	      "Use `ido-completing-read' to \\[find-file] a recent file"
 	      (interactive)
+	      (unless recentf-mode
+		(recentf-mode t))
 	      (if (find-file (ido-completing-read+ "Find recent file: " recentf-list))
 		  (message "Opening file...")
 		(message "Aborting")))
