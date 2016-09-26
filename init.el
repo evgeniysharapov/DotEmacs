@@ -271,6 +271,7 @@
 
 (use-package company
   :ensure t
+  :defer t
   :diminish company-mode
   :init (progn
             (setq company-idle-delay 0.1
