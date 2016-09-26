@@ -333,7 +333,6 @@
 			      lisp-interaction-mode-hook))
 
 (dolist (mode-hook *lisp-mode-hooks*)
-  (message (concat "Hooking " (symbol-name mode-hook)))
   (add-hook mode-hook #'paredit-mode)
   (add-hook mode-hook #'elisp-slime-nav-mode)
   (add-hook mode-hook #'eldoc-mode))
