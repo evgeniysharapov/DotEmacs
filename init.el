@@ -271,30 +271,45 @@
 
 (use-package company
   :ensure t
-  :defer t
+  :defer 3
   :diminish company-mode
-  :init (progn
-            (setq company-idle-delay 0.1
-                  company-tooltip-limit 20
-                  company-show-numbers t
-                  company-selection-wrap-around t
-                  company-minimum-prefix-length 1
-                  company-tooltip-align-annotations t
-                  company-echo-delay 0))
+  :init
+  (setq company-idle-delay 0.1
+	company-tooltip-limit 20
+	company-show-numbers t
+	company-selection-wrap-around t
+	company-minimum-prefix-length 1
+	company-tooltip-align-annotations t
+	company-echo-delay 0)
   :config
-  (progn
-    ;; default `company-backends'
-    (setq company-backends '(company-capf
-                             (company-dabbrev-code company-gtags company-etags company-keywords)
-                             company-files
-			     company-dabbrev))
+  ;; default `company-backends'
+  (setq company-backends '(company-capf
+			   (company-dabbrev-code
+			    company-gtags
+			    company-etags
+			    company-keywords
+			    )
+			   company-files
+			   company-dabbrev
+			   ))
 
-    (defun ffy-add-company-backends (&rest backends)
-      "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
-      (set (make-local-variable 'company-backends)
-           (append backends company-backends)))
+  (defun ffy-add-company-backends (&rest backends)
+    "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
+    (set (make-local-variable 'company-backends)
+	 (append backends company-backends)))
 
-    (global-company-mode 1)))
+  (global-company-mode 1))
+
+(use-package yasnippet
+  :commands (yas-minor-mode yas-minor-mode-on yas-global-mode yas-expand)
+  :defer 5
+  :ensure t
+  :init (setq yas-snippet-dirs (list (concat *data-dir* "snippets")
+				     'yas-installed-snippets-dir))
+  :config
+  (yas-reload-all)
+  (add-hook 'text-mode-hook #'yas-minor-mode-on)
+  (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
 (use-package paredit
   :ensure t
