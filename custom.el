@@ -5,7 +5,6 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(echo-keystrokes 0.1)
- '(emacs-lisp-mode-hook (quote (eldoc-mode imenu-add-menubar-index)))
  '(global-auto-revert-mode t)
  '(history-delete-duplicates t)
  '(ibuffer-expert t)

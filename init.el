@@ -312,9 +312,13 @@
   :commands elisp-slime-nav-mode
   :diminish elisp-slime-nav-mode)
 
-(setq *lisp-mode-hooks* '(emacs-lisp-mode-hook ielm-mode-hook lisp-mode-hook lisp-interaction-mode-hook))
+(defconst *lisp-mode-hooks* '(emacs-lisp-mode-hook
+			      ielm-mode-hook
+			      lisp-mode-hook
+			      lisp-interaction-mode-hook))
 
 (dolist (mode-hook *lisp-mode-hooks*)
+  (message (concat "Hooking " (symbol-name mode-hook)))
   (add-hook mode-hook #'paredit-mode)
   (add-hook mode-hook #'elisp-slime-nav-mode)
   (add-hook mode-hook #'eldoc-mode))
