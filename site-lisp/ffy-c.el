@@ -13,15 +13,17 @@
 
 (use-package company-c-headers
   :defer t
+  :commands company-c-headers
   :ensure t
   :config
-  (dolist (dir (if (boundp 'ffy-c-headers-dirs)
-		   ffy-c-headers-dirs
+  (dolist (dir (if (boundp '*ffy-c-headers-dirs*)
+		   *ffy-c-headers-dirs*
 		 ()))
     (add-to-list 'company-c-headers-path-system dir)))
 
 (use-package c-eldoc
   :defer t
+  :commands c-turn-on-eldoc-mode
   :ensure t
   :config (setq c-eldoc-includes
                 (mapconcat #'identity
@@ -30,28 +32,28 @@
                            (cons ;c-eldoc-includes
                                  "-I. -I.."
                                  (mapcar (apply-partially #'concat "-I")
-                                         ffy-c-headers-dirs))
+                                         *ffy-c-headers-dirs*))
                            " ")
                 c-eldoc-cpp-command "cpp"))
 
 (defun ffy-c-mode-hook ()
-  "This is settings for the C/C++ mode"
+  "This is settings for the C/C++ mode
+
+Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mode-common-hook"
   (when (memq major-mode '(c-mode c++-mode))
     (electric-pair-mode +1)
     (electric-indent-local-mode +1)
     (c-toggle-hungry-state +1)
     (c-set-style "gnu")
     (setq c-basic-offset 4)
+    (c-turn-on-eldoc-mode)
     (set (make-local-variable 'compile-command)
          (let ((f (file-name-nondirectory (buffer-file-name))))
            (case major-mode
              ('c-mode (format "gcc -g -O2 -std=gnu99 -static -lm %s" f))
              ('c++-mode (format "g++ -g -O2 -static -std=gnu++11 %s" f))
              (t compile-command))))
-    (ffy-add-company-backends 'company-c-headers 'company-semantic 'company-clang 'company-xcode)))
 
-;;; due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 we
-;;; add it to a c-mode-common-hook
-(add-hook 'c-mode-common-hook #'ffy-c-mode-hook)
+    (ffy-add-company-backends 'company-c-headers 'company-semantic 'company-clang 'company-xcode)))
 
 (provide 'ffy-c)
