@@ -336,6 +336,19 @@
   (add-hook mode-hook #'elisp-slime-nav-mode)
   (add-hook mode-hook #'eldoc-mode))
 
+(defun ffy-ielm ()
+  "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
+  (interactive)
+  (let ((buf (current-buffer)))
+    (if (get-buffer "*ielm*")
+        (switch-to-buffer-other-window "*ielm*")
+      (progn
+        (split-window-sensibly (selected-window))
+        (other-window 1)
+        (ielm)))
+    (ielm-change-working-buffer buf)))
+
+(bind-key "C-M-:" #'ffy-ielm)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				 C++
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
