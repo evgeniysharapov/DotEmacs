@@ -21,7 +21,8 @@
  '(save-interprogram-paste-before-kill t)
  '(scroll-preserve-screen-position t)
  '(show-paren-mode t)
- '(visible-bell t))
+ '(visible-bell t)
+ '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
