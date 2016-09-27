@@ -151,6 +151,11 @@
   (setq bookmark-default-file (concat *data-dir* "bookmarks")
 	bookmark-save-flag 1))
 
+(use-package ace-jump-mode
+  :ensure t
+  :bind (:map ctl-z-map
+	 ("j" . ace-jump-mode)))
+
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
