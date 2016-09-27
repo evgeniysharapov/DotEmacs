@@ -4,8 +4,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(custom-buffer-done-kill t)
  '(echo-keystrokes 0.1)
  '(global-auto-revert-mode t)
+ '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
  '(ibuffer-expert t)
  '(ido-create-new-buffer (quote always))
@@ -22,6 +24,8 @@
  '(scroll-preserve-screen-position t)
  '(show-paren-mode t)
  '(tags-revert-without-query t)
+ '(user-full-name "Evgeniy N. Sharapov")
+ '(user-mail-address "evgeniy.sharapov@gmail.com")
  '(visible-bell t)
  '(winner-mode t))
 (custom-set-faces
