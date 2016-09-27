@@ -21,6 +21,7 @@
  '(save-interprogram-paste-before-kill t)
  '(scroll-preserve-screen-position t)
  '(show-paren-mode t)
+ '(tags-revert-without-query t)
  '(visible-bell t)
  '(winner-mode t))
 (custom-set-faces
