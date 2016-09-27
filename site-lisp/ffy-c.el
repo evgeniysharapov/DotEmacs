@@ -1,23 +1,22 @@
-;;; C/C++ Configuration
-
+;;; C/C++ Configuration mostly for one off c/c++ programs
 (use-package cc-mode
   :mode (("\\.h\\(h?\\|xx\\|pp\\)\\'" . c++-mode)
          ("\\.m\\'"                   . c-mode)
          ("\\.mm\\'"                  . c++-mode)))
 
 ;;; C/C++ Headers Locations. This is system specific
-(setq ffy-c-headers-locations '("C:/PF86/LLVM/lib/clang/3.6.2/include"
-                                "C:/PF86/LLVM/i686-w64-mingw32/include"
-                                "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
-                                "C:/PF86/LLVM/i686-w64-mingw32/include/c++/i686-w64-mingw32"
-                                "C:/PF86/LLVM/include/"))
+(defconst *ffy-c-headers-dirs* '("C:/PF86/LLVM/lib/clang/3.6.2/include"
+				 "C:/PF86/LLVM/i686-w64-mingw32/include"
+				 "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
+				 "C:/PF86/LLVM/i686-w64-mingw32/include/c++/i686-w64-mingw32"
+				 "C:/PF86/LLVM/include/"))
 
 (use-package company-c-headers
   :defer t
   :ensure t
   :config
-  (dolist (dir (if (boundp 'ffy-c-headers-locations)
-		   ffy-c-headers-locations
+  (dolist (dir (if (boundp 'ffy-c-headers-dirs)
+		   ffy-c-headers-dirs
 		 ()))
     (add-to-list 'company-c-headers-path-system dir)))
 
@@ -31,7 +30,7 @@
                            (cons ;c-eldoc-includes
                                  "-I. -I.."
                                  (mapcar (apply-partially #'concat "-I")
-                                         ffy-c-headers-locations))
+                                         ffy-c-headers-dirs))
                            " ")
                 c-eldoc-cpp-command "cpp"))
 
