@@ -287,8 +287,7 @@
 			   (company-dabbrev-code
 			    company-gtags
 			    company-etags
-			    company-keywords
-			    )
+			    company-keywords)
 			   company-files
 			   company-dabbrev
 			   ))
