@@ -21,6 +21,12 @@
  '(initial-scratch-message nil)
  '(load-prefer-newer t)
  '(mouse-yank-at-point t)
+ '(safe-local-variable-values
+   (quote
+    ((mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
+     (mocha-project-test-directory . "test/server")
+     (mocha-which-node)
+     (js2-basic-offset . 2))))
  '(save-interprogram-paste-before-kill t)
  '(scroll-preserve-screen-position t)
  '(show-paren-mode t)
