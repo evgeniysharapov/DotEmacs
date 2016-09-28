@@ -210,6 +210,9 @@
 
 (bind-key "C-x K" #'kill-this-buffer)
 
+;;; short response function instead of long one
+(fset 'yes-or-no-p 'y-or-n-p)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
