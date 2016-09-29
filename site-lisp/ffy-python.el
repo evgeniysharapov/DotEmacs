@@ -17,9 +17,11 @@
 	      ;; use it for sending file to python shell
 	      ("C-c C-f" . python-shell-send-file)
 	      ("C-M-f" . python-nav-forward-sexp)
+	      ;; moves between syntactic blocks (if,for,while,def,..)
 	      ("C-M-b" . python-nav-backward-sexp)
 	      ("M-}" . python-nav-forward-block)
 	      ("M-{" . python-nav-backward-block)
+	      ;; In python this looks like next line skipping comments and multi-line strings
 	      ("M-e" . python-nav-forward-statement)
 	      ("M-a" . python-nav-backward-statement)))
 

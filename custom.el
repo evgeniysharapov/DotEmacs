@@ -25,6 +25,7 @@
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(mouse-yank-at-point t)
+ '(python-indent-guess-indent-offset nil)
  '(safe-local-variable-values
    (quote
     ((mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
