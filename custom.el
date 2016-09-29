@@ -6,6 +6,9 @@
  '(anaconda-mode-eldoc-as-single-line t)
  '(column-number-mode t)
  '(custom-buffer-done-kill t)
+ '(directory-free-space-args "-Pmh")
+ '(dired-dwim-target t)
+ '(dired-listing-switches "-alhG")
  '(echo-keystrokes 0.1)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
@@ -20,6 +23,7 @@
  '(inhibit-startup-screen nil)
  '(initial-scratch-message nil)
  '(load-prefer-newer t)
+ '(ls-lisp-dirs-first t)
  '(mouse-yank-at-point t)
  '(safe-local-variable-values
    (quote
