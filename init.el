@@ -189,9 +189,7 @@
   :pin melpa-stable
   :bind ("C-x o" . ace-window))
 
-(use-package help-mode+ :ensure t)
-(use-package help+	:ensure t)
-(use-package help-fns+	:ensure t)
+(use-package ffy-help)
 
 (use-package ffy-ido)
 
