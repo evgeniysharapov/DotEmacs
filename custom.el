@@ -25,6 +25,7 @@
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(mouse-yank-at-point t)
+ '(org-return-follows-link t)
  '(python-indent-guess-indent-offset nil)
  '(safe-local-variable-values
    (quote
