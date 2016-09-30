@@ -14,6 +14,28 @@
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
  '(ibuffer-expert t)
+ '(ibuffer-saved-filter-groups nil)
+ '(ibuffer-saved-filters
+   (quote
+    (("Kattis"
+      ((filename . "Kattis")))
+     ("Mozart"
+      ((filename . "Mozart\\.Hg")))
+     ("gnus"
+      ((or
+	(mode . message-mode)
+	(mode . mail-mode)
+	(mode . gnus-group-mode)
+	(mode . gnus-summary-mode)
+	(mode . gnus-article-mode))))
+     ("programming"
+      ((or
+	(mode . emacs-lisp-mode)
+	(mode . cperl-mode)
+	(mode . c-mode)
+	(mode . java-mode)
+	(mode . idl-mode)
+	(mode . lisp-mode)))))))
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
  '(ido-max-prospects 10)
