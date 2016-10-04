@@ -36,6 +36,7 @@
 	(mode . java-mode)
 	(mode . idl-mode)
 	(mode . lisp-mode)))))))
+ '(ido-auto-merge-work-directories-length -1)
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
  '(ido-max-prospects 10)
