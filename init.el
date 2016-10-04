@@ -380,13 +380,26 @@
   :ensure t
   :commands nginx-mode)
 
-(use-package dockerfile-mode
-  :ensure t
-  :commands dockerfile-mode)
-
 (use-package yaml-mode
   :ensure t
   :mode (("\\.ya?ml$" . yaml-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;				Docker
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package dockerfile-mode
+  :ensure t
+  :commands dockerfile-mode)
+(use-package docker
+  :ensure t
+  :pin melpa-stable
+  :commands (docker-containers)
+  :init (progn
+	  (use-package json-rpc :ensure t)
+	  (setenv "DOCKER_HOST" "tcp://192.168.99.100:2376")
+	  (setenv "DOCKER_TLS_VERIFY" "1")
+	  (setenv "DOCKER_MACHINE_NAME" "default")
+	  (setenv "DOCKER_CERT_PATH" "C:\\Users\\esharapov\\.docker\\machine\\machines\\default")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Load custom-vars File
