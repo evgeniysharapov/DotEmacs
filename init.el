@@ -343,6 +343,11 @@
   (add-hook mode-hook #'elisp-slime-nav-mode)
   (add-hook mode-hook #'eldoc-mode))
 
+(global-set-key [remap eval-expression] 'pp-eval-expression)
+(global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
+
+(bind-key "C-c C-c" #'eval-buffer emacs-lisp-mode-map)
+
 (defun ffy-ielm ()
   "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
   (interactive)
