@@ -154,7 +154,7 @@
 
 (use-package ace-jump-mode
   :ensure t
-  :bind (:map ctl-z-map
+  :bind (:map goto-map
 	 ("j" . ace-jump-mode)))
 
 (use-package undo-tree
