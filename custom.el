@@ -48,7 +48,11 @@
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(mouse-yank-at-point t)
+ '(org-confirm-babel-evaluate nil)
+ '(org-hide-leading-stars t)
+ '(org-list-empty-line-terminates-plain-lists t)
  '(org-return-follows-link t)
+ '(org-src-fontify-natively t)
  '(python-indent-guess-indent-offset nil)
  '(safe-local-variable-values
    (quote
