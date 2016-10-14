@@ -7,6 +7,7 @@
 	     (python . t)
 	     (emacs-lisp . t)
 	     (latex . t)
+	     (gnuplot . t)
 	     (C . t)))
   (add-hook 'org-src-mode-hook
           (lambda ()
