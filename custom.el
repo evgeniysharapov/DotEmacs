@@ -62,6 +62,7 @@
      (js2-basic-offset . 2))))
  '(save-interprogram-paste-before-kill t)
  '(scroll-preserve-screen-position t)
+ '(sentence-end-double-space nil)
  '(show-paren-mode t)
  '(tags-revert-without-query t)
  '(user-full-name "Evgeniy N. Sharapov")
