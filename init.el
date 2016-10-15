@@ -169,6 +169,12 @@
   :bind (("C-x C-y" . browse-kill-ring)))
 
 (use-package ffy-search)
+
+(use-package hide-lines
+  :defer t
+  :bind (:map ctl-z-map
+	      ("/" . hide-lines)))
+
 (use-package ffy-ui)
 
 (use-package windmove
