@@ -343,8 +343,8 @@
   (add-hook mode-hook #'elisp-slime-nav-mode)
   (add-hook mode-hook #'eldoc-mode))
 
-(global-set-key [remap eval-expression] 'pp-eval-expression)
-(global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
+;; (global-set-key [remap eval-expression] 'pp-eval-expression)
+;; (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
 
 (bind-key "C-c C-c" #'eval-buffer emacs-lisp-mode-map)
 ;;; turn off checkdoc for my configuration files
