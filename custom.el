@@ -6,6 +6,8 @@
  '(anaconda-mode-eldoc-as-single-line t)
  '(column-number-mode t)
  '(custom-buffer-done-kill t)
+ '(desktop-restore-eager 2)
+ '(desktop-restore-frames nil)
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
