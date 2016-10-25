@@ -318,15 +318,25 @@
 			    company-etags
 			    company-keywords)
 			   company-files
-			   company-dabbrev
-			   ))
+			   company-dabbrev))
 
   (defun ffy-add-company-backends (&rest backends)
     "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
     (set (make-local-variable 'company-backends)
 	 (append backends company-backends)))
 
-  (global-company-mode 1))
+  (global-company-mode 1)
+
+  :bind (:map company-active-map
+	      ("<right>" . company-complete-selection)))
+
+(use-package company-statistics
+  :ensure t
+  :commands (company-statistics-mode)
+  :init (progn
+	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
+	  (add-hook 'company-mode-hook #'company-statistics-mode)))
+
 
 (use-package yasnippet
   :commands (yas-minor-mode yas-minor-mode-on yas-global-mode yas-expand)
