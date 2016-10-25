@@ -1,4 +1,6 @@
 ;; Configuration of IDO Completion system
+(defvar *data-dir*)
+(defvar recentf-list)
 
 (use-package ido
   :defer 10
