@@ -292,6 +292,12 @@
   :pin melpa-stable
   :config (add-hook 'prog-mode-hook #'flycheck-mode))
 
+(use-package flycheck-pos-tip
+  :ensure t
+  :commands flycheck-pos-tip-mode
+  :pin melpa-stable
+  :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
+
 (use-package company
   :ensure t
   :defer 3
