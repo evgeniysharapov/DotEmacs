@@ -377,8 +377,8 @@
 		      (string-equal user-init-file (buffer-file-name))	; or init.el file
 		      (string-equal custom-file (buffer-file-name)) ; customization file
 		      (and 		; configuration modules
-		       (string-match (file-name-directory (buffer-file-name)) *lisp-dir*)
-		       (string-match "^ffy-" (file-name-nondirectory (buffer-file-name))))))
+		       (string-match (or (file-name-directory (or  (buffer-file-name) "")) "") *lisp-dir*)
+		       (string-match "^ffy-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
                 (flycheck-disable-checker 'emacs-lisp-checkdoc))))
 
 (defun ffy-ielm ()
