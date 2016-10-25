@@ -11,7 +11,8 @@
 
 ;; typefaces
 (set-frame-font "Iosevka Light-12" t)
-;;(set-frame-font "Iosevka NF-12:light" t)
+;; (set-frame-font "Cousine-11" t)
+;; (set-frame-font "Iosevka NF-12:light" t)
 ;; (set-frame-font "Meslo LG S DZ" t)
 ;; (set-frame-font "Knack NF" t)
 ;; (set-frame-font "MesloLGSDZ NF" t)
@@ -27,7 +28,7 @@
 ;; (set-frame-font "InputSans" t)
 ;; (set-frame-font "Fira Code" t)
 ;; (set-frame-font "Fira Mono for Powerline" t)
-;; (set-frame-font "FantasqueSansMono NF" t)
+;; (set-frame-font "FantasqueSansMono NF-11" t)
 ;; (set-frame-font "Liberation Mono-11" t)
 ;; (set-frame-font "Consolas-11" t)
 ;; (set-frame-font "LiterationMonoPowerline NF" t)
