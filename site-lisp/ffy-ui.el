@@ -1,3 +1,4 @@
+(require 'cl)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   User Experience
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -9,8 +10,10 @@
   (custom-set-minor-mode 'mouse-wheel-mode t)
   (custom-set-minor-mode 'blink-cursor-mode nil))
 
-;; typefaces
+;; Default typeface
 (set-frame-font "Iosevka Light-12" t)
+
+;;; Good typefaces to consider 
 ;; (set-frame-font "Cousine-11" t)
 ;; (set-frame-font "Iosevka NF-12:light" t)
 ;; (set-frame-font "Meslo LG S DZ" t)
@@ -34,41 +37,48 @@
 ;; (set-frame-font "LiterationMonoPowerline NF" t)
 ;; (set-frame-font "InconsolataForPowerline NF" t)
 
-(setq ffy-type-faces '("DejaVu LGC Sans Mono"
-                       "Consolas"
-                       "Source Code Pro"
-                       "Monaco"
-                       "Menlo"
-                       "Meslo LG L DZ"
-                       "Meslo LG M DZ"
-                       "Meslo LG S DZ"
-                       "Bitstream Vera Sans Mono"
-                       "Anonymous Pro"
-                       "Inconsolata LGC"
-                       "Envy Code R"
-                       "PragmataPro"
-                       "Pragmata TT"
-                       "NotCourierSans"
-                       "Liberation Mono"
-                       "Hack"
-                       "Fira Code"
-                       "Code New Roman"
-                       "Audimat Mono:light"
-                       "CamingoCode"
-                       "Input"
-                       "Iosevka"
-                       "mononoki"
-                       "Monoid"
-                       "Lucida Console"
-                       "Roboto Mono Light"
-                       "M+ 1m"))
+(defconst ffy-font-families '(
+			      "Anonymous Pro"
+			      "Bitstream"
+			      "CamingoCode"
+			      "Code New Roman"
+			      "Consolas"
+			      "Cousine"
+			      "DejaVu"
+			      "Envy Code R"
+			      "Fantasque"
+			      "Fira"
+			      "Hack"
+			      "Inconsolata"
+			      "Input"
+			      "Iosevka"
+			      "Knack"
+			      "Liberation Mono"
+			      "Literation"
+			      "Lucida Console"
+			      "M+"
+			      "Menlo"
+			      "Meslo"
+			      "Monaco"
+			      "Mono"
+			      "Monoid"
+			      "NotCourierSans"
+			      "Pragmata"
+			      "Roboto Mono"
+			      "Source Code"
+			      "mononoki"
+			      ))
+(defconst --filter-fonts (regexp-opt ffy-font-families) "Regular expression that covers possible usability")
 
 (defun ffy-select-typeface ()
   "Choose typefaces for the frame"
   (interactive)
-  (set-frame-font (ido-completing-read+ "Choose font:" ffy-type-faces nil nil) t))
+  (set-frame-font (ido-completing-read+ "Choose font:"
+					(cl-remove-if-not
+					 (lambda (e) (string-match-p --filter-fonts e))
+					 (font-family-list)))
+		  t))
 
 (bind-key "f" #'ffy-select-typeface ctl-x-t-map)
-
 
 (provide 'ffy-ui)
