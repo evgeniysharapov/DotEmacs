@@ -337,7 +337,6 @@
 	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
 	  (add-hook 'company-mode-hook #'company-statistics-mode)))
 
-
 (use-package yasnippet
   :commands (yas-minor-mode yas-minor-mode-on yas-global-mode yas-expand)
   :defer 5

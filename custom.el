@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(anaconda-mode-eldoc-as-single-line t)
+ '(auto-image-file-mode t)
  '(column-number-mode t)
  '(custom-buffer-done-kill t)
  '(desktop-restore-eager 2)
@@ -49,6 +50,7 @@
  '(initial-scratch-message nil)
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
+ '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(org-confirm-babel-evaluate nil)
  '(org-hide-leading-stars t)
