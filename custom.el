@@ -13,6 +13,7 @@
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
  '(echo-keystrokes 0.1)
+ '(eldoc-idle-delay 0)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
