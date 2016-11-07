@@ -39,4 +39,8 @@
               ("C-c C-c f" . mocha-test-file)
               ("C-c C-c p" . mocha-test-project)))
 
+(use-package js-comint
+  :ensure t
+  :commands (run-js))
+
 (provide 'ffy-javascript)
