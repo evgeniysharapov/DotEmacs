@@ -7,6 +7,7 @@
  '(auto-image-file-mode t)
  '(column-number-mode t)
  '(custom-buffer-done-kill t)
+ '(default-input-method "russian-computer")
  '(desktop-restore-eager 2)
  '(desktop-restore-frames nil)
  '(directory-free-space-args "-Pmh")
