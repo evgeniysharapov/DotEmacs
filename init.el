@@ -234,7 +234,8 @@
 (use-package magit
   :ensure t
   :commands magit-status
-  :bind ("C-x g" . magit-status)
+  :bind (:map ctl-z-map
+	      ("g" . magit-status))
   :config (setq magit-last-seen-setup-instructions "1.4.0"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
