@@ -52,6 +52,7 @@
  '(initial-scratch-message nil)
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
+ '(monky-process-type (quote cmdserver))
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(org-confirm-babel-evaluate nil)

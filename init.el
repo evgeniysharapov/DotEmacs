@@ -238,6 +238,11 @@
 	      ("g" . magit-status))
   :config (setq magit-last-seen-setup-instructions "1.4.0"))
 
+(use-package monky
+  :ensure t
+  :commands monky-status
+  :bind (:map ctl-z-map
+	      ("h" . monky-status)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			      Minibuffer
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
