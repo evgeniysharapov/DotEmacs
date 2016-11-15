@@ -81,4 +81,6 @@
 
 (bind-key "f" #'ffy-select-typeface ctl-x-t-map)
 
+(bind-key "w" #'whitespace-mode ctl-x-t-map)
+
 (provide 'ffy-ui)
