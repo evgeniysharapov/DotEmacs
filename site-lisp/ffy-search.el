@@ -8,6 +8,11 @@
   :init
   (bind-key "M-s O" #'isearch-moccur-all isearch-mode-map))
 
+(use-package occur
+  :bind (:map occur-mode-map
+	      ("n" . occur-next)
+	      ("p" . occur-prev)))
+
 ;;; This is a custom version of the library that should be loaded from
 ;;; the git submodule
 (use-package ag
