@@ -85,6 +85,7 @@
 ;;; This is a custom version of the library that should be loaded from
 ;;; the git submodule
 (use-package ag
+  :defines (ag-reuse-buffers ag-highlight-search)
   :init (progn
 	  ;; since we use our custom `ag` package we need to load its deps
 	  (use-package s :ensure t :defer t)
