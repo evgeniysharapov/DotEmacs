@@ -365,6 +365,23 @@
 		 ;; mode anyway
 		 (bind-key "M-k" #'paredit-splice-sexp paredit-mode-map)))
 
+(use-package outline
+  :commands outline-minor-mode
+  :init (setq outline-minor-mode-prefix (kbd "M-o"))
+  :config (bind-keys :map outline-mode-prefix-map
+		     ;; motion
+		     ("u" . outline-up-heading)
+		     ("f" . outline-forward-same-level)
+		     ("b" . outline-backward-same-level)
+		     ("n" . outline-next-visible-heading)
+		     ("p" . outline-previous-visible-heading)
+		     ;; editing
+		     ("<" . outline-promote)
+		     (">" . outline-demote)
+		     ("^" . outline-move-subtree-up)
+		     ("v" . outline-move-subtree-down)
+		     ("C-SPC" . outline-mark-subtree)))
+
 (use-package elisp-slime-nav
   :ensure t
   :commands elisp-slime-nav-mode
