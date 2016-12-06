@@ -45,6 +45,7 @@
 (package-initialize)
 ;; the rest of the package installation is hinged on this one
 (package-install 'use-package)
+(setq use-package-enable-imenu-support t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;		     Keymap and keys organization 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -113,7 +114,6 @@
 		 (expand-file-name *data-dir*))
     (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
     (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'")))
-
 (use-package find-file-in-project
   :ensure t
   :commands find-file-in-project
@@ -156,6 +156,14 @@
   :ensure t
   :bind (:map goto-map
 	 ("j" . ace-jump-mode)))
+
+(use-package imenu
+  :commands (imenu)
+  :init (progn
+	  (use-package imenu+ :ensure t :defer t)
+	  (use-package imenu-list :ensure t :commands (imenu-list)))
+  :bind (("M-s i" . imenu)
+	 ("M-s I" . imenu-list)))
 
 (use-package undo-tree
   :ensure t

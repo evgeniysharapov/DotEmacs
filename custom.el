@@ -48,6 +48,7 @@
  '(ido-mode (quote both) nil (ido))
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point (quote guess))
+ '(imenu-auto-rescan t)
  '(inhibit-startup-screen nil)
  '(initial-scratch-message nil)
  '(load-prefer-newer t)
