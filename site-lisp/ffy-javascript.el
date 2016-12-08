@@ -1,4 +1,7 @@
 ;;; Javascript Configuration
+;;
+;; Node packages expected to be installed globally:
+;; 1. tern
 
 (use-package js2-mode
   :defer t
