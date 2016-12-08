@@ -418,7 +418,7 @@
 		      (string-equal custom-file (buffer-file-name)) ; customization file
 		      (and 		; configuration modules
 		       (string-match (or (file-name-directory (or  (buffer-file-name) "")) "") *lisp-dir*)
-		       (string-match "^ffy-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
+		       (string-match "^ff\\[ye\\]-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
                 (flycheck-disable-checker 'emacs-lisp-checkdoc))))
 
 (defun ffy-ielm ()
@@ -434,6 +434,10 @@
     (ielm-change-working-buffer buf)))
 
 (bind-key "C-M-:" #'ffy-ielm)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;			       Clojure
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package ffe-clojure)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				 C++
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
