@@ -21,4 +21,4 @@
               ([remap org-return] . org-return-indent)))
 
 
-(provide 'ffy-org)
+(provide 'ffe-org)

@@ -30,4 +30,4 @@
 
 	    (fset 'find-recent-file 'ido-find-recent-file)))
 
-(provide 'ffy-ido)
+(provide 'ffe-ido)

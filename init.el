@@ -176,14 +176,14 @@
   :commands browse-kill-ring
   :bind (("C-x C-y" . browse-kill-ring)))
 
-(use-package ffy-search)
+(use-package ffe-search)
 
 (use-package hide-lines
   :defer t
   :bind (:map ctl-z-map
 	      ("/" . hide-lines)))
 
-(use-package ffy-ui)
+(use-package ffe-ui)
 
 (use-package windmove
   :ensure t
@@ -203,9 +203,9 @@
   :pin melpa-stable
   :bind ("C-x o" . ace-window))
 
-(use-package ffy-help)
+(use-package ffe-help)
 
-(use-package ffy-ido)
+(use-package ffe-ido)
 
 (use-package ibuffer
   :bind ("C-x C-b" . ibuffer)
@@ -278,14 +278,14 @@
 	  savehist-autosave-interval 60)
     (savehist-mode t)))
 
-(defun ffy-auto-close-buffers ()
+(defun ffe-auto-close-buffers ()
   "Closes buffers that should be closed after we done with minibuffer. Usually it is various completions buffers"
   (mapc #'(lambda (buf-name)
 	   (let ((buffer (get-buffer buf-name)))
 	     (if (buffer-live-p buffer)
 		 (kill-buffer buffer)))) '("*Completions*" "*Ido Completions*")))
 
-(add-hook 'minibuffer-exit-hook #'ffy-auto-close-buffers)
+(add-hook 'minibuffer-exit-hook #'ffe-auto-close-buffers)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			  Programming modes
@@ -334,7 +334,7 @@
 			   company-files
 			   company-dabbrev))
 
-  (defun ffy-add-company-backends (&rest backends)
+  (defun ffe-add-company-backends (&rest backends)
     "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
     (set (make-local-variable 'company-backends)
 	 (append backends company-backends)))
@@ -421,7 +421,7 @@
 		       (string-match "^ff\\[ye\\]-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
                 (flycheck-disable-checker 'emacs-lisp-checkdoc))))
 
-(defun ffy-ielm ()
+(defun ffe-ielm ()
   "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
   (interactive)
   (let ((buf (current-buffer)))
@@ -433,7 +433,7 @@
         (ielm)))
     (ielm-change-working-buffer buf)))
 
-(bind-key "C-M-:" #'ffy-ielm)
+(bind-key "C-M-:" #'ffe-ielm)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			       Clojure
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -441,19 +441,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				 C++
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ffy-c
-  :commands ffy-c-mode-hook
-  :init (add-hook 'c-mode-common-hook #'ffy-c-mode-hook))
+(use-package ffe-c
+  :commands ffe-c-mode-hook
+  :init (add-hook 'c-mode-common-hook #'ffe-c-mode-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			      Javascript
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ffy-javascript)
+(use-package ffe-javascript)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ffy-python)
+(use-package ffe-python)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			  Misc. File Formats
@@ -481,7 +481,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			       Org mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ffy-org)
+(use-package ffe-org)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				Docker

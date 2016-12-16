@@ -37,7 +37,7 @@
 ;; (set-frame-font "LiterationMonoPowerline NF" t)
 ;; (set-frame-font "InconsolataForPowerline NF" t)
 
-(defconst ffy-font-families '(
+(defconst ffe-font-families '(
 			      "Anonymous Pro"
 			      "Bitstream"
 			      "CamingoCode"
@@ -68,9 +68,9 @@
 			      "Source Code"
 			      "mononoki"
 			      ))
-(defconst --filter-fonts (regexp-opt ffy-font-families) "Regular expression that covers possible usability")
+(defconst --filter-fonts (regexp-opt ffe-font-families) "Regular expression that covers possible usability")
 
-(defun ffy-select-typeface ()
+(defun ffe-select-typeface ()
   "Choose typefaces for the frame"
   (interactive)
   (set-frame-font (ido-completing-read+ "Choose font:"
@@ -79,8 +79,8 @@
 					 (font-family-list)))
 		  t))
 
-(bind-key "f" #'ffy-select-typeface ctl-x-t-map)
+(bind-key "f" #'ffe-select-typeface ctl-x-t-map)
 
 (bind-key "w" #'whitespace-mode ctl-x-t-map)
 
-(provide 'ffy-ui)
+(provide 'ffe-ui)

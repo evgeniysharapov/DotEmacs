@@ -7,4 +7,4 @@
            ("C-k" . describe-key-briefly)
            ("C-c" . describe-char))
 
-(provide 'ffy-help)
+(provide 'ffe-help)

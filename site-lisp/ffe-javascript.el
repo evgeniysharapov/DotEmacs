@@ -28,10 +28,10 @@
   :after company
   :ensure t
   :init (progn
-          (defun ffy-js2-mode-company-hook ()
-            (ffy-add-company-backends 'company-tern 'company-semantic))
+          (defun ffe-js2-mode-company-hook ()
+            (ffe-add-company-backends 'company-tern 'company-semantic))
 	  
-	  (add-hook 'js2-mode-hook #'ffy-js2-mode-company-hook)))
+	  (add-hook 'js2-mode-hook #'ffe-js2-mode-company-hook)))
 
 (use-package mocha
   :commands (mocha-test-at-point mocha-test-file mocha-test-project)
@@ -46,4 +46,4 @@
   :ensure t
   :commands (run-js))
 
-(provide 'ffy-javascript)
+(provide 'ffe-javascript)

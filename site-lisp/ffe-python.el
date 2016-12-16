@@ -40,7 +40,7 @@
   :defer t
   :ensure t
   :init (with-eval-after-load 'company
-          (add-hook 'python-mode-hook (lambda () (ffy-add-company-backends 'company-anaconda)))))
+          (add-hook 'python-mode-hook (lambda () (ffe-add-company-backends 'company-anaconda)))))
 
 
-(provide 'ffy-python)
+(provide 'ffe-python)

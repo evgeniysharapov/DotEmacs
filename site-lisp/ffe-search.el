@@ -101,4 +101,4 @@
 	 ("M-s f" . grep-find)
 	 ("M-s r" . rgrep)))
 
-(provide 'ffy-search)
+(provide 'ffe-search)
