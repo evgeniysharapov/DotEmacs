@@ -233,9 +233,9 @@
   :commands (zap-up-to-char)
   :bind (("M-z" . zap-up-to-char)))
 (bind-key "M-Z" 'zap-to-char)
-;;; zapping back is done via negative argument C-- or M--
+;; zapping back is done via negative argument C-- or M--
 
-
+(use-package ffe-spell)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -466,9 +466,18 @@
   :ensure t
   :mode (("\\.ya?ml$" . yaml-mode)))
 
-(use-package markdown-mode
+(use-package markdown-mode  
   :ensure t
-  :mode (("\\.md$" . markdown-mode)))
+  :mode (("\\.md$" . markdown-mode))
+  :config (add-hook 'markdown-mode-hook #'flyspell-mode)
+
+  (defun flyspell-markdown-check-word-predicate ()
+    "Used by `flyspell-mode' in Markdown documents to skip spell checking code blocks and inline code"
+    (let ((face (get-text-property (-  (point) 1) 'face)))
+      (not (memq face '(markdown-pre-face markdown-inline-code-face markdown-reference-face)))))
+  
+  :init (setq flyspell-generic-check-word-predicate
+	      'flyspell-markdown-check-word-predicate))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			       Org mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
