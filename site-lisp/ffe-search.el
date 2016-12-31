@@ -90,8 +90,9 @@
 	  ;; since we use our custom `ag` package we need to load its deps
 	  (use-package s :ensure t :defer t)
 	  (use-package dash :ensure t :defer t))
-  :config (setq ag-reuse-buffers t
-                ag-highlight-search t)
+  :config (progn  (setq ag-reuse-buffers t
+			ag-highlight-search t)
+		  (use-package wgrep-ag :ensure t :defer t))
   :bind (("M-s a" . ag)
 	 ("M-s p" . ag-project)))
 
