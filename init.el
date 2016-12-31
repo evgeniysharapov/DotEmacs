@@ -410,16 +410,17 @@
 
 (bind-key "C-c C-c" #'eval-buffer emacs-lisp-mode-map)
 ;;; turn off checkdoc for my configuration files
-(add-hook 'emacs-lisp-mode-hook
-          (defun disable-elisp-checkdoc-in-configuration-files ()
+(defun ffe-disable-elisp-checkdoc-in-configuration-files ()
             (if (and (eq major-mode 'emacs-lisp-mode)  ; if it is elisp
 		     (or
 		      (string-equal user-init-file (buffer-file-name))	; or init.el file
 		      (string-equal custom-file (buffer-file-name)) ; customization file
 		      (and 		; configuration modules
 		       (string-match (or (file-name-directory (or  (buffer-file-name) "")) "") *lisp-dir*)
-		       (string-match "^ff\\[ye\\]-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
-                (flycheck-disable-checker 'emacs-lisp-checkdoc))))
+		       (string-match "^ffe-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
+                (flycheck-disable-checker 'emacs-lisp-checkdoc)))
+
+(add-hook 'emacs-lisp-mode-hook #'ffe-disable-elisp-checkdoc-in-configuration-files)
 
 (defun ffe-ielm ()
   "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
