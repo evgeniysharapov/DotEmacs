@@ -5,11 +5,14 @@
          ("\\.mm\\'"                  . c++-mode)))
 
 ;;; C/C++ Headers Locations. This is system specific
-(defconst *ffe-c-headers-dirs* '("C:/PF86/LLVM/lib/clang/3.6.2/include"
-				 "C:/PF86/LLVM/i686-w64-mingw32/include"
-				 "C:/PF86/LLVM/i686-w64-mingw32/include/c++"
-				 "C:/PF86/LLVM/i686-w64-mingw32/include/c++/i686-w64-mingw32"
-				 "C:/PF86/LLVM/include/"))
+(defconst *ffe-c-headers-dirs* '("C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include\\c++"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include\\c++\\x86_64-w64-mingw32"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include\\c++\\backward"
+				 "C:\\PF\\LLVM\\lib\\clang\\3.7.0\\include"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include-fixed"
+				 "C:\\mingw64\\x86_64-w64-mingw32\\include"
+				 "C:\\mingw64\\include"))
 
 (use-package company-c-headers
   :defer t
