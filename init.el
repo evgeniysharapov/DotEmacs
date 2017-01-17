@@ -446,6 +446,7 @@
   :commands ffe-c-mode-hook
   :init (add-hook 'c-mode-common-hook #'ffe-c-mode-hook))
 
+(use-package ffe-go)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			      Javascript
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
