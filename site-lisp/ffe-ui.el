@@ -74,9 +74,18 @@
   "Choose typefaces for the frame"
   (interactive)
   (set-frame-font (ido-completing-read+ "Choose font:"
-					(cl-remove-if-not
-					 (lambda (e) (string-match-p --filter-fonts e))
-					 (font-family-list)))
+					(cl-concatenate 'list
+							'("Iosevka Light-12"
+							  "Iosevka-12"
+							  "Hack-11"
+							  "Meslo LG S DZ-11"
+							  "Cousine-12"
+							  "InputMonoCondensed-12"
+							  "PragmataPro-12")
+							(cl-remove-if-not
+							 (lambda (e) (string-match-p --filter-fonts e))
+							 (font-family-list))
+							 ))
 		  t))
 
 (bind-key "f" #'ffe-select-typeface ctl-x-t-map)
