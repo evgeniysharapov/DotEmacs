@@ -61,6 +61,9 @@
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
+ '(package-selected-packages
+   (quote
+    (yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
  '(python-indent-guess-indent-offset nil)
  '(safe-local-variable-values
    (quote
@@ -83,4 +86,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Info-quoted ((t (:underline t :slant oblique))))
  '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave))))))
