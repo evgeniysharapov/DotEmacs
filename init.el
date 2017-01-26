@@ -124,8 +124,9 @@
   :defer 5
   :diminish projectile-mode
   :commands projectile-global-mode
-  :init
-  (setq projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
+  :init 
+  (setq projectile-keymap-prefix (kbd "C-z p")
+	projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
         projectile-sort-order 'recentf
         projectile-indexing-method 'alien
