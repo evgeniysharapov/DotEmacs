@@ -2,6 +2,7 @@
 ;;
 ;; Node packages expected to be installed globally:
 ;; 1. tern
+;; 2. mocha
 
 (use-package js2-mode
   :defer t
@@ -10,13 +11,7 @@
          ("\\.jsx\\'" . js2-jsx-mode))
   :init
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  (add-hook 'js2-mode-hook #'imenu-add-menubar-index)
-  
-  :config
-  (setq js2-mode-show-parse-errors nil  ; disable parser errors
-        js2-mode-show-strict-warnings nil ; disable strict warnings.
-        js2-highlight-level 3   ; highlight ECMA built-ins
-        ))
+  (add-hook 'js2-mode-hook #'imenu-add-menubar-index))
 
 (use-package tern
   :commands (tern-mode)
