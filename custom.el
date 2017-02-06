@@ -91,4 +91,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-quoted ((t (:underline t :slant oblique))))
- '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave))))))
+ '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave)))))
+ '(font-lock-builtin-face ((t (:foreground "#0058B0"))))
+ '(font-lock-comment-face ((t (:foreground "#948072" :slant italic))))
+ '(font-lock-constant-face ((t (:foreground "#009B9B"))))
+ '(font-lock-keyword-face ((t (:foreground "#720CAF" :weight semi-bold))))
+ '(font-lock-string-face ((t (:foreground "#A02D05"))))
+ '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
+ '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t)))))
