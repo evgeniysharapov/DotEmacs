@@ -498,11 +498,11 @@
   :commands (docker-containers)
   :init (progn
 	  (use-package json-rpc :ensure t)
-	  (setenv "DOCKER_HOST" "tcp://192.168.99.100:2376")
-	  (setenv "DOCKER_TLS_VERIFY" "1")
-	  (setenv "DOCKER_MACHINE_NAME" "default")
-	  (setenv "DOCKER_CERT_PATH" "C:\\Users\\esharapov\\.docker\\machine\\machines\\default")))
-
+	  (when (eq  system-type 'windows-nt)
+	    (setenv (or (getenv "DOCKER_HOST") "tcp://192.168.99.100:2376"))
+	    (setenv (or (getenv "DOCKER_TLS_VERIFY") "1"))
+	    (setenv (or (getenv "DOCKER_MACHINE_NAME") "default"))
+	    (setenv (or (getenv "DOCKER_CERT_PATH") "C:\\Users\\esharapov\\.docker\\machine\\machines\\default")))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Load custom-vars File
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
