@@ -70,7 +70,8 @@
  '(python-indent-guess-indent-offset nil)
  '(safe-local-variable-values
    (quote
-    ((mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
+    ((mocha-project-test-directory . "test/server\"")
+     (mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
      (mocha-project-test-directory . "test/server")
      (mocha-which-node)
      (js2-basic-offset . 2)
