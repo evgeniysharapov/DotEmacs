@@ -92,4 +92,7 @@
 
 (bind-key "w" #'whitespace-mode ctl-x-t-map)
 
+(use-package rainbow-mode
+  :ensure t)
+
 (provide 'ffe-ui)
