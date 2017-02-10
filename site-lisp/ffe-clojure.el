@@ -3,10 +3,9 @@
   :ensure t
   :commands (cider-jack-in)
   :config
-  (add-hook 'cider-mode-hook #'paredit-mode)
-  (add-hook 'cider-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  (add-hook 'cider-repl-mode-hook #'eldoc-mode))
+  (dolist (hook '(cider-mode-hook cider-repl-mode-hook clojure-mode-hook clojurescript-mode-hook))
+      (add-hook hook #'paredit-mode)
+      (add-hook hook #'eldoc-mode)))
 
 (use-package 4clojure
   :commands (4clojure-open-question)
