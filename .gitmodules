@@ -1,3 +1,6 @@
 [submodule "site-lisp/ag"]
 	path = site-lisp/ag
 	url = https://github.com/evgeniysharapov/ag.el.git
+[submodule "site-lisp/projectile"]
+	path = site-lisp/projectile
+	url = https://github.com/evgeniysharapov/projectile
