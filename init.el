@@ -120,10 +120,10 @@
   :config (setq ffip-prefer-ido-mode t
                 ffip-match-path-instead-of-filename t))
 (use-package projectile
-  :ensure t
+  :load-path "~/.emacs.d/site-lisp/projectile"
   :defer 5
   :diminish projectile-mode
-  :commands projectile-global-mode
+  :commands (projectile-global-mode projectile-require-project-type)
   :init 
   (setq projectile-keymap-prefix (kbd "C-z p")
 	projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
@@ -445,7 +445,8 @@
 
 (use-package ffe-go)
 
-(use-package ffe-javascript)
+(use-package ffe-javascript
+  :after projectile)			; because we customize projectile for javascript
 
 (use-package ffe-python)
 

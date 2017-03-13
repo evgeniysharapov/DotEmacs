@@ -41,4 +41,7 @@
   :ensure t
   :commands (run-js))
 
+;;; customize projectile
+(projectile-register-project-type 'npm '("package.json") nil "npm test" nil ".spec")
+
 (provide 'ffe-javascript)
