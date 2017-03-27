@@ -19,6 +19,18 @@
   :init
   (add-hook 'js2-mode-hook #'tern-mode))
 
+;;; We can't quite manipulate local mode keymap from within a hook, so we do it in EAL form
+(eval-after-load "tern"
+  '(progn
+     ;; clear C-c C-r and C-c C-d from tern-keymap
+     (define-key tern-mode-keymap (kbd  "C-c C-r") nil)
+     (define-key tern-mode-keymap (kbd "C-c C-d") nil)
+     (bind-keys :map tern-mode-keymap
+     		("C-c C-r r" . tern-rename-variable)
+     		("C-c C-d C-d" . tern-get-docs)
+     		("C-c C-d d" . tern-get-type))))
+
+
 (use-package company-tern
   :after company
   :ensure t
@@ -33,9 +45,9 @@
   :ensure t
   :pin melpa-stable
   :bind (:map js2-mode-map
-              ("C-c C-c ." . mocha-test-at-point)
-              ("C-c C-c f" . mocha-test-file)
-              ("C-c C-c p" . mocha-test-project)))
+              ("C-c t ." . mocha-test-at-point)
+              ("C-c t f" . mocha-test-file)
+              ("C-c t p" . mocha-test-project)))
 
 (use-package js-comint
   :ensure t

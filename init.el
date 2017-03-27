@@ -72,6 +72,13 @@
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
+(bind-keys :prefix-map mode-refactoring-map
+	   :prefix "C-c C-r"
+	   :prefix-docstring "Keymap for major mode refactoring commands")
+
+(bind-keys :prefix-map mode-doc-map
+	   :prefix "C-c C-d"
+	   :prefix-docstring "Keymap for major mode documentation")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			        Files
