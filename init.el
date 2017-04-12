@@ -193,24 +193,6 @@
 
 (use-package ffe-ui)
 
-(use-package windmove
-  :ensure t
-  :defer t
-  :bind (:map ctl-x-w-map
-              ("<left>" . windmove-left)
-              ("h" . windmove-left)
-              ("<right>" . windmove-right)
-              ("l" . windmove-right)
-              ("<up>" . windmove-up)
-              ("j" . windmove-up)
-              ("<down>" . windmove-down)
-              ("k" . windmove-down)))
-
-(use-package ace-window
-  :ensure t
-  :pin melpa-stable
-  :bind ("C-x o" . ace-window))
-
 (use-package ffe-help)
 
 (use-package ffe-ido)

@@ -95,4 +95,49 @@
 (use-package rainbow-mode
   :ensure t)
 
+(use-package windmove
+  :ensure t
+  :defer t
+  :bind (:map ctl-x-w-map
+              ("<left>" . windmove-left)
+              ("h" . windmove-left)
+              ("<right>" . windmove-right)
+              ("l" . windmove-right)
+              ("<up>" . windmove-up)
+              ("j" . windmove-up)
+              ("<down>" . windmove-down)
+              ("k" . windmove-down)))
+
+(use-package ace-window
+  :ensure t
+  :pin melpa-stable
+  :bind ("C-x o" . ace-window))
+
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+	     (next-win-buffer (window-buffer (next-window)))
+	     (this-win-edges (window-edges (selected-window)))
+	     (next-win-edges (window-edges (next-window)))
+	     (this-win-2nd (not (and (<= (car this-win-edges)
+					 (car next-win-edges))
+				     (<= (cadr this-win-edges)
+					 (cadr next-win-edges)))))
+	     (splitter
+	      (if (= (car this-win-edges)
+		     (car (window-edges (next-window))))
+		  'split-window-horizontally
+		'split-window-vertically)))
+	(delete-other-windows)
+	(let ((first-win (selected-window)))
+	  (funcall splitter)
+	  (if this-win-2nd (other-window 1))
+	  (set-window-buffer (selected-window) this-win-buffer)
+	  (set-window-buffer (next-window) next-win-buffer)
+	  (select-window first-win)
+	  (if this-win-2nd (other-window 1))))))
+
+(bind-key "|" 'toggle-window-split ctl-x-w-map)
+
 (provide 'ffe-ui)
