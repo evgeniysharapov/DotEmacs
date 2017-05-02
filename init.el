@@ -332,7 +332,8 @@
   (global-company-mode 1)
 
   :bind (:map company-active-map
-	      ("<right>" . company-complete-selection)))
+	      ("<tab>" . company-complete-selection)
+	      ("TAB" . company-complete-selection)))
 
 (use-package company-statistics
   :ensure t
