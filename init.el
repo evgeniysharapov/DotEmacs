@@ -460,6 +460,16 @@
     "Used by `flyspell-mode' in Markdown documents to skip spell checking code blocks and inline code"
     (let ((face (get-text-property (-  (point) 1) 'face)))
       (not (memq face '(markdown-pre-face markdown-inline-code-face markdown-reference-face)))))
+
+  
+  (defun markdown-enter-key+ ()
+    "Modification of enter key that just jumps onto the next line if ENTER key is pressed while point is on header"
+    (interactive)
+    (if (thing-at-point-looking-at markdown-regex-header)
+	(next-line)
+      (markdown-enter-key)))
+
+  (bind-key "RET" #'markdown-enter-key+ markdown-mode-map)
   
   :init (setq flyspell-generic-check-word-predicate
 	      'flyspell-markdown-check-word-predicate))
