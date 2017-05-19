@@ -22,7 +22,9 @@
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
    (quote
-    (("Kattis"
+    (("DaStEd"
+      ((filename . "dasted")))
+     ("Kattis"
       ((filename . "Kattis")))
      ("Mozart"
       ((filename . "Mozart\\.Hg")))
@@ -66,7 +68,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
+    (idle-highlight-mode anaconda-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
  '(python-indent-guess-indent-offset nil)
  '(safe-local-variable-values
    (quote
@@ -98,4 +100,6 @@
  '(font-lock-keyword-face ((t (:foreground "#720CAF" :weight semi-bold))))
  '(font-lock-string-face ((t (:foreground "#A02D05"))))
  '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
- '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t)))))
+ '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
+ '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light)))))
