@@ -291,6 +291,9 @@
   :bind (:map ctl-x-t-map
 	      ("h" . hl-line-mode)))
 
+(use-package idle-highlight-mode
+  :ensure t)
+
 (use-package flycheck
   :ensure t
   :pin melpa-stable
