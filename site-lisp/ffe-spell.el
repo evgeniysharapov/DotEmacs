@@ -16,16 +16,16 @@
 
 (use-package flyspell
   :commands (flyspell-buffer flyspell-mode flyspell-region)
-  :config (setq flyspell-use-meta-tab nil)
-  :bind-keymap ("C-z C-s" . flyspell-mode-map)
+  :config (setq flyspell-use-meta-tab nil
+		flyspell-auto-correct-binding (kbd "C-M-;"))
   :bind (:map flyspell-mode-map
 	      ("C-," . nil)
-	      ("C-." . flyspell-goto-next-error)
+	      ("C-." . nil)
 	      ("C-;" . nil)
 	      ("C-c $" . nil)
-	      ("C-b" . flyspell-buffer)
-	      ("C-r" . flyspell-region)
-	      ("TAB" . flyspell-auto-correct-word)))
+	      ("C-$ n" . flyspell-goto-next-error)
+	      ("C-$ b" . flyspell-buffer)
+	      ("C-$ r" . flyspell-region)))
 
 (use-package ispell
   :defer t
