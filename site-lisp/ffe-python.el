@@ -6,9 +6,10 @@
   :config
   (when (executable-find "ipython")
     (setq python-shell-interpreter "ipython"
-	  python-shell-interpreter-args "--colors=Linux --profile=default"
-	  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-	  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "))
+  	  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+  	  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+  	  python-shell-completion-setup-code  "from IPython.core.completerlib import module_completion"
+  	  python-shell-completion-string-code  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
   :bind (:map python-mode-map
 	      ;; python-eldoc-at-point is not really useful, instead
 	      ;; use it for sending file to python shell
@@ -25,6 +26,7 @@
 (use-package anaconda-mode
   :defer t
   :ensure t
+  :diminish "Ana"
   :init (progn
 	  (setq anaconda-mode-installation-directory (concat *data-dir* "anaconda-mode"))
           (add-hook 'python-mode-hook #'anaconda-mode)
