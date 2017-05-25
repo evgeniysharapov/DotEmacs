@@ -17,6 +17,11 @@
 	    (ido-everywhere t)
 	    (ido-ubiquitous-mode t)
 	    (flx-ido-mode t)
+	    ;; use flx-ido highlights
+	    (setq ido-enable-flex-matching t)
+	    ;(setq ido-use-faces nil)
+	    
+	    
 	    (setq-default org-completion-use-ido t)
 
 	    (defun ido-find-recent-file ()
