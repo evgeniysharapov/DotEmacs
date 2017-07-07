@@ -11,7 +11,8 @@
   (custom-set-minor-mode 'blink-cursor-mode nil))
 
 ;; Default typeface
-(set-frame-font "Iosevka-12" t)
+(when (find-font (font-spec :name "Iosevka"))
+  (set-frame-font "Iosevka-12" t))
 
 ;;; Good typefaces to consider 
 ;; (set-frame-font "Cousine-11" t)
