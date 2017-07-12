@@ -151,8 +151,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;				Dired	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(put 'dired-find-alternate-file 'disabled nil)
+(use-package dired
+  :config
+  (unbind-key "M-s f" dired-mode-map)
+  (unbind-key "M-s a" dired-mode-map))
 
+(put 'dired-find-alternate-file 'disabled nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package bookmark
   :defer t
