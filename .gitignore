@@ -31,8 +31,9 @@ data/.emacs-bmk-bmenu-state.el
 data/.emacs-places
 configuration.el*
 
-/data/projectile-bookmarks.eld
-/data/projectile.cache
-/data/anaconda-mode/
+data/projectile-bookmarks.eld
+data/projectile.cache
+data/anaconda-mode/
 data/company-statistics-cache.el*
+data/company-statistics-cache.el
 server/server*
