@@ -84,6 +84,8 @@
  '(scroll-preserve-screen-position t)
  '(sentence-end-double-space nil)
  '(show-paren-mode t)
+ '(show-paren-when-point-in-periphery t)
+ '(show-paren-when-point-inside-paren t)
  '(tags-revert-without-query t)
  '(user-full-name "Evgeniy N. Sharapov")
  '(user-mail-address "evgeniy.sharapov@gmail.com")
