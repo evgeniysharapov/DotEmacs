@@ -19,6 +19,7 @@
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
  '(ibuffer-expert t)
+ '(ibuffer-jump-offer-only-visible-buffers t)
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
    (quote
@@ -51,6 +52,7 @@
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point (quote guess))
  '(imenu-auto-rescan t)
+ '(imenu-list-focus-after-activation t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen nil)
  '(initial-scratch-message nil)
