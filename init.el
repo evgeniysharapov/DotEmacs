@@ -220,6 +220,10 @@
 ;;; short response function instead of long one
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(use-package calendar
+  :config
+  (setq diary-file (concat *data-dir* "diary")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   General Editing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
