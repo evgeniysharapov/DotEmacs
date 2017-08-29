@@ -99,6 +99,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-quoted ((t (:underline t :slant oblique))))
+ '(fixed-pitch ((t nil)))
  '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave)))))
  '(font-lock-builtin-face ((t (:foreground "#0058B0"))))
  '(font-lock-comment-face ((t (:foreground "#948072" :slant italic))))
