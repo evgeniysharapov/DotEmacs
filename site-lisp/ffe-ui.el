@@ -12,7 +12,7 @@
 
 ;; Default typeface
 (when (find-font (font-spec :name "Iosevka"))
-  (set-frame-font "Iosevka-12" t))
+  (add-to-list 'default-frame-alist '(font . "Iosevka-12")))
 
 ;;; Good typefaces to consider 
 ;; (set-frame-font "Cousine-11" t)
