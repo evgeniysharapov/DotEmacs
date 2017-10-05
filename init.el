@@ -128,7 +128,7 @@
                 ffip-match-path-instead-of-filename t))
 (use-package projectile
   :load-path "~/.emacs.d/site-lisp/projectile"
-  :defer 5
+  :defer 2
   :diminish projectile-mode
   :commands (projectile-global-mode projectile-require-project-type)
   :init 
