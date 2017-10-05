@@ -14,6 +14,8 @@
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
  '(echo-keystrokes 0.1)
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eldoc-idle-delay 0)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
