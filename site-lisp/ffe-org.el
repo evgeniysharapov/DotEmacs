@@ -1,9 +1,14 @@
 ;;; Org mode configuration
+
+(use-package ob-ipython
+  :ensure t)
+
 (use-package org
   :mode (("\\.org$" . org-mode))
   :config (org-babel-do-load-languages
 	   'org-babel-load-languages
-	   '((ruby . t)
+	   '((ipython . t)
+             (ruby . t)
 	     (python . t)
 	     (emacs-lisp . t)
 	     (latex . t)
