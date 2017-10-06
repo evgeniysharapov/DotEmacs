@@ -17,6 +17,7 @@
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eldoc-idle-delay 0)
+ '(gc-cons-threshold 10485760)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
