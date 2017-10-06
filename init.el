@@ -195,7 +195,8 @@
   :bind (:map ctl-z-map
 	      ("/" . hide-lines)))
 
-(use-package ffe-ui)
+(use-package ffe-ui
+  :demand)
 
 (use-package ffe-help)
 
