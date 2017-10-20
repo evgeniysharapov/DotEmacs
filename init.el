@@ -515,8 +515,11 @@
 (load custom-file 'noerror)
 
 ;;; Start server-mode if we are not in the daemon mode
-(when (not (daemonp))
-  (server-mode 1))
+(use-package server
+  :config
+  (progn 
+    (unless (or (daemonp) (server-running-p))
+      (server-mode 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   How long it took
