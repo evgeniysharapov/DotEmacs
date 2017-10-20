@@ -6,6 +6,12 @@
  '(anaconda-mode-eldoc-as-single-line t)
  '(auto-image-file-mode t)
  '(column-number-mode t)
+ '(company-idle-delay 0.1)
+ '(company-minimum-prefix-length 2)
+ '(company-selection-wrap-around t)
+ '(company-show-numbers t)
+ '(company-tooltip-align-annotations t)
+ '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(default-input-method "russian-computer")
  '(desktop-restore-eager 2)
@@ -17,10 +23,12 @@
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eldoc-idle-delay 0)
+ '(enable-recursive-minibuffers t)
  '(gc-cons-threshold 10485760)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
+ '(history-length 1000)
  '(ibuffer-expert t)
  '(ibuffer-jump-offer-only-visible-buffers t)
  '(ibuffer-saved-filter-groups nil)
@@ -75,6 +83,8 @@
  '(package-selected-packages
    (quote
     (json-navigator crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
+ '(projectile-indexing-method (quote alien))
+ '(projectile-sort-order (quote recentf))
  '(python-indent-guess-indent-offset nil)
  '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. ")
  '(safe-local-variable-values
@@ -86,6 +96,10 @@
      (js2-basic-offset . 2)
      (markdown-command . "pandoc -s --toc -S -c assets/style.css -B assets/before.html -A assets/after.html -f markdown -t html"))))
  '(save-interprogram-paste-before-kill t)
+ '(savehist-additional-variables
+   (quote
+    (mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history)))
+ '(savehist-autosave-interval 60)
  '(scroll-conservatively 101)
  '(scroll-preserve-screen-position 1)
  '(sentence-end-double-space nil)

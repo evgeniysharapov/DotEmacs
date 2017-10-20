@@ -93,6 +93,7 @@
 	(save-place-mode)
       (setq save-place t))
     (setq save-place-file (concat *data-dir* "places"))))
+
 (use-package desktop
   :defer t
   :init (if (fboundp 'desktop-save-mode)
@@ -102,6 +103,7 @@
   (progn
     (setq desktop-dirname *data-dir*)
     (push *data-dir* desktop-path)))
+
 (use-package recentf
   :commands (recentf-mode recentf-open-most-recent-file)
   :init
@@ -121,11 +123,13 @@
 		 (expand-file-name *data-dir*))
     (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
     (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'")))
+
 (use-package find-file-in-project
   :ensure t
   :commands find-file-in-project
   :config (setq ffip-prefer-ido-mode t
                 ffip-match-path-instead-of-filename t))
+
 (use-package projectile
   :load-path "~/.emacs.d/site-lisp/projectile"
   :defer 2
@@ -135,8 +139,6 @@
   (setq projectile-keymap-prefix (kbd "C-z p")
 	projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
-        projectile-sort-order 'recentf
-        projectile-indexing-method 'alien
 	projectile-switch-project-action (lambda () (dired (projectile-project-root))))
   :config
   (projectile-global-mode t))
@@ -174,8 +176,9 @@
   :init (progn
 	  (use-package imenu+ :ensure t :defer t)
 	  (use-package imenu-list :ensure t :commands (imenu-list)))
-  :bind (("M-s i" . imenu)
-	 ("M-s I" . imenu-list)))
+  :bind (:map search-map
+         ("i" . imenu)
+	 ("I" . imenu-list)))
 
 (use-package undo-tree
   :ensure t
@@ -266,15 +269,7 @@
 (use-package savehist
   :init
   (progn
-    (setq savehist-file (concat *data-dir* "history")
-	  enable-recursive-minibuffers t ; Allow commands in minibuffers
-	  history-length 1000
-	  savehist-additional-variables '(mark-ring
-					  global-mark-ring
-					  search-ring
-					  regexp-search-ring
-					  extended-command-history)
-	  savehist-autosave-interval 60)
+    (setq savehist-file (concat *data-dir* "history"))
     (savehist-mode t)))
 
 (defun ffe-auto-close-buffers ()
@@ -319,13 +314,7 @@
   :defer 3
   :diminish company-mode
   :init
-  (setq company-idle-delay 0.1
-	company-tooltip-limit 20
-	company-show-numbers t
-	company-selection-wrap-around t
-	company-minimum-prefix-length 2
-	company-tooltip-align-annotations t
-	company-echo-delay 0)
+  (setq company-echo-delay 0)
   :config
   ;; default `company-backends'
   (setq company-backends '(company-capf
