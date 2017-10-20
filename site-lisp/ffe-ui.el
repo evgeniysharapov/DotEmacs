@@ -111,7 +111,8 @@
 (use-package ace-window
   :ensure t
   :pin melpa-stable
-  :bind ("C-x o" . ace-window))
+  :bind (:map ctl-x-w-map
+              ("w" . ace-window)))
 
 (defun toggle-window-split ()
   (interactive)

@@ -5,6 +5,10 @@
  ;; If there is more than one, they won't work right.
  '(anaconda-mode-eldoc-as-single-line t)
  '(auto-image-file-mode t)
+ '(aw-dispatch-always t)
+ '(aw-ignore-current nil)
+ '(aw-keys (quote (108 107 106 104 103 102 100 115 97)))
+ '(aw-scope (quote frame))
  '(column-number-mode t)
  '(company-idle-delay 0.1)
  '(company-minimum-prefix-length 2)
