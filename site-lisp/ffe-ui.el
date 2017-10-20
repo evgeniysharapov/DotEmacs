@@ -140,4 +140,9 @@
 
 (bind-key "|" 'toggle-window-split ctl-x-w-map)
 
+(use-package crosshairs
+  :ensure t
+  :bind (:map ctl-x-t-map
+              ("+" . crosshairs-mode)))
+
 (provide 'ffe-ui)
