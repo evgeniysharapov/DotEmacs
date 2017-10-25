@@ -199,7 +199,7 @@
 	      ("/" . hide-lines)))
 
 (use-package ffe-ui
-  :demand)
+  :demand t)
 
 (use-package ffe-help)
 
@@ -219,7 +219,12 @@
           ;; auto updateable ibuffer
           (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
 
-(bind-key "C-x K" #'kill-this-buffer)
+(defun ffe-kill-current-buffer ()
+  "Kills current buffer"
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+(bind-key "C-x K" #'ffe-kill-current-buffer)
 
 ;;; short response function instead of long one
 (fset 'yes-or-no-p 'y-or-n-p)
