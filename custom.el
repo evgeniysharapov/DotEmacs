@@ -68,6 +68,7 @@
  '(ido-use-filename-at-point (quote guess))
  '(imenu-auto-rescan t)
  '(imenu-list-focus-after-activation t)
+ '(imenu-max-item-length 60)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen nil)
  '(initial-scratch-message nil)
