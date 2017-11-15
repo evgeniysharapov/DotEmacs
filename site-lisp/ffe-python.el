@@ -2,47 +2,14 @@
 ;;;
 ;;; make sure to install pyreadline on Windows.
 ;;;
-
-;; (defun ffe-python-setup ()
-;;   (setq python-shell-interpreter "pythonw.exe"))
-
-;; (defun ffe-ipython-setup ()
-;;   (setq python-shell-interpreter "ipython"
-;;         python-shell-interpreter-args "--simple-prompt --pprint")
-;;   ;; set the PAGER to 'less', otherwise IPython keeps failing
-;;   (setenv "PAGER" "less")
-
-;;     ;; (when (executable-find "ipython")
-;;     ;;   (setq python-shell-interpreter "ipython"
-;;     ;;                                     ;python-shell-prompt-input-regexps "In \\[[0-9]+\\]: "
-;;     ;;                                     ;python-shell-prompt-output-regexps "Out\\[[0-9]+\\]: "
-;;     ;;         ;;python-shell-interpreter-args "--simple-prompt --pprint"
-;;     ;;         ;;python-shell-prompt-block-regexp "\\s-*\\.\\.\\."
-;;     ;;         ;;python-shell-completion-setup-code  "from IPython.core.completerlib import module_completion"
-;;     ;;         ;;python-shell-completion-string-code  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"
-;;   ;;         )
-  
-;;   )
-
-;; (defun ffe-ipython3-setup ()
-;;   (setq python-shell-interpreter "ipython3"
-;;         python-shell-interpreter-args "--simple-prompt --pprint"
-;;         python-shell-completion-setup-code  "from IPython.core.completerlib import module_completion"
-;;         python-shell-completion-string-code  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
-
 (use-package python
   :defer t
   :diminish (python-mode . "Py")
   :commands python-mode
   :init
   (progn
-    (setq python-shell-interpreter "ipython"
-          python-shell-interpreter-args "--simple-prompt --pprint"
-          python-shell-prompt-block-regexp "\\s-*\\.\\.\\.")
-    (add-to-list 'python-shell-prompt-input-regexps "\\s-*\\.\\.\\.")
-    
-    (setenv "PAGER" "less"))
-  
+    (setq python-shell-interpreter "python"
+          python-shell-prompt-block-regexp "\\s-*\\.\\.\\."))
   :config
   (progn
     (add-hook 'python-mode-hook #'eldoc-mode))
