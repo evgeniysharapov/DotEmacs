@@ -10,9 +10,12 @@
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))
   :init
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  (add-hook 'js2-mode-hook #'imenu-add-menubar-index)
-  (add-hook 'js2-mode-hook #'idle-highlight-mode))
+  (progn
+    (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+    (add-hook 'js2-mode-hook #'imenu-add-menubar-index)
+    (add-hook 'js2-mode-hook #'idle-highlight-mode)
+    (add-hook 'js2-mode-hook #'electric-pair-mode)
+    (add-hook 'js2-mode-hook #'hs-minor-mode)))
 
 (use-package tern
   :commands (tern-mode)
