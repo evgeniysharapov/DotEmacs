@@ -28,7 +28,7 @@
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eldoc-idle-delay 0)
  '(enable-recursive-minibuffers t)
- '(gc-cons-threshold 10485760)
+ '(gc-cons-threshold 104857600)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
