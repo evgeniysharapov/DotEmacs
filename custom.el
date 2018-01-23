@@ -147,4 +147,5 @@
  '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
  '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
  '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
- '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light)))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
+ '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
