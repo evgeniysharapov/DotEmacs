@@ -34,6 +34,18 @@
  '(history-delete-duplicates t)
  '(history-length 1000)
  '(ibuffer-expert t)
+ '(ibuffer-formats
+   (quote
+    ((mark modified read-only " "
+           (name 18 18 :left :elide)
+           " "
+           (size 9 -1 :right)
+           " "
+           (mode 16 16 :left :elide)
+           " " filename-and-process)
+     (mark " "
+           (name 24 -1)
+           " " filename))))
  '(ibuffer-jump-offer-only-visible-buffers t)
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
