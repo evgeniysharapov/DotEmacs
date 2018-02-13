@@ -44,7 +44,10 @@
                          ("melpa"        . "http://melpa.org/packages/")))
 (package-initialize)
 ;; the rest of the package installation is hinged on this one
-(package-install 'use-package)
+(unless package-archive-contents
+  (package-refresh-contents))
+(package-install (intern "use-package"))
+
 (setq use-package-enable-imenu-support t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;		     Keymap and keys organization 
