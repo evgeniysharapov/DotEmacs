@@ -4,3 +4,21 @@
 [submodule "site-lisp/projectile"]
 	path = site-lisp/projectile
 	url = https://github.com/evgeniysharapov/projectile
+[submodule "site-lisp/browse-kill-ring-plus"]
+	path = site-lisp/browse-kill-ring-plus
+	url = https://github.com/emacsmirror/browse-kill-ring-plus.git
+[submodule "site-lisp/help-mode-plus"]
+	path = site-lisp/help-mode-plus
+	url = https://github.com/emacsmirror/help-mode-plus.git
+[submodule "site-lisp/help-fns-plus"]
+	path = site-lisp/help-fns-plus
+	url = https://github.com/emacsmirror/help-fns-plus.git
+[submodule "site-lisp/imenu-plus"]
+	path = site-lisp/imenu-plus
+	url = https://github.com/emacsmirror/imenu-plus.git
+[submodule "site-lisp/help-plus"]
+	path = site-lisp/help-plus
+	url = https://github.com/emacsmirror/help-plus.git
+[submodule "site-lisp/crosshairs"]
+	path = site-lisp/crosshairs
+	url = https://github.com/emacsmirror/crosshairs.git

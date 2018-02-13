@@ -177,7 +177,7 @@
 (use-package imenu
   :commands (imenu)
   :init (progn
-	  (use-package imenu+ :ensure t :defer t)
+	  (use-package imenu+ :defer t)
 	  (use-package imenu-list :ensure t :commands (imenu-list)))
   :bind (:map search-map
          ("i" . imenu)
@@ -189,7 +189,6 @@
   :config (global-undo-tree-mode))
 
 (use-package browse-kill-ring+
-  :ensure t
   :defer 10
   :commands browse-kill-ring
   :bind (("C-x C-y" . browse-kill-ring)))
