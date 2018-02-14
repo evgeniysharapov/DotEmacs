@@ -162,6 +162,9 @@
   (unbind-key "M-s a" dired-mode-map))
 
 (put 'dired-find-alternate-file 'disabled nil)
+
+(when (string= system-type "darwin")       
+  (setq dired-use-ls-dired nil))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package bookmark
   :defer t
