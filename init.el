@@ -191,9 +191,12 @@
   :diminish undo-tree-mode
   :config (global-undo-tree-mode))
 
-(use-package browse-kill-ring+
-  :defer 10
+(use-package browse-kill-ring
+  :ensure t
   :commands browse-kill-ring
+  :init 
+  (use-package browse-kill-ring+
+    :defer 10)
   :bind (("C-x C-y" . browse-kill-ring)))
 
 (use-package ffe-search)
