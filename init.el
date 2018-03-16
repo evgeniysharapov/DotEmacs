@@ -367,6 +367,11 @@
   (add-hook 'text-mode-hook #'yas-minor-mode-on)
   (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
+(use-package outshine
+  :ensure t
+  :init (defvar outline-minor-mode-prefix "\M-#")
+  :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+
 ;; (use-package outline
 ;;   :commands outline-minor-mode
 ;;   :init (setq outline-minor-mode-prefix (kbd "M-o"))
