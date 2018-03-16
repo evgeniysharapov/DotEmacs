@@ -58,6 +58,7 @@
   :commands (run-js))
 
 ;;; customize projectile
-(projectile-register-project-type 'npm '("package.json") nil "npm test" nil ".spec")
+(when (fboundp 'projectile-register-project-type)
+  (projectile-register-project-type 'npm '("package.json") :test "npm test"  :test-suffix ".spec"))
 
 (provide 'ffe-javascript)

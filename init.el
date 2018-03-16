@@ -134,17 +134,17 @@
                 ffip-match-path-instead-of-filename t))
 
 (use-package projectile
-  :load-path "~/.emacs.d/site-lisp/projectile"
-  :defer 2
+  :ensure t
   :diminish projectile-mode
-  :commands (projectile-global-mode projectile-require-project-type)
+  :commands (projectile-mode projectile-register-project-type)
   :init 
   (setq projectile-keymap-prefix (kbd "C-z p")
 	projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
 	projectile-switch-project-action (lambda () (dired (projectile-project-root))))
   :config
-  (projectile-global-mode t))
+  (progn
+    (projectile-mode t)))
 
 (defun find-recent-file ())
 
