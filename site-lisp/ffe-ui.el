@@ -12,7 +12,6 @@
 
 ;; Default typeface
 (message "Loading UI.....")
-(add-to-list 'default-frame-alist '(font . "Iosevka-12"))
 ;;; Good typefaces to consider 
 ;; (set-frame-font "Cousine-11" t)
 ;; (set-frame-font "Iosevka NF-12:light" t)
@@ -142,7 +141,6 @@
 (bind-key "|" 'toggle-window-split ctl-x-w-map)
 
 (use-package crosshairs
-  :ensure t
   :bind (:map ctl-x-t-map
               ("+" . crosshairs-mode)))
 

@@ -1,7 +1,7 @@
 ;;; Help/Info configuration
-(use-package help-mode+ :ensure t)
-(use-package help+	:ensure t)
-(use-package help-fns+	:ensure t)
+(use-package help-mode+)
+(use-package help+)
+(use-package help-fns+)
 (bind-keys :map help-map
            ("C-b" . describe-personal-keybindings)
            ("C-k" . describe-key-briefly)

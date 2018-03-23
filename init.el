@@ -44,7 +44,10 @@
                          ("melpa"        . "http://melpa.org/packages/")))
 (package-initialize)
 ;; the rest of the package installation is hinged on this one
-(package-install 'use-package)
+(unless package-archive-contents
+  (package-refresh-contents))
+(package-install (intern "use-package"))
+
 (setq use-package-enable-imenu-support t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;		     Keymap and keys organization 
@@ -159,6 +162,9 @@
   (unbind-key "M-s a" dired-mode-map))
 
 (put 'dired-find-alternate-file 'disabled nil)
+
+(when (string= system-type "darwin")       
+  (setq dired-use-ls-dired nil))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package bookmark
   :defer t
@@ -174,7 +180,7 @@
 (use-package imenu
   :commands (imenu)
   :init (progn
-	  (use-package imenu+ :ensure t :defer t)
+	  (use-package imenu+ :defer t)
 	  (use-package imenu-list :ensure t :commands (imenu-list)))
   :bind (:map search-map
          ("i" . imenu)
@@ -185,10 +191,12 @@
   :diminish undo-tree-mode
   :config (global-undo-tree-mode))
 
-(use-package browse-kill-ring+
+(use-package browse-kill-ring
   :ensure t
-  :defer 10
   :commands browse-kill-ring
+  :init 
+  (use-package browse-kill-ring+
+    :defer 10)
   :bind (("C-x C-y" . browse-kill-ring)))
 
 (use-package ffe-search)
@@ -393,6 +401,9 @@
 (use-package ffe-python)
 
 (use-package ffe-rust)
+
+(use-package groovy-mode
+  :ensure t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			  Misc. File Formats
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
