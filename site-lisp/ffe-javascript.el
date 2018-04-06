@@ -31,9 +31,9 @@
      (define-key tern-mode-keymap (kbd  "C-c C-r") nil)
      (define-key tern-mode-keymap (kbd "C-c C-d") nil)
      (bind-keys :map tern-mode-keymap
-     		("C-c C-r r" . tern-rename-variable)
-     		("C-c C-d C-d" . tern-get-docs)
-     		("C-c C-d d" . tern-get-type))))
+                ("C-c C-r r" . tern-rename-variable)
+                ("C-c C-d C-d" . tern-get-docs)
+                ("C-c C-d d" . tern-get-type))))
 
 
 (use-package company-tern
@@ -42,8 +42,7 @@
   :init (progn
           (defun ffe-js2-mode-company-hook ()
             (ffe-add-company-backends 'company-tern 'company-semantic))
-	  
-	  (add-hook 'js2-mode-hook #'ffe-js2-mode-company-hook)))
+          (add-hook 'js2-mode-hook #'ffe-js2-mode-company-hook)))
 
 (use-package mocha
   :commands (mocha-test-at-point mocha-test-file mocha-test-project)

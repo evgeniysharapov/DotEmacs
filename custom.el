@@ -34,6 +34,18 @@
  '(history-delete-duplicates t)
  '(history-length 1000)
  '(ibuffer-expert t)
+ '(ibuffer-formats
+   (quote
+    ((mark modified read-only " "
+           (name 18 18 :left :elide)
+           " "
+           (size 9 -1 :right)
+           " "
+           (mode 16 16 :left :elide)
+           " " filename-and-process)
+     (mark " "
+           (name 24 -1)
+           " " filename))))
  '(ibuffer-jump-offer-only-visible-buffers t)
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
@@ -135,4 +147,5 @@
  '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
  '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
  '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
- '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light)))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
+ '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
