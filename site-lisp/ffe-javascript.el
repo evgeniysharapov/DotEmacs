@@ -6,6 +6,7 @@
 
 (use-package js2-mode
   :defer t
+  :diminish (javascript-mode . "JS")
   :ensure t
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))

@@ -83,6 +83,11 @@
 	   :prefix "C-c C-d"
 	   :prefix-docstring "Keymap for major mode documentation")
 
+
+;; UI
+(use-package diminish
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			        Files
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -135,7 +140,7 @@
 
 (use-package projectile
   :ensure t
-  :diminish projectile-mode
+  :diminish t
   :commands (projectile-mode projectile-register-project-type)
   :init 
   (setq projectile-keymap-prefix (kbd "C-z p")
