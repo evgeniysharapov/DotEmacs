@@ -449,6 +449,9 @@
   
   :init (setq flyspell-generic-check-word-predicate
 	      'flyspell-markdown-check-word-predicate))
+
+(use-package less-css-mode
+  :ensure t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			       Org mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
