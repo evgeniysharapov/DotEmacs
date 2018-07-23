@@ -61,4 +61,7 @@
 (when (fboundp 'projectile-register-project-type)
   (projectile-register-project-type 'npm '("package.json") :test "npm test"  :test-suffix ".spec"))
 
+(use-package tide
+  :ensure t)
+
 (provide 'ffe-javascript)
