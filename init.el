@@ -85,8 +85,7 @@
 
 
 ;; UI
-(use-package diminish
-  :ensure t)
+(use-package diminish :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			        Files
@@ -140,7 +139,7 @@
 
 (use-package projectile
   :ensure t
-  :diminish t
+  :diminish "Prj"
   :commands (projectile-mode projectile-register-project-type)
   :init 
   (setq projectile-keymap-prefix (kbd "C-z p")
