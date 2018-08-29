@@ -441,7 +441,8 @@
     "Modification of enter key that just jumps onto the next line if ENTER key is pressed while point is on header"
     (interactive)
     (if (thing-at-point-looking-at markdown-regex-header)
-	(next-line)
+	(let ((next-line-add-newlines t))
+          (next-line))
       (markdown-enter-key)))
 
   (bind-key "RET" #'markdown-enter-key+ markdown-mode-map)
