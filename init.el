@@ -75,168 +75,25 @@
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
-(bind-keys :prefix-map mode-refactoring-map
-	   :prefix "C-c C-r"
-	   :prefix-docstring "Keymap for major mode refactoring commands")
+(use-package ffe-ui :demand t)
 
-(bind-keys :prefix-map mode-doc-map
-	   :prefix "C-c C-d"
-	   :prefix-docstring "Keymap for major mode documentation")
+(use-package ffe-files)
 
-
-;; UI
-(use-package diminish :ensure t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			        Files
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
-
-(use-package saveplace
-  :init
-  (progn
-    (if (fboundp 'save-place-mode)
-	;; Emacs 25 has a proper mode for `save-place'
-	(save-place-mode)
-      (setq save-place t))
-    (setq save-place-file (concat *data-dir* "places"))))
-
-(use-package desktop
-  :defer t
-  :init (if (fboundp 'desktop-save-mode)
-	    (desktop-save-mode)
-	  (setq desktop-save t))
-  :config
-  (progn
-    (setq desktop-dirname *data-dir*)
-    (push *data-dir* desktop-path)))
-
-(use-package recentf
-  :commands (recentf-mode recentf-open-most-recent-file)
-  :init
-  (progn
-    ;; lazy load recentf
-    (add-hook 'find-file-hook (lambda () (unless recentf-mode
-					   (recentf-mode t)
-					   (recentf-track-opened-file))))
-    (setq recentf-save-file (concat *data-dir* ".recentf")
-	  recentf-max-saved-items 1000
-	  recentf-auto-cleanup 'never
-	  recentf-auto-save-timer (run-with-idle-timer 600 t
-						       'recentf-save-list)))
-  :config
-  (progn
-    (add-to-list 'recentf-exclude
-		 (expand-file-name *data-dir*))
-    (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
-    (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'")))
-
-(use-package find-file-in-project
-  :ensure t
-  :commands find-file-in-project
-  :config (setq ffip-prefer-ido-mode t
-                ffip-match-path-instead-of-filename t))
-
-(use-package projectile
-  :ensure t
-  :diminish "Prj"
-  :commands (projectile-mode projectile-register-project-type)
-  :init 
-  (setq projectile-keymap-prefix (kbd "C-z p")
-	projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
-        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
-	projectile-switch-project-action (lambda () (dired (projectile-project-root))))
-  :config
-  (progn
-    (projectile-mode t)))
-
-(defun find-recent-file ())
-
-(bind-key  "R" 'recentf-open-most-recent-file ctl-x-f-map)
-(bind-key  "f" 'find-file-in-project          ctl-x-f-map)
-(bind-key  "r" 'find-recent-file              ctl-x-f-map)
-(bind-key  "." 'find-file-at-point            ctl-x-f-map)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;				Dired	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package dired
-  :config
-  (unbind-key "M-s f" dired-mode-map)
-  (unbind-key "M-s a" dired-mode-map))
-
-(put 'dired-find-alternate-file 'disabled nil)
-
-(when (string= system-type "darwin")       
-  (setq dired-use-ls-dired nil))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package bookmark
-  :defer t
-  :init
-  (setq bookmark-default-file (concat *data-dir* "bookmarks")
-	bookmark-save-flag 1))
-
-(use-package ace-jump-mode
-  :ensure t
-  :bind (:map goto-map
-	 ("j" . ace-jump-mode)))
-
-(use-package imenu
-  :commands (imenu)
-  :init (progn
-	  (use-package imenu+ :defer t)
-	  (use-package imenu-list :ensure t :commands (imenu-list)))
-  :bind (:map search-map
-         ("i" . imenu)
-	 ("I" . imenu-list)))
-
-(use-package undo-tree
-  :ensure t
-  :diminish undo-tree-mode
-  :config (global-undo-tree-mode))
-
-(use-package browse-kill-ring
-  :ensure t
-  :commands browse-kill-ring
-  :init 
-  (use-package browse-kill-ring+
-    :defer 10)
-  :bind (("C-x C-y" . browse-kill-ring)))
+(use-package ffe-navigation)
 
 (use-package ffe-search)
 
-(use-package hide-lines
-  :defer t
-  :bind (:map ctl-z-map
-	      ("/" . hide-lines)))
+(use-package ffe-edit)
 
-(use-package ffe-ui
-  :demand t)
+(use-package ffe-visibility)
+
+(use-package ffe-buffers)
+
+(use-package ffe-spell)
 
 (use-package ffe-help)
 
 (use-package ffe-ido)
-
-(use-package ibuffer
-  :bind ("C-x C-b" . ibuffer)
-  :init (progn
-          (defface ibuffer-custom-deletion-face
-	    '((t (:inherit error :strike-through t :underline nil)))
-	    "Buffers to be deleted")
-          (defface ibuffer-custom-marked-face
-	    '((t (:inherit warning :inverse-video t :underline nil)))
-	    "Marked buffers")
-          (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
-                ibuffer-marked-face 'ibuffer-custom-marked-face)
-          ;; auto updateable ibuffer
-          (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
-
-(defun ffe-kill-current-buffer ()
-  "Kills current buffer"
-  (interactive)
-  (kill-buffer (current-buffer)))
-
-(bind-key "C-x K" #'ffe-kill-current-buffer)
 
 ;;; short response function instead of long one
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -245,16 +102,6 @@
   :config
   (setq diary-file (concat *data-dir* "diary")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			   General Editing
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package misc
-  :commands (zap-up-to-char)
-  :bind (("M-z" . zap-up-to-char)))
-(bind-key "M-Z" 'zap-to-char)
-;; zapping back is done via negative argument C-- or M--
-
-(use-package ffe-spell)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
