@@ -1,3 +1,8 @@
+;;;
+;; For Mac OS X install `aspell' using Homebrew
+;;
+;;     brew install aspell --with-all-langs
+;; 
 ;;; Code:
 ;; In order for spelling to work correctly it expects DICTIONARY
 ;; environment variable to be set
@@ -7,6 +12,9 @@
 (defvar *data-dir*)			; just  to quiet linter
 (defvar ctl-z-map)
 
+;; note that for aspell file has to have a first line
+;; personal_ws-1.1 en 0
+;;    https://blog.samat.org/2008/11/02/creating-your-own-personal-aspell-dictionary/
 (defun ffe-personal-dictionary ()
   "Personal dictionary setup if file doesn't exist then create it"
   (let ((personal-dictionary-file (concat *data-dir* ".personal.dict")))
