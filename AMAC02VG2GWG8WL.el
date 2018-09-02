@@ -1,3 +1,4 @@
+;;; package --- summary
 ;;; Configuration for MacBook
 ;;; Commentary:
 ;;; Code:
@@ -5,7 +6,9 @@
 (use-package exec-path-from-shell
   :ensure t
   :demand t
-  :config (exec-path-from-shell-initialize))
+  :config (progn
+            (add-to-list 'exec-path-from-shell-variables "GOPATH")
+            (exec-path-from-shell-initialize)))
 
 (add-to-list 'default-frame-alist '(font . "Iosevka-14"))
 
