@@ -32,7 +32,7 @@
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(history-delete-duplicates t)
- '(history-length 1000)
+ '(history-length 10000)
  '(ibuffer-expert t)
  '(ibuffer-formats
    (quote
