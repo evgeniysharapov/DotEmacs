@@ -25,7 +25,12 @@
 	      ;; In python this looks like next line skipping comments and multi-line strings
 	      ("M-e" . python-nav-forward-statement)
 	      ("M-a" . python-nav-backward-statement)))
-
+;;
+;; If anaconda produces error like
+;; TypeError: __init__() got an unexpected keyword argument 'environment'
+;; see https://github.com/proofit404/anaconda-mode/issues/296
+;; most likely issue is jedi < 0.12, check via `pip list`
+;; install up to date version via `pip install -U jedi` and error goes away
 (use-package anaconda-mode
   :defer t
   :ensure t
