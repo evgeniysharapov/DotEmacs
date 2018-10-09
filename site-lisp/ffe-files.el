@@ -72,6 +72,7 @@
 ;;				Dired	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package dired
+  :init (add-hook 'dired-mode-hook #'hl-line-mode)
   :config
   (unbind-key "M-s f" dired-mode-map)
   (unbind-key "M-s a" dired-mode-map))
