@@ -173,6 +173,7 @@
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
+;;; Completion in buffer
 (use-package company
   :ensure t
   :defer 3
@@ -196,9 +197,18 @@
 
   (global-company-mode 1)
 
-  :bind (:map company-active-map
-	      ("<tab>" . company-complete-selection)
-	      ("TAB" . company-complete-selection)))
+  :bind  (:map company-active-map
+	       ("<tab>" . company-complete-selection)
+	       ("TAB" . company-complete-selection)
+               ("M-/" . company-complete-common)
+               ;; return just enters new line 
+               ("<return>" . nil)
+               ("RET" . nil)
+               :filter (company-explicit-action-p)
+               ;; unless completion was explicitly called
+               ("<return>" . company-complete-selection)
+               ("RET" . company-complete-selection))
+  :bind* (("C-M-i" . company-manual-begin)))
 
 (use-package company-statistics
   :ensure t

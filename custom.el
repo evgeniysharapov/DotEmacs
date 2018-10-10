@@ -18,6 +18,9 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(default-input-method "russian-computer")
+ '(desktop-globals-to-save
+   (quote
+    (desktop-missing-file-warning search-ring regexp-search-ring register-alist file-name-history)))
  '(desktop-restore-eager 2)
  '(desktop-restore-frames nil)
  '(directory-free-space-args "-Pmh")
