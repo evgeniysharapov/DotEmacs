@@ -67,7 +67,7 @@
            :prefix "C-x t"
            :prefix-docstring "Toggle map")
 
-(bind-keys :prefix-map ctl-x-w-map
+(bind-keys  :prefix-map ctl-x-w-map
            :prefix "C-x w"
            :prefix-docstring "Window operations map")
 
@@ -101,6 +101,91 @@
 (use-package calendar
   :config
   (setq diary-file (concat *data-dir* "diary")))
+
+;;; Completion in buffer
+(use-package company
+  :ensure t
+  :defer 3
+  :diminish company-mode
+  :init
+  (setq company-echo-delay 0)
+  :config
+  ;; default `company-backends'
+  (setq company-backends '(company-capf
+			   (company-dabbrev-code
+			    company-gtags
+			    company-etags
+			    company-keywords)
+			   company-files
+			   company-dabbrev))
+
+  (defun ffe-add-company-backends (&rest backends)
+    "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
+    (set (make-local-variable 'company-backends)
+	 (append backends company-backends)))
+
+  (global-company-mode 1)
+
+  :bind  (:map company-active-map
+	       ("<tab>" . company-complete-selection)
+	       ("TAB" . company-complete-selection)
+               ("M-/" . company-complete-common)
+               ;; return just enters new line 
+               ("<return>" . nil)
+               ("RET" . nil)
+               :filter (company-explicit-action-p)
+               ;; unless completion was explicitly called
+               ("<return>" . company-complete-selection)
+               ("RET" . company-complete-selection))
+  :bind* (("C-M-i" . company-manual-begin)))
+
+(use-package company-statistics
+  :ensure t
+  :commands (company-statistics-mode)
+  :init (progn
+	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
+	  (add-hook 'company-mode-hook #'company-statistics-mode)))
+
+;;; Expandable snippets
+(use-package yasnippet
+  :commands (yas-minor-mode yas-minor-mode-on yas-reload-all)
+  :defer 5
+  :ensure t
+  :config
+  (add-to-list 'yas-snippet-dirs (concat *data-dir* "snippets"))
+  (yas-reload-all)
+  (add-hook 'text-mode-hook #'yas-minor-mode-on)
+  (add-hook 'prog-mode-hook #'yas-minor-mode-on)
+  :bind (:map yas-minor-mode-map
+              ("C-c y" . company-yasnippet)))
+
+(use-package yasnippet-snippets
+  :ensure t
+  :init (yas-reload-all))
+
+
+(use-package outshine
+  :ensure t
+  :init (defvar outline-minor-mode-prefix "\M-#")
+  :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+
+;; (use-package outline
+;;   :commands outline-minor-mode
+;;   :init (setq outline-minor-mode-prefix (kbd "M-o"))
+;;   :config (bind-keys :map outline-mode-prefix-map
+;; 		     ;; motion
+;; 		     ("u" . outline-up-heading)
+;; 		     ("f" . outline-forward-same-level)
+;; 		     ("b" . outline-backward-same-level)
+;; 		     ("n" . outline-next-visible-heading)
+;; 		     ("p" . outline-previous-visible-heading)
+;; 		     ;; editing
+;; 		     ("<" . outline-promote)
+;; 		     (">" . outline-demote)
+;; 		     ("^" . outline-move-subtree-up)
+;; 		     ("v" . outline-move-subtree-down)
+;; 		     ("C-SPC" . outline-mark-subtree)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;			   Version Control
@@ -172,84 +257,6 @@
   :commands flycheck-pos-tip-mode
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
-
-;;; Completion in buffer
-(use-package company
-  :ensure t
-  :defer 3
-  :diminish company-mode
-  :init
-  (setq company-echo-delay 0)
-  :config
-  ;; default `company-backends'
-  (setq company-backends '(company-capf
-			   (company-dabbrev-code
-			    company-gtags
-			    company-etags
-			    company-keywords)
-			   company-files
-			   company-dabbrev))
-
-  (defun ffe-add-company-backends (&rest backends)
-    "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
-    (set (make-local-variable 'company-backends)
-	 (append backends company-backends)))
-
-  (global-company-mode 1)
-
-  :bind  (:map company-active-map
-	       ("<tab>" . company-complete-selection)
-	       ("TAB" . company-complete-selection)
-               ("M-/" . company-complete-common)
-               ;; return just enters new line 
-               ("<return>" . nil)
-               ("RET" . nil)
-               :filter (company-explicit-action-p)
-               ;; unless completion was explicitly called
-               ("<return>" . company-complete-selection)
-               ("RET" . company-complete-selection))
-  :bind* (("C-M-i" . company-manual-begin)))
-
-(use-package company-statistics
-  :ensure t
-  :commands (company-statistics-mode)
-  :init (progn
-	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
-	  (add-hook 'company-mode-hook #'company-statistics-mode)))
-
-(use-package yasnippet
-  :commands (yas-minor-mode yas-minor-mode-on yas-global-mode yas-expand)
-  :defer 5
-  :ensure t
-  :init (setq yas-snippet-dirs (list (concat *data-dir* "snippets")
-				     'yas-installed-snippets-dir))
-  :config
-  (yas-reload-all)
-  (add-hook 'text-mode-hook #'yas-minor-mode-on)
-  (add-hook 'prog-mode-hook #'yas-minor-mode-on))
-
-(use-package outshine
-  :ensure t
-  :init (defvar outline-minor-mode-prefix "\M-#")
-  :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
-
-;; (use-package outline
-;;   :commands outline-minor-mode
-;;   :init (setq outline-minor-mode-prefix (kbd "M-o"))
-;;   :config (bind-keys :map outline-mode-prefix-map
-;; 		     ;; motion
-;; 		     ("u" . outline-up-heading)
-;; 		     ("f" . outline-forward-same-level)
-;; 		     ("b" . outline-backward-same-level)
-;; 		     ("n" . outline-next-visible-heading)
-;; 		     ("p" . outline-previous-visible-heading)
-;; 		     ;; editing
-;; 		     ("<" . outline-promote)
-;; 		     (">" . outline-demote)
-;; 		     ("^" . outline-move-subtree-up)
-;; 		     ("v" . outline-move-subtree-down)
-;; 		     ("C-SPC" . outline-mark-subtree)))
-
 
 (use-package ffe-lisp)
 
