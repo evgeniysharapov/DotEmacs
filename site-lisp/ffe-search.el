@@ -1,15 +1,14 @@
 ;;; Searching in files and in buffers
-;;;
-;;; Consistent keys in Grep and Occur modes unifying `moccur-mode-map', `grep-mode-map', `occur-mode-map'
-;;; 
-;;; p - previous select
-;;; n - next select
-;;; M-p - prev without  selection
-;;; M-n - next  without selection
-;;; M-{, { - prev file (buffer)
-;;; M-}, } - next file (buffer)
-
-;;; TODO: make moccur windows work like occur
+;;
+;; Consistent keys in Grep and Occur modes unifying `moccur-mode-map', `grep-mode-map', `occur-mode-map'
+;; 
+;; p - previous select
+;; n - next select
+;; M-p - prev without  selection
+;; M-n - next  without selection
+;; M-{, { - prev file (buffer)
+;; M-}, } - next file (buffer)
+;; TODO: make moccur windows work like occur
 (use-package color-moccur
   :ensure t
   :commands isearch-moccur-all
@@ -79,20 +78,12 @@
 	 ("n" . occur-next-noselect)
 	 ("p" . occur-prev-noselect)))
 
-(use-package wgrep
-  :ensure t)
+(use-package wgrep :ensure t :defer t)
+(use-package wgrep-ag :ensure t :defer t)
 
 ;; This is a custom version of the library that should be loaded from
 ;; the git submodule
 (use-package ag
-  :defines (ag-reuse-buffers ag-highlight-search)
-  :init (progn
-	  ;; since we use our custom `ag` package we need to load its deps
-	  (use-package s :ensure t :defer t)
-	  (use-package dash :ensure t :defer t))
-  :config (progn  (setq ag-reuse-buffers t
-			ag-highlight-search t)
-		  (use-package wgrep-ag :ensure t :defer t))
   :bind (("M-s a" . ag)
 	 ("M-s p" . ag-project)))
 
@@ -108,5 +99,8 @@
               ("<up>" . isearch-repeat-backward)
               ("<down>" . isearch-repeat-forward)))
 
-(use-package visual-regex)
+(use-package visual-regexp
+  :ensure t
+  :bind (("C-c C-/" . vr/replace)))
+
 (provide 'ffe-search)

@@ -49,6 +49,10 @@
 (package-install (intern "use-package"))
 
 (setq use-package-enable-imenu-support t)
+
+;;; Utility Packages
+(use-package s :ensure t :defer t)
+(use-package dash :ensure t :defer t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;		     Keymap and keys organization 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
