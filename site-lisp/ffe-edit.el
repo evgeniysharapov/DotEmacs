@@ -18,7 +18,7 @@
   :init 
   (use-package browse-kill-ring+
     :defer 10)
-  :bind (("C-x C-y" . browse-kill-ring)))
+  :bind (("C-M-y" . browse-kill-ring)))
 
 
 (provide 'ffe-edit)
