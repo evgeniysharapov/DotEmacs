@@ -82,8 +82,8 @@
 (use-package wgrep
   :ensure t)
 
-;;; This is a custom version of the library that should be loaded from
-;;; the git submodule
+;; This is a custom version of the library that should be loaded from
+;; the git submodule
 (use-package ag
   :defines (ag-reuse-buffers ag-highlight-search)
   :init (progn
@@ -102,4 +102,11 @@
 	 ("M-s f" . grep-find)
 	 ("M-s r" . rgrep)))
 
+;; These are handy keys when you are navigating a buffer using isearch
+(use-package isearch 
+  :bind (:map isearch-mode-map
+              ("<up>" . isearch-repeat-backward)
+              ("<down>" . isearch-repeat-forward)))
+
+(use-package visual-regex)
 (provide 'ffe-search)
