@@ -1,11 +1,9 @@
+;;; User Experience
 (require 'cl)
 
-;; diminish
+;;;  Using `diminish'
 (use-package diminish :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			   User Experience
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-minor-mode 'menu-bar-mode nil)
 (custom-set-minor-mode 'tool-bar-mode nil)
 (custom-set-minor-mode 'scroll-bar-mode nil)
@@ -14,9 +12,8 @@
   (custom-set-minor-mode 'mouse-wheel-mode t)
   (custom-set-minor-mode 'blink-cursor-mode nil))
 
-;; Default typeface
-(message "Loading UI.....")
-;;; Good typefaces to consider 
+;;; Typefonts
+;; Good typefaces to consider 
 ;; (set-frame-font "Cousine-11" t)
 ;; (set-frame-font "Iosevka NF-12:light" t)
 ;; (set-frame-font "Meslo LG S DZ" t)
@@ -93,6 +90,7 @@
 
 (bind-key "f" #'ffe-select-typeface ctl-x-t-map)
 
+;;; Toggle `whitespace-mode'
 (bind-key "w" #'whitespace-mode ctl-x-t-map)
 
 (use-package rainbow-mode
