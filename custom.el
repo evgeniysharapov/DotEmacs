@@ -25,9 +25,20 @@
  '(default-input-method "russian-computer")
  '(desktop-globals-to-save
    (quote
-    (desktop-missing-file-warning search-ring regexp-search-ring register-alist file-name-history)))
+    (desktop-missing-file-warning
+     (search-ring . 50)
+     (regexp-search-ring . 50)
+     (regexp-history . 50)
+     (grep-history . 50)
+     register-alist file-name-history tags-file-name
+     (shell-command-history . 50)
+     (read-expressions-history . 50)
+     (query-replace-history 0.5)
+     (minibuffer-history . 50)
+     (compile-history . 50))))
  '(desktop-restore-eager 2)
  '(desktop-restore-frames nil)
+ '(desktop-save t)
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
@@ -122,6 +133,7 @@
      (js2-basic-offset . 2)
      (markdown-command . "pandoc -s --toc -S -c assets/style.css -B assets/before.html -A assets/after.html -f markdown -t html"))))
  '(save-interprogram-paste-before-kill t)
+ '(save-place-mode t)
  '(savehist-additional-variables
    (quote
     (mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history)))

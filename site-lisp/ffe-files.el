@@ -5,18 +5,10 @@
 
 (use-package saveplace
   :init
-  (progn
-    (if (fboundp 'save-place-mode)
-	;; Emacs 25 has a proper mode for `save-place'
-	(save-place-mode)
-      (setq save-place t))
-    (setq save-place-file (concat *data-dir* "places"))))
+  (setq save-place-file (concat *data-dir* "places")))
 
 (use-package desktop
   :defer t
-  :init (if (fboundp 'desktop-save-mode)
-	    (desktop-save-mode)
-	  (setq desktop-save t))
   :config
   (progn
     (setq desktop-dirname *data-dir*)
