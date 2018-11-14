@@ -19,11 +19,17 @@
             (if (eq major-mode 'emacs-lisp-mode)
                 (flycheck-disable-checker 'emacs-lisp-checkdoc))))
 
-  :bind (:map org-mode-map
+  :bind (:map ctl-z-map
+              ("a" . org-agenda)
+              ("l" . org-store-link)
+              ("b" . org-switchb)
+         :map org-mode-map
               ("C-c k" . org-cut-subtree)
               ;;  Swap C-j and RET
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
+(use-package org-journal
+  :ensure t)
 
 (provide 'ffe-org)
