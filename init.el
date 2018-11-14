@@ -364,3 +364,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
   (message "Loading Emacs...done (%.3fs)" elapsed))
+(put 'narrow-to-region 'disabled nil)
