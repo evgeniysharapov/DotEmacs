@@ -141,6 +141,7 @@
  '(scroll-conservatively 101)
  '(scroll-preserve-screen-position 1)
  '(sentence-end-double-space nil)
+ '(show-paren-delay 0)
  '(show-paren-mode t)
  '(show-paren-when-point-in-periphery t)
  '(show-paren-when-point-inside-paren t)
