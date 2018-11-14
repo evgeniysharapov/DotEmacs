@@ -60,14 +60,22 @@
 (bind-key  "r" 'find-recent-file              ctl-x-f-map)
 (bind-key  "." 'find-file-at-point            ctl-x-f-map)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;				Dired	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Dired
 (use-package dired
   :init (add-hook 'dired-mode-hook #'hl-line-mode)
   :config
   (unbind-key "M-s f" dired-mode-map)
-  (unbind-key "M-s a" dired-mode-map))
+  (unbind-key "M-s a" dired-mode-map)
+
+  (defun ffe-dired-do-delete (&optional arg)
+    "Just like `dired-do-delete' but without too many confirmations"
+    (interactive "P")
+    (let ((dired-recursive-deletes 'always)
+          (dired-deletion-confirmer (lambda (arg) t)))
+      (dired-do-delete arg)))
+
+  (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
 
 (put 'dired-find-alternate-file 'disabled nil)
 
