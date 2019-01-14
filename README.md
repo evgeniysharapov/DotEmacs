@@ -64,7 +64,9 @@ asdfadsf
     
 * Add ripgrep via deadgrep to M-s search keymap
 
+* Move all the parts configuration ffe-* files to init.el once outline is used. 
 
+* Heavy configuration parts can go to *-plus packages 
   
   
 
