@@ -323,20 +323,120 @@
   (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
 
 
-;;; Navigation
-(use-package ffe-navigation)
+
+;;; Navigation and Visibility 
+;; navigation in a buffer  and visibility of the buffer content 
+;; TODO: add narrow/widen
+
+;;;; Bookmarks
+(use-package bookmark
+  :defer t
+  :init
+  (setq bookmark-default-file (concat *data-dir* "bookmarks")
+	bookmark-save-flag 1))
+
+;;;; Outline and Imenu
+
+(use-package imenu
+  :commands (imenu)
+  :init (progn
+	  (use-package imenu+ :defer t)
+	  (use-package imenu-list :ensure t :commands (imenu-list)))
+  :bind (:map search-map
+         ("i" . imenu)
+	 ("I" . imenu-list)))
+
+(use-package outshine
+  :ensure t
+  :init (defvar outline-minor-mode-prefix "\M-#")
+  :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+
+;; (use-package outline
+;;   :commands outline-minor-mode
+;;   :init (setq outline-minor-mode-prefix (kbd "M-o"))
+;;   :config (bind-keys :map outline-mode-prefix-map
+;; 		     ;; motion
+;; 		     ("u" . outline-up-heading)
+;; 		     ("f" . outline-forward-same-level)
+;; 		     ("b" . outline-backward-same-level)
+;; 		     ("n" . outline-next-visible-heading)
+;; 		     ("p" . outline-previous-visible-heading)
+;; 		     ;; editing
+;; 		     ("<" . outline-promote)
+;; 		     (">" . outline-demote)
+;; 		     ("^" . outline-move-subtree-up)
+;; 		     ("v" . outline-move-subtree-down)
+;; 		     ("C-SPC" . outline-mark-subtree)))
+
+
+;;;; Visibility
+
+;; Visibility of the text in a window
+;; C-z /          hides lines matching regexp
+;; C-u C-z /      hides lines not matching regexp
+;; C-u C-u C-z /  unhides everything
+(use-package hide-lines
+  :defer t
+  :bind (:map ctl-z-map
+	      ("/" . hide-lines)))
+
+;;;; OnScreen
+;; moving onto anything that is visible on the screen
+(use-package ace-jump-mode
+  :ensure t
+  :bind (:map goto-map
+	 ("j" . ace-jump-mode)))
 
 ;;; Search
 (use-package ffe-search)
 
-;;; Edit
-(use-package ffe-edit)
 
-;;; Visibility
-(use-package ffe-visibility)
+
+;;; Edit
+;; Editing Operations
+(use-package misc
+  :commands (zap-up-to-char forward-to-word)
+  ;; zapping back is done via negative argument C-- or M--
+  :bind (("M-z" . zap-up-to-char)
+         ("M-Z" . zap-to-char)
+         ("M-f" . forward-to-word)
+         ("M-F" . forward-word)))
+
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config (global-undo-tree-mode))
+
+(use-package browse-kill-ring
+  :ensure t
+  :commands browse-kill-ring
+  :init 
+  (use-package browse-kill-ring+
+    :defer 10)
+  :bind (("C-M-y" . browse-kill-ring)))
 
 ;;; Buffers
-(use-package ffe-buffers)
+;; Buffer operations
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer)
+  :init (progn
+          (defface ibuffer-custom-deletion-face
+	    '((t (:inherit error :strike-through t :underline nil)))
+	    "Buffers to be deleted")
+          (defface ibuffer-custom-marked-face
+	    '((t (:inherit warning :inverse-video t :underline nil)))
+	    "Marked buffers")
+          (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
+                ibuffer-marked-face 'ibuffer-custom-marked-face)
+          ;; auto updateable ibuffer
+          (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
+
+(defun ffe-kill-current-buffer ()
+  "Kills current buffer"
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+(bind-key "C-x K" #'ffe-kill-current-buffer)
 
 ;;; Spellcheck
 (use-package ffe-spell)
@@ -416,31 +516,6 @@
 (use-package yasnippet-snippets
   :ensure t
   :init (yas-reload-all))
-
-;;; Visibility and Navigation
-
-(use-package outshine
-  :ensure t
-  :init (defvar outline-minor-mode-prefix "\M-#")
-  :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
-
-;; (use-package outline
-;;   :commands outline-minor-mode
-;;   :init (setq outline-minor-mode-prefix (kbd "M-o"))
-;;   :config (bind-keys :map outline-mode-prefix-map
-;; 		     ;; motion
-;; 		     ("u" . outline-up-heading)
-;; 		     ("f" . outline-forward-same-level)
-;; 		     ("b" . outline-backward-same-level)
-;; 		     ("n" . outline-next-visible-heading)
-;; 		     ("p" . outline-previous-visible-heading)
-;; 		     ;; editing
-;; 		     ("<" . outline-promote)
-;; 		     (">" . outline-demote)
-;; 		     ("^" . outline-move-subtree-up)
-;; 		     ("v" . outline-move-subtree-down)
-;; 		     ("C-SPC" . outline-mark-subtree)))
-
 
 ;;; Version Control
 (use-package magit
