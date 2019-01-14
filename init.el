@@ -1,3 +1,4 @@
+;;; Constants and Paths
 (defconst *emacs-start-time* (current-time))
 
 (defconst *dotfiles-dir*
@@ -20,11 +21,9 @@
   (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
   "Directory for Emacs Extensions files")
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;	    Add `*lisp-dir*' paths recursively to `load-path'
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; create recursive function
+;;; Load Libraries Recursively
+;; Add `*lisp-dir*' paths recursively to `load-path'
+;; create recursive function
 (defun add-directory-to-path (dir)
   (add-to-list 'load-path dir)
   (dolist (entry (directory-files-and-attributes dir))
@@ -33,11 +32,12 @@
         (let ((new-directory (expand-file-name (car entry) dir)))
           (add-to-list 'load-path new-directory)
           (add-directory-to-path new-directory)))))
-;;; add the directory tree
+;; add the directory tree
 (add-directory-to-path *lisp-dir*)
-;;; erase the function
+;; erase the function
 (fmakunbound #'add-directory-to-path)
 
+;;; Packages Repos and Use-Package
 (setq package-user-dir *elpa-dir* 
       package-archives '(("gnu"          . "http://elpa.gnu.org/packages/")
                          ("melpa-stable" . "http://stable.melpa.org/packages/")
@@ -53,9 +53,10 @@
 ;;; Utility Packages
 (use-package s :ensure t :defer t)
 (use-package dash :ensure t :defer t)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;		     Keymap and keys organization 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Keymap and Keys Organization 
+
+;; put my own keymap on C-z while moving zap to M-z
 (defvar ctl-z-map)
 (define-prefix-command 'ctl-z-map)
 (let ((c-z (global-key-binding [(control ?z)])))
@@ -79,34 +80,46 @@
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
+;;; UI
 (use-package ffe-ui :demand t)
 
+;;; Files
 (use-package ffe-files)
 
+;;; Navigation
 (use-package ffe-navigation)
 
+;;; Search
 (use-package ffe-search)
 
+;;; Edit
 (use-package ffe-edit)
 
+;;; Visibility
 (use-package ffe-visibility)
 
+;;; Buffers
 (use-package ffe-buffers)
 
+;;; Spellcheck
 (use-package ffe-spell)
 
+;;; Help
 (use-package ffe-help)
 
+;;; Ido
 (use-package ffe-ido)
 
-;;; short response function instead of long one
+;;; Tweaks
+;; short response function instead of long one
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;;; Calendar
 (use-package calendar
   :config
   (setq diary-file (concat *data-dir* "diary")))
 
-;;; Completion in buffer
+;;; Completion in Buffer
 (use-package company
   :ensure t
   :defer 3
@@ -150,7 +163,7 @@
 	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
 	  (add-hook 'company-mode-hook #'company-statistics-mode)))
 
-;;; Expandable snippets
+;;; Expandable Snippets
 (use-package yasnippet
   :commands (yas-minor-mode yas-minor-mode-on yas-reload-all)
   :defer 5
@@ -192,9 +205,7 @@
 ;; 		     ("C-SPC" . outline-mark-subtree)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			   Version Control
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Version Control
 (use-package magit
   :ensure t
   :commands magit-status
@@ -207,9 +218,8 @@
   :commands monky-status
   :bind (:map ctl-z-map
 	      ("h" . monky-status)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			      Minibuffer
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Minibuffer
 (use-package smex
   :ensure t
   :init
@@ -235,9 +245,10 @@
 
 (add-hook 'minibuffer-exit-hook #'ffe-auto-close-buffers)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			  Programming modes
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Programming Modes
+
+;;;; General Settings 
 (use-package eldoc
   :diminish eldoc-mode
   :commands eldoc-mode
@@ -263,40 +274,54 @@
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
+;;;; Lisp
 (use-package ffe-lisp)
 
+;;;; Clojure
 (use-package ffe-clojure)
 
+;;;; C/C++
 (use-package ffe-c
   :commands ffe-c-mode-hook
   :init (add-hook 'c-mode-common-hook #'ffe-c-mode-hook))
 
+;;;; Go
 (use-package ffe-go)
 
+;;;; Javascript
 (use-package ffe-javascript
   :after projectile)			; because we customize projectile for javascript
 
+;;;; Python 
 (use-package ffe-python)
 
+;;;; Rust
 (use-package ffe-rust)
 
+;;;; Groovy
 (use-package groovy-mode
   :ensure t)
 
+;;; TeX Mode
 (use-package ffe-tex)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			  Misc. File Formats
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;; Misc File Formats
+
+;;;;  JSON
 (use-package ffe-json)
 
+;;;; NGinx Configuration
 (use-package nginx-mode
   :ensure t
   :commands nginx-mode)
 
+;;;; YAML
 (use-package yaml-mode
   :ensure t
   :mode (("\\.ya?ml$" . yaml-mode)))
 
+;;;; Markdown
 (use-package markdown-mode  
   :ensure t
   :mode (("\\.md$" . markdown-mode))
@@ -345,19 +370,19 @@
   :init (setq flyspell-generic-check-word-predicate
 	      'flyspell-markdown-check-word-predicate))
 
+;;;;  LESS 
 (use-package less-css-mode
   :ensure t)
 
+;;;; Shell Scripts 
 (use-package sh-script
   :mode (("\\.zsh" . sh-mode)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			       Org mode
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;; Org Mode
 (use-package ffe-org)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;				Docker
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Docker
 (use-package dockerfile-mode
   :ensure t
   :commands dockerfile-mode)
@@ -367,28 +392,28 @@
   :commands (docker-containers)
   :init (progn
 	  (use-package json-rpc :ensure t)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;		    Loading System Specific Files
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;; Loading System Specific Files
 (when-let ((local-settings (concat *dotfiles-dir* (system-name) ".el"))
 	   (exists (file-exists-p local-settings)))
   (load local-settings))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			   Load custom-vars File
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Load custom-vars File
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
 
-;;; Start server-mode if we are not in the daemon mode
+;;; Server Mode                                        ;
+;; Start server-mode if we are not in the daemon mode
 (use-package server
   :config
   (progn 
     (unless (or (daemonp) (server-running-p))
       (server-mode 1))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;			   How long it took
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Performance                                        ;
+;; How Long It Took
 (let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
   (message "Loading Emacs...done (%.3fs)" elapsed))
 (put 'narrow-to-region 'disabled nil)
