@@ -56,6 +56,24 @@
 ;;  Using `diminish'
 (use-package diminish :ensure t)
 
+;;;; Ido Configuration
+(use-package ido
+  :defer 10
+  :init (progn
+	  (setq ido-save-directory-list-file (concat *data-dir* ".ido.last"))
+	  (use-package ido-ubiquitous
+	    :ensure t
+	    :commands ido-ubiquitous-mode)
+	  (use-package flx-ido
+	    :ensure t
+	    :commands flx-ido-mode))
+  :config (progn
+	    (ido-mode t)
+	    (ido-everywhere t)
+	    (ido-ubiquitous-mode t)
+	    (flx-ido-mode t)
+	    (setq-default org-completion-use-ido t)))
+
 ;;; Keymap and Keys Organization 
 
 ;; put my own keymap on C-z while moving zap to M-z
@@ -287,6 +305,16 @@
 	  recentf-max-saved-items 1000
 	  recentf-auto-cleanup 'never
 	  recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list)))
+
+  (defun ido-find-recent-file ()
+    "Use `ido-completing-read' to \\[find-file] a recent file"
+    (interactive)
+    (unless recentf-mode
+      (recentf-mode t))
+    (if (find-file (ido-completing-read+ "Find recent file: " recentf-list))
+	(message "Opening file...")
+      (message "Aborting")))
+  
   :config
   (progn
     (add-to-list 'recentf-exclude
@@ -295,6 +323,7 @@
     (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'"))
 
   :bind (:map ctl-x-f-map
+              ("r" . ido-find-recent-file)
               ("R" . recentf-open-most-recent-file)))
 
 ;;;; Generic Finding Files
@@ -443,9 +472,6 @@
 
 ;;; Help
 (use-package ffe-help)
-
-;;; Ido
-(use-package ffe-ido)
 
 ;;; Tweaks
 ;; short response function instead of long one
