@@ -307,7 +307,7 @@
       (not (memq face '(markdown-pre-face markdown-inline-code-face markdown-reference-face)))))
 
   
-  (defun markdown-enter-key+ ()
+  (defun markdown-plus-enter-key ()
     "Modification of enter key that just jumps onto the next line if ENTER key is pressed while point is on header"
     (interactive)
     (if (thing-at-point-looking-at markdown-regex-header)
@@ -315,7 +315,31 @@
           (next-line))
       (markdown-enter-key)))
 
-  (bind-key "RET" #'markdown-enter-key+ markdown-mode-map)
+  (defun markdown-plus-current-header-level ()
+    "Return level of the header for the current position"
+    (cond ((markdown-heading-at-point) (markdown-outline-level))
+          ;; check previous heading 
+          (t (save-excursion
+               (goto-char (markdown-previous-heading))
+               (markdown-outline-level)))))
+
+  (defun markdown-plus-insert-new-header-same-level ()
+    "Creates a new header of the same level and moves point onto it"
+    (interactive)
+    (let ((current-level (markdown-plus-current-header-level)))
+      (markdown-insert-header current-level "X")
+      ;; now delete that extra char, i.e. X
+      (delete-char -1)))
+
+  (bind-keys :map markdown-mode-map
+             ("RET" . markdown-plus-enter-key)
+             ;; C-RET inserts new heading current level
+             ("<C-return>" . markdown-plus-insert-new-header-same-level)
+             ;; M-<left> promotes, M-<right> demotes
+             ("<M-left>"  . markdown-promote)
+             ("<M-right>" . markdown-demote))
+  ;; TODO:  M-<up> - folds current entry, M-<down> - unfolds current entry
+  
   
   :init (setq flyspell-generic-check-word-predicate
 	      'flyspell-markdown-check-word-predicate))
