@@ -840,41 +840,450 @@
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
 ;;;; Lisp
-(use-package ffe-lisp)
+;; This is a lisp based programming language configuration
+;; mostly Emacs lisp and IELM and such
+(defconst *lisp-mode-hooks* '(emacs-lisp-mode-hook
+			      ielm-mode-hook
+			      lisp-mode-hook
+			      lisp-interaction-mode-hook))
+
+(use-package paredit
+  :ensure t
+  :diminish paredit-mode
+  :commands paredit-mode
+  :config (progn (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
+		 ;; we use M-s for searching stuff
+		 (unbind-key "M-s" paredit-mode-map)
+		 ;; bind splice onto M-k since we shouldn't use it in lisp
+		 ;; mode anyway
+		 (bind-key "M-k" #'paredit-splice-sexp paredit-mode-map)))
+
+(use-package elisp-slime-nav
+  :ensure t
+  :commands elisp-slime-nav-mode
+  :diminish elisp-slime-nav-mode)
+
+(dolist (mode-hook *lisp-mode-hooks*)
+  (add-hook mode-hook #'paredit-mode)
+  (add-hook mode-hook #'elisp-slime-nav-mode)
+  (add-hook mode-hook #'eldoc-mode))
+
+;; (global-set-key [remap eval-expression] 'pp-eval-expression)
+;; (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
+(bind-key "C-c C-c" #'eval-buffer emacs-lisp-mode-map)
+
+;; turn off checkdoc for my configuration files
+(defun ffe-disable-elisp-checkdoc-in-configuration-files ()
+            (if (and (eq major-mode 'emacs-lisp-mode)  ; if it is elisp
+		     (or
+		      (string-equal user-init-file (buffer-file-name))	; or init.el file
+		      (string-equal custom-file (buffer-file-name)) ; customization file
+		      (and 		; configuration modules
+		       (string-match (or (file-name-directory (or  (buffer-file-name) "")) "") *lisp-dir*)
+		       (string-match "^ffe-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
+                (flycheck-disable-checker 'emacs-lisp-checkdoc)))
+
+(add-hook 'emacs-lisp-mode-hook #'ffe-disable-elisp-checkdoc-in-configuration-files)
+
+(defun ffe-ielm ()
+  "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
+  (interactive)
+  (let ((buf (current-buffer)))
+    (if (get-buffer "*ielm*")
+        (switch-to-buffer-other-window "*ielm*")
+      (progn
+        (split-window-sensibly (selected-window))
+        (other-window 1)
+        (ielm)))
+    (ielm-change-working-buffer buf)))
+
+(bind-key "C-M-:" #'ffe-ielm)
+
 
 ;;;; Clojure
-(use-package ffe-clojure)
+(use-package cider
+  :after (paredit eldoc)
+  :ensure t
+  :commands (cider-jack-in)
+  :config
+  (dolist (hook '(cider-mode-hook cider-repl-mode-hook clojure-mode-hook clojurescript-mode-hook))
+      (add-hook hook #'paredit-mode)
+      (add-hook hook #'eldoc-mode)))
+
+(use-package 4clojure
+  :commands (4clojure-open-question)
+  :after cider
+  :ensure t
+  :defer t
+  :init (progn
+	  (defadvice 4clojure-open-question (around 4clojure-open-question-around)
+	    "Start a cider/nREPL connection if one hasn't already been started when
+opening 4clojure questions"
+	    ad-do-it
+	    (unless cider-current-clojure-buffer
+	      (cider-jack-in)))))
+
 
 ;;;; C/C++
-(use-package ffe-c
-  :commands ffe-c-mode-hook
-  :init (add-hook 'c-mode-common-hook #'ffe-c-mode-hook))
+;; C/C++ Configuration mostly for one off c/c++ programs not for complex C/C++ projects
+(use-package cc-mode
+  :mode (("\\.h\\(h?\\|xx\\|pp\\)\\'" . c++-mode)
+         ("\\.m\\'"                   . c-mode)
+         ("\\.mm\\'"                  . c++-mode)))
+
+;; C/C++ Headers Locations. This is system specific 
+(defconst *ffe-c-headers-dirs* '("C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include\\c++"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include\\c++\\x86_64-w64-mingw32"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include\\c++\\backward"
+				 "C:\\PF\\LLVM\\lib\\clang\\3.7.0\\include"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include"
+				 "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.2.0\\include-fixed"
+				 "C:\\mingw64\\x86_64-w64-mingw32\\include"
+				 "C:\\mingw64\\include"))
+
+(use-package company-c-headers
+  :defer t
+  :commands company-c-headers
+  :ensure t
+  :config
+  (dolist (dir (if (boundp '*ffe-c-headers-dirs*)
+		   *ffe-c-headers-dirs*
+		 ()))
+    (add-to-list 'company-c-headers-path-system dir)))
+
+(use-package c-eldoc
+  :defer t
+  :commands c-turn-on-eldoc-mode
+  :ensure t
+  :config (setq c-eldoc-includes
+                (mapconcat #'identity
+                           ;; on Windows `pkg-config` .... leads to an
+                           ;; error
+                           (cons ;c-eldoc-includes
+                                 "-I. -I.."
+                                 (mapcar (apply-partially #'concat "-I")
+                                         *ffe-c-headers-dirs*))
+                           " ")
+                c-eldoc-cpp-command "cpp"))
+
+(defun ffe-c-mode-hook ()
+  "This is settings for the C/C++ mode
+
+Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mode-common-hook"
+  (when (memq major-mode '(c-mode c++-mode))
+    (electric-pair-mode +1)
+    (electric-indent-local-mode +1)
+    (c-toggle-hungry-state +1)
+    (c-set-style "gnu")
+    (setq c-basic-offset 4)
+    (c-turn-on-eldoc-mode)
+    (set (make-local-variable 'compile-command)
+         (let ((f (file-name-nondirectory (buffer-file-name))))
+           (case major-mode
+             ('c-mode (format "gcc -g -O2 -std=gnu99 -static -lm %s" f))
+             ('c++-mode (format "g++ -g -O2 -static -std=gnu++11 %s" f))
+             (t compile-command))))
+
+    (ffe-add-company-backends 'company-c-headers 'company-semantic 'company-clang 'company-xcode)))
+
+(add-hook 'c-mode-common-hook #'ffe-c-mode-hook)
 
 ;;;; Go
-(use-package ffe-go)
+;; Go language setup
+;;
+;; Requires GOPATH and PATH to be setup and include go executables
+;;
+;; Documentation:
+;; Oracle    https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view
+;; Guru    https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit
+
+;; go get -u golang.org/x/tools/cmd/goimports
+;; go get -u golang.org/x/tools/cmd/godoc
+;; go get -u golang.org/x/tools/cmd/guru
+;; go get -u golang.org/x/lint/golint
+;; go get -u github.com/rogpeppe/godef
+;; go get -u github.com/nsf/gocode
+
+;; TODO:
+;; package-install flymake-go
+;; go get -u github.com/dougm/goflymake
+;; other packages to look at
+;;  go-add-tags
+;;  go-fill-struct
+;;  go-gen-test
+;;  go-impl
+;;  go-projectile
+;;  go-rename
+;;  go-tag
+;;  golint
+
+(use-package go-mode
+  :ensure t
+  :init (progn
+          (use-package go-eldoc
+            :ensure t
+            :init (add-hook 'go-mode-hook #'go-eldoc-setup))
+          (use-package go-guru
+            :ensure t
+            :init (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+          (use-package company-go
+            :ensure t
+            :init (add-hook 'go-mode-hook (lambda () (ffe-add-company-backends 'company-go))))
+
+          (defun go-run-buffer ()
+            "This will run buffer on the Go"
+            (interactive)
+            (compile (concat "go run " (buffer-file-name))))
+
+          (add-hook 'go-mode-hook (lambda ()
+                                    ;; customize  compile command for go-mode
+                                    (set (make-local-variable 'compile-command)
+                                         "go build")
+                                    ;; make before-save-hook local for go-mode buffer
+                                    (add-hook 'before-save-hook 'gofmt nil t)))
+          (bind-keys :map go-mode-map
+                     :prefix "C-c C-d"
+                     :prefix-map go-mode-doc-map
+                     ("h"   . godoc)
+                     ("d"   . godef-describe)
+                     ("C-d" . godoc-at-point)))
+  
+  :config (progn
+            (setq gofmt-command "goimports"))
+  
+  :bind (("C-c C-c" . go-run-buffer)))
+
 
 ;;;; Javascript
-(use-package ffe-javascript
-  :after projectile)			; because we customize projectile for javascript
+;; Javascript Configuration
+;;
+;; Node packages expected to be installed globally:
+;; 1. tern
+;; 2. mocha
+(use-package js2-mode
+  :defer t
+  :diminish (javascript-mode . "JS")
+  :ensure t
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.jsx\\'" . js2-jsx-mode))
+  :init
+  (progn
+    (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+    (add-hook 'js2-mode-hook #'imenu-add-menubar-index)
+    (add-hook 'js2-mode-hook #'idle-highlight-mode)
+    (add-hook 'js2-mode-hook #'electric-pair-mode)
+    (add-hook 'js2-mode-hook #'hs-minor-mode)))
+
+(use-package tern
+  :commands (tern-mode)
+  :ensure t
+  :init
+  (add-hook 'js2-mode-hook #'tern-mode))
+
+;; We can't quite manipulate local mode keymap from within a hook, so we do it in EAL form
+(eval-after-load "tern"
+  '(progn
+     ;; clear C-c C-r and C-c C-d from tern-keymap
+     (define-key tern-mode-keymap (kbd  "C-c C-r") nil)
+     (define-key tern-mode-keymap (kbd "C-c C-d") nil)
+     (bind-keys :map tern-mode-keymap
+                ("C-c C-r r" . tern-rename-variable)
+                ("C-c C-d C-d" . tern-get-docs)
+                ("C-c C-d d" . tern-get-type))))
+
+
+(use-package company-tern
+  :after company
+  :ensure t
+  :init (progn
+          (defun ffe-js2-mode-company-hook ()
+            (ffe-add-company-backends 'company-tern 'company-semantic))
+          (add-hook 'js2-mode-hook #'ffe-js2-mode-company-hook)))
+
+(use-package mocha
+  :commands (mocha-test-at-point mocha-test-file mocha-test-project)
+  :ensure t
+  :pin melpa-stable
+  :bind (:map js2-mode-map
+              ("C-c t ." . mocha-test-at-point)
+              ("C-c t f" . mocha-test-file)
+              ("C-c t p" . mocha-test-project)))
+
+(use-package js-comint
+  :ensure t
+  :commands (run-js))
+
+;; customize projectile
+(when (fboundp 'projectile-register-project-type)
+  (projectile-register-project-type 'npm '("package.json") :test "npm test"  :test-suffix ".spec"))
+
+(use-package tide
+  :ensure t)
 
 ;;;; Python 
-(use-package ffe-python)
+;; Python configuration
+;; for Windows pyreadline needs to be installed
+(use-package python
+  :defer t
+  :diminish (python-mode . "Py")
+  :commands python-mode
+  :init
+  (progn
+    (setq python-shell-interpreter "python"
+          python-shell-prompt-block-regexp "\\s-*\\.\\.\\."))
+  :config
+  (progn
+    (add-hook 'python-mode-hook #'eldoc-mode))
+  :bind (:map python-mode-map
+	      ;; python-eldoc-at-point is not really useful, instead
+	      ;; use it for sending file to python shell
+	      ("C-c C-f" . python-shell-send-file)
+	      ("C-M-f" . python-nav-forward-sexp)
+	      ;; moves between syntactic blocks (if,for,while,def,..)
+	      ("C-M-b" . python-nav-backward-sexp)
+	      ("M-}" . python-nav-forward-block)
+	      ("M-{" . python-nav-backward-block)
+	      ;; In python this looks like next line skipping comments and multi-line strings
+	      ("M-e" . python-nav-forward-statement)
+	      ("M-a" . python-nav-backward-statement)))
+;;
+;; If anaconda produces error like
+;; TypeError: __init__() got an unexpected keyword argument 'environment'
+;; see https://github.com/proofit404/anaconda-mode/issues/296
+;; most likely issue is jedi < 0.12, check via `pip list`
+;; install up to date version via `pip install -U jedi` and error goes away
+(use-package anaconda-mode
+  :defer t
+  :ensure t
+  :diminish (anaconda-mode . "Ana")
+  :init (progn
+	  (setq anaconda-mode-installation-directory (concat *data-dir* "anaconda-mode"))
+          (add-hook 'python-mode-hook #'anaconda-mode)
+          (add-hook 'python-mode-hook #'anaconda-eldoc-mode))
+  :config (progn
+            ;; This one will prevent annoying window from popping up
+            ;; see https://github.com/proofit404/anaconda-mode/issues/164
+            ;; and https://github.com/syl20bnr/spacemacs/issues/3772
+            (remove-hook 'anaconda-mode-response-read-fail-hook
+                         'anaconda-mode-show-unreadable-response))
+  :bind (:map anaconda-mode-map
+	      ;; make key bindings more traditional
+	      ("M-," . anaconda-mode-go-back)
+	      ("M-*" . anaconda-mode-find-assignments)
+	      ("C-c C-d" . anaconda-mode-show-doc)))
+
+
+(use-package company-anaconda
+  :defer t
+  :ensure t
+  :init (with-eval-after-load 'company
+          (add-hook 'python-mode-hook (lambda () (ffe-add-company-backends 'company-anaconda)))))
+
+
+
 
 ;;;; Rust
-(use-package ffe-rust)
+;; Configuration for the Rust programming language
+;;
+;; This setup expects that one has installed rust system using `rustup-init`,
+;; there's a `cargo` tool and we installed `racer` and `rustfmt` crates. Check out corresponding documentation
+;; on how to do that. More over there's a RUST_SRC_PATH environment  variable pointing to rust sources. 
+;; 
+(use-package rust-mode
+  :ensure t
+  :defer t)
+
+(use-package cargo
+  :ensure t
+  :defer t
+  :init (add-hook 'rust-mode-hook #'cargo-minor-mode))
+
+(use-package flycheck-rust
+  :ensure t
+  :defer t
+  :after rust-mode
+  :config
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
+;; Auto completion for rust
+(use-package racer
+  :ensure t
+  :defer t
+  :after rust-mode
+  :init (add-hook 'rust-mode-hook #'racer-mode)   
+  :config (setq racer-rust-src-path (getenv "RUST_SRC_PATH")))
+
+;; Major mode for .toml Cargo files, I don't think it's used anywhere
+;; outside of Rust ecosystem so it stays here for now
+(use-package toml-mode
+  :ensure t
+  :defer t)
 
 ;;;; Groovy
 (use-package groovy-mode
   :ensure t)
 
 ;;; TeX Mode
-(use-package ffe-tex)
+;; TeX Settings
+(use-package tex-site                   ; AucTeX initialization
+  :ensure auctex)
 
+(use-package tex
+  :ensure auctex
+  :defer t
+  :config
+  (setq TeX-parse-self t                ; parse documents for auto completion
+        TeX-auto-save  t                ; parse on save
+        ))
+
+(use-package tex-fold
+  :ensure auctex
+  :defer t
+  :init (add-hook 'TeX-mode-hook #'TeX-fold-mode))
+        
+(use-package tex-mode                   ; TeX mode
+  :ensure auctex
+  :defer t)
+
+(use-package bibtex                     ; BibTeX editing
+  :ensure auctex
+  :defer t)
+
+(use-package reftex                     ; TeX/BibTeX cross-reference management
+  :defer t
+  :init (add-hook 'TeX-mode-hook #'reftex-mode))
+
+;;;; Metapost Extra
+(use-package meta-mode
+  :defer t)
+
+;;;; Preview Metapost Buffer via MPtoPDF
+
+
+;;;; ConTexT Specifics
+(use-package context
+  :defer t
+  :mode (("\\.mkiv\\'" . context-mode)
+         ("\\.mkii\\'" . context-mode)))
+
+;; The layout of the ConTeXt installation base is well-defined
 
 ;;; Misc File Formats
-
+;; Various file formats
 ;;;; JSON
-(use-package ffe-json)
+(use-package json-mode
+  :defer t
+  :ensure t
+  :init (progn
+          (use-package json-navigator
+           :ensure t)
+         (use-package json-snatcher
+           :commands (jsons-print-path)
+           :ensure t)
+         (add-hook 'json-mode-hook #'hs-minor-mode))
+  :bind (:map json-mode-map
+              ("C-c p" . jsons-print-path)))
 
 ;;;; NGinx Configuration
 (use-package nginx-mode
@@ -945,7 +1354,38 @@
 
 
 ;;; Org Mode
-(use-package ffe-org)
+;; org mode configuration could be very long
+(use-package ob-ipython
+  :ensure t)
+
+(use-package org
+  :mode (("\\.org$" . org-mode))
+  :config (org-babel-do-load-languages
+	   'org-babel-load-languages
+	   '((ipython . t)
+             (ruby . t)
+	     (python . t)
+	     (emacs-lisp . t)
+	     (latex . t)
+	     (gnuplot . t)
+	     (C . t)))
+  (add-hook 'org-src-mode-hook
+          (lambda ()
+            (if (eq major-mode 'emacs-lisp-mode)
+                (flycheck-disable-checker 'emacs-lisp-checkdoc))))
+
+  :bind (:map ctl-z-map
+              ("a" . org-agenda)
+              ("l" . org-store-link)
+              ("b" . org-switchb)
+         :map org-mode-map
+              ("C-c k" . org-cut-subtree)
+              ;;  Swap C-j and RET
+              ([remap org-return-indent] . org-return)
+              ([remap org-return] . org-return-indent)))
+
+(use-package org-journal
+  :ensure t)
 
 ;;; Docker
 (use-package dockerfile-mode
