@@ -237,7 +237,91 @@
 
 
 ;;; Files
-(use-package ffe-files)
+
+;;;; Sessions
+(setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
+
+(use-package saveplace
+  :init
+  (setq save-place-file (concat *data-dir* "places")))
+
+(use-package desktop
+  :defer t
+  :config
+  (progn
+    (setq desktop-dirname *data-dir*)
+    (push *data-dir* desktop-path)))
+
+;;;; Project Files
+(use-package find-file-in-project
+  :ensure t
+  :commands find-file-in-project
+  :config (setq ffip-prefer-ido-mode t
+                ffip-match-path-instead-of-filename t)
+  :bind (:map ctl-x-f-map
+              ("f" . find-file-in-project)))
+
+(use-package projectile
+  :ensure t
+  :diminish "Prj"
+  :commands (projectile-mode projectile-register-project-type)
+  :init 
+  (setq projectile-keymap-prefix (kbd "C-z p")
+	projectile-cache-file (expand-file-name "projectile.cache" *data-dir*)
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" *data-dir*)
+	projectile-switch-project-action (lambda () (dired (projectile-project-root))))
+  :config
+  (progn
+    (projectile-mode t)))
+
+;;;; Recent Files
+(use-package recentf
+  :commands (recentf-mode recentf-open-most-recent-file)
+  :init
+  (progn
+    ;; lazy load recentf
+    (add-hook 'find-file-hook (lambda () (unless recentf-mode
+					   (recentf-mode t)
+					   (recentf-track-opened-file))))
+    (setq recentf-save-file (concat *data-dir* ".recentf")
+	  recentf-max-saved-items 1000
+	  recentf-auto-cleanup 'never
+	  recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list)))
+  :config
+  (progn
+    (add-to-list 'recentf-exclude
+	         (expand-file-name *data-dir*))
+    (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
+    (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'"))
+
+  :bind (:map ctl-x-f-map
+              ("R" . recentf-open-most-recent-file)))
+
+;;;; Generic Finding Files
+(use-package ffap
+  :bind (:map ctl-x-f-map
+              ("RET" . find-file-at-point)))
+
+;;;; Dired
+(use-package dired
+  :init
+  (progn  (add-hook 'dired-mode-hook #'hl-line-mode)
+          (put 'dired-find-alternate-file 'disabled nil)
+          (when (string= system-type "darwin")       
+            (setq dired-use-ls-dired nil)))
+  :config
+  (unbind-key "M-s f" dired-mode-map)
+  (unbind-key "M-s a" dired-mode-map)
+
+  (defun ffe-dired-do-delete (&optional arg)
+    "Just like `dired-do-delete' but without too many confirmations"
+    (interactive "P")
+    (let ((dired-recursive-deletes 'always)
+          (dired-deletion-confirmer (lambda (arg) t)))
+      (dired-do-delete arg)))
+
+  (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
+
 
 ;;; Navigation
 (use-package ffe-navigation)
