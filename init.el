@@ -167,6 +167,7 @@
   :ensure t
   :init (yas-reload-all))
 
+;;; Visibility and Navigation
 
 (use-package outshine
   :ensure t

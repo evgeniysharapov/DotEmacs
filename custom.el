@@ -117,6 +117,9 @@
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
+ '(outshine-fontify-whole-heading-line t)
+ '(outshine-org-style-global-cycling-at-bob-p t)
+ '(outshine-use-speed-commands t)
  '(package-selected-packages
    (quote
     (org-journal visual-regex company-yasnippet yasnippet-snippets helpful go-guru tide edit-indirect less-css-mode diminish outshine groovy-mode tern js2-mode multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash exec-path-from-shell validate cargo toml-mode racer flycheck-rust rust-mode json-navigator crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
@@ -171,4 +174,7 @@
  '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
  '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
  '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :background "peach puff" :height 1.15))))
+ '(outline-2 ((t (:inherit font-lock-variable-name-face :background "misty rose" :height 1.1))))
+ '(outline-3 ((t (:inherit font-lock-keyword-face :background "LemonChiffon1" :weight normal :height 1.05))))
  '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
