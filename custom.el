@@ -39,6 +39,7 @@
  '(desktop-restore-eager 2)
  '(desktop-restore-frames nil)
  '(desktop-save t)
+ '(desktop-save-mode t)
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
