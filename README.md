@@ -51,7 +51,20 @@ These could be explored further via `C-h M-k` for example
   * `C-x K` kill this buffer
   * `C-M-:` start/switch to IELM with current buffer
   * `M-z` is zapping up to a character, `M-Z` zaps to character. Zapping backward is via negative universal argument.
-  
+
+asdfadsf
+
+## TODO ##
+
+* Using outline
+    * Faces for outline headers
+    * use outshine speedy
+    * configure better keys like M-left, M-right, etc.
+    * Configure folds
+    
+* Add ripgrep via deadgrep to M-s search keymap
+
+
   
   
 
