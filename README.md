@@ -57,14 +57,14 @@ asdfadsf
 ## TODO ##
 
 * Using outline
-    * Faces for outline headers
-    * use outshine speedy
+    * ~~Faces for outline headers~~
+    * ~~use outshine speedy~~
     * configure better keys like M-left, M-right, etc.
     * Configure folds
     
 * Add ripgrep via deadgrep to M-s search keymap
 
-* Move all the parts configuration ffe-* files to init.el once outline is used. 
+* ~~Move all the parts configuration ffe-* files to init.el once outline is used.~~ 
 
 * Heavy configuration parts can go to *-plus packages 
   
