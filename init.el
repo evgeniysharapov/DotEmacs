@@ -376,9 +376,13 @@
          ("i" . imenu)
 	 ("I" . imenu-list)))
 
+;; we will use M-o for outline. Facemenu is super useless outside of center-* functions
+(define-key global-map (kbd "M-o") nil)
+(define-key global-map (kbd "C-z f") 'facemenu-keymap)
+
 (use-package outshine
   :ensure t
-  :init (defvar outline-minor-mode-prefix "\M-#")
+  :init (defvar outline-minor-mode-prefix (kbd "M-o"))
   :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
 
 ;; (use-package outline
