@@ -274,11 +274,11 @@
 ;;;; Project Files
 (use-package find-file-in-project
   :ensure t
-  :commands find-file-in-project
   :config (setq ffip-prefer-ido-mode t
                 ffip-match-path-instead-of-filename t)
   :bind (:map ctl-x-f-map
-              ("f" . find-file-in-project)))
+              ("f" . find-file-in-project)
+              ("s" . find-file-in-current-directory)))
 
 (use-package projectile
   :ensure t
@@ -383,7 +383,7 @@
 (use-package outshine
   :ensure t
   :init (defvar outline-minor-mode-prefix (kbd "M-o"))
-  :config (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+  :config (add-hook 'outline-minor-mode-hook 'outshine-mode))
 
 ;; (use-package outline
 ;;   :commands outline-minor-mode
@@ -1187,12 +1187,26 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 
 ;;;; Rust
+
 ;; Configuration for the Rust programming language
-;;
-;; This setup expects that one has installed rust system using `rustup-init`,
-;; there's a `cargo` tool and we installed `racer` and `rustfmt` crates. Check out corresponding documentation
-;; on how to do that. More over there's a RUST_SRC_PATH environment  variable pointing to rust sources. 
 ;; 
+;; See also: https://hoverbear.org/2017/03/03/setting-up-a-rust-devenv/
+;; 
+;; This setup expects that one has installed rust system using
+;; `rustup-init'. Need to set default toolchain. To see which one is
+;; default use:
+;; 
+;;     rustup show
+;; Install `rustfmt'
+;;     
+;;   and `racer' globally 
+;; There's a `cargo' tool and we installed `racer' and
+;; `rustfmt' crates
+;; 
+;; 
+;; Check out corresponding documentation on how to
+;; do that. More over there's a RUST_SRC_PATH environment variable
+;; pointing to rust sources.
 (use-package rust-mode
   :ensure t
   :defer t)
@@ -1263,7 +1277,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :defer t)
 
 ;;;; Preview Metapost Buffer via MPtoPDF
-
+(use-package meta-mode-extra)
 
 ;;;; ConTexT Specifics
 (use-package context
@@ -1304,6 +1318,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :ensure t
   :mode (("\\.md$" . markdown-mode))
   :config (add-hook 'markdown-mode-hook #'flyspell-mode)
+
+  (setq markdown-command "pandoc")
 
   (defun flyspell-markdown-check-word-predicate ()
     "Used by `flyspell-mode' in Markdown documents to skip spell checking code blocks and inline code"

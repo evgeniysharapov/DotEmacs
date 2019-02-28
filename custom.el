@@ -51,6 +51,7 @@
  '(gc-cons-threshold 104857600)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
+ '(groovy-highlight-assignments t)
  '(history-delete-duplicates t)
  '(history-length 10000)
  '(ibuffer-expert t)
@@ -130,7 +131,8 @@
  '(python-shell-prompt-detect-failure-warning nil)
  '(safe-local-variable-values
    (quote
-    ((mocha-project-test-directory . "test/server\"")
+    ((markdown-asymmetric-header . t)
+     (mocha-project-test-directory . "test/server\"")
      (mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
      (mocha-project-test-directory . "test/server")
      (mocha-which-node)
