@@ -62,7 +62,7 @@
   :defer 10
   :init (progn
 	  (setq ido-save-directory-list-file (concat *data-dir* ".ido.last"))
-	  (use-package ido-ubiquitous
+	  (use-package ido-completing-read+
 	    :ensure t
 	    :commands ido-ubiquitous-mode)
 	  (use-package flx-ido
@@ -1277,7 +1277,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :defer t)
 
 ;;;; Preview Metapost Buffer via MPtoPDF
-(use-package meta-mode-extra)
+;;(use-package meta-mode-extra)
 
 ;;;; ConTexT Specifics
 (use-package context
