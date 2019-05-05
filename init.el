@@ -1277,7 +1277,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :defer t)
 
 ;;;; Preview Metapost Buffer via MPtoPDF
-(use-package meta-mode-extra)
+;(use-package meta-mode-extra)
 
 ;;;; ConTexT Specifics
 (use-package context
