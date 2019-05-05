@@ -62,7 +62,7 @@
   :defer 10
   :init (progn
 	  (setq ido-save-directory-list-file (concat *data-dir* ".ido.last"))
-	  (use-package ido-ubiquitous
+	  (use-package ido-completing-read+
 	    :ensure t
 	    :commands ido-ubiquitous-mode)
 	  (use-package flx-ido
