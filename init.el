@@ -1404,9 +1404,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
-(use-package org-journal
-  :ensure t)
-
 ;;; Docker
 (use-package dockerfile-mode
   :ensure t
