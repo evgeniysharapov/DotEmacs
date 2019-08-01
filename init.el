@@ -1389,11 +1389,14 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 	     (latex . t)
 	     (gnuplot . t)
 	     (C . t)))
-  (add-hook 'org-src-mode-hook
-          (lambda ()
-            (if (eq major-mode 'emacs-lisp-mode)
-                (flycheck-disable-checker 'emacs-lisp-checkdoc))))
-
+  :init (progn 
+          (add-hook 'org-src-mode-hook
+                    (lambda ()
+                      (if (eq major-mode 'emacs-lisp-mode)
+                          (flycheck-disable-checker 'emacs-lisp-checkdoc))))
+          (add-hook 'org-mode-hook
+                    (lambda ()
+                      (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point))))
   :bind (:map ctl-z-map
               ("a" . org-agenda)
               ("l" . org-store-link)
