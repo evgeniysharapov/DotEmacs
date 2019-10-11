@@ -71,27 +71,29 @@
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
    (quote
-    (("DaStEd"
-      ((filename . "dasted")))
+    (("DropboxNotes"
+      (filename . "Dropbox/Notes"))
+     ("DaStEd"
+      (filename . "dasted"))
      ("Kattis"
-      ((filename . "Kattis")))
+      (filename . "Kattis"))
      ("Mozart"
-      ((filename . "Mozart\\.Hg")))
+      (filename . "Mozart\\.Hg"))
      ("gnus"
-      ((or
-        (mode . message-mode)
-        (mode . mail-mode)
-        (mode . gnus-group-mode)
-        (mode . gnus-summary-mode)
-        (mode . gnus-article-mode))))
+      (or
+       (mode . message-mode)
+       (mode . mail-mode)
+       (mode . gnus-group-mode)
+       (mode . gnus-summary-mode)
+       (mode . gnus-article-mode)))
      ("programming"
-      ((or
-        (mode . emacs-lisp-mode)
-        (mode . cperl-mode)
-        (mode . c-mode)
-        (mode . java-mode)
-        (mode . idl-mode)
-        (mode . lisp-mode)))))))
+      (or
+       (mode . emacs-lisp-mode)
+       (mode . cperl-mode)
+       (mode . c-mode)
+       (mode . java-mode)
+       (mode . idl-mode)
+       (mode . lisp-mode))))))
  '(ido-auto-merge-work-directories-length -1)
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
@@ -108,6 +110,7 @@
  '(js2-highlight-level 3)
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
+ '(ledger-binary-path "~/Tools/Bin/ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type (quote cmdserver))
@@ -121,6 +124,7 @@
  '(org-modules
    (quote
     (org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+ '(org-plantuml-jar-path "~/.bin/plantuml.jar")
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)
@@ -129,7 +133,7 @@
  '(outshine-use-speed-commands t)
  '(package-selected-packages
    (quote
-    (org rg deadgrep ido-completing-read+ visual-regex company-yasnippet yasnippet-snippets helpful go-guru tide edit-indirect less-css-mode diminish outshine groovy-mode tern js2-mode multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash exec-path-from-shell validate cargo toml-mode racer flycheck-rust rust-mode json-navigator crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
+    (flycheck-ledger ledger-mode plantuml-mode org rg deadgrep ido-completing-read+ visual-regex company-yasnippet yasnippet-snippets helpful go-guru tide edit-indirect less-css-mode diminish outshine groovy-mode tern js2-mode multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash exec-path-from-shell validate cargo toml-mode racer flycheck-rust rust-mode json-navigator crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
  '(projectile-indexing-method (quote alien))
  '(projectile-sort-order (quote recentf))
  '(python-indent-guess-indent-offset nil)
