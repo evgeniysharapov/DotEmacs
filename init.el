@@ -1449,3 +1449,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
   (message "Loading Emacs...done (%.3fs)" elapsed))
 (put 'narrow-to-region 'disabled nil)
+
+;; Local Variables:
+;; eval: (outline-minor-mode t)
+;; End:
