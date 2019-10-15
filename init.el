@@ -1407,6 +1407,13 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
+;;; Ledger
+(use-package ledger-mode
+  :ensure t)
+(use-package flycheck-ledger
+  :ensure t
+  :after ledger-mode)
+
 ;;; Docker
 (use-package dockerfile-mode
   :ensure t
