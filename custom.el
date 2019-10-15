@@ -71,27 +71,29 @@
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
    (quote
-    (("DaStEd"
-      ((filename . "dasted")))
+    (("DropboxNotes"
+      (filename . "Dropbox/Notes"))
+     ("DaStEd"
+      (filename . "dasted"))
      ("Kattis"
-      ((filename . "Kattis")))
+      (filename . "Kattis"))
      ("Mozart"
-      ((filename . "Mozart\\.Hg")))
+      (filename . "Mozart\\.Hg"))
      ("gnus"
-      ((or
-        (mode . message-mode)
-        (mode . mail-mode)
-        (mode . gnus-group-mode)
-        (mode . gnus-summary-mode)
-        (mode . gnus-article-mode))))
+      (or
+       (mode . message-mode)
+       (mode . mail-mode)
+       (mode . gnus-group-mode)
+       (mode . gnus-summary-mode)
+       (mode . gnus-article-mode)))
      ("programming"
-      ((or
-        (mode . emacs-lisp-mode)
-        (mode . cperl-mode)
-        (mode . c-mode)
-        (mode . java-mode)
-        (mode . idl-mode)
-        (mode . lisp-mode)))))))
+      (or
+       (mode . emacs-lisp-mode)
+       (mode . cperl-mode)
+       (mode . c-mode)
+       (mode . java-mode)
+       (mode . idl-mode)
+       (mode . lisp-mode))))))
  '(ido-auto-merge-work-directories-length -1)
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
@@ -108,6 +110,7 @@
  '(js2-highlight-level 3)
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
+ '(ledger-binary-path "~/Tools/Bin/ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type (quote cmdserver))
@@ -121,6 +124,7 @@
  '(org-modules
    (quote
     (org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+ '(org-plantuml-jar-path "~/.bin/plantuml.jar")
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)

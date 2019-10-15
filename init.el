@@ -1378,17 +1378,26 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package ob-ipython
   :ensure t)
 
+(use-package plantuml-mode
+  :ensure t)
+
 (use-package org
   :mode (("\\.org$" . org-mode))
-  :config (org-babel-do-load-languages
-	   'org-babel-load-languages
-	   '((ipython . t)
-             (ruby . t)
-	     (python . t)
-	     (emacs-lisp . t)
-	     (latex . t)
-	     (gnuplot . t)
-	     (C . t)))
+  :config (progn
+            (org-babel-do-load-languages
+	     'org-babel-load-languages
+	     '((ipython . t)
+               (ruby . t)
+	       (python . t)
+	       (emacs-lisp . t)
+	       (latex . t)
+	       (gnuplot . t)
+	       (C . t)
+               (plantuml . t)))
+            ;; add files to registers for a quick call
+            (set-register ?i (cons 'file (concat org-directory "/Ideas.org")))
+            )
+  
   :init (progn 
           (add-hook 'org-src-mode-hook
                     (lambda ()
@@ -1401,7 +1410,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ("a" . org-agenda)
               ("l" . org-store-link)
               ("b" . org-switchb)
-         :map org-mode-map
+              :map org-mode-map
               ("C-c k" . org-cut-subtree)
               ;;  Swap C-j and RET
               ([remap org-return-indent] . org-return)
