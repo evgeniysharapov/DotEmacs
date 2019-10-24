@@ -5,6 +5,13 @@
 
 (when (string-equal system-type "gnu/linux")
   ;; Emacs is running from WSL
+
+  ;; for running 'emacs --daemon' we store .emacs.desktop in a different spot
+  (add-hook 'desktop-save-hook
+            (lambda ()
+              (customize-set-variable 'desktop-base-file-name (concat desktop-base-file-name ".wsl"))))
+  
+  ;; we would rarely run it in Graphics mode but nonetheless
   (add-to-list 'default-frame-alist '(font . "Iosevka-13"))
   (set-face-attribute 'default (selected-frame) :height 135))
 
