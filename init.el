@@ -723,23 +723,23 @@
   :config
   ;; default `company-backends'
   (setq company-backends '(company-capf
-			   (company-dabbrev-code
-			    company-gtags
-			    company-etags
-			    company-keywords)
-			   company-files
-			   company-dabbrev))
+                           (company-dabbrev-code
+                            company-gtags
+                            company-etags
+                            company-keywords)
+                           company-files
+                           company-dabbrev))
 
   (defun ffe-add-company-backends (&rest backends)
     "Adds BACKENDS to the beginning of the buffer-local version of `company-backends' list"
     (set (make-local-variable 'company-backends)
-	 (append backends company-backends)))
+         (append backends company-backends)))
 
   (global-company-mode 1)
 
   :bind  (:map company-active-map
-	       ("<tab>" . company-complete-selection)
-	       ("TAB" . company-complete-selection)
+               ("<tab>" . company-complete-selection)
+               ("TAB" . company-complete-selection)
                ("M-/" . company-complete-common)
                ;; return just enters new line 
                ("<return>" . nil)
@@ -1385,27 +1385,28 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :mode (("\\.org$" . org-mode))
   :config (progn
             (org-babel-do-load-languages
-	     'org-babel-load-languages
-	     '((ipython . t)
+             'org-babel-load-languages
+             '((ipython . t)
                (ruby . t)
-	       (python . t)
-	       (emacs-lisp . t)
-	       (latex . t)
-	       (gnuplot . t)
-	       (C . t)
+               (python . t)
+               (emacs-lisp . t)
+               (latex . t)
+               (gnuplot . t)
+               (C . t)
                (plantuml . t)))
             ;; add files to registers for a quick call
             (set-register ?i (cons 'file (concat org-directory "/Ideas.org")))
             )
-  
-  :init (progn 
+  :init (progn
           (add-hook 'org-src-mode-hook
                     (lambda ()
                       (if (eq major-mode 'emacs-lisp-mode)
                           (flycheck-disable-checker 'emacs-lisp-checkdoc))))
           (add-hook 'org-mode-hook
                     (lambda ()
-                      (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point))))
+                      ;; (add-hook 'completion-at-point-functions
+                      ;;           #'pcomplete-completions-at-point)
+                      )))
   :bind (:map ctl-z-map
               ("a" . org-agenda)
               ("l" . org-store-link)
