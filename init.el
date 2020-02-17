@@ -1379,9 +1379,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 
 ;;; Org Mode
-;; org mode configuration could be very long
-(use-package ob-ipython
-  :ensure t)
+
+;; comment out ob-ipython as it gives error if no ipython is installed
+;; (use-package ob-ipython
+;;   :ensure t)
 
 (use-package plantuml-mode
   :ensure t)
@@ -1391,7 +1392,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :config (progn
             (org-babel-do-load-languages
              'org-babel-load-languages
-             '((ipython . t)
+             '(
+               ;(ipython . t)
                (ruby . t)
                (python . t)
                (emacs-lisp . t)
