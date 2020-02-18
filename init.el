@@ -1398,7 +1398,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                (latex . t)
                (gnuplot . t)
                (C . t)
-               (plantuml . t)))
+               (plantuml . t)
+               (shell . t)))
             ;; add files to registers for a quick call
             (set-register ?i (cons 'file (concat org-directory "/Ideas.org")))
             )
