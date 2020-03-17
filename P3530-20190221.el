@@ -22,8 +22,10 @@
         w32-lwindow-modifier 'super    ; Left Windows key
         w32-pass-apps-to-system nil
         w32-apps-modifier 'hyper)      ; Menu/App key
-  )
-
+  ;; Put my tools bin directory in front of the path
+  
+  (setenv "PATH" (concat "C:\\Users\\esharapov\\Tools\\Bin;" (getenv "PATH")))
+)
 ;;; P3530-20190221.el ends here
 
 

@@ -1379,9 +1379,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 
 ;;; Org Mode
-;; org mode configuration could be very long
-(use-package ob-ipython
-  :ensure t)
+
+;; comment out ob-ipython as it gives error if no ipython is installed
+;; (use-package ob-ipython
+;;   :ensure t)
 
 (use-package plantuml-mode
   :ensure t)
@@ -1391,7 +1392,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :config (progn
             (org-babel-do-load-languages
              'org-babel-load-languages
-             '((ipython . t)
+             '(
+               ;(ipython . t)
                (ruby . t)
                (python . t)
                (emacs-lisp . t)
@@ -1402,6 +1404,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                (shell . t)))
             ;; add files to registers for a quick call
             (set-register ?i (cons 'file (concat org-directory "/Ideas.org")))
+
+            ;; Refiling - allow creating new targets
+            (setq org-refile-allow-creating-parent-nodes 'confirm)
             )
   :init (progn
           (add-hook 'org-src-mode-hook
@@ -1417,8 +1422,11 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ("a" . org-agenda)
               ("l" . org-store-link)
               ("b" . org-switchb)
+              ("c" . org-capture)
               :map org-mode-map
               ("C-c k" . org-cut-subtree)
+              ("M-n" . outline-next-visible-heading)
+              ("M-p" . outline-previous-visible-heading)
               ;;  Swap C-j and RET
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))

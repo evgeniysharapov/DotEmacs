@@ -137,7 +137,7 @@
  '(projectile-indexing-method (quote alien))
  '(projectile-sort-order (quote recentf))
  '(python-indent-guess-indent-offset nil)
- '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. ")
+ '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. " t)
  '(python-shell-prompt-detect-failure-warning nil)
  '(safe-local-variable-values
    (quote
