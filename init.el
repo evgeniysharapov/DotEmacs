@@ -46,7 +46,9 @@
 ;; the rest of the package installation is hinged on this one
 (unless package-archive-contents
   (package-refresh-contents))
-(package-install (intern "use-package"))
+;; newer versions of Emacs may carry this one, or it has been installed already
+(unless (package-installed-p 'use-package)
+  (package-install (intern "use-package")))
 
 (setq use-package-enable-imenu-support t)
 
