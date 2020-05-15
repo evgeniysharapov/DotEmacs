@@ -1420,6 +1420,26 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
             ;; Refiling - allow creating new targets
             (setq org-refile-allow-creating-parent-nodes 'confirm)
+
+            ;; This one will jump between BEGIN and END of org mode blocks
+            ;; https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
+            (defun ffy-org-goto-block-begin/end (p)
+              "Go to begining/end of the current block. With prefix goes to the end."
+              (interactive "P")
+              (let* ((element (org-element-at-point)))
+                (when (or (eq (org-element-type element) 'example-block)
+                          (eq (org-element-type element) 'src-block))
+                  (let ((begin (org-element-property :begin element))
+                        (end (org-element-property :end element)))
+                    ;; ensure point is not on a blank line after the block
+                    (beginning-of-line)
+                    (skip-chars-forward " \r\t\n" end)
+                    (when (< (point) end)
+                      (goto-char (if p end begin))
+                      (when p
+                        (skip-chars-backward " \r\t\n")
+                        (beginning-of-line)))))))
+            
             )
   :init (progn
           (add-hook 'org-src-mode-hook
@@ -1440,6 +1460,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ("C-c k" . org-cut-subtree)
               ("M-n" . outline-next-visible-heading)
               ("M-p" . outline-previous-visible-heading)
+              :map org-babel-map
+              ("C-]" . ffy-org-goto-block-begin/end)
               ;;  Swap C-j and RET
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
@@ -1485,7 +1507,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; How Long It Took
 (let ((elapsed (float-time (time-subtract (current-time)  *emacs-start-time*))))
   (message "Loading Emacs...done (%.3fs)" elapsed))
-(put 'narrow-to-region 'disabled nil)
 
 ;; Local Variables:
 ;; eval: (outline-minor-mode t)

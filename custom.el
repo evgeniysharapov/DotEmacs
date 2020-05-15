@@ -117,6 +117,7 @@
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "Notes.org")
  '(org-directory "~/Dropbox/Notes")
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
  '(org-hide-leading-stars t)
