@@ -9,7 +9,7 @@
   ;; for running 'emacs --daemon' we store .emacs.desktop in a different spot
   (add-hook 'desktop-save-hook
             (lambda ()
-              (customize-set-variable 'desktop-base-file-name (concat desktop-base-file-name ".wsl"))))
+              (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
   
   ;; we would rarely run it in Graphics mode but nonetheless
   (add-to-list 'default-frame-alist '(font . "Iosevka-13"))
