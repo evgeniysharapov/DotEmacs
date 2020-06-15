@@ -863,6 +863,39 @@
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
+;;;; Language Server
+(use-package lsp-mode
+  :ensure t
+  :init (setq lsp-keymap-prefix "C-;")
+  :hook
+  ((js2-mode . lsp)
+   (yaml-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp lsp-deferred)
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  ;; company-mode completion
+  :ensure t
+  :commands company-lsp
+  :config (push 'company-lsp company-backends))
+
+(use-package lsp-treemacs
+  ;; project wide overview
+  :ensure t
+  :commands lsp-treemacs-errors-list)
+
+(use-package dap-mode
+  :ensure t
+  :commands (dap-debug dap-debug-edit-template))
+
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
+
 ;;;; Lisp
 ;; This is a lisp based programming language configuration
 ;; mostly Emacs lisp and IELM and such
