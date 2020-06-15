@@ -111,6 +111,7 @@
  '(js2-highlight-level 3)
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
+ '(kill-whole-line t)
  '(ledger-binary-path "~/Tools/Bin/ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
