@@ -23,6 +23,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(default-input-method "russian-computer")
+ '(delete-old-versions t)
  '(desktop-globals-to-save
    (quote
     (desktop-missing-file-warning

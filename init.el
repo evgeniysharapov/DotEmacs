@@ -259,6 +259,12 @@
 
 ;;; Files
 
+;;;; Backup Files
+(setq backup-directory-alist `(("." . ,*backup-dir*))
+      version-control t
+      vc-make-backup-files t
+      backup-by-copying-when-linked t)
+
 ;;;; Sessions
 (setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
