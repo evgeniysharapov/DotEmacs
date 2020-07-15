@@ -1143,15 +1143,12 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   ;; use LSP for navigation
   (define-key tern-mode-keymap (kbd "M-.") nil)
   (define-key tern-mode-keymap (kbd "M-,") nil)
-  ;; use js2 refactor for  tenames
+  ;; use js2 refactor for renames
   (define-key tern-mode-keymap (kbd "C-c C-r") nil))
 
 ;;;;; Customize Projectile
 (when (fboundp 'projectile-register-project-type)
   (projectile-register-project-type 'npm '("package.json") :test "npm test"  :test-suffix ".spec"))
-
-(use-package tide
-  :ensure t)
 
 ;;;; Python 
 ;; Python configuration
@@ -1413,6 +1410,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; (use-package ob-ipython
 ;;   :ensure t)
 
+;; This requires plantuml.jar to be available and specified via `org-plantuml-jar-path'
 (use-package plantuml-mode
   :ensure t)
 
@@ -1467,6 +1465,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                       ;;           #'pcomplete-completions-at-point)
                       )))
   :bind (:map ctl-z-map
+              ;; global shortcuts 
               ("a" . org-agenda)
               ("l" . org-store-link)
               ("b" . org-switchb)
