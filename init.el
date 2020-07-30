@@ -52,12 +52,15 @@
 
 (setq use-package-enable-imenu-support t)
 
-;;; Utility Packages
+;;; Utility
+
+;;;; Packages
 (use-package s :ensure t :defer t)
 (use-package dash :ensure t :defer t)
 ;;  Using `diminish'
 (use-package diminish :ensure t)
 (use-package subr-x)
+
 
 ;;;; Ido Configuration
 (use-package ido
@@ -1444,12 +1447,11 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                (gnuplot . t)
                (C . t)
                (plantuml . t)))
-            ;; add files to registers for a quick call
-            (set-register ?i (cons 'file (concat org-directory "/Ideas.org")))
-
+            
             ;; Refiling - allow creating new targets
-            (setq org-refile-allow-creating-parent-nodes 'confirm)
-
+            (setq org-refile-allow-creating-parent-nodes 'confirm
+                  org-refile-targets '((org-agenda-files :maxlevel . 3)))
+            
             ;; This one will jump between BEGIN and END of org mode blocks
             ;; https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
             (defun ffy-org-goto-block-begin/end (p)
@@ -1486,6 +1488,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ("l" . org-store-link)
               ("b" . org-switchb)
               ("c" . org-capture)
+              ("j" . org-clock-goto)
               :map org-mode-map
               ("C-c k" . org-cut-subtree)
               ("M-n" . outline-next-visible-heading)

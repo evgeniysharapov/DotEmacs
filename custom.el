@@ -118,16 +118,73 @@
  '(monky-process-type (quote cmdserver))
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
+ '(org-agenda-files
+   (quote
+    ("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org")))
+ '(org-capture-templates
+   (quote
+    (("w" "Work Task" entry
+      (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
+      "* %^{Description}  %^g
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:
+
+%?" :clock-in t :clock-keep t)
+     ("a" "Add Task" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* TODO %?
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:" :prepend t)
+     ("n" "Note" entry
+      (file "~/Dropbox/Notes/Notes.org")
+      "* NOTE %? %^G
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:" :prepend t)
+     ("p" "Protocol" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* NOTE %?
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:URL:      %:link
+:END:
+
+%i
+")
+     ("l" "Link" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* [[%:link][%:description]]
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:URL:      %:link
+:END:
+
+#+BEGIN_QUOTE
+%:initial
+#+END_QUOTE
+
+%?
+"))))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "Notes.org")
+ '(org-default-notes-file "~/Dropbox/Notes/Notes.org")
  '(org-directory "~/Dropbox/Notes")
  '(org-export-backends (quote (ascii html icalendar latex md odt confluence)))
  '(org-hide-leading-stars t)
+ '(org-link-abbrev-alist (quote (("jira" . "https://tracking.ainq.com/browse/%s"))))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
    (quote
-    (org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+    (org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+ '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
+ '(org-refile-use-outline-path t)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)
