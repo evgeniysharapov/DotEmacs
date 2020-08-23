@@ -184,7 +184,7 @@
     (org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
  '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
- '(org-refile-use-outline-path t)
+ '(org-refile-use-outline-path (quote file))
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)
