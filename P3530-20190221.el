@@ -9,7 +9,7 @@
   ;; for running 'emacs --daemon' we store .emacs.desktop in a different spot
   (add-hook 'desktop-save-hook
             (lambda ()
-              (customize-set-variable 'desktop-base-file-name (concat desktop-base-file-name ".wsl"))))
+              (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
   
   ;; we would rarely run it in Graphics mode but nonetheless
   (add-to-list 'default-frame-alist '(font . "Iosevka-13"))
@@ -25,6 +25,8 @@
   ;; Put my tools bin directory in front of the path
   
   (setenv "PATH" (concat "C:\\Users\\esharapov\\Tools\\Bin;" (getenv "PATH")))
+
+  (setq ffip-use-rust-fd t)
 )
 ;;; P3530-20190221.el ends here
 

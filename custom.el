@@ -23,6 +23,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(default-input-method "russian-computer")
+ '(delete-old-versions t)
  '(desktop-globals-to-save
    (quote
     (desktop-missing-file-warning
@@ -110,21 +111,80 @@
  '(js2-highlight-level 3)
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
+ '(kill-whole-line t)
  '(ledger-binary-path "~/Tools/Bin/ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type (quote cmdserver))
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
+ '(org-agenda-files
+   (quote
+    ("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org")))
+ '(org-capture-templates
+   (quote
+    (("w" "Work Task" entry
+      (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
+      "* %^{Description}  %^g
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:
+
+%?" :clock-in t :clock-keep t)
+     ("a" "Add Task" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* TODO %?
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:" :prepend t)
+     ("n" "Note" entry
+      (file "~/Dropbox/Notes/Notes.org")
+      "* NOTE %? %^G
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:" :prepend t)
+     ("p" "Protocol" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* NOTE %?
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:URL:      %:link
+:END:
+
+%i
+")
+     ("l" "Link" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* [[%:link][%:description]]
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:URL:      %:link
+:END:
+
+#+BEGIN_QUOTE
+%:initial
+#+END_QUOTE
+
+%?
+"))))
  '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "~/Dropbox/Notes/Notes.org")
  '(org-directory "~/Dropbox/Notes")
- '(org-export-backends (quote (ascii html icalendar latex md odt)))
+ '(org-export-backends (quote (ascii html icalendar latex md odt confluence)))
  '(org-hide-leading-stars t)
+ '(org-link-abbrev-alist (quote (("jira" . "https://tracking.ainq.com/browse/%s"))))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
    (quote
-    (org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+    (org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+ '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
+ '(org-refile-use-outline-path (quote file))
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)
@@ -133,7 +193,7 @@
  '(outshine-use-speed-commands t)
  '(package-selected-packages
    (quote
-    (fsharp-mode plantuml-mode flycheck-ledger ledger-mode org rg deadgrep ido-completing-read+ visual-regex company-yasnippet yasnippet-snippets helpful go-guru tide edit-indirect less-css-mode diminish outshine groovy-mode tern js2-mode multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash exec-path-from-shell validate cargo toml-mode racer flycheck-rust rust-mode json-navigator crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure ido-completing-read+ lua-mode visual-regex company-yasnippet yasnippet-snippets helpful go-guru tide edit-indirect less-css-mode diminish outshine groovy-mode tern js2-mode multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash exec-path-from-shell validate cargo toml-mode racer flycheck-rust rust-mode json-navigator crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode rainbow-mode yasnippet yaml-mode wgrep-ag use-package undo-tree smex projectile paredit nginx-mode monky mocha markdown-mode magit json-rpc json-mode js-comint imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido find-file-in-project elisp-slime-nav dockerfile-mode docker-tramp docker company-tern company-statistics company-go company-c-headers company-anaconda color-moccur cider c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
+    (lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
  '(projectile-indexing-method (quote alien))
  '(projectile-sort-order (quote recentf))
  '(python-indent-guess-indent-offset nil)
@@ -187,7 +247,7 @@
  '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
  '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
  '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :background "peach puff" :height 1.15))))
- '(outline-2 ((t (:inherit font-lock-variable-name-face :background "misty rose" :height 1.1))))
- '(outline-3 ((t (:inherit font-lock-keyword-face :background "LemonChiffon1" :weight normal :height 1.05))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :weight normal))))
+ '(outline-2 ((t (:inherit font-lock-variable-name-face :weight normal))))
+ '(outline-3 ((t (:inherit font-lock-keyword-face :weight normal))))
  '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
