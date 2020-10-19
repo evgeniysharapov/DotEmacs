@@ -1252,9 +1252,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :init (with-eval-after-load 'company
           (add-hook 'python-mode-hook (lambda () (ffe-add-company-backends 'company-anaconda)))))
 
-
-
-
 ;;;; Rust
 
 ;; Configuration for the Rust programming language
