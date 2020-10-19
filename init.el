@@ -856,7 +856,7 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :ensure t
   :init
   (setq smex-save-file (concat *data-dir* ".smex-items")
-        smex-history-length 20)
+        smex-history-length 50)
   :config
   (smex-initialize)
   :bind (("M-x" . smex)
