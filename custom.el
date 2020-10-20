@@ -253,3 +253,4 @@
  '(outline-2 ((t (:inherit font-lock-variable-name-face :weight normal))))
  '(outline-3 ((t (:inherit font-lock-keyword-face :weight normal))))
  '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
+

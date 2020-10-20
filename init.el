@@ -1174,20 +1174,20 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     (add-hook 'js2-mode-hook #'electric-pair-mode)
     (add-hook 'js2-mode-hook #'hs-minor-mode)))
 
-(use-package company-tern
-  :ensure t
-  ;; :ensure-system-package
-  ;; ((tern . "npm install -g tern"))
-  :after js2-mode
-  :hook '((js2-mode . company-mode)
-          (js2-mode . tern-mode))
-  :config
-  (add-to-list 'company-backends 'company-tern)
-  ;; use LSP for navigation
-  (define-key tern-mode-keymap (kbd "M-.") nil)
-  (define-key tern-mode-keymap (kbd "M-,") nil)
-  ;; use js2 refactor for renames
-  (define-key tern-mode-keymap (kbd "C-c C-r") nil))
+;; (use-package company-tern
+;;   :ensure t
+;;   ;; :ensure-system-package
+;;   ;; ((tern . "npm install -g tern"))
+;;   :after js2-mode
+;;   :hook '((js2-mode . company-mode)
+;;           (js2-mode . tern-mode))
+;;   :config
+;;   (add-to-list 'company-backends 'company-tern)
+;;   ;; use LSP for navigation
+;;   (define-key tern-mode-keymap (kbd "M-.") nil)
+;;   (define-key tern-mode-keymap (kbd "M-,") nil)
+;;   ;; use js2 refactor for renames
+;;   (define-key tern-mode-keymap (kbd "C-c C-r") nil))
 
 ;;;;; Customize Projectile
 (when (fboundp 'projectile-register-project-type)
@@ -1490,7 +1490,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                (gnuplot . t)
                (C . t)
                (plantuml . t)))
-            
+
             ;; Refiling - allow creating new targets
             (setq org-refile-allow-creating-parent-nodes 'confirm
                   org-refile-targets '((org-agenda-files :maxlevel . 3)))
