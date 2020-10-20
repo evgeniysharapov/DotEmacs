@@ -1313,6 +1313,28 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :defer t
   :ensure t)
 
+
+;;;; Ocaml
+
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b
+;; ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
+
+;; Emacs’ OCaml mode
+(use-package tuareg
+  :ensure t
+  :config
+  (setq tuareg-support-metaocaml t           ;; Only handles metaocaml syntax
+        org-babel-ocaml-command "metaocaml"))  ;; Different command for metaocaml
+
+; (async-shell-command "time opam install ocp-indent merlin") ;; real 1m33.636s
+(use-package merlin
+  :ensure t
+  :hook (tuareg-mode . merlin-mode)
+  :init (setq merlin-command 'opam))
+
+
 ;;; TeX Mode
 ;; TeX Settings
 (use-package tex-site                   ; AucTeX initialization
