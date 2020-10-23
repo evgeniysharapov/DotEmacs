@@ -123,9 +123,9 @@
 ;; ## added by OPAM user-setup for emacs / ocp-indent ## c1f21c2d22c81f09d09a3e116fbc49c6 ## you can edit, but keep this line
 ;; Load ocp-indent from its original switch when not found in current switch
 (when (not (assoc "ocp-indent" opam-tools-installed))
-  (autoload 'ocp-setup-indent "/c/Users/esharapov/.opam/default/share/emacs/site-lisp/ocp-indent.el" "Improved indentation for Tuareg mode")
-  (autoload 'ocp-indent-caml-mode-setup "/c/Users/esharapov/.opam/default/share/emacs/site-lisp/ocp-indent.el" "Improved indentation for Caml mode")
+  (autoload 'ocp-setup-indent (concat (getenv "HOME") "/.opam/default/share/emacs/site-lisp/ocp-indent.el") "Improved indentation for Tuareg mode")
+  (autoload 'ocp-indent-caml-mode-setup (concat (getenv "HOME") "/.opam/default/share/emacs/site-lisp/ocp-indent.el") "Improved indentation for Caml mode")
   (add-hook 'tuareg-mode-hook 'ocp-setup-indent t)
   (add-hook 'caml-mode-hook 'ocp-indent-caml-mode-setup  t)
-  (setq ocp-indent-path "/c/Users/esharapov/.opam/default/bin/ocp-indent"))
+  (setq ocp-indent-path (concat (getenv "HOME") "/.opam/default/bin/ocp-indent")))
 ;; ## end of OPAM user-setup addition for emacs / ocp-indent ## keep this line
