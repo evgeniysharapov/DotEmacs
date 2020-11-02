@@ -433,6 +433,7 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
 
 (use-package outshine
   :ensure t
+  :diminish "OutS"
   :init (defvar outline-minor-mode-prefix (kbd "M-o"))
   :config (add-hook 'outline-minor-mode-hook 'outshine-mode))
 
