@@ -252,6 +252,7 @@
  '(outline-1 ((t (:inherit font-lock-function-name-face :weight normal))))
  '(outline-2 ((t (:inherit font-lock-variable-name-face :weight normal))))
  '(outline-3 ((t (:inherit font-lock-keyword-face :weight normal))))
- '(region ((t (:background "light goldenrod"))))
+ '(region ((((background dark) (type tty)) :background "color-235")
+           (((background light) (type graphic)) :inherit highlight)))
  '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
 

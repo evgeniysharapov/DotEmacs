@@ -12,8 +12,9 @@
               (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
   
   ;; we would rarely run it in Graphics mode but nonetheless
-  (add-to-list 'default-frame-alist '(font . "Iosevka-13"))
-  (set-face-attribute 'default (selected-frame) :height 135))
+  (add-to-list 'default-frame-alist '(font . "Iosevka"))
+  ;; (set-face-attribute 'default (selected-frame) :height 135)
+  )
 
 (when (string-equal system-type "windows-nt")
   ;; Emacs is running from Windows
