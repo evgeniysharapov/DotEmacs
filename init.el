@@ -1310,9 +1310,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :ensure t)
 
 ;;;; F#
+
+;; Download netcore release from https://github.com/fsharp/FsAutoComplete
+;; and unzip  it in $HOME/.FsAutoComplete/netcore
 (use-package fsharp-mode
   :defer t
-  :ensure t)
+  :ensure t
+  :init (setq eglot-fsharp-server-install-dir "~/.FsAutoComplete/")
+  :config (progn
+            (require 'eglot-fsharp)))
 
 
 ;;;; Ocaml
