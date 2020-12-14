@@ -1079,7 +1079,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     (setq c-basic-offset 4)
     (c-turn-on-eldoc-mode)
     (set (make-local-variable 'compile-command)
-         (let ((f (file-name-nondirectory (buffer-file-name))))
+         (let ((f (file-name-nondirectory (or (buffer-file-name) ""))))
            (case major-mode
              ('c-mode (format "gcc -g -O2 -std=gnu99 -static -lm %s" f))
              ('c++-mode (format "g++ -g -O2 -static -std=gnu++11 %s" f))
@@ -1551,7 +1551,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;; Ledger
 (use-package ledger-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 (use-package flycheck-ledger
   :ensure t
   :after ledger-mode)
