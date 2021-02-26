@@ -1537,34 +1537,47 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                                 (t parent-dir)))))
                 img-dir))
             
-            (defun ffe-org-take-screenshot (&optional dir)
-              "Runs a program and takes screenshots wries it in a file and then inserts link to org buffer
-if DIR is nil then just drop image file alongside the org file
-if DIR is 4, i.e. C-u is pressed, then drop images into a directory named after a buffer name with _img attached.
-if DIR is 16, i.e. C-u C-u is pressed, then drop images into /img subdirectory of a directory that has the org file 
+            (defun ffe-org-take-screenshot (&optional arg)
+              "Runs a program and takes screenshot, then writes it into a file and then inserts link to org buffer.
+
+Files are named after the Org headline, by replacing non-character with dashes.
+
+If ARG is nil then images are droppedinto a directory (created if it doesn't exist) that is named after org file.
+If ARG is 4, i.e. C-u is pressed, then puts image into a directory (created if it doesn't exist) /img.
+If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org file.
 "
-              (interactive)              
+              (interactive "p")              
               (let* ((ts (format-time-string "%Y%m%d_%H%M%S"))
                      ;; TODO: handle the case of nil
-                     (orgfn (buffer-file-name))                     
-                     (header (car (cddddr (org-heading-components))))                     
+                     (org-file-name (buffer-file-name))                     
+                     (org-header (car (cddddr (org-heading-components))))
                      ;; Figure out directory to put images to
-                     (idir (cond
-                              ;; C-u
-                              ((eq dir 4) (ffe-image-directory orgfn 'file))
-                              ;; C-u C-u
-                              ((eq dir 16) (ffe-image-directory orgfn 'img))
-                              (t (ffe-image-directory orgfn))))
-                     (safefn (replace-regexp-in-string "\\W+" "-" header nil 'literal))
-                     (fn (concat idir safefn "_" ts "_"))
-                     (ifn (concat (make-temp-name fn) ".png")))
-                (message idir)
-                (message safefn)
-                (message fn)
-                (message ifn)
+                     (img-dir-full-path
+                      (cond
+                       ;; C-u
+                       ((eq arg 4) (ffe-image-directory org-file-name 'file))
+                       ;; C-u C-u
+                       ((eq arg 16) (ffe-image-directory org-file-name 'img))
+                       (t (ffe-image-directory org-file-name))))
+                     ;; full path to file name
+                     (img-file-name
+                      (concat (make-temp-name
+                               (concat 
+                                img-dir-full-path 
+                                (replace-regexp-in-string "\\W+" "-" org-header nil 'literal)
+                                "_" ts "_"))
+                              ".png"))
+                     ;; file name path relative to org-file-name
+                     (rel-img-file-name
+                      (replace-regexp-in-string
+                       (file-name-directory org-file-name) "" img-file-name nil 'literal)))
+                ;; ensure directory for images exists
+                (if (not (file-directory-p img-dir-full-path))
+                    (make-directory img-dir-full-path 'parents))
                 ;; This is system specific
-                (shell-command (concat "powershell " *dotfiles-dir* "screenshot.ps1 " ifn))
-                (insert (concat "[[file:" ifn "]]"))
+                ;; TODO: starting a script takes a while
+                (shell-command (concat "powershell " *dotfiles-dir* "screenshot.ps1 " img-file-name))
+                (insert (concat "[[file:" rel-img-file-name "]]"))
                 (org-display-inline-images)))
             )
   :init (progn
