@@ -907,6 +907,15 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
+;;;; Case: Camel, Pascal, Snake, etc.
+(use-package string-inflection
+  :ensure t
+  :commands string-inflection-all-cycle
+  :defer t
+  :bind (:map ctl-x-t-map
+              ("." . string-inflection-all-cycle)))
+
+
 ;;;; Language Server
 (use-package lsp-mode
   :ensure t
