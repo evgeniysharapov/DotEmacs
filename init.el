@@ -1079,7 +1079,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     (setq c-basic-offset 4)
     (c-turn-on-eldoc-mode)
     (set (make-local-variable 'compile-command)
-         (let ((f (file-name-nondirectory (buffer-file-name))))
+         (let ((f (file-name-nondirectory (or (buffer-file-name) ""))))
            (case major-mode
              ('c-mode (format "gcc -g -O2 -std=gnu99 -static -lm %s" f))
              ('c++-mode (format "g++ -g -O2 -static -std=gnu++11 %s" f))
@@ -1496,6 +1496,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                (latex . t)
                (gnuplot . t)
                (C . t)
+               (shell .t)
+               (awk . t)
                (plantuml . t)))
 
             ;; Refiling - allow creating new targets
@@ -1520,7 +1522,50 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                       (when p
                         (skip-chars-backward " \r\t\n")
                         (beginning-of-line)))))))
+
+            (defun ffe-image-directory (fn &optional arg)
+              "Generates image filename based on the given filename FN.
+(ffe-image-directory \"~/test/work.org\") => \"~/test/\"
+(ffe-image-directory \"~/test/work.org\" 'file) => \"~/test/work/\"
+(ffe-image-directory \"~/test/work.org\" 'img) => \"~/test/img/\"
+"
+              (let* ((parent-dir (file-name-directory fn))
+                     (img-dir (file-name-as-directory
+                               (cond
+                                ((eq arg 'file) (concat parent-dir (file-name-base fn)))
+                                ((eq arg 'img) (concat parent-dir "img"))
+                                (t parent-dir)))))
+                img-dir))
             
+            (defun ffe-org-take-screenshot (&optional dir)
+              "Runs a program and takes screenshots wries it in a file and then inserts link to org buffer
+if DIR is nil then just drop image file alongside the org file
+if DIR is 4, i.e. C-u is pressed, then drop images into a directory named after a buffer name with _img attached.
+if DIR is 16, i.e. C-u C-u is pressed, then drop images into /img subdirectory of a directory that has the org file 
+"
+              (interactive)              
+              (let* ((ts (format-time-string "%Y%m%d_%H%M%S"))
+                     ;; TODO: handle the case of nil
+                     (orgfn (buffer-file-name))                     
+                     (header (car (cddddr (org-heading-components))))                     
+                     ;; Figure out directory to put images to
+                     (idir (cond
+                              ;; C-u
+                              ((eq dir 4) (ffe-image-directory orgfn 'file))
+                              ;; C-u C-u
+                              ((eq dir 16) (ffe-image-directory orgfn 'img))
+                              (t (ffe-image-directory orgfn))))
+                     (safefn (replace-regexp-in-string "\\W+" "-" header nil 'literal))
+                     (fn (concat idir safefn "_" ts "_"))
+                     (ifn (concat (make-temp-name fn) ".png")))
+                (message idir)
+                (message safefn)
+                (message fn)
+                (message ifn)
+                ;; This is system specific
+                (shell-command (concat "powershell " *dotfiles-dir* "screenshot.ps1 " ifn))
+                (insert (concat "[[file:" ifn "]]"))
+                (org-display-inline-images)))
             )
   :init (progn
           (add-hook 'org-src-mode-hook
@@ -1551,7 +1596,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;; Ledger
 (use-package ledger-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 (use-package flycheck-ledger
   :ensure t
   :after ledger-mode)
