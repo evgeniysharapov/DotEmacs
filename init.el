@@ -1555,10 +1555,10 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                      (img-dir-full-path
                       (cond
                        ;; C-u
-                       ((eq arg 4) (ffe-image-directory org-file-name 'file))
+                       ((eq arg 4) (ffe-image-directory org-file-name 'img))
                        ;; C-u C-u
-                       ((eq arg 16) (ffe-image-directory org-file-name 'img))
-                       (t (ffe-image-directory org-file-name))))
+                       ((eq arg 16) (ffe-image-directory org-file-name))
+                       (t (ffe-image-directory org-file-name 'file))))
                      ;; full path to file name
                      (img-file-name
                       (concat (make-temp-name
@@ -1599,6 +1599,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ("j" . org-clock-goto)
               :map org-mode-map
               ("C-c k" . org-cut-subtree)
+              ("C-c C-x s" . ffe-org-take-screenshot)
               ("M-n" . outline-next-visible-heading)
               ("M-p" . outline-previous-visible-heading)
               :map org-babel-map
