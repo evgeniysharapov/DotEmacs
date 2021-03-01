@@ -37,3 +37,7 @@ data/anaconda-mode/
 data/company-statistics-cache.el*
 data/company-statistics-cache.el
 server/server*
+.dap-breakpoints
+.lsp-session-v1
+data/.emacs.desktop.wsl
+transient
