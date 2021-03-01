@@ -3,6 +3,19 @@
 ;;; Commentary:
 ;;; Code:
 
+(defun set-font-if-available (font-name)
+  "Checks if font FONT-NAME is available and sets it as a default for a frame."
+  (when (find-font (font-spec :name font-name))
+    (add-to-list 'default-frame-alist  (cons 'font font-name))))
+
+(defun try-fonts (font-name-list)
+  "Goes over list FONT-NAME-LIST and tries to set a font name from the list as the default.
+
+ Stops once it either exhausted the list or successfully installed the font."
+  (cl-loop for font-name in font-name-list
+           until (set-font-if-available font-name)))
+
+
 (when (string-equal system-type "gnu/linux")
   ;; Emacs is running from WSL
 
@@ -18,7 +31,10 @@
 
 (when (string-equal system-type "windows-nt")
   ;; Emacs is running from Windows
-  (add-to-list 'default-frame-alist '(font . "Iosevka-12"))
+  (try-fonts '("Iosevka"
+               "Iosevka SS09"
+               "Consolas"
+               "Cascadia Code PL"))
   (setq w32-pass-lwindow-to-system nil
         w32-lwindow-modifier 'super    ; Left Windows key
         w32-pass-apps-to-system nil
