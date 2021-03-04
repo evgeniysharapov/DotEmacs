@@ -10,8 +10,8 @@
  '(auto-image-file-mode t)
  '(aw-dispatch-always t)
  '(aw-ignore-current nil)
- '(aw-keys (quote (108 107 106 104 103 102 100 115 97)))
- '(aw-scope (quote frame))
+ '(aw-keys '(108 107 106 104 103 102 100 115 97))
+ '(aw-scope 'frame)
  '(calendar-mark-holidays-flag t)
  '(calendar-view-holidays-initially-flag t)
  '(column-number-mode t)
@@ -25,8 +25,7 @@
  '(default-input-method "russian-computer")
  '(delete-old-versions t)
  '(desktop-globals-to-save
-   (quote
-    (desktop-missing-file-warning
+   '(desktop-missing-file-warning
      (search-ring . 50)
      (regexp-search-ring . 50)
      (regexp-history . 50)
@@ -36,7 +35,7 @@
      (read-expressions-history . 50)
      (query-replace-history 0.5)
      (minibuffer-history . 50)
-     (compile-history . 50))))
+     (compile-history . 50)))
  '(desktop-restore-eager 2)
  '(desktop-restore-frames nil)
  '(desktop-save t)
@@ -45,8 +44,8 @@
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
  '(echo-keystrokes 0.1)
- '(ediff-split-window-function (quote split-window-horizontally))
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(ediff-split-window-function 'split-window-horizontally)
+ '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(eldoc-idle-delay 0)
  '(enable-recursive-minibuffers t)
  '(gc-cons-threshold 104857600)
@@ -57,8 +56,7 @@
  '(history-length 10000)
  '(ibuffer-expert t)
  '(ibuffer-formats
-   (quote
-    ((mark modified read-only " "
+   '((mark modified read-only " "
            (name 18 18 :left :elide)
            " "
            (size 9 -1 :right)
@@ -67,12 +65,11 @@
            " " filename-and-process)
      (mark " "
            (name 24 -1)
-           " " filename))))
+           " " filename)))
  '(ibuffer-jump-offer-only-visible-buffers t)
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
-   (quote
-    (("DropboxNotes"
+   '(("DropboxNotes"
       (filename . "Dropbox/Notes"))
      ("DaStEd"
       (filename . "dasted"))
@@ -94,14 +91,14 @@
        (mode . c-mode)
        (mode . java-mode)
        (mode . idl-mode)
-       (mode . lisp-mode))))))
+       (mode . lisp-mode)))))
  '(ido-auto-merge-work-directories-length -1)
- '(ido-create-new-buffer (quote always))
+ '(ido-create-new-buffer 'always)
  '(ido-enable-flex-matching t)
  '(ido-max-prospects 10)
- '(ido-mode (quote both) nil (ido))
+ '(ido-mode 'both nil (ido))
  '(ido-show-dot-for-dired t)
- '(ido-use-filename-at-point (quote guess))
+ '(ido-use-filename-at-point 'guess)
  '(imenu-auto-rescan t)
  '(imenu-list-focus-after-activation t)
  '(imenu-max-item-length 60)
@@ -115,15 +112,13 @@
  '(ledger-binary-path "~/Tools/Bin/ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
- '(monky-process-type (quote cmdserver))
- '(mouse-avoidance-mode (quote animate) nil (avoid))
+ '(monky-process-type 'cmdserver)
+ '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
  '(org-agenda-files
-   (quote
-    ("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org")))
+   '("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org"))
  '(org-capture-templates
-   (quote
-    (("w" "Work Task" entry
+   '(("w" "Work Task" entry
       (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
       "* %^{Description}  %^g
 :PROPERTIES:
@@ -171,20 +166,20 @@
 #+END_QUOTE
 
 %?
-"))))
+")))
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Dropbox/Notes/Notes.org")
  '(org-directory "~/Dropbox/Notes")
- '(org-export-backends (quote (ascii html icalendar latex md odt confluence)))
+ '(org-export-backends '(ascii html icalendar latex md odt confluence))
  '(org-hide-leading-stars t)
- '(org-link-abbrev-alist (quote (("jira" . "https://tracking.ainq.com/browse/%s"))))
+ '(org-image-actual-width 600)
+ '(org-link-abbrev-alist '(("jira" . "https://tracking.ainq.com/browse/%s")))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
-   (quote
-    (org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
+   '(org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m))
  '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
- '(org-refile-use-outline-path (quote file))
+ '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)
@@ -192,29 +187,26 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
-   (quote
-    (sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
- '(projectile-indexing-method (quote alien))
- '(projectile-sort-order (quote recentf))
+ '(powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
+ '(projectile-indexing-method 'alien)
+ '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
  '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. " t)
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
-   (quote
-    ((eval outline-minor-mode t)
+   '((eval outline-minor-mode t)
      (markdown-asymmetric-header . t)
      (mocha-project-test-directory . "test/server\"")
      (mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
      (mocha-project-test-directory . "test/server")
      (mocha-which-node)
      (js2-basic-offset . 2)
-     (markdown-command . "pandoc -s --toc -S -c assets/style.css -B assets/before.html -A assets/after.html -f markdown -t html"))))
+     (markdown-command . "pandoc -s --toc -S -c assets/style.css -B assets/before.html -A assets/after.html -f markdown -t html")))
  '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
  '(savehist-additional-variables
-   (quote
-    (mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history)))
+   '(mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history))
  '(savehist-autosave-interval 60)
  '(scroll-conservatively 101)
  '(scroll-preserve-screen-position 1)

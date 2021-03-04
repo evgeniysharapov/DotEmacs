@@ -907,6 +907,15 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
+;;;; Case: Camel, Pascal, Snake, etc.
+(use-package string-inflection
+  :ensure t
+  :commands string-inflection-all-cycle
+  :defer t
+  :bind (:map ctl-x-t-map
+              ("." . string-inflection-all-cycle)))
+
+
 ;;;; Language Server
 (use-package lsp-mode
   :ensure t
@@ -1500,6 +1509,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                (latex . t)
                (gnuplot . t)
                (C . t)
+               (shell .t)
+               (awk . t)
                (plantuml . t)))
 
             ;; Refiling - allow creating new targets
@@ -1524,7 +1535,63 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                       (when p
                         (skip-chars-backward " \r\t\n")
                         (beginning-of-line)))))))
+
+            (defun ffe-image-directory (fn &optional arg)
+              "Generates image filename based on the given filename FN.
+(ffe-image-directory \"~/test/work.org\") => \"~/test/\"
+(ffe-image-directory \"~/test/work.org\" 'file) => \"~/test/work/\"
+(ffe-image-directory \"~/test/work.org\" 'img) => \"~/test/img/\"
+"
+              (let* ((parent-dir (file-name-directory fn))
+                     (img-dir (file-name-as-directory
+                               (cond
+                                ((eq arg 'file) (concat parent-dir (file-name-base fn)))
+                                ((eq arg 'img) (concat parent-dir "img"))
+                                (t parent-dir)))))
+                img-dir))
             
+            (defun ffe-org-take-screenshot (&optional arg)
+              "Runs a program and takes screenshot, then writes it into a file and then inserts link to org buffer.
+
+Files are named after the Org headline, by replacing non-character with dashes.
+
+If ARG is nil then images are droppedinto a directory (created if it doesn't exist) that is named after org file.
+If ARG is 4, i.e. C-u is pressed, then puts image into a directory (created if it doesn't exist) /img.
+If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org file.
+"
+              (interactive "p")              
+              (let* ((ts (format-time-string "%Y%m%d_%H%M%S"))
+                     ;; TODO: handle the case of nil
+                     (org-file-name (buffer-file-name))                     
+                     (org-header (car (cddddr (org-heading-components))))
+                     ;; Figure out directory to put images to
+                     (img-dir-full-path
+                      (cond
+                       ;; C-u
+                       ((eq arg 4) (ffe-image-directory org-file-name 'img))
+                       ;; C-u C-u
+                       ((eq arg 16) (ffe-image-directory org-file-name))
+                       (t (ffe-image-directory org-file-name 'file))))
+                     ;; full path to file name
+                     (img-file-name
+                      (concat (make-temp-name
+                               (concat 
+                                img-dir-full-path 
+                                (replace-regexp-in-string "\\W+" "-" org-header nil 'literal)
+                                "_" ts "_"))
+                              ".png"))
+                     ;; file name path relative to org-file-name
+                     (rel-img-file-name
+                      (replace-regexp-in-string
+                       (file-name-directory org-file-name) "" img-file-name nil 'literal)))
+                ;; ensure directory for images exists
+                (if (not (file-directory-p img-dir-full-path))
+                    (make-directory img-dir-full-path 'parents))
+                ;; This is system specific
+                ;; TODO: starting a script takes a while
+                (shell-command (concat "powershell " *dotfiles-dir* "screenshot.ps1 " img-file-name))
+                (insert (concat "[[file:" rel-img-file-name "]]"))
+                (org-display-inline-images)))
             )
   :init (progn
           (add-hook 'org-src-mode-hook
@@ -1545,6 +1612,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ("j" . org-clock-goto)
               :map org-mode-map
               ("C-c k" . org-cut-subtree)
+              ("C-c C-x s" . ffe-org-take-screenshot)
               ("M-n" . outline-next-visible-heading)
               ("M-p" . outline-previous-visible-heading)
               :map org-babel-map
