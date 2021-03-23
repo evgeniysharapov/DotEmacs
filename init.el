@@ -1351,6 +1351,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :init (setq merlin-command 'opam))
 
 
+;;;; Lua
+(use-package lua-mode
+  :ensure t)
+
 ;;; TeX Mode
 ;; TeX Settings
 (use-package tex-site                   ; AucTeX initialization
