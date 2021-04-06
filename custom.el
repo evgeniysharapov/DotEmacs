@@ -109,14 +109,30 @@
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
  '(kill-whole-line t)
- '(ledger-binary-path "~/Tools/Bin/ledger")
+ '(ledger-binary-path "ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
  '(org-agenda-files
-   '("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org"))
+   '("~/Dropbox/Notes/Notes.org"
+     "~/Dropbox/Notes/Azure.org"
+     "~/Dropbox/Notes/Cooking.org"
+     "~/Dropbox/Notes/Development.org"
+     "~/Dropbox/Notes/Docker_Workshop.org"
+     "~/Dropbox/Notes/Health.org"
+     "~/Dropbox/Notes/Ideas.org"
+     "~/Dropbox/Notes/Interviews.org"
+     "~/Dropbox/Notes/Journal.org"
+     "~/Dropbox/Notes/Links.org"
+     "~/Dropbox/Notes/Management_Reports.org"
+     "~/Dropbox/Notes/Money.org"
+     "~/Dropbox/Notes/PULSE.org"
+     "~/Dropbox/Notes/Setup.org"
+     "~/Dropbox/Notes/Todo.org"
+     "~/Dropbox/Notes/ULP.org"
+     "~/Dropbox/Notes/Worklog.org"))
  '(org-capture-templates
    '(("w" "Work Task" entry
       (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
