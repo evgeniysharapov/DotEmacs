@@ -907,6 +907,15 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :pin melpa-stable
   :init (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode))
 
+;;;; Case: Camel, Pascal, Snake, etc.
+(use-package string-inflection
+  :ensure t
+  :commands string-inflection-all-cycle
+  :defer t
+  :bind (:map ctl-x-t-map
+              ("." . string-inflection-all-cycle)))
+
+
 ;;;; Language Server
 (use-package lsp-mode
   :ensure t
@@ -1341,6 +1350,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :hook (tuareg-mode . merlin-mode)
   :init (setq merlin-command 'opam))
 
+
+;;;; Lua
+(use-package lua-mode
+  :ensure t)
 
 ;;; TeX Mode
 ;; TeX Settings
