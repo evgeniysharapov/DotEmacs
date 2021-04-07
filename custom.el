@@ -116,26 +116,10 @@
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
  '(org-agenda-files
-   '("~/Dropbox/Notes/Notes.org"
-     "~/Dropbox/Notes/Azure.org"
-     "~/Dropbox/Notes/Cooking.org"
-     "~/Dropbox/Notes/Development.org"
-     "~/Dropbox/Notes/Docker_Workshop.org"
-     "~/Dropbox/Notes/Health.org"
-     "~/Dropbox/Notes/Ideas.org"
-     "~/Dropbox/Notes/Interviews.org"
-     "~/Dropbox/Notes/Journal.org"
-     "~/Dropbox/Notes/Links.org"
-     "~/Dropbox/Notes/Management_Reports.org"
-     "~/Dropbox/Notes/Money.org"
-     "~/Dropbox/Notes/PULSE.org"
-     "~/Dropbox/Notes/Setup.org"
-     "~/Dropbox/Notes/Todo.org"
-     "~/Dropbox/Notes/ULP.org"
-     "~/Dropbox/Notes/Worklog.org"))
+   '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Azure.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/Dropbox/Notes/Money.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org"))
  '(org-capture-templates
    '(("w" "Work Task" entry
-      (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
+      (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %^g
 :PROPERTIES:
 :ID:       %(ffe-uuid)
@@ -203,7 +187,7 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
- '(powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
+   '(powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
