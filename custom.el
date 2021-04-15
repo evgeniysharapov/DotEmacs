@@ -112,7 +112,7 @@
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
  '(kill-whole-line t)
- '(ledger-binary-path "~/Tools/Bin/ledger")
+ '(ledger-binary-path "ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type (quote cmdserver))
