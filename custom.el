@@ -10,8 +10,8 @@
  '(auto-image-file-mode t)
  '(aw-dispatch-always t)
  '(aw-ignore-current nil)
- '(aw-keys '(108 107 106 104 103 102 100 115 97))
- '(aw-scope 'frame)
+ '(aw-keys (quote (108 107 106 104 103 102 100 115 97)))
+ '(aw-scope (quote frame))
  '(calendar-mark-holidays-flag t)
  '(calendar-view-holidays-initially-flag t)
  '(column-number-mode t)
@@ -25,7 +25,8 @@
  '(default-input-method "russian-computer")
  '(delete-old-versions t)
  '(desktop-globals-to-save
-   '(desktop-missing-file-warning
+   (quote
+    (desktop-missing-file-warning
      (search-ring . 50)
      (regexp-search-ring . 50)
      (regexp-history . 50)
@@ -35,7 +36,7 @@
      (read-expressions-history . 50)
      (query-replace-history 0.5)
      (minibuffer-history . 50)
-     (compile-history . 50)))
+     (compile-history . 50))))
  '(desktop-restore-eager 2)
  '(desktop-restore-frames nil)
  '(desktop-save t)
@@ -44,8 +45,8 @@
  '(dired-dwim-target t)
  '(dired-listing-switches "-alhG")
  '(echo-keystrokes 0.1)
- '(ediff-split-window-function 'split-window-horizontally)
- '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eldoc-idle-delay 0)
  '(enable-recursive-minibuffers t)
  '(gc-cons-threshold 104857600)
@@ -56,7 +57,8 @@
  '(history-length 10000)
  '(ibuffer-expert t)
  '(ibuffer-formats
-   '((mark modified read-only " "
+   (quote
+    ((mark modified read-only " "
            (name 18 18 :left :elide)
            " "
            (size 9 -1 :right)
@@ -65,11 +67,12 @@
            " " filename-and-process)
      (mark " "
            (name 24 -1)
-           " " filename)))
+           " " filename))))
  '(ibuffer-jump-offer-only-visible-buffers t)
  '(ibuffer-saved-filter-groups nil)
  '(ibuffer-saved-filters
-   '(("DropboxNotes"
+   (quote
+    (("DropboxNotes"
       (filename . "Dropbox/Notes"))
      ("DaStEd"
       (filename . "dasted"))
@@ -91,14 +94,14 @@
        (mode . c-mode)
        (mode . java-mode)
        (mode . idl-mode)
-       (mode . lisp-mode)))))
+       (mode . lisp-mode))))))
  '(ido-auto-merge-work-directories-length -1)
- '(ido-create-new-buffer 'always)
+ '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
  '(ido-max-prospects 10)
- '(ido-mode 'both nil (ido))
+ '(ido-mode (quote both) nil (ido))
  '(ido-show-dot-for-dired t)
- '(ido-use-filename-at-point 'guess)
+ '(ido-use-filename-at-point (quote guess))
  '(imenu-auto-rescan t)
  '(imenu-list-focus-after-activation t)
  '(imenu-max-item-length 60)
@@ -112,8 +115,8 @@
  '(ledger-binary-path "ledger")
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
- '(monky-process-type 'cmdserver)
- '(mouse-avoidance-mode 'animate nil (avoid))
+ '(monky-process-type (quote cmdserver))
+ '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
@@ -123,10 +126,12 @@
      ("w" "Work TODOs " alltodo ""
       ((org-agenda-files '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
  '(org-agenda-files
-   '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Azure.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/Dropbox/Notes/Money.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))
+   (quote
+    ("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org")))
  '(org-capture-templates
-   '(("w" "Work Task" entry
-      (file+olp+datetree "~/ai-worklog/Worklog.org")
+   (quote
+    (("w" "Work Task" entry
+      (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
       "* %^{Description}  %^g
 :PROPERTIES:
 :ID:       %(ffe-uuid)
@@ -173,20 +178,21 @@
 #+END_QUOTE
 
 %?
-")))
+"))))
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Dropbox/Notes/Notes.org")
  '(org-directory "~/Dropbox/Notes")
- '(org-export-backends '(ascii html icalendar latex md odt confluence))
+ '(org-export-backends (quote (ascii html icalendar latex md odt confluence)))
  '(org-hide-leading-stars t)
  '(org-image-actual-width 600)
- '(org-link-abbrev-alist '(("jira" . "https://tracking.ainq.com/browse/%s")))
+ '(org-link-abbrev-alist (quote (("jira" . "https://tracking.ainq.com/browse/%s"))))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
-   '(org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m))
+   (quote
+    (org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m)))
  '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
- '(org-refile-use-outline-path 'file)
+ '(org-refile-use-outline-path (quote file))
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
  '(org-src-tab-acts-natively t)
@@ -194,26 +200,35 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
+<<<<<<< HEAD
    '(powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
+=======
+   (quote
+    (powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
+ '(projectile-indexing-method (quote alien))
+ '(projectile-sort-order (quote recentf))
+>>>>>>> b143261b20fd759816f43ca412a7c375d6308ea2
  '(python-indent-guess-indent-offset nil)
  '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. " t)
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
-   '((eval outline-minor-mode t)
+   (quote
+    ((eval outline-minor-mode t)
      (markdown-asymmetric-header . t)
      (mocha-project-test-directory . "test/server\"")
      (mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
      (mocha-project-test-directory . "test/server")
      (mocha-which-node)
      (js2-basic-offset . 2)
-     (markdown-command . "pandoc -s --toc -S -c assets/style.css -B assets/before.html -A assets/after.html -f markdown -t html")))
+     (markdown-command . "pandoc -s --toc -S -c assets/style.css -B assets/before.html -A assets/after.html -f markdown -t html"))))
  '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
  '(savehist-additional-variables
-   '(mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history))
+   (quote
+    (mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history)))
  '(savehist-autosave-interval 60)
  '(scroll-conservatively 101)
  '(scroll-preserve-screen-position 1)
