@@ -131,7 +131,7 @@
  '(org-capture-templates
    (quote
     (("w" "Work Task" entry
-      (file+olp+datetree "~/Dropbox/Notes/Worklog.org")
+      (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %^g
 :PROPERTIES:
 :ID:       %(ffe-uuid)
