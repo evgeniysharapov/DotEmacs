@@ -115,8 +115,15 @@
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
+ '(org-agenda-custom-commands
+   '(("n" "Agenda and all TODOs"
+      ((agenda "" nil)
+       (alltodo "" nil))
+      nil)
+     ("w" "Work TODOs " alltodo ""
+      ((org-agenda-files '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
  '(org-agenda-files
-   '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Azure.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/Dropbox/Notes/Money.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org"))
+   '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Azure.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/Dropbox/Notes/Money.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))
  '(org-capture-templates
    '(("w" "Work Task" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
