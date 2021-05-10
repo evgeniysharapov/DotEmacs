@@ -41,3 +41,4 @@ server/server*
 .lsp-session-v1
 data/.emacs.desktop.wsl
 transient
+.cache
