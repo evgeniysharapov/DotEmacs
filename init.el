@@ -880,7 +880,6 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
 
 
 ;;; Programming Modes
-
 ;;;; General Settings 
 (use-package eldoc
   :diminish eldoc-mode

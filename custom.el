@@ -119,15 +119,18 @@
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(mouse-yank-at-point t)
  '(org-agenda-custom-commands
-   '(("n" "Agenda and all TODOs"
+   (quote
+    (("n" "Agenda and all TODOs"
       ((agenda "" nil)
        (alltodo "" nil))
       nil)
      ("w" "Work TODOs " alltodo ""
-      ((org-agenda-files '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
+      ((org-agenda-files
+        (quote
+         ("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))))
  '(org-agenda-files
    (quote
-    ("c:/Users/esharapov/Dropbox/Notes/Notes.org" "c:/Users/esharapov/Dropbox/Notes/Azure.org" "c:/Users/esharapov/Dropbox/Notes/Cooking.org" "c:/Users/esharapov/Dropbox/Notes/Development.org" "c:/Users/esharapov/Dropbox/Notes/Docker_Workshop.org" "c:/Users/esharapov/Dropbox/Notes/Health.org" "c:/Users/esharapov/Dropbox/Notes/Ideas.org" "c:/Users/esharapov/Dropbox/Notes/Interviews.org" "c:/Users/esharapov/Dropbox/Notes/Journal.org" "c:/Users/esharapov/Dropbox/Notes/Links.org" "c:/Users/esharapov/Dropbox/Notes/Management_Reports.org" "c:/Users/esharapov/Dropbox/Notes/Money.org" "c:/Users/esharapov/Dropbox/Notes/PULSE.org" "c:/Users/esharapov/Dropbox/Notes/Setup.org" "c:/Users/esharapov/Dropbox/Notes/Todo.org" "c:/Users/esharapov/Dropbox/Notes/ULP.org" "c:/Users/esharapov/Dropbox/Notes/Worklog.org")))
+    ("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Azure.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org"  "~/Dropbox/Notes/Money.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org")))
  '(org-capture-templates
    (quote
     (("w" "Work Task" entry
@@ -201,7 +204,7 @@
  '(outshine-use-speed-commands t)
  '(package-selected-packages
    (quote
-    (powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
+    (ob-restclient powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure)))
  '(projectile-indexing-method (quote alien))
  '(projectile-sort-order (quote recentf))
  '(python-indent-guess-indent-offset nil)
