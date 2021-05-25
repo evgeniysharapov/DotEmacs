@@ -47,6 +47,8 @@
  '(echo-keystrokes 0.1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(eglot-fsharp-server-runtime (quote net-core))
+ '(eglot-fsharp-server-version "0.45.4")
  '(eldoc-idle-delay 0)
  '(enable-recursive-minibuffers t)
  '(gc-cons-threshold 104857600)
