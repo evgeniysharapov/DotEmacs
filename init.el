@@ -1340,9 +1340,22 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ; (async-shell-command "time opam install ocp-indent merlin") ;; real 1m33.636s
 (use-package merlin
   :ensure t
-  :hook (tuareg-mode . merlin-mode)
-  :init (setq merlin-command 'opam))
+  :init
+  (setf merlin-command 'opam)
+  :config
+  (autoload 'merlin-mode "merlin" nil t nil)
+  :hook
+  (tuareg-mode . merlin-mode))
 
+(use-package utop
+  :ensure t
+  :config
+  (autoload 'utop "utop" "Toplevel for OCaml" t)
+  (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+  :init
+  (setf utop-command "opam config exec -- utop -emacs")
+  :hook
+  (tuareg-mode . utop-minor-mode))
 
 ;;;; Lua
 (use-package lua-mode
