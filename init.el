@@ -624,8 +624,6 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :ensure t
   :bind (("C-c C-/" . vr/replace)))
 
-
-
 ;;; Buffers
 ;; Buffer operations
 (use-package ibuffer

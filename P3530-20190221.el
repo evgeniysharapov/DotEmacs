@@ -24,7 +24,7 @@
               (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
 
   (add-to-list 'default-frame-alist '(font . "Iosevka"))
-  (set-face-attribute 'default (selected-frame) :height 135))
+  (set-face-attribute 'default (selected-frame) :height 140))
 
 (when (string-equal system-type "windows-nt")
   ;; Emacs is running from Windows
