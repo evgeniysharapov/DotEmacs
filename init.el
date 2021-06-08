@@ -1329,7 +1329,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 
 ;;;; Ocaml
-
 ;; Emacs’ OCaml mode
 (use-package tuareg
   :ensure t
@@ -1345,7 +1344,13 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :config
   (autoload 'merlin-mode "merlin" nil t nil)
   :hook
-  (tuareg-mode . merlin-mode))
+  (tuareg-mode . merlin-mode)
+  :bind (:map merlin-mode-map
+              ("M-." . merlin-locate)
+              ("M-," . merlin-pop-stack)
+              ("C-c i" . merlin-locate-indent)
+              ("C-c C-o" . merlin-occurences)
+              ("C-c C-j" . merlin-jump)))
 
 (use-package utop
   :ensure t
