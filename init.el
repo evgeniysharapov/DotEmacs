@@ -1527,11 +1527,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
             ;; Refiling - allow creating new targets
             (setq org-refile-allow-creating-parent-nodes 'confirm
                   org-refile-targets '((org-agenda-files :maxlevel . 3)))
-            
-            ;; This one will jump between BEGIN and END of org mode blocks
-            ;; https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
+
+;;;; Useful Commands used in Org-Mode
+;;;;; Jump start/end in code block            
             (defun ffy-org-goto-block-begin/end (p)
-              "Go to begining/end of the current block. With prefix goes to the end."
+              "Go to begining/end of the current block. With prefix goes to the end.
+
+This one will jump between BEGIN and END of org mode blocks
+https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
+"
               (interactive "P")
               (let* ((element (org-element-at-point)))
                 (when (or (eq (org-element-type element) 'example-block)
@@ -1547,6 +1551,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                         (skip-chars-backward " \r\t\n")
                         (beginning-of-line)))))))
 
+;;;;; Taking Screenshot from org-mode file
             (defun ffe-image-directory (fn &optional arg)
               "Generates image filename based on the given filename FN.
 (ffe-image-directory \"~/test/work.org\") => \"~/test/\"
@@ -1604,6 +1609,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                 (insert (concat "[[file:" rel-img-file-name "]]"))
                 (org-display-inline-images)))
             )
+;;;; Initialization of Org-mode  
   :init (progn
           (add-hook 'org-src-mode-hook
                     (lambda ()
@@ -1614,6 +1620,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                       ;; (add-hook 'completion-at-point-functions
                       ;;           #'pcomplete-completions-at-point)
                       )))
+;;;; Org-mode related bindings global and local 
   :bind (:map ctl-z-map
               ;; global shortcuts 
               ("a" . org-agenda)
