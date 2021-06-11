@@ -1444,7 +1444,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
   (defun yaml-mode-outline-hook ()
     (outline-minor-mode)
-    (setf outline-regexp (concat  "^\\(\\s-\\{" (number-to-string yaml-indent-offset)  "\\}\\)*\\([-] \\|\\.\\)?\\([a-zA-Z0-9-_/:.}{]*\\|[\"][^\"]*[\"]\\|['][^']*[']\\):\\s-*\\([>|]\\|&[a-zA-Z0-9_-]*\\)?$"))
+    ; "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$"
+    (setf outline-regexp "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$")
     (setf outline-level 'yaml-outline-level)))
 
 ;;;; Markdown
