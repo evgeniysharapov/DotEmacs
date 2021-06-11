@@ -1435,7 +1435,17 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; YAML
 (use-package yaml-mode
   :ensure t
-  :mode (("\\.ya?ml$" . yaml-mode)))
+  :mode (("\\.ya?ml$" . yaml-mode))
+  :hook (yaml-mode . yaml-mode-outline-hook)
+  :init
+  (defun yaml-outline-level ()
+    "Returns level based on indentation"
+    (s-count-matches (concat "[ ]\\{" (number-to-string  yaml-indent-offset) "\\}") (thing-at-point 'line t)))
+
+  (defun yaml-mode-outline-hook ()
+    (outline-minor-mode)
+    (setf outline-regexp (concat  "^\\(\\s-\\{" (number-to-string yaml-indent-offset)  "\\}\\)*\\([-] \\|\\.\\)?\\([a-zA-Z0-9-_/:.}{]*\\|[\"][^\"]*[\"]\\|['][^']*[']\\):\\s-*\\([>|]\\|&[a-zA-Z0-9_-]*\\)?$"))
+    (setf outline-level 'yaml-outline-level)))
 
 ;;;; Markdown
 (use-package markdown-mode  
