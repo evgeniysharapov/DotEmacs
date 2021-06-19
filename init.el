@@ -299,6 +299,17 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   (custom-set-minor-mode 'mouse-wheel-mode t)
   (custom-set-minor-mode 'blink-cursor-mode nil))
 
+;;;; Theme
+(use-package modus-themes
+  :init
+  (setf modus-themes-slanted-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-syntax 'yellow-comments
+        modus-themes-org-blocks 'gray-background
+        modus-themes-headings '((1 . rainbow-section) (t . rainbow-highlight)))
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-operandi))
 
 ;;; Files
 
