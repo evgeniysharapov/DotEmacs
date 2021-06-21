@@ -309,7 +309,9 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
         modus-themes-headings '((1 . rainbow-section) (t . rainbow-highlight)))
   (modus-themes-load-themes)
   :config
-  (modus-themes-load-operandi))
+  (if (display-graphic-p)
+      (modus-themes-load-operandi)
+    (modus-themes-load-vivendi)))
 
 ;;; Files
 
