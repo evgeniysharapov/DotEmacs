@@ -299,6 +299,17 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   (custom-set-minor-mode 'mouse-wheel-mode t)
   (custom-set-minor-mode 'blink-cursor-mode nil))
 
+;;;; Theme
+(use-package modus-themes
+  :init
+  (setf modus-themes-slanted-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-syntax 'yellow-comments
+        modus-themes-org-blocks 'gray-background
+        modus-themes-headings '((1 . rainbow-section) (t . rainbow-highlight)))
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-operandi))
 
 ;;; Files
 
@@ -624,8 +635,6 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :ensure t
   :bind (("C-c C-/" . vr/replace)))
 
-
-
 ;;; Buffers
 ;; Buffer operations
 (use-package ibuffer
@@ -880,7 +889,6 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
 
 
 ;;; Programming Modes
-
 ;;;; General Settings 
 (use-package eldoc
   :diminish eldoc-mode
@@ -1323,20 +1331,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; Download netcore release from https://github.com/fsharp/FsAutoComplete
 ;; and unzip  it in $HOME/.FsAutoComplete/netcore
 (use-package fsharp-mode
-  :defer t
-  :ensure t
+;  :defer t
+  :ensure nil
+  :load-path "~/Projects/FSharp/emacs-fsharp-mode"
   :init (setq eglot-fsharp-server-install-dir "~/.FsAutoComplete/")
   :config (progn
             (require 'eglot-fsharp)))
 
 
 ;;;; Ocaml
-
-;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b
-;; ## you can edit, but keep this line
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-;; ## end of OPAM user-setup addition for emacs / base ## keep this line
-
 ;; Emacs’ OCaml mode
 (use-package tuareg
   :ensure t
@@ -1347,9 +1350,28 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ; (async-shell-command "time opam install ocp-indent merlin") ;; real 1m33.636s
 (use-package merlin
   :ensure t
-  :hook (tuareg-mode . merlin-mode)
-  :init (setq merlin-command 'opam))
+  :init
+  (setf merlin-command 'opam)
+  :config
+  (autoload 'merlin-mode "merlin" nil t nil)
+  :hook
+  (tuareg-mode . merlin-mode)
+  :bind (:map merlin-mode-map
+              ("M-." . merlin-locate)
+              ("M-," . merlin-pop-stack)
+              ("C-c i" . merlin-locate-indent)
+              ("C-c C-o" . merlin-occurences)
+              ("C-c C-j" . merlin-jump)))
 
+(use-package utop
+  :ensure t
+  :config
+  (autoload 'utop "utop" "Toplevel for OCaml" t)
+  (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+  :init
+  (setf utop-command "opam config exec -- utop -emacs")
+  :hook
+  (tuareg-mode . utop-minor-mode))
 
 ;;;; Lua
 (use-package lua-mode
@@ -1424,7 +1446,18 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; YAML
 (use-package yaml-mode
   :ensure t
-  :mode (("\\.ya?ml$" . yaml-mode)))
+  :mode (("\\.ya?ml$" . yaml-mode))
+  :hook (yaml-mode . yaml-mode-outline-hook)
+  :init
+  (defun yaml-outline-level ()
+    "Returns level based on indentation"
+    (s-count-matches (concat "[ ]\\{" (number-to-string  yaml-indent-offset) "\\}") (thing-at-point 'line t)))
+
+  (defun yaml-mode-outline-hook ()
+    (outline-minor-mode)
+    ; "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$"
+    (setf outline-regexp "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$")
+    (setf outline-level 'yaml-outline-level)))
 
 ;;;; Markdown
 (use-package markdown-mode  
@@ -1516,11 +1549,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
             ;; Refiling - allow creating new targets
             (setq org-refile-allow-creating-parent-nodes 'confirm
                   org-refile-targets '((org-agenda-files :maxlevel . 3)))
-            
-            ;; This one will jump between BEGIN and END of org mode blocks
-            ;; https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
+
+;;;; Useful Commands used in Org-Mode
+;;;;; Jump start/end in code block            
             (defun ffy-org-goto-block-begin/end (p)
-              "Go to begining/end of the current block. With prefix goes to the end."
+              "Go to begining/end of the current block. With prefix goes to the end.
+
+This one will jump between BEGIN and END of org mode blocks
+https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
+"
               (interactive "P")
               (let* ((element (org-element-at-point)))
                 (when (or (eq (org-element-type element) 'example-block)
@@ -1536,6 +1573,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                         (skip-chars-backward " \r\t\n")
                         (beginning-of-line)))))))
 
+;;;;; Taking Screenshot from org-mode file
             (defun ffe-image-directory (fn &optional arg)
               "Generates image filename based on the given filename FN.
 (ffe-image-directory \"~/test/work.org\") => \"~/test/\"
@@ -1593,6 +1631,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                 (insert (concat "[[file:" rel-img-file-name "]]"))
                 (org-display-inline-images)))
             )
+;;;; Initialization of Org-mode  
   :init (progn
           (add-hook 'org-src-mode-hook
                     (lambda ()
@@ -1603,6 +1642,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                       ;; (add-hook 'completion-at-point-functions
                       ;;           #'pcomplete-completions-at-point)
                       )))
+;;;; Org-mode related bindings global and local 
   :bind (:map ctl-z-map
               ;; global shortcuts 
               ("a" . org-agenda)

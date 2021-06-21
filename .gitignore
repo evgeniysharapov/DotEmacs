@@ -42,3 +42,4 @@ server/server*
 data/.emacs.desktop.wsl
 transient
 .cache
+eln-cache

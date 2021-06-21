@@ -15,7 +15,6 @@
   (cl-loop for font-name in font-name-list
            until (set-font-if-available font-name)))
 
-
 (when (string-equal system-type "gnu/linux")
   ;; Emacs is running from WSL
 
@@ -23,11 +22,9 @@
   (add-hook 'desktop-save-hook
             (lambda ()
               (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
-  
-  ;; we would rarely run it in Graphics mode but nonetheless
+
   (add-to-list 'default-frame-alist '(font . "Iosevka"))
-  ;; (set-face-attribute 'default (selected-frame) :height 135)
-  )
+  (set-face-attribute 'default (selected-frame) :height 140))
 
 (when (string-equal system-type "windows-nt")
   ;; Emacs is running from Windows

@@ -22,6 +22,8 @@
  '(company-tooltip-align-annotations t)
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
+ '(custom-safe-themes
+   '("2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
  '(default-input-method "russian-computer")
  '(delete-old-versions t)
  '(desktop-globals-to-save
@@ -46,6 +48,8 @@
  '(echo-keystrokes 0.1)
  '(ediff-split-window-function 'split-window-horizontally)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(eglot-fsharp-server-runtime 'net-core)
+ '(eglot-fsharp-server-version "0.45.4")
  '(eldoc-idle-delay 0)
  '(enable-recursive-minibuffers t)
  '(gc-cons-threshold 104857600)
@@ -110,7 +114,7 @@
  '(js2-mode-show-strict-warnings nil)
  '(kill-whole-line t)
  '(ledger-binary-path "ledger")
- '(load-prefer-newer t)
+ '(load-prefer-newer t t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
@@ -201,11 +205,11 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
-   '(ob-restclient powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode fsharp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
+   '(modus-themes ob-restclient powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
- '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. " t)
+ '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. ")
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
@@ -237,27 +241,28 @@
  '(which-function-mode t)
  '(winner-mode t))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(Info-quoted ((t (:underline t :slant oblique))))
- '(col-highlight ((t (:inherit hl-line))))
- '(fixed-pitch ((t nil)))
- '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave)))))
- '(font-lock-builtin-face ((t (:foreground "#0058B0"))))
- '(font-lock-comment-face ((t (:foreground "#948072" :slant italic))))
- '(font-lock-constant-face ((t (:foreground "#009B9B"))))
- '(font-lock-keyword-face ((t (:foreground "#720CAF" :weight semi-bold))))
- '(font-lock-string-face ((t (:foreground "#A02D05"))))
- '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
- '(go-guru-hl-identifier-face ((t (:inherit highlight :underline t))))
- '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
- '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
- '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :weight normal))))
- '(outline-2 ((t (:inherit font-lock-variable-name-face :weight normal))))
- '(outline-3 ((t (:inherit font-lock-keyword-face :weight normal))))
- '(region ((((background dark) (type tty)) :background "color-235") (((background light) (type graphic)) :background "#de71f863de71")))
- '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon")))))
+ ;; ;; custom-set-faces was added by Custom.
+ ;; ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; ;; Your init file should contain only one such instance.
+ ;; ;; If there is more than one, they won't work right.
+ ;; '(Info-quoted ((t (:underline t :slant oblique))))
+ ;; '(col-highlight ((t (:inherit hl-line))))
+ ;; '(fixed-pitch ((t nil)))
+ ;; '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave)))))
+ ;; '(font-lock-builtin-face ((t (:foreground "#0058B0"))))
+ ;; '(font-lock-comment-face ((t (:foreground "#948072" :slant italic))))
+ ;; '(font-lock-constant-face ((t (:foreground "#009B9B"))))
+ ;; '(font-lock-keyword-face ((t (:foreground "#720CAF" :weight semi-bold))))
+ ;; '(font-lock-string-face ((t (:foreground "#A02D05"))))
+ ;; '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
+ ;; '(go-guru-hl-identifier-face ((t (:inherit highlight :underline t))))
+ ;; '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
+ ;; '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
+ ;; '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
+ ;; '(outline-1 ((t (:inherit font-lock-function-name-face :weight normal))))
+ ;; '(outline-2 ((t (:inherit font-lock-variable-name-face :weight normal))))
+ ;; '(outline-3 ((t (:inherit font-lock-keyword-face :weight normal))))
+ ;; '(region ((((background dark) (type tty)) :background "color-235") (((background light) (type graphic)) :background "#de71f863de71")))
+ ;; '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon"))))
+)
 
