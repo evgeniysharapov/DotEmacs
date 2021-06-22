@@ -301,6 +301,8 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
 
 ;;;; Theme
 (use-package modus-themes
+  :ensure t
+  :commands (modus-themes-toggle)
   :init
   (setf modus-themes-slanted-constructs t
         modus-themes-bold-constructs t
@@ -311,7 +313,10 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :config
   (if (display-graphic-p)
       (modus-themes-load-operandi)
-    (modus-themes-load-vivendi)))
+    (modus-themes-load-vivendi))
+  :bind
+  (:map ctl-x-t-map
+        ("t" . modus-themes-toggle)))
 
 ;;; Files
 
