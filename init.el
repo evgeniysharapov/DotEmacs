@@ -426,7 +426,6 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
 ;;; Navigation and Visibility 
 ;; navigation in a buffer  and visibility of the buffer content 
 ;; TODO: add narrow/widen
-
 ;;;; Bookmarks
 (use-package bookmark
   :defer t
@@ -490,6 +489,11 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
   :ensure t
   :bind (:map goto-map
 	 ("j" . ace-jump-mode)))
+
+;;;; Line numbers
+(use-package display-line-numbers
+  :bind (:map ctl-x-t-map
+              ("l" . display-line-numbers-mode)))
 
 ;;; Search
 
