@@ -130,8 +130,7 @@
  '(org-agenda-files
    '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/ai-worklog/Management_Reports.org" "~/Dropbox/Notes/Money.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org" "~/ai-worklog/Worklog.org"))
  '(org-capture-templates
-   '(
-     ("w" "Work Task" entry
+   '(("w" "Work Task" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %^g
 
@@ -241,28 +240,9 @@
  '(which-function-mode t)
  '(winner-mode t))
 (custom-set-faces
- ;; ;; custom-set-faces was added by Custom.
- ;; ;; If you edit it by hand, you could mess it up, so be careful.
- ;; ;; Your init file should contain only one such instance.
- ;; ;; If there is more than one, they won't work right.
- ;; '(Info-quoted ((t (:underline t :slant oblique))))
- ;; '(col-highlight ((t (:inherit hl-line))))
- ;; '(fixed-pitch ((t nil)))
- ;; '(flyspell-duplicate ((t (:underline (:color "Gold3" :style wave)))))
- ;; '(font-lock-builtin-face ((t (:foreground "#0058B0"))))
- ;; '(font-lock-comment-face ((t (:foreground "#948072" :slant italic))))
- ;; '(font-lock-constant-face ((t (:foreground "#009B9B"))))
- ;; '(font-lock-keyword-face ((t (:foreground "#720CAF" :weight semi-bold))))
- ;; '(font-lock-string-face ((t (:foreground "#A02D05"))))
- ;; '(font-lock-variable-name-face ((t (:foreground "#047B0D"))))
- ;; '(go-guru-hl-identifier-face ((t (:inherit highlight :underline t))))
- ;; '(js2-external-variable ((t (:inherit font-lock-variable-name-face :underline t))))
- ;; '(mode-line ((t (:background "RoyalBlue3" :foreground "white" :box (:line-width -1 :style released-button)))))
- ;; '(mode-line-inactive ((t (:inherit mode-line :background "SlateGray1" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light))))
- ;; '(outline-1 ((t (:inherit font-lock-function-name-face :weight normal))))
- ;; '(outline-2 ((t (:inherit font-lock-variable-name-face :weight normal))))
- ;; '(outline-3 ((t (:inherit font-lock-keyword-face :weight normal))))
- ;; '(region ((((background dark) (type tty)) :background "color-235") (((background light) (type graphic)) :background "#de71f863de71")))
- ;; '(which-func ((t (:inherit font-lock-function-name-face :foreground "LightSalmon"))))
-)
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
