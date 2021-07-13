@@ -57,7 +57,6 @@
 ;;;; Packages
 (use-package s :ensure t :defer t)
 (use-package dash :ensure t :defer t)
-;;  Using `diminish'
 (use-package diminish :ensure t)
 (use-package subr-x)
 
