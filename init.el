@@ -5,6 +5,10 @@
   (file-name-directory (or (buffer-file-name) load-file-name))
   "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
 
+(defconst *scripts-dir*
+  (file-name-as-directory (concat *dotfiles-dir* "scripts"))
+  "Directory with various OS scripts that are used by the Emacs")
+
 (defconst *elpa-dir*
   (file-name-as-directory (concat *dotfiles-dir* "elpa"))
   "Directory for ELPA packages")
@@ -118,6 +122,50 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
            (end (cdr bounds)))
       (delete-region beg end)
       (ffe-uuid 4))))
+
+;;;;; System
+(defun linux-p ())
+
+(defun wsl-p ()
+  "Returns t if WSL/WSL2 and nil otherwise"
+  (string-match-p "-[Mm]icrosoft" operating-system-release))
+
+(defun macos-p ())
+;;;;; Filenames
+;;;;;; Generating names 
+(defun ffe-image-directory (fn &optional arg)
+  "Generates directory name based on the given filename FN and optional argument ARG.
+
+Examples:
+(ffe-image-directory \"~/test/work.org\") => \"~/test/\"
+(ffe-image-directory \"~/test/work.org\" 'file) => \"~/test/work/\"
+(ffe-image-directory \"~/test/work.org\" 'img) => \"~/test/img/\"
+"
+  (let* ((parent-dir (file-name-directory fn)))
+    (file-name-as-directory
+     (cond
+      ((eq arg 'file) (concat parent-dir (file-name-base fn)))
+      ((eq arg 'img) (concat parent-dir "img"))
+      (t parent-dir)))))
+
+(defun ffe-image-filename (dir name)
+  "Generates unique filename for the image to be stored in the image directory"
+  (let ((ts (format-time-string "%Y%m%d_%H%M%S")))    
+    (concat
+     (file-name-as-directory dir)
+     (make-temp-name (concat name "_" ts "_"))
+     ".png")))
+
+;;;;; Clipboard
+(defun ffe-clipboard-to-image (filename)
+  "Dumps clipboard content into an image file FILENAME."
+  (let ((dir (file-name-directory filename)))
+    (if (not (file-directory-p dir))
+        (make-directory dir 'parents))
+    ; depending on OS type we do it different
+    (when (wsl-p)
+      (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))
+
 
 ;;; Keymap and Keys Organization 
 
@@ -248,6 +296,7 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
               ("w" . ace-window)))
 
 (defun toggle-window-split ()
+  "Changes frame split from horizontally divided windows to vertically divided windows and vice versa"
   (interactive)
   (if (= (count-windows) 2)
       (let* ((this-win-buffer (window-buffer))
@@ -1583,22 +1632,8 @@ https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-an
                         (skip-chars-backward " \r\t\n")
                         (beginning-of-line)))))))
 
-;;;;; Taking Screenshot from org-mode file
-            (defun ffe-image-directory (fn &optional arg)
-              "Generates image filename based on the given filename FN.
-(ffe-image-directory \"~/test/work.org\") => \"~/test/\"
-(ffe-image-directory \"~/test/work.org\" 'file) => \"~/test/work/\"
-(ffe-image-directory \"~/test/work.org\" 'img) => \"~/test/img/\"
-"
-              (let* ((parent-dir (file-name-directory fn))
-                     (img-dir (file-name-as-directory
-                               (cond
-                                ((eq arg 'file) (concat parent-dir (file-name-base fn)))
-                                ((eq arg 'img) (concat parent-dir "img"))
-                                (t parent-dir)))))
-                img-dir))
-            
-            (defun ffe-org-take-screenshot (&optional arg)
+;;;;; Insert Screenshot into org-mode file
+            (defun ffe-org-insert-screenshot (&optional arg)
               "Runs a program and takes screenshot, then writes it into a file and then inserts link to org buffer.
 
 Files are named after the Org headline, by replacing non-character with dashes.
@@ -1608,12 +1643,11 @@ If ARG is 4, i.e. C-u is pressed, then puts image into a directory (created if i
 If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org file.
 "
               (interactive "p")              
-              (let* ((ts (format-time-string "%Y%m%d_%H%M%S"))
-                     ;; TODO: handle the case of nil
-                     (org-file-name (buffer-file-name))                     
+              (let* ((org-file-name (buffer-file-name))                     
                      (org-header (car (cddddr (org-heading-components))))
+                     (filename-header-part (replace-regexp-in-string "\\W+" "-" org-header nil 'literal))
                      ;; Figure out directory to put images to
-                     (img-dir-full-path
+                     (image-directory
                       (cond
                        ;; C-u
                        ((eq arg 4) (ffe-image-directory org-file-name 'img))
@@ -1621,24 +1655,13 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                        ((eq arg 16) (ffe-image-directory org-file-name))
                        (t (ffe-image-directory org-file-name 'file))))
                      ;; full path to file name
-                     (img-file-name
-                      (concat (make-temp-name
-                               (concat 
-                                img-dir-full-path 
-                                (replace-regexp-in-string "\\W+" "-" org-header nil 'literal)
-                                "_" ts "_"))
-                              ".png"))
+                     (image-file-name (ffe-image-filename image-directory filename-header-part))
                      ;; file name path relative to org-file-name
-                     (rel-img-file-name
+                     (relative-image-file-name
                       (replace-regexp-in-string
-                       (file-name-directory org-file-name) "" img-file-name nil 'literal)))
-                ;; ensure directory for images exists
-                (if (not (file-directory-p img-dir-full-path))
-                    (make-directory img-dir-full-path 'parents))
-                ;; This is system specific
-                ;; TODO: starting a script takes a while
-                (shell-command (concat "powershell " *dotfiles-dir* "screenshot.ps1 " img-file-name))
-                (insert (concat "[[file:" rel-img-file-name "]]"))
+                       (file-name-directory org-file-name) "" image-file-name nil 'literal)))
+                (ffe-clipboard-to-image image-file-name)
+                (insert (concat "[[file:" relative-image-file-name "]]"))
                 (org-display-inline-images)))
             )
 ;;;; Initialization of Org-mode  
@@ -1662,7 +1685,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ("j" . org-clock-goto)
               :map org-mode-map
               ("C-c k" . org-cut-subtree)
-              ("C-c C-x s" . ffe-org-take-screenshot)
+              ("C-c C-x s" . ffe-org-insert-screenshot)
               ("M-n" . outline-next-visible-heading)
               ("M-p" . outline-previous-visible-heading)
               :map org-babel-map
