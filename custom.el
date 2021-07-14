@@ -114,7 +114,7 @@
  '(js2-mode-show-strict-warnings nil)
  '(kill-whole-line t)
  '(ledger-binary-path "ledger")
- '(load-prefer-newer t t)
+ '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
@@ -208,7 +208,7 @@
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
- '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. ")
+ '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. " t)
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
