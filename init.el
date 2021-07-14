@@ -41,6 +41,10 @@
 ;; erase the function
 (fmakunbound #'add-directory-to-path)
 
+;;; Load custom-vars File
+(setq custom-file (concat *dotfiles-dir* "custom.el"))
+(load custom-file 'noerror)
+
 ;;; Packages Repos and Use-Package
 (setq package-user-dir *elpa-dir* 
       package-archives '(("gnu"          . "http://elpa.gnu.org/packages/")
@@ -1718,10 +1722,6 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 (when-let ((local-settings (concat *dotfiles-dir* (system-name) ".el"))
 	   (exists (file-exists-p local-settings)))
   (load local-settings))
-
-;;; Load custom-vars File
-(setq custom-file (concat *dotfiles-dir* "custom.el"))
-(load custom-file 'noerror)
 
 ;;; Server Mode
 ;; Start server-mode if we are not in the daemon mode
