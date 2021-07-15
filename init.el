@@ -41,24 +41,33 @@
 ;; erase the function
 (fmakunbound #'add-directory-to-path)
 
+
 ;;; Load custom-vars File
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
 
 ;;; Packages Repos and Use-Package
-(setq package-user-dir *elpa-dir* 
-      package-archives '(("gnu"          . "http://elpa.gnu.org/packages/")
-                         ("melpa-stable" . "http://stable.melpa.org/packages/")
-                         ("melpa"        . "http://melpa.org/packages/")))
+(require 'package)
 (package-initialize)
-;; the rest of the package installation is hinged on this one
+(setf package-user-dir *elpa-dir*)
+(unless (assoc-default "melpa" package-archives)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+(unless (assoc-default "nongnu" package-archives)
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+(unless (assoc-default "melpa-stable" package-archives)
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t))
+
 (unless package-archive-contents
   (package-refresh-contents))
+
+;; the rest of the package installation is hinged on this one
 ;; newer versions of Emacs may carry this one, or it has been installed already
 (unless (package-installed-p 'use-package)
-  (package-install (intern "use-package")))
+  (package-install 'use-package))
+;; (use-package use-package-ensure
+;;   :config  (setf use-package-always-ensure t))
+(setf use-package-enable-imenu-support t)
 
-(setq use-package-enable-imenu-support t)
 
 ;;; Utility
 
@@ -1716,7 +1725,6 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :commands (docker-containers)
   :init (progn
 	  (use-package json-rpc :ensure t)))
-
 
 ;;; Loading System Specific Files
 (when-let ((local-settings (concat *dotfiles-dir* (system-name) ".el"))
