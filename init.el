@@ -1410,10 +1410,11 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; and unzip  it in $HOME/.FsAutoComplete/netcore
 (use-package fsharp-mode
 ;  :defer t
-  :ensure nil
-  :load-path "~/Projects/FSharp/emacs-fsharp-mode"
+  :ensure t
+;  :load-path "~/Projects/FSharp/emacs-fsharp-mode"
   :init (setq eglot-fsharp-server-install-dir "~/.FsAutoComplete/")
   :config (progn
+            (use-package eglot :ensure t)
             (require 'eglot-fsharp)))
 
 
