@@ -848,12 +848,12 @@ Examples:
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; Following commands are disabled by default,
 (put 'narrow-to-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'erase-buffer 'disabled nil)
-(put 'set-goal-column 'disabled nil)
-(put 'list-timers 'disabled nil)
+(put 'downcase-region  'disabled nil)
+(put 'upcase-region    'disabled nil)
+(put 'narrow-to-page   'disabled nil)
+(put 'erase-buffer     'disabled nil)
+(put 'set-goal-column  'disabled nil)
+(put 'list-timers      'disabled nil)
 ; (put 'Info-edit 'disabled nil)
 ; (put 'scroll-left 'disabled nil)
 
