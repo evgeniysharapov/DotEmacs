@@ -25,6 +25,19 @@
   (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
   "Directory for Emacs Extensions files")
 
+;;;; Operating System and Environement
+
+(defconst *is-linux* nil
+  "Is t when we run it on Linux")
+
+(defconst *is-wsl*
+  (string-match-p "-[Mm]icrosoft" operating-system-release)
+  "Is t if WSL/WSL2 and nil otherwise")
+
+(defconst *is-macos* nil
+  "Is t if we run on MacOS")
+
+
 ;;; Load Libraries Recursively
 ;; Add `*lisp-dir*' paths recursively to `load-path'
 ;; create recursive function
@@ -64,6 +77,7 @@
 ;; newer versions of Emacs may carry this one, or it has been installed already
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
+;; Using always-ensure fails most of the time with 'package-' not available message
 ;; (use-package use-package-ensure
 ;;   :config  (setf use-package-always-ensure t))
 (setf use-package-enable-imenu-support t)
@@ -72,8 +86,8 @@
 ;;; Utility
 
 ;;;; Packages
-(use-package s :ensure t :defer t)
-(use-package dash :ensure t :defer t)
+(use-package s        :ensure t :defer t)
+(use-package dash     :ensure t :defer t)
 (use-package diminish :ensure t)
 (use-package subr-x)
 
@@ -136,14 +150,6 @@ With prefix of 4 (C-u) inserts uuid in a buffer."
       (delete-region beg end)
       (ffe-uuid 4))))
 
-;;;;; System
-(defun linux-p ())
-
-(defun wsl-p ()
-  "Returns t if WSL/WSL2 and nil otherwise"
-  (string-match-p "-[Mm]icrosoft" operating-system-release))
-
-(defun macos-p ())
 ;;;;; Filenames
 ;;;;;; Generating names 
 (defun ffe-image-directory (fn &optional arg)
@@ -176,7 +182,7 @@ Examples:
     (if (not (file-directory-p dir))
         (make-directory dir 'parents))
     ; depending on OS type we do it different
-    (when (wsl-p)
+    (when *is-wsl*
       (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))
 
 
