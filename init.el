@@ -1734,7 +1734,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 	  (use-package json-rpc :ensure t)))
 
 ;;; Loading System Specific Files
-(when-let ((local-settings (concat *dotfiles-dir* (system-name) ".el"))
+(when-let ((local-settings (concat *dotfiles-dir* (file-name-as-directory  "systems") (system-name) ".el"))
 	   (exists (file-exists-p local-settings)))
   (load local-settings))
 
