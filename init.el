@@ -1014,22 +1014,24 @@ Examples:
 
 (use-package lsp-ui
   :ensure t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :after lsp-mode)
 
+;; company-mode completion
 (use-package company-lsp
-  ;; company-mode completion
   :ensure t
   :commands company-lsp
   :config (push 'company-lsp company-backends))
 
+;; project wide overview
 (use-package lsp-treemacs
-  ;; project wide overview
   :ensure t
   :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode
   :ensure t
-  :commands (dap-debug dap-debug-edit-template))
+  :commands (dap-debug dap-debug-edit-template)
+  :after lsp-mode)
 
 (use-package which-key
   :ensure t
