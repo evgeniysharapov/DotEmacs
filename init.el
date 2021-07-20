@@ -1033,6 +1033,10 @@ Examples:
   :commands (dap-debug dap-debug-edit-template)
   :after lsp-mode)
 
+;; For some languages Eglot seems to work better
+(use-package eglot
+  :ensure t)
+
 (use-package which-key
   :ensure t
   :config (which-key-mode))
@@ -1411,13 +1415,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; Download netcore release from https://github.com/fsharp/FsAutoComplete
 ;; and unzip  it in $HOME/.FsAutoComplete/netcore
 (use-package fsharp-mode
-;  :defer t
   :ensure t
-;  :load-path "~/Projects/FSharp/emacs-fsharp-mode"
+  :after eglot
+  :init (add-hook 'fsharp-mode-hook #'eglot-ensure))
+
+(use-package eglot-fsharp
+  :ensure t
+  :after fsharp-mode eglot
   :init
-  (setq eglot-fsharp-server-install-dir "~/.FsAutoComplete/")
-  :config
-  (use-package eglot-fsharp :ensure t))
+  (setf eglot-fsharp-server-install-dir "~/.FsAutoComplete/"))
 
 
 ;;;; Ocaml
