@@ -1009,6 +1009,7 @@ Examples:
   :hook
   ((js2-mode . lsp)
    (yaml-mode . lsp)
+   (fsharp-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp lsp-deferred)
 
@@ -1032,10 +1033,6 @@ Examples:
   :ensure t
   :commands (dap-debug dap-debug-edit-template)
   :after lsp-mode)
-
-;; For some languages Eglot seems to work better
-(use-package eglot
-  :ensure t)
 
 (use-package which-key
   :ensure t
@@ -1416,14 +1413,14 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; and unzip  it in $HOME/.FsAutoComplete/netcore
 (use-package fsharp-mode
   :ensure t
-  :after eglot
-  :init (add-hook 'fsharp-mode-hook #'eglot-ensure))
-
-(use-package eglot-fsharp
-  :ensure t
-  :after fsharp-mode eglot
   :init
-  (setf eglot-fsharp-server-install-dir "~/.FsAutoComplete/"))
+  (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"))
+
+;; (use-package eglot-fsharp
+;;   :ensure t
+;;   :after fsharp-mode eglot
+;;   :init
+;;   (setf eglot-fsharp-server-install-dir "~/.FsAutoComplete/"))
 
 
 ;;;; Ocaml
