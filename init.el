@@ -71,7 +71,7 @@
   (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t))
 
 (unless package-archive-contents
-  (package-refresh-contents))
+  (package-refresh-contents t))
 
 ;; the rest of the package installation is hinged on this one
 ;; newer versions of Emacs may carry this one, or it has been installed already
@@ -1414,10 +1414,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;  :defer t
   :ensure t
 ;  :load-path "~/Projects/FSharp/emacs-fsharp-mode"
-  :init (setq eglot-fsharp-server-install-dir "~/.FsAutoComplete/")
-  :config (progn
-            (use-package eglot :ensure t)
-            (require 'eglot-fsharp)))
+  :init
+  (setq eglot-fsharp-server-install-dir "~/.FsAutoComplete/")
+  :config
+  (use-package eglot-fsharp :ensure t))
 
 
 ;;;; Ocaml
@@ -1598,7 +1598,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; Shell Scripts 
 (use-package sh-script
   :mode (("\\.zsh" . sh-mode)))
-
+;;;; RESTClient
+(use-package restclient
+  :ensure t)
 
 ;;; Org Mode
 
