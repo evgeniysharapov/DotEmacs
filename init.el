@@ -1005,7 +1005,8 @@ Examples:
 ;;;; Language Server
 (use-package lsp-mode
   :ensure t
-  :init (setq lsp-keymap-prefix "C-;")
+  :init
+  (setq lsp-keymap-prefix "C-.")
   :hook
   ((js2-mode . lsp)
    (yaml-mode . lsp)
@@ -1016,13 +1017,9 @@ Examples:
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
+  :config (setf lsp-ui-doc-position 'at-point
+                lsp-ui-doc-mode nil)
   :after lsp-mode)
-
-;; company-mode completion
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp
-  :config (push 'company-lsp company-backends))
 
 ;; project wide overview
 (use-package lsp-treemacs
@@ -1414,7 +1411,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package fsharp-mode
   :ensure t
   :init
-  (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"))
+  (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"
+        lsp-fsharp-external-autocomplete t))
 
 ;; (use-package eglot-fsharp
 ;;   :ensure t

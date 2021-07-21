@@ -209,7 +209,7 @@
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
- '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. " t)
+ '(python-shell-prompt-block-regexp "\\s-+\\.\\.\\. ")
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
