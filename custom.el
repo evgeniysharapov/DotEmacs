@@ -115,6 +115,12 @@
  '(js2-mode-show-strict-warnings nil)
  '(kill-whole-line t)
  '(ledger-binary-path "ledger")
+ '(ledger-reports
+   '(("unknown" "ledger [[ledger-mode-flags]] -f /home/esharapov/Projects/Money/2021.ledger reg expenses:unknown")
+     ("bal" "%(binary) -f %(ledger-file) bal")
+     ("reg" "%(binary) -f %(ledger-file) reg")
+     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(monky-process-type 'cmdserver)
@@ -213,7 +219,8 @@
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
-   '((eval outline-minor-mode t)
+   '((ledger-accounts-file . "meta.ledger")
+     (eval outline-minor-mode t)
      (markdown-asymmetric-header . t)
      (mocha-project-test-directory . "test/server\"")
      (mocha-options . "--reporter spec --recursive --compilers js:babel-core/register")
