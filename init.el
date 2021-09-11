@@ -1672,6 +1672,12 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                 (insert (concat "[[file:" relative-image-file-name "]]"))
                 (org-display-inline-images)))
             )
+;;;;; Remove Bookmark Faces
+  (defun ffe-reset-bookmark-faces ()
+    "Removes all bookmark faces overlays that are accumulating in the Org mode buffer that's open and used for capture."
+    (interactive)
+    (remove-overlays nil nil 'face 'bookmark-face))
+  
 ;;;; Initialization of Org-mode  
   :init (progn
           (add-hook 'org-src-mode-hook
