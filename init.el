@@ -729,6 +729,23 @@ Examples:
           ;; auto updateable ibuffer
           (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
 
+
+(defun ffe-swap-buffers-with-window ()
+  "Moves current buffer to the given WINDOW."
+  (interactive)
+  (let ((this-buffer (current-buffer))
+        (this-window (selected-window)))
+    ; this will use ace to select window and perform action
+    (aw-select "Ace - Move Buffer"
+               (lambda (window)
+                 (let ((that-buffer (window-buffer window)))
+                   (message  "Window: %s  Buffer: %s" window this-buffer)
+                   (set-window-buffer this-window that-buffer)
+                   (set-window-buffer window this-buffer)
+                   (select-window window))))))
+
+(bind-key "w" 'ffe-swap-buffers-with-window ctl-x-x-map)
+
 (defun ffe-kill-current-buffer ()
   "Kills current buffer"
   (interactive)
@@ -1504,9 +1521,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (defun yaml-mode-outline-hook ()
     (outline-minor-mode)
     ; "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$"
-    (setf outline-regexp "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$")
-    (setf outline-level 'yaml-outline-level)))
-
+    ;; (setf outline-regexp "^\\(\\s-\\{2\\}\\)*\\(['][^']*[']\\|[\"][^\"]*[\"]\\|[a-zA-Z0-9-_/:.}{]+\\):\\s-*$")
+    ;; (setf outline-level 'yaml-outline-level)
+    ))
 ;;;; Markdown
 (use-package markdown-mode  
   :ensure t
@@ -1655,6 +1672,12 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                 (insert (concat "[[file:" relative-image-file-name "]]"))
                 (org-display-inline-images)))
             )
+;;;;; Remove Bookmark Faces
+  (defun ffe-reset-bookmark-faces ()
+    "Removes all bookmark faces overlays that are accumulating in the Org mode buffer that's open and used for capture."
+    (interactive)
+    (remove-overlays nil nil 'face 'bookmark-face))
+  
 ;;;; Initialization of Org-mode  
   :init (progn
           (add-hook 'org-src-mode-hook
