@@ -34,7 +34,8 @@
   (string-match-p "-[Mm]icrosoft" operating-system-release)
   "Is t if WSL/WSL2 and nil otherwise")
 
-(defconst *is-macos* nil
+(defconst *is-macos*
+  (eq 'darwin system-type)
   "Is t if we run on MacOS")
 
 
