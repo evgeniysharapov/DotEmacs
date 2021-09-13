@@ -358,7 +358,7 @@ Examples:
               ("+" . crosshairs-mode)))
 
 ;; there's no point in hiding menubar on macos
-(when (not (string= system-type "darwin"))
+(when (not *is-macos*)
   (custom-set-minor-mode 'menu-bar-mode nil))
 (custom-set-minor-mode 'tool-bar-mode nil)
 (custom-set-minor-mode 'scroll-bar-mode nil)
