@@ -1712,6 +1712,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 (use-package ledger-mode
   :ensure t
   :defer t)
+
 (use-package flycheck-ledger
   :ensure t
   :after ledger-mode)
@@ -1719,7 +1720,9 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;;; Docker
 (use-package dockerfile-mode
   :ensure t
-  :commands dockerfile-mode)
+  :commands dockerfile-mode
+  :mode "Dockerfile")
+
 (use-package docker
   :ensure t
   :pin melpa-stable
