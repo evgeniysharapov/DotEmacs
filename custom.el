@@ -124,9 +124,11 @@
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
+ '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
+ `(nsm-settings-file ,(expand-file-name "network-security.data" *data-dir*))
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
       ((agenda "" nil)
