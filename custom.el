@@ -122,11 +122,13 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(load-prefer-newer t t)
+ '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
+ '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
+ `(nsm-settings-file ,(expand-file-name "network-security.data" *data-dir*))
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
       ((agenda "" nil)
@@ -136,7 +138,7 @@
       ((org-agenda-files
         '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
  '(org-agenda-files
-   '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Cooking.org" "~/Dropbox/Notes/Development.org" "~/Dropbox/Notes/Docker_Workshop.org" "~/Dropbox/Notes/Health.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Interviews.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/ai-worklog/Management_Reports.org" "~/Dropbox/Notes/Money.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org" "~/ai-worklog/Worklog.org"))
+   '("~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org" "~/ai-worklog/Worklog.org"))
  '(org-capture-templates
    '(("w" "Work Task" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
@@ -253,5 +255,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(fixed-pitch ((t (:family "Iosevka"))))
+ '(fsharp-ui-operator-face ((t (:inherit font-lock-builtin-face)))))
 

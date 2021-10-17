@@ -1679,6 +1679,17 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
     (interactive)
     (remove-overlays nil nil 'face 'bookmark-face))
   
+;;;;; Jump to last capture
+  (defun bookmark-jump-if-exists (bookmark-name)
+    "Jumps to bookmark with name BOOKMARK-NAME if it exists in `bookmark-alist'."
+    (when (cl-find-if (lambda (b) (string-equal (car b) bookmark-name)) bookmark-alist)
+      (bookmark-jump bookmark-name)))
+  
+  (defun org-jump-to-last-capture ()
+    "Jumps to last org capture bookmark"
+    (interactive)
+    (bookmark-jump-if-exists "org-capture-last-stored"))
+  
 ;;;; Initialization of Org-mode  
   :init (progn
           (add-hook 'org-src-mode-hook
@@ -1698,6 +1709,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ("b" . org-switchb)
               ("c" . org-capture)
               ("j" . org-clock-goto)
+              ("o" . org-jump-to-last-capture)
               :map org-mode-map
               ("C-c k" . org-cut-subtree)
               ("C-c C-x s" . ffe-org-insert-screenshot)
@@ -1713,6 +1725,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 (use-package ledger-mode
   :ensure t
   :defer t)
+
 (use-package flycheck-ledger
   :ensure t
   :after ledger-mode)
@@ -1720,7 +1733,9 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;;; Docker
 (use-package dockerfile-mode
   :ensure t
-  :commands dockerfile-mode)
+  :commands dockerfile-mode
+  :mode "Dockerfile")
+
 (use-package docker
   :ensure t
   :pin melpa-stable
