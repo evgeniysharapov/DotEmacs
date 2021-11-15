@@ -212,6 +212,15 @@ Examples:
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
+
+(use-package which-key
+  :ensure t
+  :commands (which-key-C-h-dispatch)
+  :config (which-key-mode)
+  ;; otherwise you can't page through help-map
+  :bind (:map help-map
+              ("C-h" . which-key-C-h-dispatch)))
+
 ;;; UI
 ;; Configuring User experience and UI
 ;;;; Fonts
@@ -1049,9 +1058,6 @@ Examples:
   :commands (dap-debug dap-debug-edit-template)
   :after lsp-mode)
 
-(use-package which-key
-  :ensure t
-  :config (which-key-mode))
 
 ;;;; Lisp
 ;; This is a lisp based programming language configuration
