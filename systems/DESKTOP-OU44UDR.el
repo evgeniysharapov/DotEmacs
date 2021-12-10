@@ -20,9 +20,9 @@
   ;; Emacs is running from WSL
 
   ;; for running 'emacs --daemon' we store .emacs.desktop in a different spot
-  (add-hook 'desktop-save-hook
-            (lambda ()
-              (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
+  ;; (add-hook 'desktop-save-hook
+  ;;           (lambda ()
+  ;;             (customize-set-variable 'desktop-base-file-name ".emacs.desktop.wsl")))
 
   (add-to-list 'default-frame-alist '(font . "Iosevka"))
   (set-face-attribute 'default (selected-frame) :height 140))

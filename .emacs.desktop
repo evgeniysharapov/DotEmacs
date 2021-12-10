@@ -1,0 +1,72 @@
+;; -*- mode: emacs-lisp; lexical-binding:t; coding: utf-8-emacs; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Thu Dec  9 22:17:45 2021
+;; Desktop file format version 208
+;; Emacs version 28.0.50
+
+;; Global section:
+(setq desktop-saved-frameset nil)
+(setq desktop-missing-file-warning nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq regexp-history nil)
+(setq grep-history nil)
+(setq register-alist nil)
+(setq file-name-history '("/home/esharapov/.emacs.d/init.el"))
+(setq tags-file-name nil)
+(setq shell-command-history nil)
+(setq query-replace-history nil)
+(setq minibuffer-history '("use-package" "package-archives"))
+(setq compile-history nil)
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 208
+  "/usr/local/share/emacs/28.0.50/lisp/emacs-lisp/package.el.gz"
+  "package.el.gz"
+  'emacs-lisp-mode
+  '(eldoc-mode global-auto-revert-mode override-global-mode)
+  90630
+  '(nil nil)
+  t
+  nil
+  '((buffer-display-time 25010 50899 752413 900000) (buffer-file-coding-system . utf-8-unix))
+  '((mark-ring nil)))
+
+(desktop-create-buffer 208
+  "/home/esharapov/.emacs.d/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(eldoc-mode global-auto-revert-mode outline-minor-mode override-global-mode)
+  2750
+  '(nil nil)
+  nil
+  nil
+  '((buffer-display-time 25010 50809 557277 400000) (buffer-file-coding-system . utf-8-unix))
+  '((mark-ring nil)))
+
+(desktop-append-buffer-args 208
+  nil
+  ".emacs.d"
+  'dired-mode
+  '(global-auto-revert-mode override-global-mode)
+  1068
+  '(nil nil)
+  t
+  '("/home/esharapov/.emacs.d/")
+  '((buffer-display-time 25010 50656 284963 900000))
+  '((mark-ring nil)))
+
+(desktop-append-buffer-args 208
+  nil
+  "elpa"
+  'dired-mode
+  '(global-auto-revert-mode override-global-mode)
+  1
+  '(1 nil)
+  t
+  '("/home/esharapov/.emacs.d/elpa/")
+  '((buffer-display-time 25010 50641 787874 100000))
+  '((mark-ring (1))))
+

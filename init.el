@@ -1276,10 +1276,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;;; Javascript
 ;;
-;; Node packages expected to be installed globally:
-;; npm i -g tern
-;; npm install -g javascript-typescript-langserver
-
+;; We use lsp-server with NodeJS
+;; see https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/
+;; 
 (use-package js2-mode
   :defer t
   :diminish (javascript-mode . "JS")
