@@ -1278,6 +1278,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;
 ;; We use lsp-server with NodeJS
 ;; see https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/
+;; could be installed via `lsp-install-server' then choose 'ts-ls
 ;; 
 (use-package js2-mode
   :defer t
