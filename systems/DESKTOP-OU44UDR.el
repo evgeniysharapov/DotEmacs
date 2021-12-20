@@ -42,8 +42,7 @@
   
   (setenv "PATH" (concat "C:\\Users\\esharapov\\Tools\\Bin;" (getenv "PATH")))
 
-  (setq ffip-use-rust-fd t)
-)
+  (setq ffip-use-rust-fd t))
 ;;; P3530-20190221.el ends here
 
 
