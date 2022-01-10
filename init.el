@@ -1448,6 +1448,13 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package lua-mode
   :ensure t)
 
+;;;; Shaders
+(use-package company-glsl
+  :ensure t
+  :config
+  (when (executable-find "glslangValidator")
+    (add-to-list 'company-backends 'company-glsl)))
+
 ;;; TeX Mode
 ;; TeX Settings
 (use-package tex-site                   ; AucTeX initialization
