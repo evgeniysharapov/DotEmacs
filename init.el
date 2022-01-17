@@ -184,7 +184,10 @@ Examples:
         (make-directory dir 'parents))
     ; depending on OS type we do it different
     (when *is-wsl*
-      (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))
+      (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))
+    (when *is-macos*
+      (shell-command
+       (concat "osascript -e 'get the clipboard as «class PNGf»' | sed 's/«data PNGf//; s/»//' | xxd -r -p  > " filename)))))
 
 
 ;;; Keymap and Keys Organization 
