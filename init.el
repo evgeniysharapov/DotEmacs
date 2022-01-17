@@ -1446,6 +1446,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package lua-mode
   :ensure t)
 
+;;;; Powershell
+(use-package powershell
+  :ensure t)
 ;;; TeX Mode
 ;; TeX Settings
 (use-package tex-site                   ; AucTeX initialization
