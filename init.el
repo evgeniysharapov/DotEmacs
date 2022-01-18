@@ -1736,7 +1736,9 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                     (lambda ()
                       ;; (add-hook 'completion-at-point-functions
                       ;;           #'pcomplete-completions-at-point)
-                      )))
+                      ))
+          ;; remove overlays from the org-file
+          (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces))
 ;;;; Org-mode related bindings global and local 
   :bind (:map ctl-z-map
               ;; global shortcuts 
