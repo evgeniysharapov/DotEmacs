@@ -1759,6 +1759,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
+
 ;;; Ledger
 (use-package ledger-mode
   :ensure t
