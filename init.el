@@ -1645,7 +1645,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
             ;; Refiling - allow creating new targets
             (setq org-refile-allow-creating-parent-nodes 'confirm
-                  org-refile-targets '((org-agenda-files :maxlevel . 3)))
+                  org-refile-targets '((org-agenda-files :maxlevel . 5)))
 
 ;;;; Useful Commands used in Org-Mode
 ;;;;; Jump start/end in code block            
