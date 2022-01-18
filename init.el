@@ -182,8 +182,12 @@ Examples:
     (if (not (file-directory-p dir))
         (make-directory dir 'parents))
     ; depending on OS type we do it different
-    (when *is-wsl*
-      (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))
+    (when *is-wsl*      
+      (let ((oldbuf (current-buffer))
+            (tempf (make-temp-file "scratch"))
+            (res ""))
+        (with-current-buffer "*scratch*"
+          (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))))
 
 
 ;;; Keymap and Keys Organization 
@@ -1694,7 +1698,14 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                      (relative-image-file-name
                       (replace-regexp-in-string
                        (file-name-directory org-file-name) "" image-file-name nil 'literal)))
-                (ffe-clipboard-to-image image-file-name)
+                ;; Turns out we can have issues writing into files
+                ;; that are in directory pointed to by symbolic link
+                ;; We will write through temporary file
+                (let ((temp-file (make-temp-file "clipimg")))                  
+                  (with-temp-file temp-file
+                    (ffe-clipboard-to-image temp-file)
+                    (copy-file temp-file image-file-name t)
+                    (delete-file temp-file)))
                 (insert (concat "[[file:" relative-image-file-name "]]"))
                 (org-display-inline-images)))
             )
