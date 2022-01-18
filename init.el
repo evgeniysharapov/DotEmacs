@@ -810,6 +810,19 @@ Examples:
 	  (when (executable-find "hunspell")
 	    (setq ispell-program-name "hunspell"))))
 
+;;;; Using LangTool
+;; Obtain langtool (https://languagetool.org/)
+;; In the terminal run
+;;     mkdir -p $HOME/.local/share
+;;     curl -o langtool.zip https://languagetool.org/download/LanguageTool-stable.zip
+;;     unzip langtool.zip -d $HOME/.local/share/
+;;     rm -f langtool.zip 
+;;  See https://github.com/mhayashi1120/Emacs-langtool
+(use-package langtool
+  :ensure t
+  :init (setf langtool-language-tool-jar "~/.local/share/LanguageTool-5.5/languagetool-commandline.jar"))
+
+
 ;;; Help
 ;; Help/Info configuration
 ;;;; Emacs Help
