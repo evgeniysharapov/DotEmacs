@@ -122,7 +122,7 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(load-prefer-newer t)
+ '(load-prefer-newer t t)
  '(ls-lisp-dirs-first t)
  '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
@@ -138,12 +138,12 @@
       ((org-agenda-files
         '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
  '(org-agenda-files
-   '("~/ai-worklog/Worklog.org" "~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/Dropbox/Notes/Links.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org"))
+   '("~/ai-worklog/Worklog.org" "~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org"))
  '(org-capture-templates
    '(("w" "Work Task" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
-      "* %^{Description}  %^g
-
+      "* %^{Description}  %(org-set-tags  \":meeting:\")
+%t
 %?" :clock-in t :clock-keep t)
      ("W" "Work Task (with ID)" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
@@ -157,7 +157,7 @@
      ("m" "Meeting" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %(org-set-tags  \":meeting:\")
-
+%t
 %?" :clock-in t :clock-keep t)
      ("a" "Add Task" entry
       (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
