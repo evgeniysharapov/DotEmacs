@@ -67,6 +67,6 @@ asdfadsf
 * ~~Move all the parts configuration ffe-* files to init.el once outline is used.~~ 
 
 * Heavy configuration parts can go to *-plus packages 
-  
+
   
 

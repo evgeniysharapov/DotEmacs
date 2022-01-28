@@ -183,11 +183,16 @@ Examples:
     (if (not (file-directory-p dir))
         (make-directory dir 'parents))
     ; depending on OS type we do it different
-    (when *is-wsl*
-      (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))
+    (when *is-wsl*      
+      (let ((oldbuf (current-buffer))
+            (tempf (make-temp-file "scratch"))
+            (res ""))
+        (with-current-buffer "*scratch*"
+          (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))
     (when *is-macos*
       (shell-command
        (concat "osascript -e 'get the clipboard as «class PNGf»' | sed 's/«data PNGf//; s/»//' | xxd -r -p  > " filename)))))
+
 
 
 ;;; Keymap and Keys Organization 
@@ -215,6 +220,15 @@ Examples:
 (let ((c-x-z (global-key-binding [(control x) ?z])))
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
+
+
+(use-package which-key
+  :ensure t
+  :commands (which-key-C-h-dispatch)
+  :config (which-key-mode)
+  ;; otherwise you can't page through help-map
+  :bind (:map help-map
+              ("C-h" . which-key-C-h-dispatch)))
 
 ;;; UI
 ;; Configuring User experience and UI
@@ -805,6 +819,19 @@ Examples:
 	  (when (executable-find "hunspell")
 	    (setq ispell-program-name "hunspell"))))
 
+;;;; Using LangTool
+;; Obtain langtool (https://languagetool.org/)
+;; In the terminal run
+;;     mkdir -p $HOME/.local/share
+;;     curl -o langtool.zip https://languagetool.org/download/LanguageTool-stable.zip
+;;     unzip langtool.zip -d $HOME/.local/share/
+;;     rm -f langtool.zip 
+;;  See https://github.com/mhayashi1120/Emacs-langtool
+(use-package langtool
+  :ensure t
+  :init (setf langtool-language-tool-jar "~/.local/share/LanguageTool-5.5/languagetool-commandline.jar"))
+
+
 ;;; Help
 ;; Help/Info configuration
 ;;;; Emacs Help
@@ -1053,9 +1080,6 @@ Examples:
   :commands (dap-debug dap-debug-edit-template)
   :after lsp-mode)
 
-(use-package which-key
-  :ensure t
-  :config (which-key-mode))
 
 ;;;; Lisp
 ;; This is a lisp based programming language configuration
@@ -1274,10 +1298,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;;; Javascript
 ;;
-;; Node packages expected to be installed globally:
-;; npm i -g tern
-;; npm install -g javascript-typescript-langserver
-
+;; We use lsp-server with NodeJS
+;; see https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/
+;; could be installed via `lsp-install-server' then choose 'ts-ls
+;; 
 (use-package js2-mode
   :defer t
   :diminish (javascript-mode . "JS")
@@ -1449,6 +1473,14 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; Powershell
 (use-package powershell
   :ensure t)
+
+;;;; Shaders
+(use-package company-glsl
+  :ensure t
+  :config
+  (when (executable-find "glslangValidator")
+    (add-to-list 'company-backends 'company-glsl)))
+
 ;;; TeX Mode
 ;; TeX Settings
 (use-package tex-site                   ; AucTeX initialization
@@ -1622,7 +1654,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
             ;; Refiling - allow creating new targets
             (setq org-refile-allow-creating-parent-nodes 'confirm
-                  org-refile-targets '((org-agenda-files :maxlevel . 3)))
+                  org-refile-targets '((org-agenda-files :maxlevel . 5)))
 
 ;;;; Useful Commands used in Org-Mode
 ;;;;; Jump start/end in code block            
@@ -1675,7 +1707,14 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                      (relative-image-file-name
                       (replace-regexp-in-string
                        (file-name-directory org-file-name) "" image-file-name nil 'literal)))
-                (ffe-clipboard-to-image image-file-name)
+                ;; Turns out we can have issues writing into files
+                ;; that are in directory pointed to by symbolic link
+                ;; We will write through temporary file
+                (let ((temp-file (make-temp-file "clipimg")))                  
+                  (with-temp-file temp-file
+                    (ffe-clipboard-to-image temp-file)
+                    (copy-file temp-file image-file-name t)
+                    (delete-file temp-file)))
                 (insert (concat "[[file:" relative-image-file-name "]]"))
                 (org-display-inline-images)))
             )
@@ -1706,7 +1745,9 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                     (lambda ()
                       ;; (add-hook 'completion-at-point-functions
                       ;;           #'pcomplete-completions-at-point)
-                      )))
+                      ))
+          ;; remove overlays from the org-file
+          (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces))
 ;;;; Org-mode related bindings global and local 
   :bind (:map ctl-z-map
               ;; global shortcuts 
@@ -1726,6 +1767,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ;;  Swap C-j and RET
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
+
 
 ;;; Ledger
 (use-package ledger-mode

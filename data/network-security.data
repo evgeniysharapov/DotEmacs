@@ -1,7 +1,14 @@
 ;;;; -*- mode: lisp-data -*-
 (
+<<<<<<< HEAD
  (:id "sha1:ccfd2cc2a08c89a9b10969be8c1e926954d53e28" :fingerprints ("sha1:0c:bd:68:cb:c0:01:e2:ad:93:0d:b9:3b:77:09:2e:47:9c:de:6b:28" "sha1:de:74:ee:90:bf:b8:e5:20:54:66:5b:bc:6f:6b:d5:75:a8:f7:db:cb") :host "stable.melpa.org:443" :conditions (:same-cert))
  (:id "sha1:85b31c268009209a8d3c5387033b219264f7e62b" :fingerprints ("sha1:0c:bd:68:cb:c0:01:e2:ad:93:0d:b9:3b:77:09:2e:47:9c:de:6b:28" "sha1:de:74:ee:90:bf:b8:e5:20:54:66:5b:bc:6f:6b:d5:75:a8:f7:db:cb") :host "melpa.org:443" :conditions (:same-cert))
  (:id "sha1:1dd1af4a16d2ed2802679be2de23161d1f79b3c7" :fingerprints ("sha1:d6:84:c9:fd:51:0f:f4:f0:fc:82:22:b8:e3:35:58:fd:88:40:d6:7d" "sha1:8b:16:57:95:9b:8c:5a:b3:2b:88:19:5b:df:58:b0:be:af:42:aa:4c") :host "elpa.nongnu.org:443" :conditions (:same-cert))
  (:id "sha1:6d4eb958390599243ba9f5035cb671fa8dd6a93a" :fingerprints ("sha1:56:41:11:79:62:b9:85:66:f8:9e:e4:3b:39:2d:5f:a6:a5:c7:e9:2d" "sha1:4d:1b:72:51:7d:a1:d3:36:77:8d:be:75:0d:cf:ae:a3:68:7a:33:f7") :host "elpa.gnu.org:443" :conditions (:same-cert))
+=======
+ (:id "sha1:6d4eb958390599243ba9f5035cb671fa8dd6a93a" :fingerprints ("sha1:56:41:11:79:62:b9:85:66:f8:9e:e4:3b:39:2d:5f:a6:a5:c7:e9:2d" "sha1:4d:1b:72:51:7d:a1:d3:36:77:8d:be:75:0d:cf:ae:a3:68:7a:33:f7") :host "elpa.gnu.org:443" :conditions (:expired :invalid :same-cert))
+ (:id "sha1:1dd1af4a16d2ed2802679be2de23161d1f79b3c7" :fingerprints ("sha1:d6:84:c9:fd:51:0f:f4:f0:fc:82:22:b8:e3:35:58:fd:88:40:d6:7d" "sha1:02:ae:70:ff:63:75:09:e3:5b:ae:f9:f0:d9:73:06:77:04:c5:d5:5c") :host "elpa.nongnu.org:443" :conditions (:expired :invalid :same-cert))
+ (:id "sha1:ccfd2cc2a08c89a9b10969be8c1e926954d53e28" :fingerprints ("sha1:0c:bd:68:cb:c0:01:e2:ad:93:0d:b9:3b:77:09:2e:47:9c:de:6b:28" "sha1:de:74:ee:90:bf:b8:e5:20:54:66:5b:bc:6f:6b:d5:75:a8:f7:db:cb") :host "stable.melpa.org:443" :conditions (:expired :invalid :same-cert))
+ (:id "sha1:85b31c268009209a8d3c5387033b219264f7e62b" :fingerprints ("sha1:0c:bd:68:cb:c0:01:e2:ad:93:0d:b9:3b:77:09:2e:47:9c:de:6b:28" "sha1:de:74:ee:90:bf:b8:e5:20:54:66:5b:bc:6f:6b:d5:75:a8:f7:db:cb") :host "melpa.org:443" :conditions (:expired :invalid :same-cert))
+>>>>>>> b728dd5aeb1b3084d212f3e5840d883cda3714a5
 )

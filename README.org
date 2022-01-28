@@ -1,0 +1,81 @@
+#+TITLE: Emacs Configuration Based on =use-package=
+#+AUTHOR: Evgeniy N. Sharapov
+#+EMAIL: evgeniy.sharapov@gmail.com
+
+
+* Introduction
+Motivational points:
+  - Everything, including customization modules, is loaded using
+    =use-package=. Because =use-package= wasn't a part of Emacs until
+    24.5 this configuration /as is/ is not working with 24.4. However
+    it could be easily modified by just installing =use-package= via
+    ELPA at the beginning.
+  - Having configuration in =Emacs-Lisp=. I used to have literate
+    programming style configuration using =org-babel=, but seems like
+    complications: tricky navigation, swithing to source editing and
+    back, reloading issues, performance hit outweigh the benefit of
+    having a good documentation and code visibility manager.
+
+Since configuration is changing all the time, there's no point to
+describe it at length. Just some of the highlights.
+
+* Some Packages/Tools
+
+  * =ag= - I use my own custom =ag.el= because I need it to work on Windows
+  * =browse-kill-ring=
+  * =undo-tree=
+  * =ace-window=
+  * =ace-jump=
+  * =ido= including =ido-ubiquitous= and =flx-ido=
+  * =hide-lines=
+  * =projectile= and =find-file-in-project=
+  * =company=
+  * =flycheck=
+  * =paredit=
+  * Python programming: =python-mode=, =anaconda=
+  * C/C++: =cc-mode=, =c-company-headers=, =c-eldoc=
+  * Javascript via =js-2=, =tern=, =mocha=, =js-comint=
+  * Docker: =dockerfile-mode=, =yaml= and =docker=
+
+* Some Shortcuts
+
+** Help
+
+   * =C-h M-k= describe keymap
+   * =C-h C-c= describe character at point
+   * =C-h C-b= describes keys customizations
+
+** Some Useful Keymaps
+
+ These could be explored further via =C-h M-k= for example
+
+   * =C-x f= file opening map
+   * =C-x t= toggling keymap
+   * =C-x w= windows management keymap
+   * =C-z= personal keymap
+
+** Buffer Visibility / Navigation
+   * =C-z /= changes visibility via =hide-lines=
+   * =M-s o= shows occurences of a string in a buffer (=occur=)
+   * =M-s O= multi buffer occur (moccur)
+   * =M-g j= starts =avy-jump=
+
+** Miscellaneous
+   * =C-x K= kill this buffer
+   * =C-M-:= start/switch to IELM with current buffer
+   * =M-z= is zapping up to a character, =M-Z= zaps to character. Zapping backward is via negative universal argument.
+
+* Using outline
+** DONE Faces for outline headers
+** DONE use outshine speedy
+** TODO configure better keys like M-left, M-right, etc.
+** TODO Configure folds
+    
+* TODO Add ripgrep via deadgrep to M-s search keymap
+
+* DONE Move all the parts configuration ffe-* files to init.el once outline is used
+
+* TODO Heavy configuration parts can go to *-plus packages 
+
+  
+
