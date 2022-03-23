@@ -398,6 +398,11 @@ Examples:
   (:map ctl-x-t-map
         ("t" . modus-themes-toggle)))
 
+;;;; Wrapping and Visual Lines
+(use-package adaptive-wrap
+  :ensure t)
+(use-package visual-fill
+  :ensure t)
 ;;; Files
 
 ;;;; Backup Files
