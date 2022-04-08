@@ -1051,6 +1051,26 @@ Examples:
 
 
 ;;;; Language Server
+
+(defun ffe-fsharp-ls-setup ()
+  "Initializes FSharpLanguageServer as a backend for LSP"
+  (require 'lsp)
+  ;; this one seems more robust 
+  (when-let ((fsharp2-lsp-executable (executable-find "FSharpLanguageServer")))
+      (progn
+        (setq lsp-fsharp-server-path "")        
+        ;; creating client for fsharp-ls
+        (lsp-register-client
+         (make-lsp-client
+          :new-connection (lsp-stdio-connection fsharp2-lsp-executable)
+          :major-modes '(fsharp-mode)
+          :server-id 'fsharp-lsp
+          :notification-handlers (ht ("fsharp/startProgress" #'ignore)
+                                     ("fsharp/incrementProgress" #'ignore)
+                                     ("fsharp/endProgress" #'ignore))
+          :priority 1))))
+  (lsp))
+
 (use-package lsp-mode
   :ensure t
   :init
@@ -1059,9 +1079,14 @@ Examples:
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
    (fsharp-mode . lsp-deferred)
+   (fsharp-mode . ffe-fsharp-ls-setup)
    (python-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp lsp-deferred)
+
+
+
+
 
 (use-package lsp-ui
   :ensure t
@@ -1419,8 +1444,13 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;; Download netcore release from https://github.com/fsharp/FsAutoComplete
 ;; and unzip  it in $HOME/.FsAutoComplete/netcore
+;;
+;; another option could be using https://github.com/fsprojects/fsharp-language-server
+;; (see Readme about how to build)
+;; Once you have it built add ./src/FSharpLanguageServer/bin/Release/net6.0/linux-x64/ or whatever platform is to path
+;;
 (use-package fsharp-mode
-  :ensure t
+  :ensure t  
   :init
   (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"
         lsp-fsharp-external-autocomplete t))
