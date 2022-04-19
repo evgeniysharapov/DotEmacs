@@ -21,6 +21,10 @@
   (file-name-as-directory (concat *data-dir* "backups"))
   "Directory for backups")
 
+(defconst *undo-dir*
+  (file-name-as-directory (concat *data-dir* "undo"))
+  "Directory for undo")
+
 (defconst *lisp-dir*
   (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
   "Directory for Emacs Extensions files")
@@ -719,8 +723,11 @@ Examples:
 
 (use-package undo-tree
   :ensure t
-  :diminish undo-tree-mode
-  :config (global-undo-tree-mode))
+  :diminish undo-tree-mode  
+  :config (global-undo-tree-mode)
+  :custom
+  (undo-tree-visualizer-toggle-timestamps t)
+  (undo-tree-history-directory-alist `(("." . ,*undo-dir*))))
 
 (use-package browse-kill-ring
   :ensure t
