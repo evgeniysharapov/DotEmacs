@@ -255,6 +255,8 @@
  '(user-full-name "Evgeniy N. Sharapov")
  '(user-mail-address "evgeniy.sharapov@gmail.com")
  '(visible-bell t)
+ '(warning-suppress-log-types '((modus-themes) (modus-themes)))
+ '(warning-suppress-types '((modus-themes)))
  '(which-function-mode t)
  '(winner-mode t))
 (custom-set-faces
