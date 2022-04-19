@@ -388,7 +388,7 @@ Examples:
         modus-themes-bold-constructs t
         modus-themes-syntax 'yellow-comments
         modus-themes-org-blocks 'gray-background
-        modus-themes-headings '((1 . rainbow-section) (t . rainbow-highlight)))
+        modus-themes-headings '((1 . (rainbow background)) (t . (rainbow background overline))))
   (modus-themes-load-themes)
   :config
   (if (display-graphic-p)
@@ -399,10 +399,14 @@ Examples:
         ("t" . modus-themes-toggle)))
 
 ;;;; Wrapping and Visual Lines
+;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
 (use-package adaptive-wrap
+  :ensure t)
+(use-package visual-fill-column
   :ensure t)
 (use-package visual-fill
   :ensure t)
+
 ;;; Files
 
 ;;;; Backup Files
@@ -505,6 +509,7 @@ Examples:
       (dired-do-delete arg)))
 
   (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
+
 
 
 
@@ -730,6 +735,10 @@ Examples:
   :disabled t
   :ensure t
   :bind (("C-c C-/" . vr/replace)))
+
+;; Unfill paragraph or region
+(use-package unfill
+  :ensure t)
 
 ;;; Buffers
 ;; Buffer operations
@@ -1794,6 +1803,11 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
+
+
+;;; Bible
+(use-package dtk
+  :ensure t)
 
 ;;; Ledger
 (use-package ledger-mode
