@@ -910,6 +910,8 @@ Examples:
 ; (put 'Info-edit 'disabled nil)
 ; (put 'scroll-left 'disabled nil)
 
+;; scroll-lock-mode being enabled randomly is infuriating
+(advice-add 'scroll-lock-mode :override (lambda (&rest args)))
 
 
 ;;; Calendar
