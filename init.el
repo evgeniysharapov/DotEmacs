@@ -283,7 +283,7 @@ Examples:
 (defun ffe-select-typeface ()
   "Choose typefaces for the frame"
   (interactive)
-  (set-frame-font (ido-completing-read+ "Choose font:"
+  (set-frame-font (completing-read "Choose font:"
 					(cl-concatenate 'list
 							'("Iosevka Light-12"
 							  "Iosevka-12"
@@ -425,7 +425,7 @@ Examples:
 ;;;; Project Files
 (use-package find-file-in-project
   :ensure t
-  :config (setq ffip-prefer-ido-mode t
+  :config (setq ffip-prefer-ido-mode nil
                 ffip-match-path-instead-of-filename t)
   :bind (:map ctl-x-f-map
               ("f" . find-file-in-project)
