@@ -915,6 +915,7 @@ Examples:
 (advice-add 'scroll-lock-mode :override (lambda (&rest args)))
 
 
+
 ;;; Calendar
 (use-package calendar
   :config
