@@ -392,6 +392,7 @@ Examples:
         ("t" . modus-themes-toggle)))
 
 ;;;; Wrapping and Visual Lines
+(visual-line-mode 1)
 ;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
 (use-package adaptive-wrap
   :ensure t)
