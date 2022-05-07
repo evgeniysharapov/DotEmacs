@@ -21,6 +21,10 @@
   (file-name-as-directory (concat *data-dir* "backups"))
   "Directory for backups")
 
+(defconst *undo-dir*
+  (file-name-as-directory (concat *data-dir* "undo"))
+  "Directory for undo")
+
 (defconst *lisp-dir*
   (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
   "Directory for Emacs Extensions files")
@@ -93,24 +97,12 @@
 (use-package subr-x)
 
 
-;;;; Ido Configuration
-(use-package ido
-  :defer 10
-  :init (progn
-	  (setq ido-save-directory-list-file (concat *data-dir* ".ido.last"))
-	  (use-package ido-completing-read+
-	    :ensure t
-	    :commands ido-ubiquitous-mode)
-	  (use-package flx-ido
-	    :ensure t
-	    :commands flx-ido-mode))
-  :config (progn
-	    (ido-mode t)
-	    (ido-everywhere t)
-	    (ido-ubiquitous-mode t)
-	    (flx-ido-mode t)
-	    (setq-default org-completion-use-ido t)))
-
+;;;; Completion
+;; minibuffer completions Emacs 27+
+(setq completion-styles '(initials partial-completion flex)
+      completion-cycle-threshold 10)
+;; Instead of ido use fido 
+(fido-mode 1)
 
 
 ;;;; Utility Functions
@@ -192,6 +184,7 @@ Examples:
     (when *is-macos*
       (shell-command
        (concat "osascript -e 'get the clipboard as «class PNGf»' | sed 's/«data PNGf//; s/»//' | xxd -r -p  > " filename)))))
+
 
 
 
@@ -295,7 +288,7 @@ Examples:
 (defun ffe-select-typeface ()
   "Choose typefaces for the frame"
   (interactive)
-  (set-frame-font (ido-completing-read+ "Choose font:"
+  (set-frame-font (completing-read "Choose font:"
 					(cl-concatenate 'list
 							'("Iosevka Light-12"
 							  "Iosevka-12"
@@ -393,9 +386,8 @@ Examples:
         modus-themes-bold-constructs t
         modus-themes-syntax '(alt-syntax green-strings yellow-comments)
         modus-themes-org-blocks 'gray-background
-        modus-themes-headings '((1 . (rainbow background)) (t . (background rainbow)))
         modus-themes-hl-line '(accented)
-        )
+        modus-themes-headings '((1 . (rainbow background)) (t . (rainbow background overline))))
   (modus-themes-load-themes)
   :config
   (if (display-graphic-p)
@@ -405,6 +397,7 @@ Examples:
   (:map ctl-x-t-map
         ("t" . modus-themes-toggle)))
 
+
 ;; (use-package apropospriate-theme
 ;;   :ensure t
 ;;   :config 
@@ -413,6 +406,15 @@ Examples:
 ;;   (load-theme 'apropospriate-light t)
 ;;   )
 
+;;;; Wrapping and Visual Lines
+(visual-line-mode 1)
+;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
+(use-package adaptive-wrap
+  :ensure t)
+(use-package visual-fill-column
+  :ensure t)
+(use-package visual-fill
+  :ensure t)
 
 ;;; Files
 
@@ -439,7 +441,7 @@ Examples:
 ;;;; Project Files
 (use-package find-file-in-project
   :ensure t
-  :config (setq ffip-prefer-ido-mode t
+  :config (setq ffip-prefer-ido-mode nil
                 ffip-match-path-instead-of-filename t)
   :bind (:map ctl-x-f-map
               ("f" . find-file-in-project)
@@ -472,15 +474,6 @@ Examples:
 	  recentf-auto-cleanup 'never
 	  recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list)))
 
-  (defun ido-find-recent-file ()
-    "Use `ido-completing-read' to \\[find-file] a recent file"
-    (interactive)
-    (unless recentf-mode
-      (recentf-mode t))
-    (if (find-file (ido-completing-read+ "Find recent file: " recentf-list))
-	(message "Opening file...")
-      (message "Aborting")))
-  
   :config
   (progn
     (add-to-list 'recentf-exclude
@@ -488,8 +481,17 @@ Examples:
     (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
     (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'"))
 
+  (defun find-select-recent-file ()
+    "Use `completing-read' to \\[find-file] a recent file"
+    (interactive)
+    (unless recentf-mode
+      (recentf-mode t))
+    (if (find-file (completing-read "Find recent file: " recentf-list))
+       (message "Opening file...")
+      (message "Aborting")))
+
   :bind (:map ctl-x-f-map
-              ("r" . ido-find-recent-file)
+              ("r" . find-select-recent-file)
               ("R" . recentf-open-most-recent-file)))
 
 ;;;; Generic Finding Files
@@ -516,6 +518,7 @@ Examples:
       (dired-do-delete arg)))
 
   (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
+
 
 
 
@@ -725,8 +728,11 @@ Examples:
 
 (use-package undo-tree
   :ensure t
-  :diminish undo-tree-mode
-  :config (global-undo-tree-mode))
+  :diminish undo-tree-mode  
+  :config (global-undo-tree-mode)
+  :custom
+  (undo-tree-visualizer-toggle-timestamps t)
+  (undo-tree-history-directory-alist `(("." . ,*undo-dir*))))
 
 (use-package browse-kill-ring
   :ensure t
@@ -741,6 +747,10 @@ Examples:
   :disabled t
   :ensure t
   :bind (("C-c C-/" . vr/replace)))
+
+;; Unfill paragraph or region
+(use-package unfill
+  :ensure t)
 
 ;;; Buffers
 ;; Buffer operations
@@ -916,6 +926,9 @@ Examples:
 ; (put 'Info-edit 'disabled nil)
 ; (put 'scroll-left 'disabled nil)
 
+;; scroll-lock-mode being enabled randomly is infuriating
+(advice-add 'scroll-lock-mode :override (lambda (&rest args)))
+
 
 
 ;;; Calendar
@@ -1069,7 +1082,6 @@ Examples:
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
-   (fsharp-mode . lsp-deferred)
    (python-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp lsp-deferred)
@@ -1426,12 +1438,45 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package groovy-mode
   :ensure t)
 
+;;;; C#
+(use-package csharp-mode
+  :ensure t
+  :init
+  (add-hook 'csharp-mode-hook #'lsp-deferred))
+
+
 ;;;; F#
 
 ;; Download netcore release from https://github.com/fsharp/FsAutoComplete
 ;; and unzip  it in $HOME/.FsAutoComplete/netcore
+;;
+;; another option could be using https://github.com/fsprojects/fsharp-language-server
+;; (see Readme about how to build)
+;; Once you have it built add ./src/FSharpLanguageServer/bin/Release/net6.0/linux-x64/ or whatever platform is to path
+;;
+(defun ffe-fsharp-ls-setup ()
+  "Initializes FSharpLanguageServer as a backend for LSP"
+  (require 'lsp)
+  ;; this one seems more robust 
+  (when-let ((fsharp2-lsp-executable (executable-find "FSharpLanguageServer")))
+      (progn
+        (setq lsp-fsharp-server-path "")        
+        ;; creating client for fsharp-ls
+        (lsp-register-client
+         (make-lsp-client
+          :new-connection (lsp-stdio-connection fsharp2-lsp-executable)
+          :major-modes '(fsharp-mode)
+          :server-id 'fsharp-lsp
+          :notification-handlers (ht ("fsharp/startProgress" #'ignore)
+                                     ("fsharp/incrementProgress" #'ignore)
+                                     ("fsharp/endProgress" #'ignore))
+          :priority 1))))
+  (lsp))
+
 (use-package fsharp-mode
   :ensure t
+  :config
+  (add-hook 'fsharp-mode-hook #'ffe-fsharp-ls-setup)
   :init
   (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"
         lsp-fsharp-external-autocomplete t))
@@ -1779,6 +1824,11 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
+
+
+;;; Bible
+(use-package dtk
+  :ensure t)
 
 ;;; Ledger
 (use-package ledger-mode
