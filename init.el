@@ -391,9 +391,11 @@ Examples:
   :init
   (setf modus-themes-slanted-constructs t
         modus-themes-bold-constructs t
-        modus-themes-syntax 'yellow-comments
+        modus-themes-syntax '(alt-syntax green-strings yellow-comments)
         modus-themes-org-blocks 'gray-background
-        modus-themes-headings '((1 . rainbow-section) (t . rainbow-highlight)))
+        modus-themes-headings '((1 . (rainbow background)) (t . (background rainbow)))
+        modus-themes-hl-line '(accented)
+        )
   (modus-themes-load-themes)
   :config
   (if (display-graphic-p)
@@ -402,6 +404,15 @@ Examples:
   :bind
   (:map ctl-x-t-map
         ("t" . modus-themes-toggle)))
+
+;; (use-package apropospriate-theme
+;;   :ensure t
+;;   :config 
+;;   ;(load-theme 'apropospriate-dark t)
+;;   ;; or
+;;   (load-theme 'apropospriate-light t)
+;;   )
+
 
 ;;; Files
 
