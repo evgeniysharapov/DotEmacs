@@ -144,7 +144,7 @@
    '(("w" "Work Task" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %(org-set-tags  \":meeting:\")
-%t
+ %t
 %?" :clock-in t :clock-keep t)
      ("W" "Work Task (with ID)" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
@@ -158,7 +158,7 @@
      ("m" "Meeting" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %(org-set-tags  \":meeting:\")
-%t
+ %t
 %?" :clock-in t :clock-keep t)
      ("a" "Add Task" entry
       (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
