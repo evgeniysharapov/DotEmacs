@@ -117,8 +117,8 @@
  '(kill-whole-line t)
  '(ledger-binary-path "ledger")
  '(ledger-reports
-   '(("monthly cf" "ledger -n --monthly [[ledger-mode-flags]] -f /home/esharapov/Projects/Money/2021.ledger  reg Expenses or Liabilities:Mortgage or Income")
-     ("unknown" "ledger [[ledger-mode-flags]] -f /home/esharapov/Projects/Money/2021.ledger reg expenses:unknown")
+   '(("monthly cf" "ledger -n --monthly [[ledger-mode-flags]] -f %(ledger-file)  reg Expenses or Liabilities:Mortgage or Income")
+     ("unknown" "ledger [[ledger-mode-flags]] -f %(ledger-file) reg expenses:unknown")
      ("bal" "%(binary) -f %(ledger-file) bal")
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
