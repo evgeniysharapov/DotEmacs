@@ -1655,6 +1655,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package less-css-mode
   :ensure t)
 
+;;;; CSV
+(use-package csv-mode
+  :ensure t)
+
 ;;;; Shell Scripts 
 (use-package sh-script
   :mode (("\\.zsh" . sh-mode)))
