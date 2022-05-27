@@ -1063,7 +1063,7 @@ Examples:
 (use-package lsp-mode
   :ensure t
   :init
-  (setq lsp-keymap-prefix "C-.")
+  (setq lsp-keymap-prefix "C-z .")
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
