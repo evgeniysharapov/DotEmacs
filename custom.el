@@ -24,7 +24,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(custom-safe-themes
-   '("2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
+   '("5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
  '(default-input-method "russian-computer")
  '(delete-old-versions t)
  '(desktop-globals-to-save
@@ -129,7 +129,7 @@
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
- '(nsm-settings-file "/home/esharapov/.emacs.d/data/network-security.data")
+ '(nsm-settings-file "~/.emacs.d/data/network-security.data")
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
       ((agenda "" nil)
@@ -214,6 +214,9 @@
    '(org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m))
  '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
+ '(org-refile-targets
+   '((org-agenda-files :tag . "")
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)) t)
  '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
@@ -255,7 +258,7 @@
  '(user-mail-address "evgeniy.sharapov@gmail.com")
  '(visible-bell t)
  '(warning-suppress-log-types '((modus-themes) (modus-themes)))
- '(warning-suppress-types '((modus-themes)))
+ '(warning-suppress-types '((modus-themes) (comp)))
  '(which-function-mode t)
  '(winner-mode t))
 (custom-set-faces

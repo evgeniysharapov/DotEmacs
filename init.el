@@ -38,7 +38,8 @@
   (string-match-p "-[Mm]icrosoft" operating-system-release)
   "Is t if WSL/WSL2 and nil otherwise")
 
-(defconst *is-macos* nil
+(defconst *is-macos*
+  (eq 'darwin system-type)
   "Is t if we run on MacOS")
 
 
@@ -179,7 +180,11 @@ Examples:
             (tempf (make-temp-file "scratch"))
             (res ""))
         (with-current-buffer "*scratch*"
-          (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))))
+          (shell-command (concat "powershell.exe " (concat *scripts-dir* "clipboard-to-file.ps1") " " filename)))))
+    (when *is-macos*
+      (shell-command
+       (concat "osascript -e 'get the clipboard as «class PNGf»' | sed 's/«data PNGf//; s/»//' | xxd -r -p  > " filename)))))
+
 
 
 
@@ -363,7 +368,7 @@ Examples:
               ("+" . crosshairs-mode)))
 
 ;; there's no point in hiding menubar on macos
-(when (not (string= system-type "darwin"))
+(when (not *is-macos*)
   (custom-set-minor-mode 'menu-bar-mode nil))
 (custom-set-minor-mode 'tool-bar-mode nil)
 (custom-set-minor-mode 'scroll-bar-mode nil)
@@ -379,8 +384,9 @@ Examples:
   :init
   (setf modus-themes-slanted-constructs t
         modus-themes-bold-constructs t
-        modus-themes-syntax 'yellow-comments
+        modus-themes-syntax '(alt-syntax green-strings yellow-comments)
         modus-themes-org-blocks 'gray-background
+        modus-themes-hl-line '(accented)
         modus-themes-headings '((1 . (rainbow background)) (t . (rainbow background overline))))
   (modus-themes-load-themes)
   :config
@@ -390,6 +396,15 @@ Examples:
   :bind
   (:map ctl-x-t-map
         ("t" . modus-themes-toggle)))
+
+
+;; (use-package apropospriate-theme
+;;   :ensure t
+;;   :config 
+;;   ;(load-theme 'apropospriate-dark t)
+;;   ;; or
+;;   (load-theme 'apropospriate-light t)
+;;   )
 
 ;;;; Wrapping and Visual Lines
 (visual-line-mode 1)
@@ -1509,6 +1524,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;;; Lua
 (use-package lua-mode
+  :ensure t)
+
+;;;; Powershell
+(use-package powershell
   :ensure t)
 
 ;;;; Shaders
