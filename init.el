@@ -1078,7 +1078,7 @@ Examples:
 (use-package lsp-mode
   :ensure t
   :init
-  (setq lsp-keymap-prefix "C-.")
+  (setq lsp-keymap-prefix "C-z .")
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
@@ -1672,6 +1672,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;;; LESS 
 (use-package less-css-mode
+  :ensure t)
+
+;;;; CSV
+(use-package csv-mode
   :ensure t)
 
 ;;;; Shell Scripts 
