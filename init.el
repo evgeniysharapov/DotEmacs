@@ -1839,6 +1839,12 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :ensure t
   :after ledger-mode)
 
+;; (use-package hledger-mode
+;;   :ensure t)
+
+;; (use-package flycheck-hledger
+;;   :ensure t)
+
 ;;; Docker
 (use-package dockerfile-mode
   :ensure t
