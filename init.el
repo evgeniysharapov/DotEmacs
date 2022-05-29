@@ -902,12 +902,20 @@ Examples:
 
 (use-package helpful
   :ensure t
-  :bind (:map help-help-map
-              ("f" . helpful-function)
-              ("v" . helpful-variable)
-              ("c" . helpful-command)
-              ("m" . helpful-macro)
-              ("h" . helpful-at-point)))
+  :commands (helpful-at-point
+             helpful-callable
+             helpful-command
+             helpful-function
+             helpful-key
+             helpful-macro
+             helpful-variable)  
+  :bind
+  ([remap display-local-help] . helpful-at-point)
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-symbol] . helpful-symbol)
+  ([remap describe-key] . helpful-key)
+  ([remap describe-command] . helpful-command))
 
 
 ;;;; Info
