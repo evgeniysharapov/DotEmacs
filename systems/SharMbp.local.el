@@ -9,7 +9,7 @@
             (add-to-list 'exec-path-from-shell-variables "GOPATH")
             (exec-path-from-shell-initialize)))
 
-(defvar my/font-height 150)
+(defvar my/font-height 190)
 (defvar my/font-family "Iosevka")
 
 (add-hook 'after-init-hook
