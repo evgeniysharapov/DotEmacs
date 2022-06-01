@@ -89,21 +89,62 @@
 
 
 ;;; Utility
-
 ;;;; Packages
 (use-package s        :ensure t :defer t)
 (use-package dash     :ensure t :defer t)
 (use-package diminish :ensure t)
 (use-package subr-x)
-
-
+(fset 'ensure-list #'-list)
 ;;;; Completion
-;; minibuffer completions Emacs 27+
-(setq completion-styles '(initials partial-completion flex)
-      completion-cycle-threshold 10)
-;; Instead of ido use fido 
-(fido-mode 1)
+(use-package consult
+  :ensure t
+  :bind (
+         ;; C-c bindings (mode-specific map)
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command) 
+         ("C-c k" . consult-kmacro)
+         ;; C-x bindings
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x r b" . consult-bookmark) ; orig. bookmark-jump
+         ("C-x p b" . consult-project-bufer) ; orig. project-siwtch-to-buffer
+         ;; Goto map
+         ("M-g M-g" . consult-goto-line)
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)
+         ("M-g o" . consult-outline)
+         ("M-g i" . consult-imenu)
+         )
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  ;:hook (completion-list-mode . consult-preview-at-point-mode)
+  )
 
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package orderless
+  :ensure t
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless basic initial partial-completion flex)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+;; ;; ;; minibuffer completions Emacs 27+
+;; (setq completion-styles '(initials partial-completion flex)
+;;       completion-cycle-threshold 10)
+;; ;; Instead of ido use fido 
+;; (fido-mode 1)
 
 ;;;; Utility Functions
 ;;;;; UUID
@@ -1012,15 +1053,7 @@ Examples:
 	      ("h" . monky-status)))
 
 ;;; Minibuffer
-(use-package smex
-  :ensure t
-  :init
-  (setq smex-save-file (concat *data-dir* ".smex-items")
-        smex-history-length 50)
-  :config
-  (smex-initialize)
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
+
 ;; Minibuffer history
 (use-package savehist
   :init
@@ -1089,8 +1122,24 @@ Examples:
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
-  :config (setf lsp-ui-doc-position 'at-point
-                lsp-ui-doc-enable nil)
+  :custom
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-alignment 'window)
+  (lsp-ui-doc-delay 0.2)
+  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-header nil)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-max-height 45)
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-show-with-cursor nil)
+  (lsp-ui-doc-show-with-mouse nil)
+  (lsp-ui-doc-use-webkit nil)
+  (lsp-ui-peek-always-show nil)
+  (lsp-ui-sideline-enable t)
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-hover nil)  
   :after lsp-mode)
 
 ;; project wide overview
