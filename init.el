@@ -91,11 +91,17 @@
 ;;; Utility
 ;;;; Packages
 (use-package s        :ensure t :defer t)
-(use-package dash     :ensure t :defer t)
+(use-package dash
+  :ensure t
+  :demand t)
 (use-package diminish :ensure t)
 (use-package subr-x)
-(fset 'ensure-list #'-list)
 ;;;; Completion
+
+;; for some reason without having `ensure-list' consult fails. So we will use this to add it.
+(unless (fboundp 'ensure-list)
+  (fset 'ensure-list #'-list))
+
 (use-package consult
   :ensure t
   :bind (
@@ -111,24 +117,30 @@
          ;; Goto map
          ("M-g M-g" . consult-goto-line)
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)
+         ("M-g f" . consult-flycheck)
          ("M-g o" . consult-outline)
          ("M-g i" . consult-imenu)
+         ;; Misc operations
+         ("M-y" . consult-yank-pop)
          )
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   ;:hook (completion-list-mode . consult-preview-at-point-mode)
   )
 
+(use-package consult-flycheck
+  :ensure t)
+
 (use-package vertico
+  :demand t
   :ensure t
   :init
-  (vertico-mode))
+  (vertico-mode 1))
 
 (use-package marginalia
   :ensure t
   :config
-  (marginalia-mode))
+  (marginalia-mode 1))
 
 (use-package orderless
   :ensure t
@@ -139,12 +151,6 @@
   (setq completion-styles '(orderless basic initial partial-completion)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
-
-;; ;; ;; minibuffer completions Emacs 27+
-;; (setq completion-styles '(initials partial-completion flex)
-;;       completion-cycle-threshold 10)
-;; ;; Instead of ido use fido 
-;; (fido-mode 1)
 
 ;;;; Utility Functions
 ;;;;; UUID
@@ -473,7 +479,6 @@ Examples:
   (setq save-place-file (concat *data-dir* "places")))
 
 (use-package desktop
-  :defer t
   :config
   (progn
     (setq desktop-dirname *data-dir*)
@@ -503,37 +508,17 @@ Examples:
 
 ;;;; Recent Files
 (use-package recentf
-  :commands (recentf-mode recentf-open-most-recent-file)
+  :ensure t
   :init
-  (progn
-    ;; lazy load recentf
-    (add-hook 'find-file-hook (lambda () (unless recentf-mode
-					   (recentf-mode t)
-					   (recentf-track-opened-file))))
-    (setq recentf-save-file (concat *data-dir* ".recentf")
-	  recentf-max-saved-items 1000
-	  recentf-auto-cleanup 'never
-	  recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list)))
-
-  :config
-  (progn
-    (add-to-list 'recentf-exclude
-	         (expand-file-name *data-dir*))
-    (add-to-list 'recentf-exclude (expand-file-name package-user-dir))
-    (add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'"))
-
-  (defun find-select-recent-file ()
-    "Use `completing-read' to \\[find-file] a recent file"
-    (interactive)
-    (unless recentf-mode
-      (recentf-mode t))
-    (if (find-file (completing-read "Find recent file: " recentf-list))
-       (message "Opening file...")
-      (message "Aborting")))
-
-  :bind (:map ctl-x-f-map
-              ("r" . find-select-recent-file)
-              ("R" . recentf-open-most-recent-file)))
+  (recentf-mode t)
+  :custom
+  (recentf-save-file (concat *data-dir* ".recentf"))
+  (recentf-max-saved-items 1000)
+  (recentf-auto-cleanup 'never)
+  (recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list))
+  (recentf-exclude `(,(expand-file-name *data-dir*)
+                     ,(expand-file-name package-user-dir)
+                     "COMMIT_EDITMSG\\'")))
 
 ;;;; Generic Finding Files
 (use-package ffap
