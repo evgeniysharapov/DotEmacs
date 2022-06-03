@@ -30,13 +30,14 @@
   "Directory for Emacs Extensions files")
 
 ;;;; Operating System and Environement
-
-(defconst *is-linux* nil
-  "Is t when we run it on Linux")
-
 (defconst *is-wsl*
-  (string-match-p "-[Mm]icrosoft" operating-system-release)
+  (not (eq nil 
+           (string-match-p "-[Mm]icrosoft" operating-system-release)))
   "Is t if WSL/WSL2 and nil otherwise")
+
+(defconst *is-linux*
+  (eq 'gnu/linux system-type) 
+  "Is t when we run it on Linux")
 
 (defconst *is-macos*
   (eq 'darwin system-type)
