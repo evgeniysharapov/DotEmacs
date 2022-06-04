@@ -114,13 +114,14 @@
          ("C-x b" . consult-buffer)
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x r b" . consult-bookmark) ; orig. bookmark-jump
-         ("C-x p b" . consult-project-bufer) ; orig. project-siwtch-to-buffer
+         ("C-x p b" . consult-project-buffer) ; orig. project-siwtch-to-buffer
          ;; Goto map
          ("M-g M-g" . consult-goto-line)
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flycheck)
          ("M-g o" . consult-outline)
          ("M-g i" . consult-imenu)
+         ("M-g s" . consult-line)
          ;; Misc operations
          ("M-y" . consult-yank-pop)
          )
@@ -133,10 +134,23 @@
   :ensure t)
 
 (use-package vertico
-  :demand t
   :ensure t
+  :hook after-init
   :init
-  (vertico-mode 1))
+  (vertico-mode 1)
+  :bind (:map vertico-map
+              ("M-j" . vertico-exit-input)))
+
+;; (use-package vertico-directory
+;;   :after vertico
+;;   :ensure nil
+;;   ;; More convenient directory navigation commands
+;;   :bind (:map vertico-map
+;;               ("RET" . vertico-directory-enter)
+;;               ("DEL" . vertico-directory-delete-char)
+;;               ("M-DEL" . vertico-directory-delete-word))
+;;   ;; Tidy shadowed file names
+;; )
 
 (use-package marginalia
   :ensure t
@@ -149,7 +163,7 @@
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
   ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-  (setq completion-styles '(orderless basic initial partial-completion)
+  (setq completion-styles '(substring orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 
