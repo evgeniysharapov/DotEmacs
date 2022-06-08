@@ -98,12 +98,38 @@
 
 
 ;;;; Completion
-;; minibuffer completions Emacs 27+
-(setq completion-styles '(initials partial-completion flex)
-      completion-cycle-threshold 10)
-;; Instead of ido use fido 
-(fido-mode 1)
 
+;; Let's use Ivy and Counsel
+(use-package counsel
+  :ensure t
+  :after ivy
+  :config (counsel-mode))
+
+(use-package ivy
+  :ensure t
+  :demand t
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "%d/%d ")
+  :config
+  (ivy-mode))
+
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :custom
+  (ivy-virtual-abbreviate 'full
+                          ivy-rich-switch-buffer-align-virtual-buffer t
+                          ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer))
+
+(use-package swiper
+  :ensure t
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
 
 ;;;; Utility Functions
 ;;;;; UUID
