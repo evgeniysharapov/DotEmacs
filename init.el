@@ -103,7 +103,9 @@
 (use-package counsel
   :ensure t
   :after ivy
-  :config (counsel-mode))
+  :config (counsel-mode)
+  :bind (("M-o j" . counsel-outline)
+         ("M-g f" . counsel-flycheck)))
 
 (use-package ivy
   :ensure t
@@ -112,7 +114,7 @@
   (ivy-use-virtual-buffers t)
   (ivy-count-format "%d/%d ")
   :config
-  (ivy-mode))
+  (ivy-mode 1))
 
 (use-package ivy-rich
   :ensure t
@@ -122,14 +124,15 @@
                           ivy-rich-switch-buffer-align-virtual-buffer t
                           ivy-rich-path-style 'abbrev)
   :config
-  (ivy-set-display-transformer 'ivy-switch-buffer
-                               'ivy-rich-switch-buffer-transformer))
+  ;; (ivy-set-display-transformer 'ivy-switch-buffer
+  ;;                              'ivy-rich-switch-buffer-transformer)
+  (ivy-rich-mode 1))
 
 (use-package swiper
   :ensure t
   :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper)))
+  :bind (("C-S-s" . swiper)
+         ("C-S-r" . swiper)))
 
 ;;;; Utility Functions
 ;;;;; UUID
@@ -517,7 +520,7 @@ Examples:
       (message "Aborting")))
 
   :bind (:map ctl-x-f-map
-              ("r" . find-select-recent-file)
+              ("r" . counsel-recentf)
               ("R" . recentf-open-most-recent-file)))
 
 ;;;; Generic Finding Files
@@ -545,7 +548,8 @@ Examples:
 
   (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
 
-
+(bind-key "d" #'counsel-dired ctl-x-map)
+(bind-key "j" #'counsel-dired-jump ctl-x-f-map)
 
 
 ;;; Navigation and Visibility 
@@ -1038,15 +1042,16 @@ Examples:
 	      ("h" . monky-status)))
 
 ;;; Minibuffer
-(use-package smex
-  :ensure t
-  :init
-  (setq smex-save-file (concat *data-dir* ".smex-items")
-        smex-history-length 50)
-  :config
-  (smex-initialize)
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
+;; (use-package smex
+;;   :ensure t
+;;   :init
+;;   (setq smex-save-file (concat *data-dir* ".smex-items")
+;;         smex-history-length 50)
+;;   :config
+;;   (smex-initialize)
+;;   :bind (("M-x" . smex)
+;;          ("M-X" . smex-major-mode-commands)))
+
 ;; Minibuffer history
 (use-package savehist
   :init
