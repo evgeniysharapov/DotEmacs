@@ -1,6 +1,6 @@
 ;;; Constants and Paths
 (defconst *emacs-start-time* (current-time))
-
+;;;; Directories
 (defconst *dotfiles-dir*
   (file-name-directory (or (buffer-file-name) load-file-name))
   "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
@@ -43,7 +43,8 @@
   "Is t if we run on MacOS")
 
 
-;;; Load Libraries Recursively
+;;; Libraries and Packages 
+;;;; Load Libraries Recursively
 ;; Add `*lisp-dir*' paths recursively to `load-path'
 ;; create recursive function
 (defun add-directory-to-path (dir)
@@ -60,14 +61,16 @@
 (fmakunbound #'add-directory-to-path)
 
 
-;;; Load custom-vars File
+;;;; Load custom-vars File
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
 
-;;; Packages Repos and Use-Package
+;;;; Packages Repos and Use-Package
+(setf load-prefer-newer t)
 (require 'package)
 (package-initialize)
 (setf package-user-dir *elpa-dir*)
+
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
 (unless (assoc-default "nongnu" package-archives)
@@ -87,52 +90,50 @@
 ;;   :config  (setf use-package-always-ensure t))
 (setf use-package-enable-imenu-support t)
 
-
-;;; Utility
-
-;;;; Packages
+;;;; Useful Packages Loaded
 (use-package s        :ensure t :defer t)
 (use-package dash     :ensure t :defer t)
 (use-package diminish :ensure t)
 (use-package subr-x)
 
+;;; Utility
+;;;; History and Sessions
+;; Backup Files
+(setq backup-directory-alist `(("." . ,*backup-dir*))
+      version-control t
+      vc-make-backup-files t
+      backup-by-copying-when-linked t)
+;; Sessions
+(setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
-;;;; Completion
+(use-package saveplace
+  :init 
+  (setq save-place-file (concat *data-dir* "places")))
 
-;; Let's use Ivy and Counsel
-(use-package counsel
-  :ensure t
-  :after ivy
-  :config (counsel-mode)
-  :bind (("M-o j" . counsel-outline)
-         ("M-g f" . counsel-flycheck)))
-
-(use-package ivy
-  :ensure t
-  :demand t
-  :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-count-format "%d/%d ")
+(use-package desktop
+  :defer t
   :config
-  (ivy-mode 1))
+  (progn
+    (setq desktop-dirname *data-dir*)
+    (push *data-dir* desktop-path)))
 
-(use-package ivy-rich
-  :ensure t
-  :after ivy
-  :custom
-  (ivy-virtual-abbreviate 'full
-                          ivy-rich-switch-buffer-align-virtual-buffer t
-                          ivy-rich-path-style 'abbrev)
-  :config
-  ;; (ivy-set-display-transformer 'ivy-switch-buffer
-  ;;                              'ivy-rich-switch-buffer-transformer)
-  (ivy-rich-mode 1))
+;;;; Minibuffer
+;; minibuffer history 
+(use-package savehist
+  :init
+  (progn
+    (setq savehist-file (concat *data-dir* "history"))
+    (savehist-mode t)))
 
-(use-package swiper
-  :ensure t
-  :after ivy
-  :bind (("C-S-s" . swiper)
-         ("C-S-r" . swiper)))
+(defun ffe-auto-close-buffers ()
+  "Closes buffers that should be closed after we done with minibuffer.
+ Usually it is various completions buffers"
+  (mapc #'(lambda (buf-name)
+	   (let ((buffer (get-buffer buf-name)))
+	     (if (buffer-live-p buffer)
+		 (kill-buffer buffer)))) '("*Completions*" "*Ido Completions*")))
+
+(add-hook 'minibuffer-exit-hook #'ffe-auto-close-buffers)
 
 ;;;; Utility Functions
 ;;;;; UUID
@@ -217,9 +218,28 @@ Examples:
 
 
 
+;;;; Tweaks
+;; short response function instead of long one
+(fset 'yes-or-no-p 'y-or-n-p)
+;; Following commands are disabled by default,
+(put 'narrow-to-region 'disabled nil)
+(put 'downcase-region  'disabled nil)
+(put 'upcase-region    'disabled nil)
+(put 'narrow-to-page   'disabled nil)
+(put 'erase-buffer     'disabled nil)
+(put 'set-goal-column  'disabled nil)
+(put 'list-timers      'disabled nil)
+; (put 'Info-edit 'disabled nil)
+; (put 'scroll-left 'disabled nil)
+
+;; scroll-lock-mode being enabled randomly is infuriating
+(advice-add 'scroll-lock-mode :override (lambda (&rest args)))
+
+
 ;;; Keymap and Keys Organization 
 
-;; put my own keymap on C-z while moving zap to M-z
+;; Personal Binding Map on C-z
+;; while moving zap to M-z
 (defvar ctl-z-map)
 (define-prefix-command 'ctl-z-map)
 (let ((c-z (global-key-binding [(control ?z)])))
@@ -243,17 +263,21 @@ Examples:
   (global-unset-key [(control x) (control ?z)])
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
+;; we will use M-o for outline
+(define-key global-map (kbd "M-o") nil)
+
+;; Facemenu is super useless outside of center-* functions
+; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
 
 (use-package which-key
   :ensure t
   :commands (which-key-C-h-dispatch)
-  :config (which-key-mode)
+  :config (which-key-mode)  
   ;; otherwise you can't page through help-map
   :bind (:map help-map
               ("C-h" . which-key-C-h-dispatch)))
 
-;;; UI
-;; Configuring User experience and UI
+;;; Appearance
 ;;;; Fonts
 ;;;;; Good typefaces to consider 
 ;; (set-frame-font "Cousine-11" t)
@@ -334,54 +358,6 @@ Examples:
 
 (bind-key "f" #'ffe-select-typeface ctl-x-t-map)
 
-;;;; Windows
-(use-package windmove
-  :ensure t
-  :defer t
-  :bind (:map ctl-x-w-map
-              ("<left>" . windmove-left)
-              ("h" . windmove-left)
-              ("<right>" . windmove-right)
-              ("l" . windmove-right)
-              ("<up>" . windmove-up)
-              ("j" . windmove-up)
-              ("<down>" . windmove-down)
-              ("k" . windmove-down)))
-
-(use-package ace-window
-  :ensure t
-  :pin melpa-stable
-  :bind (:map ctl-x-w-map
-              ("w" . ace-window)))
-
-(defun toggle-window-split ()
-  "Changes frame split from horizontally divided windows to vertically divided windows and vice versa"
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-	     (next-win-buffer (window-buffer (next-window)))
-	     (this-win-edges (window-edges (selected-window)))
-	     (next-win-edges (window-edges (next-window)))
-	     (this-win-2nd (not (and (<= (car this-win-edges)
-					 (car next-win-edges))
-				     (<= (cadr this-win-edges)
-					 (cadr next-win-edges)))))
-	     (splitter
-	      (if (= (car this-win-edges)
-		     (car (window-edges (next-window))))
-		  'split-window-horizontally
-		'split-window-vertically)))
-	(delete-other-windows)
-	(let ((first-win (selected-window)))
-	  (funcall splitter)
-	  (if this-win-2nd (other-window 1))
-	  (set-window-buffer (selected-window) this-win-buffer)
-	  (set-window-buffer (next-window) next-win-buffer)
-	  (select-window first-win)
-	  (if this-win-2nd (other-window 1))))))
-
-(bind-key "|" 'toggle-window-split ctl-x-w-map)
-
 ;;;; Look and Feel
 (use-package whitespace
   :bind (:map ctl-x-t-map
@@ -446,27 +422,6 @@ Examples:
   :ensure t)
 
 ;;; Files
-
-;;;; Backup Files
-(setq backup-directory-alist `(("." . ,*backup-dir*))
-      version-control t
-      vc-make-backup-files t
-      backup-by-copying-when-linked t)
-
-;;;; Sessions
-(setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
-
-(use-package saveplace
-  :init
-  (setq save-place-file (concat *data-dir* "places")))
-
-(use-package desktop
-  :defer t
-  :config
-  (progn
-    (setq desktop-dirname *data-dir*)
-    (push *data-dir* desktop-path)))
-
 ;;;; Project Files
 (use-package find-file-in-project
   :ensure t
@@ -572,10 +527,6 @@ Examples:
   :bind (:map search-map
          ("i" . imenu)
 	 ("I" . imenu-list)))
-
-;; we will use M-o for outline. Facemenu is super useless outside of center-* functions
-(define-key global-map (kbd "M-o") nil)
-(define-key global-map (kbd "C-z f") 'facemenu-keymap)
 
 (use-package outshine
   :ensure t
@@ -736,8 +687,6 @@ Examples:
 
 (use-package wgrep-ag :ensure t :defer t)
 
-;;;; Rg
-
 ;;;; Isearch
 ;; These are handy keys when you are navigating a buffer using isearch
 (use-package isearch
@@ -746,8 +695,8 @@ Examples:
               ("<up>" . isearch-repeat-backward)
               ("<down>" . isearch-repeat-forward)))
 
-;;; Edit
-;; Editing Operations
+;;; Editing
+;;;; Editing Operations
 (use-package misc
   :commands (zap-up-to-char forward-to-word)
   ;; zapping back is done via negative argument C-- or M--
@@ -778,51 +727,11 @@ Examples:
   :ensure t
   :bind (("C-c C-/" . vr/replace)))
 
-;; Unfill paragraph or region
+;;;; Unfill paragraph or region
 (use-package unfill
   :ensure t)
 
-;;; Buffers
-;; Buffer operations
-(use-package ibuffer
-  :bind ("C-x C-b" . ibuffer)
-  :init (progn
-          (defface ibuffer-custom-deletion-face
-	    '((t (:inherit error :strike-through t :underline nil)))
-	    "Buffers to be deleted")
-          (defface ibuffer-custom-marked-face
-	    '((t (:inherit warning :inverse-video t :underline nil)))
-	    "Marked buffers")
-          (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
-                ibuffer-marked-face 'ibuffer-custom-marked-face)
-          ;; auto updateable ibuffer
-          (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
-
-
-(defun ffe-swap-buffers-with-window ()
-  "Moves current buffer to the given WINDOW."
-  (interactive)
-  (let ((this-buffer (current-buffer))
-        (this-window (selected-window)))
-    ; this will use ace to select window and perform action
-    (aw-select "Ace - Move Buffer"
-               (lambda (window)
-                 (let ((that-buffer (window-buffer window)))
-                   (message  "Window: %s  Buffer: %s" window this-buffer)
-                   (set-window-buffer this-window that-buffer)
-                   (set-window-buffer window this-buffer)
-                   (select-window window))))))
-
-(bind-key "w" 'ffe-swap-buffers-with-window ctl-x-x-map)
-
-(defun ffe-kill-current-buffer ()
-  "Kills current buffer"
-  (interactive)
-  (kill-buffer (current-buffer)))
-
-(bind-key "C-x K" #'ffe-kill-current-buffer)
-
-;;; Spellcheck
+;;;; Spellcheck
 ;; On Windows use pre-compiled hunspell
 ;; For Mac OS X install `aspell' using Homebrew
 ;;
@@ -883,6 +792,94 @@ Examples:
   :init (setf langtool-language-tool-jar "~/.local/share/LanguageTool-5.5/languagetool-commandline.jar"))
 
 
+;;; Windows and Buffers
+;;;; Windows
+(use-package windmove
+  :ensure t
+  :defer t
+  :bind (:map ctl-x-w-map
+              ("<left>" . windmove-left)
+              ("h" . windmove-left)
+              ("<right>" . windmove-right)
+              ("l" . windmove-right)
+              ("<up>" . windmove-up)
+              ("j" . windmove-up)
+              ("<down>" . windmove-down)
+              ("k" . windmove-down)))
+
+(use-package ace-window
+  :ensure t
+  :pin melpa-stable
+  :bind (:map ctl-x-w-map
+              ("w" . ace-window)))
+
+(defun toggle-window-split ()
+  "Changes frame split from horizontally divided windows to vertically divided windows and vice versa"
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+	     (next-win-buffer (window-buffer (next-window)))
+	     (this-win-edges (window-edges (selected-window)))
+	     (next-win-edges (window-edges (next-window)))
+	     (this-win-2nd (not (and (<= (car this-win-edges)
+					 (car next-win-edges))
+				     (<= (cadr this-win-edges)
+					 (cadr next-win-edges)))))
+	     (splitter
+	      (if (= (car this-win-edges)
+		     (car (window-edges (next-window))))
+		  'split-window-horizontally
+		'split-window-vertically)))
+	(delete-other-windows)
+	(let ((first-win (selected-window)))
+	  (funcall splitter)
+	  (if this-win-2nd (other-window 1))
+	  (set-window-buffer (selected-window) this-win-buffer)
+	  (set-window-buffer (next-window) next-win-buffer)
+	  (select-window first-win)
+	  (if this-win-2nd (other-window 1))))))
+
+(bind-key "|" 'toggle-window-split ctl-x-w-map)
+
+;;;; Buffer operations
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer)
+  :init (progn
+          (defface ibuffer-custom-deletion-face
+	    '((t (:inherit error :strike-through t :underline nil)))
+	    "Buffers to be deleted")
+          (defface ibuffer-custom-marked-face
+	    '((t (:inherit warning :inverse-video t :underline nil)))
+	    "Marked buffers")
+          (setq ibuffer-deletion-face 'ibuffer-custom-deletion-face
+                ibuffer-marked-face 'ibuffer-custom-marked-face)
+          ;; auto updateable ibuffer
+          (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
+
+
+(defun ffe-swap-buffers-with-window ()
+  "Moves current buffer to the given WINDOW."
+  (interactive)
+  (let ((this-buffer (current-buffer))
+        (this-window (selected-window)))
+    ; this will use ace to select window and perform action
+    (aw-select "Ace - Move Buffer"
+               (lambda (window)
+                 (let ((that-buffer (window-buffer window)))
+                   (message  "Window: %s  Buffer: %s" window this-buffer)
+                   (set-window-buffer this-window that-buffer)
+                   (set-window-buffer window this-buffer)
+                   (select-window window))))))
+
+(bind-key "w" 'ffe-swap-buffers-with-window ctl-x-x-map)
+
+(defun ffe-kill-current-buffer ()
+  "Kills current buffer"
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+(bind-key "C-x K" #'ffe-kill-current-buffer)
+
 ;;; Help
 ;; Help/Info configuration
 ;;;; Emacs Help
@@ -942,31 +939,13 @@ Examples:
 
 ;;;; Info
 
-;;; Tweaks
-;; short response function instead of long one
-(fset 'yes-or-no-p 'y-or-n-p)
-;; Following commands are disabled by default,
-(put 'narrow-to-region 'disabled nil)
-(put 'downcase-region  'disabled nil)
-(put 'upcase-region    'disabled nil)
-(put 'narrow-to-page   'disabled nil)
-(put 'erase-buffer     'disabled nil)
-(put 'set-goal-column  'disabled nil)
-(put 'list-timers      'disabled nil)
-; (put 'Info-edit 'disabled nil)
-; (put 'scroll-left 'disabled nil)
-
-;; scroll-lock-mode being enabled randomly is infuriating
-(advice-add 'scroll-lock-mode :override (lambda (&rest args)))
-
-
-
 ;;; Calendar
 (use-package calendar
   :config
   (setq diary-file (concat *data-dir* "diary")))
 
-;;; Completion in Buffer
+;;; Completion
+;;;; In a Buffer
 (use-package company
   :ensure t
   :defer 3
@@ -1010,6 +989,43 @@ Examples:
 	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
 	  (add-hook 'company-mode-hook #'company-statistics-mode)))
 
+;;;; In the Minibuffer
+;; Let's use Ivy and Counsel
+(use-package counsel
+  :ensure t
+  :after ivy
+  :config (counsel-mode)
+  :bind (("M-o j" . counsel-outline)
+         ("M-g f" . counsel-flycheck)))
+
+(use-package ivy
+  :ensure t
+  :demand t
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "%d/%d ")
+  :config
+  (ivy-mode 1))
+
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :custom
+  (ivy-virtual-abbreviate 'full
+                          ivy-rich-switch-buffer-align-virtual-buffer t
+                          ivy-rich-path-style 'abbrev)
+  :config
+  ;; (ivy-set-display-transformer 'ivy-switch-buffer
+  ;;                              'ivy-rich-switch-buffer-transformer)
+  (ivy-rich-mode 1))
+
+(use-package swiper
+  :ensure t
+  :after ivy
+  :bind (("C-S-s" . swiper)
+         ("C-S-r" . swiper)))
+
+
 ;;; Expandable Snippets
 (use-package yasnippet
   :commands (yas-minor-mode yas-minor-mode-on yas-reload-all)
@@ -1040,34 +1056,6 @@ Examples:
   :commands monky-status
   :bind (:map ctl-z-map
 	      ("h" . monky-status)))
-
-;;; Minibuffer
-;; (use-package smex
-;;   :ensure t
-;;   :init
-;;   (setq smex-save-file (concat *data-dir* ".smex-items")
-;;         smex-history-length 50)
-;;   :config
-;;   (smex-initialize)
-;;   :bind (("M-x" . smex)
-;;          ("M-X" . smex-major-mode-commands)))
-
-;; Minibuffer history
-(use-package savehist
-  :init
-  (progn
-    (setq savehist-file (concat *data-dir* "history"))
-    (savehist-mode t)))
-
-(defun ffe-auto-close-buffers ()
-  "Closes buffers that should be closed after we done with minibuffer. Usually it is various completions buffers"
-  (mapc #'(lambda (buf-name)
-	   (let ((buffer (get-buffer buf-name)))
-	     (if (buffer-live-p buffer)
-		 (kill-buffer buffer)))) '("*Completions*" "*Ido Completions*")))
-
-(add-hook 'minibuffer-exit-hook #'ffe-auto-close-buffers)
-
 
 ;;; Programming Modes
 ;;;; General Settings 
