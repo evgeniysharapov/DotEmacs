@@ -1881,6 +1881,13 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :init (progn
 	  (use-package json-rpc :ensure t)))
 
+;;; Miscellaneous
+(use-package define-word
+  :commands (define-word define-word-at-point)
+  :ensure t
+  :bind
+  ("C-c C-d C-c C-d" . define-word-at-point))
+
 ;;; Loading System Specific Files
 (when-let ((local-settings (concat *dotfiles-dir* (file-name-as-directory  "systems") (system-name) ".el"))
 	   (exists (file-exists-p local-settings)))
