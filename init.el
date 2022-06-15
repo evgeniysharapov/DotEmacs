@@ -392,7 +392,10 @@ Examples:
         modus-themes-syntax '(alt-syntax green-strings yellow-comments)
         modus-themes-org-blocks 'gray-background
         modus-themes-hl-line '(accented)
-        modus-themes-headings '((1 . (rainbow background)) (t . (rainbow background overline))))
+        modus-themes-headings '((1 . (rainbow background 1.3))
+                                (2 . (rainbow background overline 1.2))
+                                (3 . (rainbow background overline 1.1))
+                                (t . (rainbow background overline))))
   (modus-themes-load-themes)
   :config
   (if (display-graphic-p)
