@@ -37,7 +37,7 @@ describe it at length. Just some of the highlights.
   * Javascript via =js-2=, =tern=, =mocha=, =js-comint=
   * Docker: =dockerfile-mode=, =yaml= and =docker=
 
-* Some Shortcuts
+* Keybindings
 
 ** Help
 
@@ -45,7 +45,7 @@ describe it at length. Just some of the highlights.
    * =C-h C-c= describe character at point
    * =C-h C-b= describes keys customizations
 
-** Some Useful Keymaps
+** Useful Keymaps
 
  These could be explored further via =C-h M-k= for example
 
@@ -65,17 +65,29 @@ describe it at length. Just some of the highlights.
    * =C-M-:= start/switch to IELM with current buffer
    * =M-z= is zapping up to a character, =M-Z= zaps to character. Zapping backward is via negative universal argument.
 
+* Spellcheck
+
+
+
+
+* Programming
+
 * Using outline
 ** DONE Faces for outline headers
 ** DONE use outshine speedy
 ** TODO configure better keys like M-left, M-right, etc.
 ** TODO Configure folds
     
+
 * TODO Add ripgrep via deadgrep to M-s search keymap
 
 * DONE Move all the parts configuration ffe-* files to init.el once outline is used
 
 * TODO Heavy configuration parts can go to *-plus packages 
+
+* TODO Add Scrolling other window after C-h commands
+* TODO Add quit-window for popped up help window/buffer
+* TODO Move stuff from custom.el to init.el
 
   
 
