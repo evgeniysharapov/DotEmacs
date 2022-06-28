@@ -235,9 +235,12 @@ Examples:
 ;; scroll-lock-mode being enabled randomly is infuriating
 (advice-add 'scroll-lock-mode :override (lambda (&rest args)))
 
+;; Long files could be potential performance hindering
+;; so we will enable so-long mode
+(when (require 'so-long nil :noerror)
+  (global-so-long-mode 1))
 
 ;;; Keymap and Keys Organization 
-
 ;; Personal Binding Map on C-z
 ;; while moving zap to M-z
 (defvar ctl-z-map)
@@ -269,10 +272,18 @@ Examples:
 ;; Facemenu is super useless outside of center-* functions
 ; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
 
+;;;; Available Keys
+;; C-x c
+;; C-x "
+;; C-x g
+;; C-x j
+;; C-x y
+
+;;;; Key Helpers
 (use-package which-key
   :ensure t
   :commands (which-key-C-h-dispatch)
-  :config (which-key-mode)  
+  :demand t
   ;; otherwise you can't page through help-map
   :bind (:map help-map
               ("C-h" . which-key-C-h-dispatch)))
@@ -415,14 +426,23 @@ Examples:
 ;;   )
 
 ;;;; Wrapping and Visual Lines
-(visual-line-mode 1)
-;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
-(use-package adaptive-wrap
-  :ensure t)
+;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines.
 (use-package visual-fill-column
-  :ensure t)
-(use-package visual-fill
-  :ensure t)
+  :commands visual-fill-column-mode
+  :ensure t
+  :hook (visual-line-mode . visual-fill-column-mode))
+
+(use-package adaptive-wrap
+  :commands adaptive-wrap-prefix-mode
+  :ensure t
+  :hook (visual-fill-column-mode . adaptive-wrap-prefix-mode))
+
+
+;; For best effect, combine it with `visual-line-mode' and
+;; `adaptive-wrap-prefix-mode'.
+;; (use-package visual-fill
+;;   :ensure t
+;;   :hook org-mode)
 
 ;;; Files
 ;;;; Project Files
@@ -768,6 +788,9 @@ Examples:
 	      ("C-$ b" . flyspell-buffer)
 	      ("C-$ r" . flyspell-region)))
 
+(use-package flyspell-correct
+  :ensure t)
+
 (use-package ispell
   :defer t
   :config (setq ispell-personal-dictionary (ffe-personal-dictionary)
@@ -992,8 +1015,13 @@ Examples:
 	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
 	  (add-hook 'company-mode-hook #'company-statistics-mode)))
 
+(use-package company-posframe
+  :ensure t
+  :config
+  (company-posframe-mode 1))
+
 ;;;; In the Minibuffer
-;; Let's use Ivy and Counsel
+;;;;; Using Ivy and Counsel  
 (use-package counsel
   :ensure t
   :after ivy
@@ -1014,9 +1042,9 @@ Examples:
   :ensure t
   :after ivy
   :custom
-  (ivy-virtual-abbreviate 'full
-                          ivy-rich-switch-buffer-align-virtual-buffer t
-                          ivy-rich-path-style 'abbrev)
+  (ivy-virtual-abbreviate 'full)
+  (ivy-rich-switch-buffer-align-virtual-buffer t)
+  (ivy-rich-path-style 'abbrev)
   :config
   ;; (ivy-set-display-transformer 'ivy-switch-buffer
   ;;                              'ivy-rich-switch-buffer-transformer)
@@ -1028,6 +1056,8 @@ Examples:
   :bind (("C-S-s" . swiper)
          ("C-S-r" . swiper)))
 
+
+;;;;; Alternative: Using Consult
 
 ;;; Expandable Snippets
 (use-package yasnippet
@@ -1828,6 +1858,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                       ;; (add-hook 'completion-at-point-functions
                       ;;           #'pcomplete-completions-at-point)
                       ))
+          (add-hook 'org-mode-hook #'visual-line-mode)
           ;; remove overlays from the org-file
           (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces))
 ;;;; Org-mode related bindings global and local 
