@@ -72,6 +72,48 @@ describe it at length. Just some of the highlights.
 
 * Programming
 
+** Keyboard
+
+We should unify keyboard shortcuts among multiple programming modes
+
+Python
+#+begin_quote
+C-c C-c         python-shell-send-buffer
+C-c C-d         python-describe-at-point
+C-c C-e         python-shell-send-statement
+C-c C-f         python-shell-send-file
+C-c C-j         imenu
+C-c C-l         python-shell-send-file
+C-c C-p         run-python
+C-c C-r         python-shell-send-region
+C-c C-s         python-shell-send-string
+C-c C-t         Prefix Command
+C-c C-v         python-check
+C-c C-z         python-shell-switch-to-shell
+C-c <           python-indent-shift-left
+C-c >           python-indent-shift-right
+#+end_quote
+
+F#
+#+begin_quote
+C-x C-e         fsharp-eval-phrase
+C-M-h           fsharp-mark-phrase
+C-M-x           fsharp-eval-phrase
+M-n             next-error
+M-p             previous-error
+C-c C-a         fsharp-find-alternate-file
+C-c C-c         compile
+C-c C-e         fsharp-eval-phrase
+C-c C-f         fsharp-load-buffer-file
+C-c C-r         fsharp-eval-region
+C-c C-s         fsharp-show-subshell
+C-c :           fsharp-guess-indent-offset
+C-c <           fsharp-shift-region-left
+C-c >           fsharp-shift-region-right
+C-c <up>        fsharp-goto-block-up
+#+end_quote
+
+
 * Using outline
 ** DONE Faces for outline headers
 ** DONE use outshine speedy
@@ -89,5 +131,4 @@ describe it at length. Just some of the highlights.
 * TODO Add quit-window for popped up help window/buffer
 * TODO Move stuff from custom.el to init.el
 
-  
 

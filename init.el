@@ -1017,6 +1017,7 @@ Examples:
 
 (use-package company-posframe
   :ensure t
+  :diminish company-posframe-mode
   :config
   (company-posframe-mode 1))
 
@@ -1391,21 +1392,13 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     (add-hook 'js2-mode-hook #'electric-pair-mode)
     (add-hook 'js2-mode-hook #'hs-minor-mode)))
 
-;; (use-package company-tern
-;;   :ensure t
-;;   ;; :ensure-system-package
-;;   ;; ((tern . "npm install -g tern"))
-;;   :after js2-mode
-;;   :hook '((js2-mode . company-mode)
-;;           (js2-mode . tern-mode))
-;;   :config
-;;   (add-to-list 'company-backends 'company-tern)
-;;   ;; use LSP for navigation
-;;   (define-key tern-mode-keymap (kbd "M-.") nil)
-;;   (define-key tern-mode-keymap (kbd "M-,") nil)
-;;   ;; use js2 refactor for renames
-;;   (define-key tern-mode-keymap (kbd "C-c C-r") nil))
-
+(use-package js-doc
+  :ensure t
+  :after js2-mode
+  :commands (js-doc-insert-tag js-doc-insert-function-doc)
+  :bind (:map js2-mode-map
+              ("C-c M-;" . js-doc-insert-function-doc)
+              ("@" . js-doc-insert-tag)))
 ;;;;; Customize Projectile
 (when (fboundp 'projectile-register-project-type)
   (projectile-register-project-type 'npm '("package.json") :test "npm test"  :test-suffix ".spec"))
@@ -1749,51 +1742,35 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 (use-package org
   :mode (("\\.org$" . org-mode))
-  :config (progn
-            (org-babel-do-load-languages
-             'org-babel-load-languages
-             '(
-               ;(ipython . t)
-               (ruby . t)
-               (python . t)
-               (emacs-lisp . t)
-               (latex . t)
-               (gnuplot . t)
-               (C . t)
-               (shell .t)
-               (awk . t)
-               (plantuml . t)))
-
-            ;; Refiling - allow creating new targets
-            (setq org-refile-allow-creating-parent-nodes 'confirm
-                  org-refile-targets '((org-agenda-files :maxlevel . 5)))
-
+  :init
 ;;;; Useful Commands used in Org-Mode
-;;;;; Jump start/end in code block            
-            (defun ffy-org-goto-block-begin/end (p)
-              "Go to begining/end of the current block. With prefix goes to the end.
+;;;;; Jump start/end in code block
+            
+  (defun ffy-org-goto-block-begin/end (p)
+    "Go to begining/end of the current block. With prefix goes to the end.
 
 This one will jump between BEGIN and END of org mode blocks
 https://github.com/kshenoy/dotfiles/blob/master/emacs.org#jump-to-headtail-of-any-block-not-just-src-blocks
 "
-              (interactive "P")
-              (let* ((element (org-element-at-point)))
-                (when (or (eq (org-element-type element) 'example-block)
-                          (eq (org-element-type element) 'src-block))
-                  (let ((begin (org-element-property :begin element))
-                        (end (org-element-property :end element)))
-                    ;; ensure point is not on a blank line after the block
-                    (beginning-of-line)
-                    (skip-chars-forward " \r\t\n" end)
-                    (when (< (point) end)
-                      (goto-char (if p end begin))
-                      (when p
-                        (skip-chars-backward " \r\t\n")
-                        (beginning-of-line)))))))
+    (interactive "P")
+    (let* ((element (org-element-at-point)))
+      (when (or (eq (org-element-type element) 'example-block)
+                (eq (org-element-type element) 'src-block))
+        (let ((begin (org-element-property :begin element))
+              (end (org-element-property :end element)))
+          ;; ensure point is not on a blank line after the block
+          (beginning-of-line)
+          (skip-chars-forward " \r\t\n" end)
+          (when (< (point) end)
+            (goto-char (if p end begin))
+            (when p
+              (skip-chars-backward " \r\t\n")
+              (beginning-of-line)))))))
 
 ;;;;; Insert Screenshot into org-mode file
-            (defun ffe-org-insert-screenshot (&optional arg)
-              "Runs a program and takes screenshot, then writes it into a file and then inserts link to org buffer.
+
+  (defun ffe-org-insert-screenshot (&optional arg)
+    "Runs a program and takes screenshot, then writes it into a file and then inserts link to org buffer.
 
 Files are named after the Org headline, by replacing non-character with dashes.
 
@@ -1801,40 +1778,40 @@ If ARG is nil then images are droppedinto a directory (created if it doesn't exi
 If ARG is 4, i.e. C-u is pressed, then puts image into a directory (created if it doesn't exist) /img.
 If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org file.
 "
-              (interactive "p")              
-              (let* ((org-file-name (buffer-file-name))                     
-                     (org-header (car (cddddr (org-heading-components))))
-                     (filename-header-part (replace-regexp-in-string "\\W+" "-" org-header nil 'literal))
-                     ;; Figure out directory to put images to
-                     (image-directory
-                      (cond
-                       ;; C-u
-                       ((eq arg 4) (ffe-image-directory org-file-name 'img))
-                       ;; C-u C-u
-                       ((eq arg 16) (ffe-image-directory org-file-name))
-                       (t (ffe-image-directory org-file-name 'file))))
-                     ;; full path to file name
-                     (image-file-name (ffe-image-filename image-directory filename-header-part))
-                     ;; file name path relative to org-file-name
-                     (relative-image-file-name
-                      (replace-regexp-in-string
-                       (file-name-directory org-file-name) "" image-file-name nil 'literal)))
-                ;; Turns out we can have issues writing into files
-                ;; that are in directory pointed to by symbolic link
-                ;; We will write through temporary file
-                (let ((temp-file (make-temp-file "clipimg")))                  
-                  (with-temp-file temp-file
-                    (ffe-clipboard-to-image temp-file)
-                    (copy-file temp-file image-file-name t)
-                    (delete-file temp-file)))
-                (insert (concat "[[file:" relative-image-file-name "]]"))
-                (org-display-inline-images)))
-            )
+    (interactive "p")              
+    (let* ((org-file-name (buffer-file-name))                     
+           (org-header (car (cddddr (org-heading-components))))
+           (filename-header-part (replace-regexp-in-string "\\W+" "-" org-header nil 'literal))
+           ;; Figure out directory to put images to
+           (image-directory
+            (cond
+             ;; C-u
+             ((eq arg 4) (ffe-image-directory org-file-name 'img))
+             ;; C-u C-u
+             ((eq arg 16) (ffe-image-directory org-file-name))
+             (t (ffe-image-directory org-file-name 'file))))
+           ;; full path to file name
+           (image-file-name (ffe-image-filename image-directory filename-header-part))
+           ;; file name path relative to org-file-name
+           (relative-image-file-name
+            (replace-regexp-in-string
+             (file-name-directory org-file-name) "" image-file-name nil 'literal)))
+      ;; Turns out we can have issues writing into files
+      ;; that are in directory pointed to by symbolic link
+      ;; We will write through temporary file
+      (let ((temp-file (make-temp-file "clipimg")))                  
+        (with-temp-file temp-file
+          (ffe-clipboard-to-image temp-file)
+          (copy-file temp-file image-file-name t)
+          (delete-file temp-file)))
+      (insert (concat "[[file:" relative-image-file-name "]]"))
+      (org-display-inline-images)))
+            
 ;;;;; Remove Bookmark Faces
   (defun ffe-reset-bookmark-faces ()
-    "Removes all bookmark faces overlays that are accumulating in the Org mode buffer that's open and used for capture."
+    "Removes all ugly overlays bookmark faces overlays that are accumulating in the Org mode buffer that's open and used for capture."
     (interactive)
-    (remove-overlays nil nil 'face 'bookmark-face))
+      (remove-overlays nil nil 'face 'bookmark-face))
   
 ;;;;; Jump to last capture
   (defun bookmark-jump-if-exists (bookmark-name)
@@ -1846,21 +1823,42 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
     "Jumps to last org capture bookmark"
     (interactive)
     (bookmark-jump-if-exists "org-capture-last-stored"))
-  
-;;;; Initialization of Org-mode  
-  :init (progn
-          (add-hook 'org-src-mode-hook
-                    (lambda ()
-                      (if (eq major-mode 'emacs-lisp-mode)
-                          (flycheck-disable-checker 'emacs-lisp-checkdoc))))
-          (add-hook 'org-mode-hook
-                    (lambda ()
-                      ;; (add-hook 'completion-at-point-functions
-                      ;;           #'pcomplete-completions-at-point)
-                      ))
-          (add-hook 'org-mode-hook #'visual-line-mode)
-          ;; remove overlays from the org-file
-          (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces))
+ 
+  :config  
+;;;; Org Mode Setup
+;;;;; Org Babel Settings
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+                                        ;(ipython . t)
+     (ruby . t)
+     (python . t)
+     (emacs-lisp . t)
+     (latex . t)
+     (gnuplot . t)
+     (C . t)
+     (shell .t)
+     (awk . t)
+     (plantuml . t)))
+  ;; we don't want Elisp linter to complain too much
+  (add-hook 'org-src-mode-hook
+            (lambda ()
+              (if (eq major-mode 'emacs-lisp-mode)
+                  (flycheck-disable-checker 'emacs-lisp-checkdoc))))
+
+            ;; Refiling - allow creating new targets
+;;;;; General Org Settings
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; (add-hook 'completion-at-point-functions
+              ;;           #'pcomplete-completions-at-point)
+              (set-fill-column 80)
+              (setq org-tags-column -70)))
+
+  (add-hook 'org-mode-hook #'visual-line-mode)
+
+;;;;; Worklog Specific
+  (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces)  
 ;;;; Org-mode related bindings global and local 
   :bind (:map ctl-z-map
               ;; global shortcuts 
@@ -1879,7 +1877,105 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ("C-]" . ffy-org-goto-block-begin/end)
               ;;  Swap C-j and RET
               ([remap org-return-indent] . org-return)
-              ([remap org-return] . org-return-indent)))
+              ([remap org-return] . org-return-indent))
+;;;; Org Mode Custom Variables  
+  :custom  
+  (org-confirm-babel-evaluate nil)
+  (org-default-notes-file "~/Dropbox/Notes/Notes.org")
+  (org-directory "~/Dropbox/Notes")
+  (org-export-backends '(ascii html icalendar latex md odt confluence))
+  (org-hide-leading-stars t)
+  (org-image-actual-width 600)
+  (org-link-abbrev-alist
+   '(("jira" . "https://tracking.ainq.com/browse/%s")
+     ("opeb" . "https://tracking.ainq.com/browse/OPEB-%s")))
+  (org-list-empty-line-terminates-plain-lists t)
+;;;;; Agenda
+  (org-agenda-custom-commands
+   '(("n" "Agenda and all TODOs"
+      ((agenda "" nil)
+       (alltodo "" nil))
+      nil)
+     ("w" "Work TODOs " alltodo ""
+      ((org-agenda-files
+        '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
+  '(org-agenda-files
+   '("~/ai-worklog/Worklog.org" "~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org"))
+;;;;; Capture Templates
+  (org-capture-templates
+   '(("w" "Work Task" entry
+      (file+olp+datetree "~/ai-worklog/Worklog.org")
+      "* %^{Description}  %(org-set-tags  \":meeting:\")
+ %t
+%?" :clock-in t :clock-keep t)
+     ("W" "Work Task (with ID)" entry
+      (file+olp+datetree "~/ai-worklog/Worklog.org")
+      "* %^{Description}  %^g
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:
+
+%?" :clock-in t :clock-keep t)
+     ("m" "Meeting" entry
+      (file+olp+datetree "~/ai-worklog/Worklog.org")
+      "* %^{Description}  %(org-set-tags  \":meeting:\")
+ %t
+%?" :clock-in t :clock-keep t)
+     ("a" "Add Task" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* TODO %?
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:" :prepend t)
+     ("n" "Note" entry
+      (file "~/Dropbox/Notes/Notes.org")
+      "* NOTE %? %^G
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:END:" :prepend t)
+     ("p" "Protocol" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* NOTE %?
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:URL:      %:link
+:END:
+
+%i
+")
+     ("l" "Link" entry
+      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      "* [[%:link][%:description]]
+:PROPERTIES:
+:ID:       %(ffe-uuid)
+:CREATED:  %U
+:URL:      %:link
+:END:
+
+#+BEGIN_QUOTE
+%:initial
+#+END_QUOTE
+
+%?
+")))
+;;;;; Other Settings
+  (org-modules
+   '(org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m))
+  (org-outline-path-complete-in-steps nil)
+  (org-plantuml-jar-path "~/.bin/plantuml.jar")
+  (org-refile-allow-creating-parent-nodes 'confirm)
+  (org-refile-targets
+   '((org-agenda-files :maxlevel . 5)
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)))
+  (org-refile-use-outline-path 'file)  
+  (org-return-follows-link t)
+  (org-src-fontify-natively t)
+  (org-src-tab-acts-natively t))
+
 
 
 
