@@ -518,15 +518,28 @@ Examples:
 	bookmark-save-flag 1))
 
 ;;;; Outline and Imenu
-
 (use-package imenu
   :commands (imenu)
-  :init (progn
-	  (use-package imenu+ :defer t)
-	  (use-package imenu-list :ensure t :commands (imenu-list)))
   :bind (:map search-map
-         ("i" . imenu)
-	 ("I" . imenu-list)))
+              ("i" . imenu)))
+
+(use-package imenu+
+  :after (imenu))
+
+(use-package imenu-list
+  :after (imenu)
+  :commands (imenu-list)
+  :ensure t
+  :bind (:map search-map
+              ("I" . imenu-list)))
+
+(use-package imenu-anywhere
+  :after (imenu)
+  :commands (imenu-anywhere)
+  :ensure t
+  :bind (:map search-map
+              ("M-i" . imenu-anywhere)))
+
 
 (use-package outshine
   :ensure t
@@ -723,9 +736,9 @@ Examples:
 
 ;; TODO activate it later
 (use-package visual-regexp
-  :disabled t
   :ensure t
-  :bind (("C-c C-/" . vr/replace)))
+  :bind (:map ctl-z-map
+         ("%" . vr/query-replace)))
 
 ;;;; Unfill paragraph or region
 (use-package unfill
