@@ -1117,32 +1117,37 @@ Examples:
 ;;;; Language Server
 (use-package lsp-mode
   :ensure t
+  :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-z .")
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
-   (python-mode . lsp-deferred)
-   (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp lsp-deferred)
+   (lsp-mode . lsp-enable-which-key-integration)))
 
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
-  :config (setf lsp-ui-doc-position 'at-point
-                lsp-ui-doc-enable nil)
+  :custom 
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-enable nil)
   :after lsp-mode)
 
-;; project wide overview
 (use-package lsp-treemacs
   :ensure t
-  :commands lsp-treemacs-errors-list)
+  :commands lsp-treemacs-errors-list
+  :after lsp-mode)
 
 (use-package dap-mode
   :ensure t
-  :commands (dap-debug dap-debug-edit-template)
-  :after lsp-mode)
-
+  :commands (dap-debug dap-debug-edit-template dap-register-debug-template)
+  :after lsp-mode
+  :config
+  (require 'dap-python)
+  
+  :bind
+  (:map lsp-mode-map        
+        ("C-z . d" . dap-debug)))
 
 ;;;; Lisp
 ;; This is a lisp based programming language configuration
@@ -1379,48 +1384,40 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     (add-hook 'js2-mode-hook #'electric-pair-mode)
     (add-hook 'js2-mode-hook #'hs-minor-mode)))
 
-;; (use-package company-tern
-;;   :ensure t
-;;   ;; :ensure-system-package
-;;   ;; ((tern . "npm install -g tern"))
-;;   :after js2-mode
-;;   :hook '((js2-mode . company-mode)
-;;           (js2-mode . tern-mode))
-;;   :config
-;;   (add-to-list 'company-backends 'company-tern)
-;;   ;; use LSP for navigation
-;;   (define-key tern-mode-keymap (kbd "M-.") nil)
-;;   (define-key tern-mode-keymap (kbd "M-,") nil)
-;;   ;; use js2 refactor for renames
-;;   (define-key tern-mode-keymap (kbd "C-c C-r") nil))
-
 ;;;;; Customize Projectile
 (when (fboundp 'projectile-register-project-type)
   (projectile-register-project-type 'npm '("package.json") :test "npm test"  :test-suffix ".spec"))
 
 ;;;; Python 
-;; Python configuration
 ;;
-;;     pip install python-lsp-server[all]
-;;
-;; The rest is taken care of by LSP
+;;Python configuration. Instead of pylsp we use pyright
+;; 
 (use-package python
   :defer t
   :commands python-mode
   :config
   (add-hook 'python-mode-hook #'eldoc-mode)
-  :bind (:map python-mode-map
-	      ;; python-eldoc-at-point is not really useful, instead
-	      ;; use it for sending file to python shell
-	      ("C-c C-f" . python-shell-send-file)
-	      ("C-M-f" . python-nav-forward-sexp)
-	      ;; moves between syntactic blocks (if,for,while,def,..)
-	      ("C-M-b" . python-nav-backward-sexp)
-	      ("M-}" . python-nav-forward-block)
-	      ("M-{" . python-nav-backward-block)
-	      ;; In python this looks like next line skipping comments and multi-line strings
-	      ("M-e" . python-nav-forward-statement)
-	      ("M-a" . python-nav-backward-statement)))
+  (add-hook 'python-mode-hook #'lsp-deferred)
+  :bind
+  (:map python-mode-map
+	;; python-eldoc-at-point is not really useful, instead
+	;; use it for sending file to python shell
+	("C-c C-f" . python-shell-send-file)
+	("C-M-f" . python-nav-forward-sexp)
+	;; moves between syntactic blocks (if,for,while,def,..)
+	("C-M-b" . python-nav-backward-sexp)
+	("M-}" . python-nav-forward-block)
+	("M-{" . python-nav-backward-block)
+	;; In python this looks like next line skipping
+        ;; comments and multi-line strings
+	("M-e" . python-nav-forward-statement)
+	("M-a" . python-nav-backward-statement)))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))
 
 ;;;; Rust
 
