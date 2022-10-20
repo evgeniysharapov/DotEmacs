@@ -137,45 +137,45 @@
       nil)
      ("w" "Work TODOs " alltodo ""
       ((org-agenda-files
-        '("~/ai-worklog/Worklog.org" "~/ai-worklog/PULSE.org" "~/ai-worklog/ULP.org" "~/ai-worklog/AOD_Service.org" "~/ai-worklog/DHIN_Closure.org" "~/ai-worklog/Management_Reports.org"))))))
+        '("~/Documents/Notes/Worklog.org" "~/Documents/Notes/CRIO.org"))))))
  '(org-agenda-files
-   '("~/ai-worklog/Worklog.org" "~/Dropbox/Notes/Notes.org" "~/Dropbox/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/ai-worklog/PULSE.org" "~/Dropbox/Notes/Setup.org" "~/Dropbox/Notes/Todo.org" "~/ai-worklog/ULP.org"))
+   '("~/Documents/Notes/Worklog.org" "~/Documents/Notes/Notes/Notes.org" "~/Documents/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/Documents/Notes/Todo.org"))
  '(org-capture-templates
-   '(("w" "Work Task" entry
-      (file+olp+datetree "~/ai-worklog/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":meeting:\")
+   '(("w" "Work" entry
+      (file+olp+datetree "~/Documents/Notes/Worklog.org")
+      "* %^{Description}  %(org-set-tags  \":work:\")
  %t
-%?" :clock-in t :clock-keep t)
-     ("W" "Work Task (with ID)" entry
-      (file+olp+datetree "~/ai-worklog/Worklog.org")
-      "* %^{Description}  %^g
-:PROPERTIES:
-:ID:       %(ffe-uuid)
-:CREATED:  %U
-:END:
-
 %?" :clock-in t :clock-keep t)
      ("m" "Meeting" entry
       (file+olp+datetree "~/ai-worklog/Worklog.org")
       "* %^{Description}  %(org-set-tags  \":meeting:\")
  %t
 %?" :clock-in t :clock-keep t)
+     ("t" "CRIO Task" entry
+      (file "~/Documents/Notes/CRIO.org")
+      "* TODO %^{Description}  %(org-set-tags  \":crio:\")
+ %t
+%?")
+     ("c" "CRIO Note" entry
+      (file "~/Documents/Notes/CRIO.org")
+      "* %^{Description}
+%?")     
      ("a" "Add Task" entry
-      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      (file+headline "~/Documents/Notes/Todo.org" "Inbox")
       "* TODO %?
 :PROPERTIES:
 :ID:       %(ffe-uuid)
 :CREATED:  %U
 :END:" :prepend t)
      ("n" "Note" entry
-      (file "~/Dropbox/Notes/Notes.org")
+      (file "~/Documents/Notes/Notes.org")
       "* NOTE %? %^G
 :PROPERTIES:
 :ID:       %(ffe-uuid)
 :CREATED:  %U
 :END:" :prepend t)
      ("p" "Protocol" entry
-      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      (file+headline "~/Documents/Notes/Todo.org" "Inbox")
       "* NOTE %?
 :PROPERTIES:
 :ID:       %(ffe-uuid)
@@ -186,7 +186,7 @@
 %i
 ")
      ("l" "Link" entry
-      (file+headline "~/Dropbox/Notes/Todo.org" "Inbox")
+      (file+headline "~/Documents/Notes/Todo.org" "Inbox")
       "* [[%:link][%:description]]
 :PROPERTIES:
 :ID:       %(ffe-uuid)
@@ -201,8 +201,8 @@
 %?
 ")))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "~/Dropbox/Notes/Notes.org")
- '(org-directory "~/Dropbox/Notes")
+ '(org-default-notes-file "~/Documents/Notes/Notes.org")
+ '(org-directory "~/Documents/Notes")
  '(org-export-backends '(ascii html icalendar latex md odt confluence))
  '(org-hide-leading-stars t)
  '(org-image-actual-width 600)
