@@ -123,7 +123,7 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(load-prefer-newer t t)
+ '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
@@ -139,7 +139,7 @@
       ((org-agenda-files
         '("~/Documents/Notes/Worklog.org" "~/Documents/Notes/CRIO.org"))))))
  '(org-agenda-files
-   '("~/Documents/Notes/Worklog.org" "~/Documents/Notes/Notes/Notes.org" "~/Documents/Notes/Ideas.org" "~/Dropbox/Notes/Journal.org" "~/Documents/Notes/Todo.org"))
+   '("/Users/evgeniysharapov/Documents/Notes/Worklog.org" "/Users/evgeniysharapov/Documents/Notes/CRIO.org" "/Users/evgeniysharapov/Documents/Notes/Notes.org" "/Users/evgeniysharapov/Documents/Notes/Ideas.org" "/Users/evgeniysharapov/Documents/Notes/Inbox.org"))
  '(org-capture-templates
    '(("w" "Work" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
@@ -147,21 +147,21 @@
  %t
 %?" :clock-in t :clock-keep t)
      ("m" "Meeting" entry
-      (file+olp+datetree "~/ai-worklog/Worklog.org")
+      (file+olp+datetree "~/Documents/Notes/Worklog.org")
       "* %^{Description}  %(org-set-tags  \":meeting:\")
  %t
 %?" :clock-in t :clock-keep t)
      ("t" "CRIO Task" entry
-      (file "~/Documents/Notes/CRIO.org")
+      (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
       "* TODO %^{Description}  %(org-set-tags  \":crio:\")
  %t
 %?")
      ("c" "CRIO Note" entry
       (file "~/Documents/Notes/CRIO.org")
       "* %^{Description}
-%?")     
+%?")
      ("a" "Add Task" entry
-      (file+headline "~/Documents/Notes/Todo.org" "Inbox")
+      (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
       "* TODO %?
 :PROPERTIES:
 :ID:       %(ffe-uuid)
@@ -174,19 +174,8 @@
 :ID:       %(ffe-uuid)
 :CREATED:  %U
 :END:" :prepend t)
-     ("p" "Protocol" entry
-      (file+headline "~/Documents/Notes/Todo.org" "Inbox")
-      "* NOTE %?
-:PROPERTIES:
-:ID:       %(ffe-uuid)
-:CREATED:  %U
-:URL:      %:link
-:END:
-
-%i
-")
      ("l" "Link" entry
-      (file+headline "~/Documents/Notes/Todo.org" "Inbox")
+      (file+headline "~/Documents/Notes/Inbox.org" "Links")
       "* [[%:link][%:description]]
 :PROPERTIES:
 :ID:       %(ffe-uuid)
@@ -203,14 +192,14 @@
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Documents/Notes/Notes.org")
  '(org-directory "~/Documents/Notes")
+ '(org-ellipsis " ▼")
  '(org-export-backends '(ascii html icalendar latex md odt confluence))
  '(org-hide-leading-stars t)
  '(org-image-actual-width 600)
  '(org-link-abbrev-alist
    '(("jira" . "https://tracking.ainq.com/browse/%s")
      ("opeb" . "https://tracking.ainq.com/browse/OPEB-%s")
-     ("edc" . "https://tracking.ainq.com/browse/EDC-%s")
-     ))
+     ("edc" . "https://clinical-research-io.atlassian.net//browse/EDC-%s")))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
    '(org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m))
@@ -218,7 +207,8 @@
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
  '(org-refile-targets
    '((org-agenda-files :tag . "")
-     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)) t)
+     (org-agenda-files :maxlevel . 5)
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)))
  '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)

@@ -22,6 +22,11 @@
             ))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
+;; Setup Org Agenda files
+
+(defun crio-insert-edc-jira-link (project number)
+  "Inserts LINK to JIRA issue"
+  (insert (org-make-link-string (format ) "edc:") ))
 
 (provide 'EvgeniyCRIO.local)
 ;;; EvgeniyCRIO ends here
