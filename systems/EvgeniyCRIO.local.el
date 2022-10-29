@@ -24,9 +24,12 @@
 
 ;; Setup Org Agenda files
 
-(defun crio-insert-edc-jira-link (project number)
+(defun crio-insert-edc-jira-link (number)
   "Inserts LINK to JIRA issue"
-  (insert (org-make-link-string (format ) "edc:") ))
+  (interactive "n")
+  (insert (org-make-link-string (format "edc:%s" number) (format "EDC-%s" number))))
+
+(bind-key "C-c l" #'crio-insert-edc-jira-link org-mode-map)
 
 (provide 'EvgeniyCRIO.local)
 ;;; EvgeniyCRIO ends here
