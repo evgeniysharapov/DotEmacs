@@ -1807,12 +1807,17 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                      (relative-image-file-name
                       (replace-regexp-in-string
                        (file-name-directory org-file-name) "" image-file-name nil 'literal)))
+                ;; Ensure that directory is created
+                (if (not (file-directory-p image-directory))
+                    (make-directory image-directory 'parents))                
+                
                 ;; Turns out we can have issues writing into files
                 ;; that are in directory pointed to by symbolic link
                 ;; We will write through temporary file
                 (let ((temp-file (make-temp-file "clipimg")))                  
                   (with-temp-file temp-file
                     (ffe-clipboard-to-image temp-file)
+                    ()
                     (copy-file temp-file image-file-name t)
                     (delete-file temp-file)))
                 (insert (concat "[[file:" relative-image-file-name "]]"))
@@ -1868,7 +1873,16 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
-
+;;;; Org Journal
+(use-package org-journal
+  :ensure t
+  :init
+  (setq org-journal-prefix-key "C-z S-"
+        org-journal-file-type 'weekly
+        org-journal-file-format "%Y%m%d_W%V.org"
+        org-journal-enable-agenda-integration t)
+  :bind (:map ctl-z-map
+              ("n" . org-journal-new-entry)))
 
 ;;; Bible
 (use-package dtk
