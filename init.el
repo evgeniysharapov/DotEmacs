@@ -1851,6 +1851,14 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                       ;; (add-hook 'completion-at-point-functions
                       ;;           #'pcomplete-completions-at-point)
                       ))
+          ;; this will allow to insert org-tempo templates without annoying pair > inserted
+          (add-hook 'org-mode-hook
+                    (lambda ()
+                      (setq-local electric-pair-inhibit-predicate
+                                  `(lambda (c)
+                                     (if (char-equal c ?<) t
+                                       (,electric-pair-inhibit-predicate c))))))
+          
           ;; remove overlays from the org-file
           (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces))
 ;;;; Org-mode related bindings global and local 
