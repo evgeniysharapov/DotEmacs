@@ -197,9 +197,9 @@
  '(org-hide-leading-stars t)
  '(org-image-actual-width 600)
  '(org-link-abbrev-alist
-   '(("jira" . "https://tracking.ainq.com/browse/%s")
+   '(("jira" . "https://clinical-research-io.atlassian.net/browse/%s")
      ("opeb" . "https://tracking.ainq.com/browse/OPEB-%s")
-     ("edc" . "https://clinical-research-io.atlassian.net//browse/EDC-%s")))
+     ("edc" . "https://clinical-research-io.atlassian.net/browse/EDC-%s")))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
    '(org-id ol-info org-mouse org-protocol org-tempo ol-eshell org-eval ol-git-link org-interactive-query org-toc org-bbdb org-bibtex org-docview org-eww org-gnus org-info org-irc org-mhe org-rmail org-tempo org-w3m))
