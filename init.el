@@ -1888,7 +1888,10 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   (setq org-journal-prefix-key "C-z S-"
         org-journal-file-type 'weekly
         org-journal-file-format "%Y%m%d_W%V.org"
-        org-journal-enable-agenda-integration t)
+        org-journal-enable-agenda-integration t
+        org-journal-dir (file-name-as-directory
+                         (concat (file-name-as-directory org-directory)
+                                 "journal")))
   :bind (:map ctl-z-map
               ("n" . org-journal-new-entry)))
 

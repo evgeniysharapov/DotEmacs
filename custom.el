@@ -139,7 +139,7 @@
       ((org-agenda-files
         '("~/Documents/Notes/Worklog.org" "~/Documents/Notes/CRIO.org"))))))
  '(org-agenda-files
-   '("/Users/evgeniysharapov/Documents/Notes/Worklog.org" "/Users/evgeniysharapov/Documents/Notes/CRIO.org" "/Users/evgeniysharapov/Documents/Notes/Notes.org" "/Users/evgeniysharapov/Documents/Notes/Ideas.org" "/Users/evgeniysharapov/Documents/Notes/Inbox.org" "/Users/evgeniysharapov/Documents/journal/20221205_W49.org"))
+   '("/Users/evgeniysharapov/Documents/Notes/Worklog.org" "/Users/evgeniysharapov/Documents/Notes/CRIO.org" "/Users/evgeniysharapov/Documents/Notes/Notes.org" "/Users/evgeniysharapov/Documents/Notes/Ideas.org" "/Users/evgeniysharapov/Documents/Notes/Inbox.org" "/Users/evgeniysharapov/Documents/journal/20221212_W50.org" "/Users/evgeniysharapov/Documents/Notes/journal/20221226_W52.org"))
  '(org-capture-templates
    '(("w" "Work" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
