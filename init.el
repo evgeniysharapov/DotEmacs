@@ -415,9 +415,11 @@ Examples:
 (visual-line-mode 1)
 ;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
 (use-package adaptive-wrap
-  :ensure t)
+  :ensure t
+  :hook visual-fill-column-mode)
 (use-package visual-fill-column
-  :ensure t)
+  :ensure t
+  :hook visual-line-mode)
 (use-package visual-fill
   :ensure t)
 
@@ -1846,11 +1848,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                     (lambda ()
                       (if (eq major-mode 'emacs-lisp-mode)
                           (flycheck-disable-checker 'emacs-lisp-checkdoc))))
-          (add-hook 'org-mode-hook
-                    (lambda ()
-                      ;; (add-hook 'completion-at-point-functions
-                      ;;           #'pcomplete-completions-at-point)
-                      ))
+          (add-hook 'org-mode-hook #'visual-line-mode)          
           ;; this will allow to insert org-tempo templates without annoying pair > inserted
           (add-hook 'org-mode-hook
                     (lambda ()
