@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; Constants and Paths
 (defconst *emacs-start-time* (current-time))
 ;;;; Directories
@@ -42,6 +43,8 @@
   (eq 'darwin system-type)
   "Is t if we run on MacOS")
 
+;; prefer loading newer packages
+(setf load-prefer-newer t)
 
 ;;; Libraries and Packages 
 ;;;; Load Libraries Recursively
@@ -60,35 +63,37 @@
 ;; erase the function
 (fmakunbound #'add-directory-to-path)
 
+;;;; Initialize `use-package'
+(require 'package)
+(setf package-user-dir *elpa-dir*)
+(customize-set-variable 'package-archives
+                        `(("melpa" . "https://melpa.org/packages/")
+                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                          ("melpa-stable" . "http://stable.melpa.org/packages/")
+                          ,@package-archives))
+(customize-set-variable 'package-enable-at-startup nil)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+(put 'use-package 'lisp-indent-function 1)
+
+(use-package use-package-core
+  :custom
+  ;; (use-package-verbose t)
+  ;; (use-package-minimum-reported-time 0.005)
+  (use-package-enable-imenu-support t))
+
 
 ;;;; Load custom-vars File
+;; consider removing as much as possible from the custom file
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
-
-;;;; Packages Repos and Use-Package
-(setf load-prefer-newer t)
-(require 'package)
-(package-initialize)
-(setf package-user-dir *elpa-dir*)
-
-(unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
-(unless (assoc-default "nongnu" package-archives)
-  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
-(unless (assoc-default "melpa-stable" package-archives)
-  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t))
-
-(unless package-archive-contents
-  (package-refresh-contents t))
-
-;; the rest of the package installation is hinged on this one
-;; newer versions of Emacs may carry this one, or it has been installed already
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-;; Using always-ensure fails most of the time with 'package-' not available message
-;; (use-package use-package-ensure
-;;   :config  (setf use-package-always-ensure t))
-(setf use-package-enable-imenu-support t)
 
 ;;;; Useful Packages Loaded
 (use-package s        :ensure t :defer t)
