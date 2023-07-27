@@ -416,7 +416,7 @@ Examples:
 ;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
 (use-package adaptive-wrap
   :ensure t
-  :hook visual-fill-column-mode)
+  :hook (visual-fill-column-mode . adaptive-wrap-prefix-mode))
 (use-package visual-fill-column
   :ensure t
   :hook visual-line-mode)
