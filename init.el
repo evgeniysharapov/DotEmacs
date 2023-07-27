@@ -1905,6 +1905,29 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;;; Ledger
 (use-package ledger-mode
   :ensure t
+  :custom
+  (ledger-binary-path "ledger")
+  (ledger-clear-whole-transactions t)
+  (ledger-reports
+   '(("monthly cf" "ledger -n --monthly [[ledger-mode-flags]] -f %(ledger-file)  reg Expenses or Liabilities:Mortgage or Income")
+     ("unknown" "%(binary) [[ledger-mode-flags]] -f journal.ledger reg expenses:unknown")
+     ("unknown-buffer" "%(binary) [[ledger-mode-flags]] -f journal.ledger --period %(buffer-year) reg expenses:unknown")
+     ("bal" "%(binary) -f %(ledger-file) bal")
+     ("reg" "%(binary) -f journal.ledger reg")
+     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+  :init
+  (defun ffe-ledger-buffer-year-format-specifier()
+    (file-name-base (buffer-file-name)))
+  (defun ffe-ledger-current-year-format-specifier()
+    (with-current-buffer (or ledger-report-buffer-name (current-buffer))
+      (let* ((month (or ledger-report-current-month (ledger-report--current-month)))
+           (year (car month)))
+      (format "%s" year))))
+  
+  :config
+  (add-to-list 'ledger-report-format-specifiers '("buffer-year" . ffe-ledger-buffer-year-format-specifier))
+  (add-to-list 'ledger-report-format-specifiers '("current-year" . ffe-ledger-current-year-format-specifier))
   :defer t)
 
 (use-package flycheck-ledger
@@ -1912,10 +1935,22 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :after ledger-mode)
 
 ;; (use-package hledger-mode
-;;   :ensure t)
+;;   :ensure t
+;;   :custom
+;;   (hledger-jfile "journal.ledger")
+;;   :config
+;;   (add-to-list 'company-backends 'hledger-company)
+;;   (add-to-list 'auto-mode-alist '("\\.ledger\\'" . hledger-mode)))
+
 
 ;; (use-package flycheck-hledger
 ;;   :ensure t)
+
+
+
+;;; Justfile
+(use-package just-mode
+  :ensure t)
 
 ;;; Docker
 (use-package dockerfile-mode
