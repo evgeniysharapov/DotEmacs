@@ -1727,15 +1727,20 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package restclient
   :ensure t)
 
-;;; Org Mode
+;;;; PlantUML
+;; On Mac OS X plantuml could be installed via brew
+;; 
+;; For Org-mode this requires plantuml.jar to be available
+;; and specified via `org-plantuml-jar-path'
+(use-package plantuml-mode
+  :ensure t
+  :custom
+  (plantuml-exec-mode 'executable))
 
+;;; Org Mode
 ;; comment out ob-ipython as it gives error if no ipython is installed
 ;; (use-package ob-ipython
 ;;   :ensure t)
-
-;; This requires plantuml.jar to be available and specified via `org-plantuml-jar-path'
-(use-package plantuml-mode
-  :ensure t)
 
 (use-package org
   :mode (("\\.org$" . org-mode))
