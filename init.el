@@ -1821,6 +1821,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :custom
   (plantuml-exec-mode 'executable))
 
+;;;; Justfile
+(use-package just-mode
+  :ensure t)
+
 ;;; Org Mode
 ;; comment out ob-ipython as it gives error if no ipython is installed
 ;; (use-package ob-ipython
@@ -2031,10 +2035,6 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;;   :ensure t)
 
 
-
-;;; Justfile
-(use-package just-mode
-  :ensure t)
 
 ;;; Docker
 (use-package dockerfile-mode
