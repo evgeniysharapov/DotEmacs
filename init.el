@@ -63,7 +63,7 @@
 ;; erase the function
 (fmakunbound #'add-directory-to-path)
 
-;;;; Initialize `use-package'
+;;;; Initialize `use-package' and friends
 (require 'package)
 (setf package-user-dir *elpa-dir*)
 (customize-set-variable 'package-archives
@@ -89,11 +89,24 @@
   ;; (use-package-minimum-reported-time 0.005)
   (use-package-enable-imenu-support t))
 
+(use-package use-package-ensure-system-package
+  :ensure t)
+
+(use-package quelpa
+  :ensure t
+  :defer t
+  :custom
+  (quelpa-update-melpa-p nil "Don't update the MELPA git repo."))
+
+(use-package quelpa-use-package
+  :ensure t)
 
 ;;;; Load custom-vars File
 ;; consider removing as much as possible from the custom file
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
+
+
 
 ;;;; Useful Packages Loaded
 (use-package s        :ensure t :defer t)
@@ -104,31 +117,56 @@
 ;;; Utility
 ;;;; History and Sessions
 ;; Backup Files
-(setq backup-directory-alist `(("." . ,*backup-dir*))
-      version-control t
-      vc-make-backup-files t
-      backup-by-copying-when-linked t)
+(use-package files
+  :custom
+  (backup-directory-alist `(("." . ,*backup-dir*)))
+  (backup-by-copying-when-linked t)
+  (backup-by-copying t)
+  (version-control t)
+  (vc-make-backup-files t)
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 2))
+
 ;; Sessions
+(use-package saveplace
+  :custom
+  (save-place-mode t)
+  (save-place-file (concat *data-dir* "places")))
+
 (setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
-(use-package saveplace
-  :init 
-  (setq save-place-file (concat *data-dir* "places")))
-
 (use-package desktop
-  :defer t
+  :defer t  
   :config
   (progn
     (setq desktop-dirname *data-dir*)
-    (push *data-dir* desktop-path)))
+    (push *data-dir* desktop-path))
+  :custom
+  (desktop-globals-to-save
+   '(desktop-missing-file-warning
+     (search-ring . 50)
+     (regexp-search-ring . 50)
+     (regexp-history . 50)
+     (grep-history . 50)
+     register-alist file-name-history tags-file-name
+     (shell-command-history . 50)
+     (read-expressions-history . 50)
+     (query-replace-history 0.5)
+     (minibuffer-history . 50)
+     (compile-history . 50)))
+  (desktop-restore-eager 2)
+  (desktop-restore-frames nil)
+  (desktop-save t)
+  (desktop-save-mode t))
 
 ;;;; Minibuffer
 ;; minibuffer history 
 (use-package savehist
+  :custom
+  (savehist-file (concat *data-dir* "history"))
   :init
-  (progn
-    (setq savehist-file (concat *data-dir* "history"))
-    (savehist-mode t)))
+  (savehist-mode t))
 
 (defun ffe-auto-close-buffers ()
   "Closes buffers that should be closed after we done with minibuffer.
@@ -223,23 +261,49 @@ Examples:
 
 
 
-;;;; Tweaks
-;; short response function instead of long one
-(fset 'yes-or-no-p 'y-or-n-p)
-;; Following commands are disabled by default,
-(put 'narrow-to-region 'disabled nil)
-(put 'downcase-region  'disabled nil)
-(put 'upcase-region    'disabled nil)
-(put 'narrow-to-page   'disabled nil)
-(put 'erase-buffer     'disabled nil)
-(put 'set-goal-column  'disabled nil)
-(put 'list-timers      'disabled nil)
-; (put 'Info-edit 'disabled nil)
-; (put 'scroll-left 'disabled nil)
+;;;; Other Emacs Settings
+(use-package emacs
+  :init
+  ;; short response function instead of long one
+  (fset 'yes-or-no-p 'y-or-n-p)
+  ;; Following commands are disabled by default,
+  (put 'narrow-to-region 'disabled nil)
+  (put 'downcase-region  'disabled nil)
+  (put 'upcase-region    'disabled nil)
+  (put 'narrow-to-page   'disabled nil)
+  (put 'erase-buffer     'disabled nil)
+  (put 'set-goal-column  'disabled nil)
+  (put 'list-timers      'disabled nil)
+  ;; (put 'Info-edit 'disabled nil)
+  ;; (put 'scroll-left 'disabled nil)
+  ;; scroll-lock-mode being enabled randomly is infuriating
+  (advice-add 'scroll-lock-mode :override (lambda (&rest args)))
+  :custom
+  (default-frame-alist '((menu-bar-lines 0)
+                         (tool-bar-lines 0)
+                         (vertical-scroll-bars)))  
+  ;; avoid jerky scrolling 
+  (scroll-step 1)
+  (scroll-margin 4)
+  (inhibit-startup-screen nil)
+  (initial-scratch-message nil)
+  ;; spaces 
+  (indent-tabs-mode nil)
+  (tab-width 4))
 
-;; scroll-lock-mode being enabled randomly is infuriating
-(advice-add 'scroll-lock-mode :override (lambda (&rest args)))
-
+(use-package simple
+  :defer 0.1
+  :custom
+  (kill-ring-max 30000)
+  (column-number-mode t)
+  (kill-whole-line t)
+  (save-interprogram-paste-before-kill t)  
+  :config
+  (toggle-truncate-lines 1)
+  :bind
+  ;; remap ctrl-w/ctrl-h
+  (:map ctl-x-map
+        ("K" . kill-current-buffer)))
 
 ;;; Keymap and Keys Organization 
 
@@ -272,13 +336,14 @@ Examples:
 (define-key global-map (kbd "M-o") nil)
 
 ;; Facemenu is super useless outside of center-* functions
-; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
-
+;; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
 (use-package which-key
   :ensure t
-  :commands (which-key-C-h-dispatch)
-  :config (which-key-mode)  
-  ;; otherwise you can't page through help-map
+  :custom
+  (which-key-show-transient-maps t)
+  :config
+  (which-key-mode)
+    ;; otherwise you can't page through help-map
   :bind (:map help-map
               ("C-h" . which-key-C-h-dispatch)))
 
@@ -892,13 +957,6 @@ Examples:
                    (select-window window))))))
 
 (bind-key "w" 'ffe-swap-buffers-with-window ctl-x-x-map)
-
-(defun ffe-kill-current-buffer ()
-  "Kills current buffer"
-  (interactive)
-  (kill-buffer (current-buffer)))
-
-(bind-key "C-x K" #'ffe-kill-current-buffer)
 
 ;;; Help
 ;; Help/Info configuration
