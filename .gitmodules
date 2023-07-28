@@ -1,6 +1,3 @@
-[submodule "site-lisp/ag"]
-	path = site-lisp/ag
-	url = https://github.com/evgeniysharapov/ag.el.git
 [submodule "site-lisp/browse-kill-ring-plus"]
 	path = site-lisp/browse-kill-ring-plus
 	url = https://github.com/emacsmirror/browse-kill-ring-plus.git

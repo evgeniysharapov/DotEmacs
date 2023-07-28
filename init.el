@@ -89,6 +89,11 @@
   ;; (use-package-minimum-reported-time 0.005)
   (use-package-enable-imenu-support t))
 
+(use-package system-packages
+  :ensure t
+  :custom
+  (system-packages-noconfirm t))
+
 (use-package use-package-ensure-system-package
   :ensure t)
 
@@ -304,6 +309,14 @@ Examples:
   ;; remap ctrl-w/ctrl-h
   (:map ctl-x-map
         ("K" . kill-current-buffer)))
+
+;; Using sneaky strategy to minimize user and GC interference 
+(use-package gcmh
+  :ensure t
+  :demand t
+  :config
+  (gcmh-mode 1))
+
 
 ;;; Keymap and Keys Organization 
 
@@ -644,6 +657,7 @@ Examples:
 ;; C-u C-z /      hides lines not matching regexp
 ;; C-u C-u C-z /  unhides everything
 (use-package hide-lines
+  :ensure t
   :defer t
   :bind (:map ctl-z-map
 	      ("/" . hide-lines)))
@@ -767,8 +781,13 @@ Examples:
 ;; This is a custom version of the library that should be loaded from
 ;; the git submodule
 (use-package ag
-  :bind (("M-s a" . ag)
-	 ("M-s p" . ag-project)))
+  :ensure t
+  :defer t
+  :ensure-system-package (ag . silversearcher-ag)
+  :custom
+  (ag-highlight-search t "Highlight the current search term.")
+  (ag-reuse-buffers t)
+  (ag-reuse-window t))
 
 (use-package wgrep-ag :ensure t :defer t)
 
@@ -1082,7 +1101,11 @@ Examples:
   :after ivy
   :config (counsel-mode)
   :bind (("M-o j" . counsel-outline)
-         ("M-g f" . counsel-flycheck)))
+         ("M-g f" . counsel-flycheck)
+         ([remap insert-char] . counsel-unicode-char)
+         ("M-s s" . counsel-grep-or-swiper)
+         ("M-s a" . counsel-ag)
+         ("M-g m" . counsel-mark-ring)))
 
 (use-package ivy
   :ensure t
@@ -1107,9 +1130,7 @@ Examples:
 
 (use-package swiper
   :ensure t
-  :after ivy
-  :bind (("C-S-s" . swiper)
-         ("C-S-r" . swiper)))
+  :after ivy)
 
 
 ;;; Expandable Snippets
