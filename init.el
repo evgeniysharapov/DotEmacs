@@ -1143,11 +1143,12 @@ Examples:
   :commands (dap-debug dap-debug-edit-template dap-register-debug-template)
   :after lsp-mode
   :config
-  (require 'dap-python)
-  
+  (require 'dap-python)  
   :bind
   (:map lsp-mode-map        
-        ("C-z . d" . dap-debug)))
+        ("C-z . d" . dap-debug))
+  :hook ((lsp-mode . dap-mode)
+         (lsp-mode . dap-ui-mode)))
 
 ;;;; Lisp
 ;; This is a lisp based programming language configuration
@@ -1415,9 +1416,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 (use-package lsp-pyright
   :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))
+  :after lsp-mode
+  ;; :hook (python-mode . (lambda ()
+  ;;                        (require 'lsp-pyright)
+  ;;                        (lsp-deferred)))
+  )
+
+(use-package pyvenv
+  :ensure t
+  :hook ((python-mode . pyvenv-mode)))
 
 ;;;; Rust
 
