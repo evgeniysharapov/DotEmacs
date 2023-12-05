@@ -2058,9 +2058,14 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 	  (use-package json-rpc :ensure t)))
 
 ;;; Loading System Specific Files
-(when-let ((local-settings (concat *dotfiles-dir* (file-name-as-directory  "systems") (system-name) ".el"))
-	   (exists (file-exists-p local-settings)))
-  (load local-settings))
+;; Problem with Mac is that it sometime does or does not add ".local" to the system name as returned by
+;; `system-name'. Here we try to mitigate this by adding ".local" and testing if that file exists. 
+(when-let ((settings-file-base (concat *dotfiles-dir* (file-name-as-directory  "systems") (system-name)))
+           (settings-file (concat settings-file-base ".el"))
+           (settings-file-local (concat settings-file-base ".local.el"))
+	       (exists (or (file-exists-p settings-file) (file-exists-p settings-file-local))))
+  ;; load up the one that exists  
+  (load (cl-some (lambda (a) (when (file-exists-p a) a)) (list settings-file settings-file-local))))
 
 ;;; Server Mode
 ;; Start server-mode if we are not in the daemon mode
