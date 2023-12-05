@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; Constants and Paths
 (defconst *emacs-start-time* (current-time))
 ;;;; Directories
@@ -42,6 +43,8 @@
   (eq 'darwin system-type)
   "Is t if we run on MacOS")
 
+;; prefer loading newer packages
+(setf load-prefer-newer t)
 
 ;;; Libraries and Packages 
 ;;;; Load Libraries Recursively
@@ -60,35 +63,55 @@
 ;; erase the function
 (fmakunbound #'add-directory-to-path)
 
+;;;; Initialize `use-package' and friends
+(require 'package)
+(setf package-user-dir *elpa-dir*)
+(customize-set-variable 'package-archives
+                        `(("melpa" . "https://melpa.org/packages/")
+                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                          ("melpa-stable" . "http://stable.melpa.org/packages/")
+                          ,@package-archives))
+(customize-set-variable 'package-enable-at-startup nil)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+(put 'use-package 'lisp-indent-function 1)
+
+(use-package use-package-core
+  :custom
+  ;; (use-package-verbose t)
+  ;; (use-package-minimum-reported-time 0.005)
+  (use-package-enable-imenu-support t))
+
+(use-package system-packages
+  :ensure t
+  :custom
+  (system-packages-noconfirm t))
+
+(use-package use-package-ensure-system-package
+  :ensure t)
+
+(use-package quelpa
+  :ensure t
+  :defer t
+  :custom
+  (quelpa-update-melpa-p nil "Don't update the MELPA git repo."))
+
+(use-package quelpa-use-package
+  :ensure t)
 
 ;;;; Load custom-vars File
+;; consider removing as much as possible from the custom file
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
 
-;;;; Packages Repos and Use-Package
-(setf load-prefer-newer t)
-(require 'package)
-(package-initialize)
-(setf package-user-dir *elpa-dir*)
 
-(unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
-(unless (assoc-default "nongnu" package-archives)
-  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
-(unless (assoc-default "melpa-stable" package-archives)
-  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t))
-
-(unless package-archive-contents
-  (package-refresh-contents t))
-
-;; the rest of the package installation is hinged on this one
-;; newer versions of Emacs may carry this one, or it has been installed already
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-;; Using always-ensure fails most of the time with 'package-' not available message
-;; (use-package use-package-ensure
-;;   :config  (setf use-package-always-ensure t))
-(setf use-package-enable-imenu-support t)
 
 ;;;; Useful Packages Loaded
 (use-package s        :ensure t :defer t)
@@ -99,31 +122,56 @@
 ;;; Utility
 ;;;; History and Sessions
 ;; Backup Files
-(setq backup-directory-alist `(("." . ,*backup-dir*))
-      version-control t
-      vc-make-backup-files t
-      backup-by-copying-when-linked t)
+(use-package files
+  :custom
+  (backup-directory-alist `(("." . ,*backup-dir*)))
+  (backup-by-copying-when-linked t)
+  (backup-by-copying t)
+  (version-control t)
+  (vc-make-backup-files t)
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 2))
+
 ;; Sessions
+(use-package saveplace
+  :custom
+  (save-place-mode t)
+  (save-place-file (concat *data-dir* "places")))
+
 (setq auto-save-list-file-prefix (concat *data-dir* "auto-save-list/.saves-"))
 
-(use-package saveplace
-  :init 
-  (setq save-place-file (concat *data-dir* "places")))
-
 (use-package desktop
-  :defer t
+  :defer t  
   :config
   (progn
     (setq desktop-dirname *data-dir*)
-    (push *data-dir* desktop-path)))
+    (push *data-dir* desktop-path))
+  :custom
+  (desktop-globals-to-save
+   '(desktop-missing-file-warning
+     (search-ring . 50)
+     (regexp-search-ring . 50)
+     (regexp-history . 50)
+     (grep-history . 50)
+     register-alist file-name-history tags-file-name
+     (shell-command-history . 50)
+     (read-expressions-history . 50)
+     (query-replace-history 0.5)
+     (minibuffer-history . 50)
+     (compile-history . 50)))
+  (desktop-restore-eager 2)
+  (desktop-restore-frames nil)
+  (desktop-save t)
+  (desktop-save-mode t))
 
 ;;;; Minibuffer
 ;; minibuffer history 
 (use-package savehist
+  :custom
+  (savehist-file (concat *data-dir* "history"))
   :init
-  (progn
-    (setq savehist-file (concat *data-dir* "history"))
-    (savehist-mode t)))
+  (savehist-mode t))
 
 (defun ffe-auto-close-buffers ()
   "Closes buffers that should be closed after we done with minibuffer.
@@ -218,22 +266,56 @@ Examples:
 
 
 
-;;;; Tweaks
-;; short response function instead of long one
-(fset 'yes-or-no-p 'y-or-n-p)
-;; Following commands are disabled by default,
-(put 'narrow-to-region 'disabled nil)
-(put 'downcase-region  'disabled nil)
-(put 'upcase-region    'disabled nil)
-(put 'narrow-to-page   'disabled nil)
-(put 'erase-buffer     'disabled nil)
-(put 'set-goal-column  'disabled nil)
-(put 'list-timers      'disabled nil)
-; (put 'Info-edit 'disabled nil)
-; (put 'scroll-left 'disabled nil)
+;;;; Other Emacs Settings
+(use-package emacs
+  :init
+  ;; short response function instead of long one
+  (fset 'yes-or-no-p 'y-or-n-p)
+  ;; Following commands are disabled by default,
+  (put 'narrow-to-region 'disabled nil)
+  (put 'downcase-region  'disabled nil)
+  (put 'upcase-region    'disabled nil)
+  (put 'narrow-to-page   'disabled nil)
+  (put 'erase-buffer     'disabled nil)
+  (put 'set-goal-column  'disabled nil)
+  (put 'list-timers      'disabled nil)
+  ;; (put 'Info-edit 'disabled nil)
+  ;; (put 'scroll-left 'disabled nil)
+  ;; scroll-lock-mode being enabled randomly is infuriating
+  (advice-add 'scroll-lock-mode :override (lambda (&rest args)))
+  :custom
+  (default-frame-alist '((menu-bar-lines 0)
+                         (tool-bar-lines 0)
+                         (vertical-scroll-bars)))  
+  ;; avoid jerky scrolling 
+  (scroll-step 1)
+  (scroll-margin 4)
+  (inhibit-startup-screen nil)
+  (initial-scratch-message nil)
+  ;; spaces 
+  (indent-tabs-mode nil)
+  (tab-width 4))
 
-;; scroll-lock-mode being enabled randomly is infuriating
-(advice-add 'scroll-lock-mode :override (lambda (&rest args)))
+(use-package simple
+  :defer 0.1
+  :custom
+  (kill-ring-max 30000)
+  (column-number-mode t)
+  (kill-whole-line t)
+  (save-interprogram-paste-before-kill t)  
+  :config
+  (toggle-truncate-lines 1)
+  :bind
+  ;; remap ctrl-w/ctrl-h
+  (:map ctl-x-map
+        ("K" . kill-current-buffer)))
+
+;; Using sneaky strategy to minimize user and GC interference 
+(use-package gcmh
+  :ensure t
+  :demand t
+  :config
+  (gcmh-mode 1))
 
 
 ;;; Keymap and Keys Organization 
@@ -267,13 +349,14 @@ Examples:
 (define-key global-map (kbd "M-o") nil)
 
 ;; Facemenu is super useless outside of center-* functions
-; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
-
+;; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
 (use-package which-key
   :ensure t
-  :commands (which-key-C-h-dispatch)
-  :config (which-key-mode)  
-  ;; otherwise you can't page through help-map
+  :custom
+  (which-key-show-transient-maps t)
+  :config
+  (which-key-mode)
+    ;; otherwise you can't page through help-map
   :bind (:map help-map
               ("C-h" . which-key-C-h-dispatch)))
 
@@ -415,9 +498,11 @@ Examples:
 (visual-line-mode 1)
 ;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
 (use-package adaptive-wrap
-  :ensure t)
+  :ensure t
+  :hook (visual-fill-column-mode . adaptive-wrap-prefix-mode))
 (use-package visual-fill-column
-  :ensure t)
+  :ensure t
+  :hook visual-line-mode)
 (use-package visual-fill
   :ensure t)
 
@@ -572,6 +657,7 @@ Examples:
 ;; C-u C-z /      hides lines not matching regexp
 ;; C-u C-u C-z /  unhides everything
 (use-package hide-lines
+  :ensure t
   :defer t
   :bind (:map ctl-z-map
 	      ("/" . hide-lines)))
@@ -695,8 +781,13 @@ Examples:
 ;; This is a custom version of the library that should be loaded from
 ;; the git submodule
 (use-package ag
-  :bind (("M-s a" . ag)
-	 ("M-s p" . ag-project)))
+  :ensure t
+  :defer t
+  :ensure-system-package (ag . silversearcher-ag)
+  :custom
+  (ag-highlight-search t "Highlight the current search term.")
+  (ag-reuse-buffers t)
+  (ag-reuse-window t))
 
 (use-package wgrep-ag :ensure t :defer t)
 
@@ -886,13 +977,6 @@ Examples:
 
 (bind-key "w" 'ffe-swap-buffers-with-window ctl-x-x-map)
 
-(defun ffe-kill-current-buffer ()
-  "Kills current buffer"
-  (interactive)
-  (kill-buffer (current-buffer)))
-
-(bind-key "C-x K" #'ffe-kill-current-buffer)
-
 ;;; Help
 ;; Help/Info configuration
 ;;;; Emacs Help
@@ -1017,7 +1101,11 @@ Examples:
   :after ivy
   :config (counsel-mode)
   :bind (("M-o j" . counsel-outline)
-         ("M-g f" . counsel-flycheck)))
+         ("M-g f" . counsel-flycheck)
+         ([remap insert-char] . counsel-unicode-char)
+         ("M-s s" . counsel-grep-or-swiper)
+         ("M-s a" . counsel-ag)
+         ("M-g m" . counsel-mark-ring)))
 
 (use-package ivy
   :ensure t
@@ -1042,9 +1130,7 @@ Examples:
 
 (use-package swiper
   :ensure t
-  :after ivy
-  :bind (("C-S-s" . swiper)
-         ("C-S-r" . swiper)))
+  :after ivy)
 
 
 ;;; Expandable Snippets
@@ -1729,15 +1815,24 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package restclient
   :ensure t)
 
-;;; Org Mode
+;;;; PlantUML
+;; On Mac OS X plantuml could be installed via brew
+;; 
+;; For Org-mode this requires plantuml.jar to be available
+;; and specified via `org-plantuml-jar-path'
+(use-package plantuml-mode
+  :ensure t
+  :custom
+  (plantuml-exec-mode 'executable))
 
+;;;; Justfile
+(use-package just-mode
+  :ensure t)
+
+;;; Org Mode
 ;; comment out ob-ipython as it gives error if no ipython is installed
 ;; (use-package ob-ipython
 ;;   :ensure t)
-
-;; This requires plantuml.jar to be available and specified via `org-plantuml-jar-path'
-(use-package plantuml-mode
-  :ensure t)
 
 (use-package org
   :mode (("\\.org$" . org-mode))
@@ -1811,12 +1906,17 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                      (relative-image-file-name
                       (replace-regexp-in-string
                        (file-name-directory org-file-name) "" image-file-name nil 'literal)))
+                ;; Ensure that directory is created
+                (if (not (file-directory-p image-directory))
+                    (make-directory image-directory 'parents))                
+                
                 ;; Turns out we can have issues writing into files
                 ;; that are in directory pointed to by symbolic link
                 ;; We will write through temporary file
                 (let ((temp-file (make-temp-file "clipimg")))                  
                   (with-temp-file temp-file
                     (ffe-clipboard-to-image temp-file)
+                    ()
                     (copy-file temp-file image-file-name t)
                     (delete-file temp-file)))
                 (insert (concat "[[file:" relative-image-file-name "]]"))
@@ -1845,11 +1945,15 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                     (lambda ()
                       (if (eq major-mode 'emacs-lisp-mode)
                           (flycheck-disable-checker 'emacs-lisp-checkdoc))))
+          (add-hook 'org-mode-hook #'visual-line-mode)          
+          ;; this will allow to insert org-tempo templates without annoying pair > inserted
           (add-hook 'org-mode-hook
                     (lambda ()
-                      ;; (add-hook 'completion-at-point-functions
-                      ;;           #'pcomplete-completions-at-point)
-                      ))
+                      (setq-local electric-pair-inhibit-predicate
+                                  `(lambda (c)
+                                     (if (char-equal c ?<) t
+                                       (,electric-pair-inhibit-predicate c))))))
+          
           ;; remove overlays from the org-file
           (add-hook 'org-clock-goto-hook #'ffe-reset-bookmark-faces))
 ;;;; Org-mode related bindings global and local 
@@ -1872,7 +1976,19 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
               ([remap org-return-indent] . org-return)
               ([remap org-return] . org-return-indent)))
 
-
+;;;; Org Journal
+(use-package org-journal
+  :ensure t
+  :init
+  (setq org-journal-prefix-key "C-z S-"
+        org-journal-file-type 'weekly
+        org-journal-file-format "%Y%m%d_W%V.org"
+        org-journal-enable-agenda-integration t
+        org-journal-dir (file-name-as-directory
+                         (concat (file-name-as-directory org-directory)
+                                 "journal")))
+  :bind (:map ctl-z-map
+              ("n" . org-journal-new-entry)))
 
 ;;; Bible
 (use-package dtk
@@ -1881,6 +1997,29 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;;; Ledger
 (use-package ledger-mode
   :ensure t
+  :custom
+  (ledger-binary-path "ledger")
+  (ledger-clear-whole-transactions t)
+  (ledger-reports
+   '(("monthly cf" "ledger -n --monthly [[ledger-mode-flags]] -f %(ledger-file)  reg Expenses or Liabilities:Mortgage or Income")
+     ("unknown" "%(binary) [[ledger-mode-flags]] -f journal.ledger reg expenses:unknown")
+     ("unknown-buffer" "%(binary) [[ledger-mode-flags]] -f journal.ledger --period %(buffer-year) reg expenses:unknown")
+     ("bal" "%(binary) -f %(ledger-file) bal")
+     ("reg" "%(binary) -f journal.ledger reg")
+     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+  :init
+  (defun ffe-ledger-buffer-year-format-specifier()
+    (file-name-base (buffer-file-name)))
+  (defun ffe-ledger-current-year-format-specifier()
+    (with-current-buffer (or ledger-report-buffer-name (current-buffer))
+      (let* ((month (or ledger-report-current-month (ledger-report--current-month)))
+           (year (car month)))
+      (format "%s" year))))
+  
+  :config
+  (add-to-list 'ledger-report-format-specifiers '("buffer-year" . ffe-ledger-buffer-year-format-specifier))
+  (add-to-list 'ledger-report-format-specifiers '("current-year" . ffe-ledger-current-year-format-specifier))
   :defer t)
 
 (use-package flycheck-ledger
@@ -1888,10 +2027,18 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :after ledger-mode)
 
 ;; (use-package hledger-mode
-;;   :ensure t)
+;;   :ensure t
+;;   :custom
+;;   (hledger-jfile "journal.ledger")
+;;   :config
+;;   (add-to-list 'company-backends 'hledger-company)
+;;   (add-to-list 'auto-mode-alist '("\\.ledger\\'" . hledger-mode)))
+
 
 ;; (use-package flycheck-hledger
 ;;   :ensure t)
+
+
 
 ;;; Docker
 (use-package dockerfile-mode
