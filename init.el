@@ -1,4 +1,8 @@
 ;; -*- lexical-binding: t; -*-
+;;; Macros and Functions
+(defmacro csetq (variable value)
+  `(funcall (or (get ',variable 'custom-set) 'set-default) ',variable ,value))
+
 ;;; Constants and Paths
 (defconst *emacs-start-time* (current-time))
 ;;;; Directories

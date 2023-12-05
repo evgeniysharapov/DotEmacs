@@ -160,8 +160,6 @@
 %?
 ")))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "~/Documents/Notes/Notes.org")
- '(org-directory "~/Documents/Notes")
  '(org-ellipsis " ▼")
  '(org-export-backends '(ascii html icalendar latex md odt confluence))
  '(org-hide-leading-stars t)

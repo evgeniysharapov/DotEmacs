@@ -22,6 +22,9 @@
             ))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
+;;; Org Mode Specifics
+(csetq org-directory "~/Nextcloud/Documents/Org")
+(csetq org-default-notes-file (concat  (file-name-as-directory org-directory) "Notes.org"))
 
 (provide 'Evgeniys-MBP)
 ;;; Evgeniys-MBP ends here
