@@ -1996,6 +1996,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 
 ;;; Bible
 (use-package dtk
+  :disabled t
   :ensure t)
 
 ;;; Ledger
