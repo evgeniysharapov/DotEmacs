@@ -480,11 +480,11 @@ Examples:
         modus-themes-org-blocks 'gray-background
         modus-themes-hl-line '(accented)
         modus-themes-headings '((1 . (rainbow background)) (t . (rainbow background overline))))
-  (modus-themes-load-themes)
+  (load-theme 'modus-operandi)
   :config
   (if (display-graphic-p)
-      (modus-themes-load-operandi)
-    (modus-themes-load-vivendi))
+      (load-theme 'modus-operandi)
+    (load-theme 'modus-vivendi))
   :bind
   (:map ctl-x-t-map
         ("t" . modus-themes-toggle)))

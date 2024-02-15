@@ -3,9 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ag-highlight-search t)
- '(ag-reuse-buffers t)
- '(ag-reuse-window t)
  '(anaconda-mode-eldoc-as-single-line t)
  '(auto-image-file-mode t)
  '(aw-dispatch-always t)
@@ -23,7 +20,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(custom-safe-themes
-   '("5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
+   '("b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
  '(default-input-method "russian-computer")
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
@@ -93,7 +90,7 @@
  '(js2-highlight-level 3)
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
- '(load-prefer-newer t)
+ '(load-prefer-newer t t)
  '(ls-lisp-dirs-first t)
  '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
