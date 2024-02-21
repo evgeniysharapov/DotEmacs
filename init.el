@@ -119,6 +119,7 @@
 
 ;;;; Useful Packages Loaded
 (use-package s        :ensure t :defer t)
+(use-package seq      :ensure t :defer t)
 (use-package dash     :ensure t :defer t)
 (use-package diminish :ensure t)
 (use-package subr-x)
@@ -1993,11 +1994,6 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
                                  "journal")))
   :bind (:map ctl-z-map
               ("n" . org-journal-new-entry)))
-
-;;; Bible
-(use-package dtk
-  :disabled t
-  :ensure t)
 
 ;;; Ledger
 (use-package ledger-mode
