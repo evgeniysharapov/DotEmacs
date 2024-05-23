@@ -1833,7 +1833,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; Justfile
 (use-package just-mode
   :ensure t)
-
 ;;; Org Mode
 ;; comment out ob-ipython as it gives error if no ipython is installed
 ;; (use-package ob-ipython
@@ -1845,7 +1844,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
             (org-babel-do-load-languages
              'org-babel-load-languages
              '(
-               ;(ipython . t)
+                                        ;(ipython . t)
                (ruby . t)
                (python . t)
                (emacs-lisp . t)
