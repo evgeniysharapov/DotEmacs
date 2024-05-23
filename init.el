@@ -1453,7 +1453,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :config (progn
             (setq gofmt-command "goimports"))
   
-  :bind (("C-c C-c" . go-run-buffer)))
+  :bind (:map go-mode-map
+         ("C-c C-c" . go-run-buffer)))
 
 
 ;;;; Javascript
