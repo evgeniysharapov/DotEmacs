@@ -70,6 +70,7 @@
 ;;;; Initialize `use-package' and friends
 (require 'package)
 (setf package-user-dir *elpa-dir*)
+(setf use-package-enable-imenu-support t)
 (customize-set-variable 'package-archives
                         `(("melpa" . "https://melpa.org/packages/")
                           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
@@ -78,12 +79,16 @@
 (customize-set-variable 'package-enable-at-startup nil)
 (package-initialize)
 
+;; Before we initialize `use-package' we need to set some variables 
+(setf use-package-verbose t)
+(setf use-package-always-ensure t)
+(setf use-package-enable-imenu-support t)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(eval-when-compile
-  (require 'use-package))
+(require 'use-package)
 
 (put 'use-package 'lisp-indent-function 1)
 
@@ -91,7 +96,7 @@
   :custom
   ;; (use-package-verbose t)
   ;; (use-package-minimum-reported-time 0.005)
-  (use-package-enable-imenu-support t))
+  )
 
 (use-package system-packages
   :ensure t
@@ -107,6 +112,9 @@
   :custom
   (quelpa-update-melpa-p nil "Don't update the MELPA git repo."))
 
+;; After installing `quelpa-use-package' we can use it to fetch
+;; packages in `use-package'
+;; https://github.com/quelpa/quelpa-use-package
 (use-package quelpa-use-package
   :ensure t)
 
@@ -114,7 +122,6 @@
 ;; consider removing as much as possible from the custom file
 (setq custom-file (concat *dotfiles-dir* "custom.el"))
 (load custom-file 'noerror)
-
 
 
 ;;;; Useful Packages Loaded
