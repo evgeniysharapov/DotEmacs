@@ -4,6 +4,3 @@
 [submodule "site-lisp/help-fns-plus"]
 	path = site-lisp/help-fns-plus
 	url = https://github.com/emacsmirror/help-fns-plus.git
-[submodule "site-lisp/crosshairs"]
-	path = site-lisp/crosshairs
-	url = https://github.com/emacsmirror/crosshairs.git
