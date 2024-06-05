@@ -1674,7 +1674,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     (add-to-list 'company-backends 'company-glsl)))
 
 ;;; TeX Mode
-;; TeX Settings
+;;;; TeX Settings
 (use-package tex-site                   ; AucTeX initialization
   :ensure auctex)
 
@@ -1703,12 +1703,13 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :defer t
   :init (add-hook 'TeX-mode-hook #'reftex-mode))
 
-;;;; Metapost Extra
+;;;; Metapost
 (use-package meta-mode
   :defer t)
+;;;;; Preview Metapost Buffer via MPtoPDF
+(use-package metapost-mode+
+  :defer t)
 
-;;;; Preview Metapost Buffer via MPtoPDF
-;;(use-package meta-mode-extra)
 
 ;;;; ConTexT Specifics
 (use-package context
