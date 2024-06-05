@@ -80,15 +80,16 @@
 (package-initialize)
 
 ;; Before we initialize `use-package' we need to set some variables 
-(setf use-package-verbose t)
-(setf use-package-always-ensure t)
+; (setf use-package-verbose t)
+; (setf use-package-always-ensure t)
 (setf use-package-enable-imenu-support t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
 
 (put 'use-package 'lisp-indent-function 1)
 
