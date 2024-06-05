@@ -1,3 +1,0 @@
-[submodule "site-lisp/help-mode-plus"]
-	path = site-lisp/help-mode-plus
-	url = https://github.com/emacsmirror/help-mode-plus.git
