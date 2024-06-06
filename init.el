@@ -70,7 +70,6 @@
 ;;;; Initialize `use-package' and friends
 (require 'package)
 (setf package-user-dir *elpa-dir*)
-(setf use-package-enable-imenu-support t)
 (customize-set-variable 'package-archives
                         `(("melpa" . "https://melpa.org/packages/")
                           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
@@ -78,11 +77,6 @@
                           ,@package-archives))
 (customize-set-variable 'package-enable-at-startup nil)
 (package-initialize)
-
-;; Before we initialize `use-package' we need to set some variables 
-; (setf use-package-verbose t)
-; (setf use-package-always-ensure t)
-(setf use-package-enable-imenu-support t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -95,9 +89,7 @@
 
 (use-package use-package-core
   :custom
-  ;; (use-package-verbose t)
-  ;; (use-package-minimum-reported-time 0.005)
-  )
+  (use-package-enable-imenu-support t))
 
 (use-package system-packages
   :ensure t
@@ -365,6 +357,7 @@ Examples:
 ;; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
 (use-package which-key
   :ensure t
+  :demand t
   :custom
   (which-key-show-transient-maps t)
   :config
@@ -464,10 +457,22 @@ Examples:
   :bind (:map ctl-x-t-map
               ("r" . rainbow-mode)))
 
+;;;;; Adding crosshairs and it's dependency
+(use-package col-highlight
+  :quelpa
+  (col-highlight :repo "emacsmirror/col-highlight" :fetcher github))
+
+(use-package hl-line+
+  :quelpa
+  (hl-line+ :repo "emacsmirror/hl-line-plus" :fetcher github))
+
 (use-package crosshairs
   :bind (:map ctl-x-t-map
-              ("+" . crosshairs-mode)))
+              ("+" . crosshairs-mode))
+  :quelpa
+  (crosshairs :repo "emacsmirror/crosshairs" :fetcher github))
 
+;;;;; menubar
 ;; there's no point in hiding menubar on macos
 (when (not *is-macos*)
   (custom-set-minor-mode 'menu-bar-mode nil))
@@ -621,8 +626,8 @@ Examples:
   :bind (:map search-map
               ("i" . imenu)))
 
-(use-package imenu+
-  :after (imenu))
+;; (use-package imenu+
+;;   :after (imenu))
 
 (use-package imenu-list
   :after (imenu)
@@ -637,7 +642,6 @@ Examples:
   :ensure t
   :bind (:map search-map
               ("M-i" . imenu-anywhere)))
-
 
 (use-package outshine
   :ensure t
