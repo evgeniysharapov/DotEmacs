@@ -20,7 +20,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(custom-safe-themes
-   '("8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
+   '("6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
  '(default-input-method "russian-computer")
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
@@ -110,52 +110,25 @@
  '(org-capture-templates
    '(("w" "Work" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":work:\")
- %t
-%?" :clock-in t :clock-keep t)
+      "* %^{Description}  %(org-set-tags  \":work:\")\12 %t\12%?" :clock-in t :clock-keep t)
      ("m" "Meeting" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":meeting:\")
- %t
-%?" :clock-in t :clock-keep t)
+      "* %^{Description}  %(org-set-tags  \":meeting:\")\12 %t\12%?" :clock-in t :clock-keep t)
      ("t" "CRIO Task" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
-      "* TODO %^{Description}  %(org-set-tags  \":crio:\")
- %t
-%?")
+      "* TODO %^{Description}  %(org-set-tags  \":crio:\")\12 %t\12%?")
      ("c" "CRIO Note" entry
       (file "~/Documents/Notes/CRIO.org")
-      "* %^{Description}
-%?")
+      "* %^{Description}\12%?")
      ("a" "Add Task" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
-      "* TODO %?
-:PROPERTIES:
-:ID:       %(ffe-uuid)
-:CREATED:  %U
-:END:" :prepend t)
+      "* TODO %?\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:" :prepend t)
      ("n" "Note" entry
       (file "~/Documents/Notes/Notes.org")
-      "* NOTE %? %^G
-:PROPERTIES:
-:ID:       %(ffe-uuid)
-:CREATED:  %U
-:END:" :prepend t)
+      "* NOTE %? %^G\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:" :prepend t)
      ("l" "Link" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Links")
-      "* [[%:link][%:description]]
-:PROPERTIES:
-:ID:       %(ffe-uuid)
-:CREATED:  %U
-:URL:      %:link
-:END:
-
-#+BEGIN_QUOTE
-%:initial
-#+END_QUOTE
-
-%?
-")))
+      "* [[%:link][%:description]]\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:URL:      %:link\12:END:\12\12#+BEGIN_QUOTE\12%:initial\12#+END_QUOTE\12\12%?\12")))
  '(org-confirm-babel-evaluate nil)
  '(org-ellipsis " ▼")
  '(org-export-backends '(ascii html icalendar latex md odt confluence))
@@ -173,7 +146,7 @@
  '(org-refile-targets
    '((org-agenda-files :tag . "")
      (org-agenda-files :maxlevel . 5)
-     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)))
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)) t)
  '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
@@ -182,7 +155,7 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
-   '(col-highlight hl-line+ vline context metapost-mode+ hl-line-mode help misc isearch replace dired pyvenv lsp-pyright seq ag quelpa-use-package quelpa use-package-ensure-system-package just-mode ox-gfm org-journal imenu-anywhere flycheck-hledger hledger-mode dtk unfill apropospriate-theme powershell-mode exec-path-from-shell dockerfile-mode flycheck-ledger ledger-mode plantuml-mode yaml-mode json-navigator auctex groovy-mode racer cargo rust-mode js2-mode go-mode company-c-headers cider elisp-slime-nav paredit dap-mode lsp-treemacs string-inflection flycheck magit yasnippet-snippets yasnippet company helpful browse-kill-ring undo-tree wgrep-ag wgrep outshine projectile find-file-in-project utop eglot-fsharp restclient eglot fsharp-mode company-lsp modus-themes ob-restclient powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure langtool company-glsl use-package exec-path-from-shell dockerfile-mode flycheck-ledger ledger-mode plantuml-mode yaml-mode json-navigator auctex groovy-mode racer cargo rust-mode js2-mode go-mode company-c-headers cider elisp-slime-nav paredit dap-mode lsp-treemacs string-inflection flycheck magit yasnippet-snippets yasnippet company helpful browse-kill-ring undo-tree wgrep-ag wgrep outshine projectile find-file-in-project utop eglot-fsharp restclient eglot fsharp-mode company-lsp modus-themes ob-restclient powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip flx-ido docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure ivy-rich ivy flycheck-hledger hledger-mode csv-mode omnisharp csharp-mode terraform-mode dtk unfill visual-fill-column visual-fill langtool company-glsl use-package exec-path-from-shell dockerfile-mode flycheck-ledger ledger-mode plantuml-mode yaml-mode json-navigator auctex groovy-mode racer cargo rust-mode js2-mode go-mode company-c-headers cider elisp-slime-nav paredit dap-mode lsp-treemacs string-inflection flycheck magit yasnippet-snippets yasnippet company helpful browse-kill-ring undo-tree wgrep-ag wgrep outshine projectile find-file-in-project utop eglot-fsharp restclient eglot fsharp-mode company-lsp modus-themes ob-restclient powerline powershell sass-mode merlin tuareg lsp-ui lsp-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure lua-mode visual-regex company-yasnippet go-guru edit-indirect less-css-mode tern multiple-cursors zop-to-char adaptive-wrap whitespace-cleanup-mode easy-kill visual-regexp nlinum ace-link ivy-pages reveal-in-osx-finder sudo-edit launch hardhat ignoramus neotree writeroom-mode golden-ratio ibuffer-vc focus-autosave-mode counsel ivy-hydra spaceline anzu bug-hunter paradox hydra which-key stripe-buffer page-break-lines solarized-theme osx-trash validate toml-mode flycheck-rust crosshairs ob-ipython ac-dabbrev web-mode ac-capf ac-anaconda auto-complete idle-highlight-mode smex nginx-mode monky mocha json-rpc json-mode imenu-list imenu+ ido-ubiquitous hide-lines help-mode+ help-fns+ help+ go-eldoc flycheck-pos-tip docker-tramp docker company-tern company-statistics company-go color-moccur c-eldoc browse-kill-ring+ aok all-the-icons ace-window ace-jump-mode 4clojure))
+   '(wgrep hl-line+ col-highlight vline dash s json-rpc docker dockerfile-mode flycheck-ledger ledger-mode org-journal just-mode plantuml-mode restclient csv-mode yaml-mode nginx-mode json-navigator json-mode auctex company-glsl powershell lua-mode utop merlin tuareg fsharp-mode csharp-mode groovy-mode toml-mode racer flycheck-rust cargo rust-mode pyvenv lsp-pyright js2-mode company-go go-guru go-eldoc go-mode c-eldoc company-c-headers 4clojure cider elisp-slime-nav paredit dap-mode lsp-treemacs lsp-ui lsp-mode string-inflection flycheck-pos-tip flycheck idle-highlight-mode monky magit yasnippet-snippets yasnippet ivy-rich counsel company-statistics company helpful ace-window undo-tree visual-fill adaptive-wrap rainbow-mode which-key wgrep-ag visual-regexp visual-fill-column use-package-ensure-system-package unfill quelpa-use-package projectile outshine modus-themes langtool imenu-list imenu-anywhere hide-lines gcmh find-file-in-project diminish crosshairs color-moccur browse-kill-ring ag ace-jump-mode))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)

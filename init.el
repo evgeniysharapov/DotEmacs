@@ -10,14 +10,6 @@
   (file-name-directory (or (buffer-file-name) load-file-name))
   "Directory for dot files of Emacs configuration, i.e. path to .emacs.d directory")
 
-(defconst *scripts-dir*
-  (file-name-as-directory (concat *dotfiles-dir* "scripts"))
-  "Directory with various OS scripts that are used by the Emacs")
-
-(defconst *elpa-dir*
-  (file-name-as-directory (concat *dotfiles-dir* "elpa"))
-  "Directory for ELPA packages")
-
 (defconst *data-dir*
   (file-name-as-directory (concat *dotfiles-dir* "data"))
   "Directory for miscellaneous data, s.a. backups, histories and caches")
@@ -29,6 +21,18 @@
 (defconst *undo-dir*
   (file-name-as-directory (concat *data-dir* "undo"))
   "Directory for undo")
+
+(defconst *elpa-dir*
+  (file-name-as-directory (concat *data-dir* "elpa"))
+  "Directory for ELPA packages")
+
+(defconst *quelpa-dir*
+  (file-name-as-directory (concat *data-dir* "quelpa"))
+  "Directory for Quelpa packages")
+
+(defconst *scripts-dir*
+  (file-name-as-directory (concat *dotfiles-dir* "scripts"))
+  "Directory with various OS scripts that are used by the Emacs")
 
 (defconst *lisp-dir*
   (file-name-as-directory (concat *dotfiles-dir* "site-lisp"))
@@ -70,13 +74,14 @@
 ;;;; Initialize `use-package' and friends
 (require 'package)
 (setf package-user-dir *elpa-dir*)
-(customize-set-variable 'package-archives
-                        `(("melpa" . "https://melpa.org/packages/")
-                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-                          ("melpa-stable" . "http://stable.melpa.org/packages/")
-                          ,@package-archives))
+
 (customize-set-variable 'package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
+
+;; this is important on Cisco Umbrella machine 
+(setq package-check-signature nil)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -103,6 +108,7 @@
   :ensure t
   :defer t
   :custom
+  (quelpa-dir *quelpa-dir* "Store quelpa packages here")
   (quelpa-update-melpa-p nil "Don't update the MELPA git repo."))
 
 ;; After installing `quelpa-use-package' we can use it to fetch
@@ -997,9 +1003,9 @@ Examples:
 ;;; Help
 ;; Help/Info configuration
 ;;;; Emacs Help
-(use-package help-mode+)
-(use-package help+)
-(use-package help-fns+)
+;(use-package help-mode+)
+;(use-package help+)
+;(use-package help-fns+)
 
 ;; How often I need to see emacs FAQ. Use C-h C-f as a keymap for find-* commands
 (defvar help-find-map)
@@ -1172,8 +1178,7 @@ Examples:
   :ensure t
   :commands magit-status
   :bind (:map ctl-z-map
-	      ("g" . magit-status))
-  :config (setq magit-last-seen-setup-instructions "1.4.0"))
+	      ("g" . magit-status)))
 
 (use-package monky
   :ensure t
