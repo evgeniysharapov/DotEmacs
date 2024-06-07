@@ -43,3 +43,5 @@ data/.emacs.desktop.wsl
 transient
 .cache
 eln-cache
+/data/elpa/
+/data/quelpa/
