@@ -1698,10 +1698,22 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package tex
   :ensure auctex
   :defer t
-  :config
-  (setq TeX-parse-self t                ; parse documents for auto completion
-        TeX-auto-save  t                ; parse on save
-        ))
+  :custom
+  (TeX-parse-self t)              ; parse documents for auto completion
+  (TeX-auto-save  t)      ; parse on save
+  (TeX-auto-untabify t)
+  (TeX-display-help t)
+  (TeX-save-query nil)
+  (TeX-clean-confirm nil)
+  (TeX-master nil)
+  :init
+  (add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1)))
+  (add-hook 'TeX-mode-hook (lambda () (TeX-source-specials-mode 1)))
+  (add-hook 'TeX-mode-hook (lambda () (TeX-toggle-debug-bad-boxes)))
+  (add-hook 'TeX-mode-hook (lambda () (TeX-toggle-debug-warnings)))
+  (add-hook 'TeX-mode-hook (lambda () (outline-minor-mode)))
+  (add-hook 'TeX-mode-hook (lambda () (abbrev-mode t)))
+  (add-hook 'TeX-mode-hook (lambda () (auto-fill-mode 1))))
 
 (use-package tex-fold
   :ensure auctex
@@ -1727,14 +1739,20 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package metapost-mode+
   :defer t)
 
-
 ;;;; ConTexT Specifics
 (use-package context
   :defer t
   :mode (("\\.mkiv\\'" . context-mode)
-         ("\\.mkii\\'" . context-mode)))
-
-;; The layout of the ConTeXt installation base is well-defined
+         ("\\.mkii\\'" . context-mode))
+  :custom
+  (ConTeXt-Mark-version "IV")
+  :init
+  (setq TeX-PDF-mode t)
+  (setq revert-without-query '(".+pdf$"))
+  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+  (add-hook 'TeX-mode-hook (lambda ()
+                             (add-to-list 'TeX-file-extensions "mkiv")
+                             (add-to-list 'TeX-file-extensions "mkii"))))
 
 ;;; Misc File Formats
 ;; Various file formats
@@ -1744,11 +1762,11 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :ensure t
   :init (progn
           (use-package json-navigator
-           :ensure t)
-         (use-package json-snatcher
-           :commands (jsons-print-path)
-           :ensure t)
-         (add-hook 'json-mode-hook #'hs-minor-mode))
+            :ensure t)
+          (use-package json-snatcher
+            :commands (jsons-print-path)
+            :ensure t)
+          (add-hook 'json-mode-hook #'hs-minor-mode))
   :bind (:map json-mode-map
               ("C-c p" . jsons-print-path)))
 

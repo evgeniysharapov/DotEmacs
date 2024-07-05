@@ -20,7 +20,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(custom-safe-themes
-   '("6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
+   '("36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9" "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
  '(default-input-method "russian-computer")
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
@@ -146,7 +146,7 @@
  '(org-refile-targets
    '((org-agenda-files :tag . "")
      (org-agenda-files :maxlevel . 5)
-     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)) t)
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)))
  '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
@@ -155,7 +155,7 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
-   '(wgrep hl-line+ col-highlight vline dash s json-rpc docker dockerfile-mode flycheck-ledger ledger-mode org-journal just-mode plantuml-mode restclient csv-mode yaml-mode nginx-mode json-navigator json-mode auctex company-glsl powershell lua-mode utop merlin tuareg fsharp-mode csharp-mode groovy-mode toml-mode racer flycheck-rust cargo rust-mode pyvenv lsp-pyright js2-mode company-go go-guru go-eldoc go-mode c-eldoc company-c-headers 4clojure cider elisp-slime-nav paredit dap-mode lsp-treemacs lsp-ui lsp-mode string-inflection flycheck-pos-tip flycheck idle-highlight-mode monky magit yasnippet-snippets yasnippet ivy-rich counsel company-statistics company helpful ace-window undo-tree visual-fill adaptive-wrap rainbow-mode which-key wgrep-ag visual-regexp visual-fill-column use-package-ensure-system-package unfill quelpa-use-package projectile outshine modus-themes langtool imenu-list imenu-anywhere hide-lines gcmh find-file-in-project diminish crosshairs color-moccur browse-kill-ring ag ace-jump-mode))
+   '(pdf-tools wgrep hl-line+ col-highlight vline dash s json-rpc docker dockerfile-mode flycheck-ledger ledger-mode org-journal just-mode plantuml-mode restclient csv-mode yaml-mode nginx-mode json-navigator json-mode auctex company-glsl powershell lua-mode utop merlin tuareg fsharp-mode csharp-mode groovy-mode toml-mode racer flycheck-rust cargo rust-mode pyvenv lsp-pyright js2-mode company-go go-guru go-eldoc go-mode c-eldoc company-c-headers 4clojure cider elisp-slime-nav paredit dap-mode lsp-treemacs lsp-ui lsp-mode string-inflection flycheck-pos-tip flycheck idle-highlight-mode monky magit yasnippet-snippets yasnippet ivy-rich counsel company-statistics company helpful ace-window undo-tree visual-fill adaptive-wrap rainbow-mode which-key wgrep-ag visual-regexp visual-fill-column use-package-ensure-system-package unfill quelpa-use-package projectile outshine modus-themes langtool imenu-list imenu-anywhere hide-lines gcmh find-file-in-project diminish crosshairs color-moccur browse-kill-ring ag ace-jump-mode))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
