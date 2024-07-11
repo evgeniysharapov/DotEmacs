@@ -16,6 +16,18 @@
             ))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
+;; This runs in WSL2 environment and there's an issue with the clipboard
+(defun clipboard-copy (beg end &optional region)
+  (interactive (list (mark) (point) 'region))
+  (let* ((str (if region
+                 (funcall region-extract-function nil)
+               (filter-buffer-substring beg end)))
+        (plain-string (substring-no-properties str)))
+    (message (prin1-to-string  plain-string))
+    (async-shell-command (concat "printf \"%s\" " (prin1-to-string plain-string)  " | clip.exe" ) nil)))
+
+(advice-add 'kill-ring-save  :after #'clipboard-copy)
+
 
 (provide '5CG3312VRG)
 ;;; 5CG3312VRG ends here
