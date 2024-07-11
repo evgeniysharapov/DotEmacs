@@ -1750,9 +1750,20 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (setq TeX-PDF-mode t)
   (setq revert-without-query '(".+pdf$"))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (add-hook 'TeX-mode-hook (lambda ()
-                             (add-to-list 'TeX-file-extensions "mkiv")
-                             (add-to-list 'TeX-file-extensions "mkii"))))
+  (add-hook 'TeX-mode-hook
+            (lambda ()
+              (add-to-list 'TeX-file-extensions "mkiv")
+              (add-to-list 'TeX-file-extensions "mkii")))
+  (add-hook 'ConTeXt-mode-hook
+            (lambda ()
+              ;; Install digestif
+              ;; https://github.com/astoff/digestif
+              ;;
+              ;; if we are using digestiff with eglot we need to send correct language id to
+              ;; LSP server
+              (setq lsp-tex-server 'digestiff)
+              (put 'ConTeXt-mode 'eglot-language-id "context")
+              (eglot))))
 
 ;;; Misc File Formats
 ;; Various file formats
