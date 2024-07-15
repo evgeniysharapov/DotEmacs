@@ -20,7 +20,7 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(custom-safe-themes
-   '("36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9" "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" default))
+   '("36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9" "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" "7397cc72938446348521d8061d3f2e288165f65a2dbb6366bb666224de2629bb" "9f1d0627e756e58e0263fe3f00b16d8f7b2aca0882faacdc20ddd56a95acb7c2" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
  '(default-input-method "russian-computer")
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
@@ -155,7 +155,7 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
-   '(4clojure yasnippet-snippets yaml-mode which-key wgrep-ag visual-regexp visual-fill-column visual-fill utop use-package-ensure-system-package unfill undo-tree toml-mode string-inflection restclient rainbow-mode racer quelpa-use-package pyvenv projectile powershell plantuml-mode pdf-tools paredit outshine org-journal nginx-mode monky modus-themes merlin magit lua-mode lsp-ui lsp-pyright ledger-mode langtool just-mode json-rpc json-navigator json-mode js2-mode ivy-rich imenu-list imenu-anywhere idle-highlight-mode hide-lines helpful groovy-mode go-guru go-eldoc gcmh fsharp-mode flycheck-rust flycheck-pos-tip flycheck-ledger find-file-in-project elisp-slime-nav dockerfile-mode docker diminish dap-mode csv-mode csharp-mode crosshairs counsel company-statistics company-go company-glsl company-c-headers color-moccur cider cargo c-eldoc browse-kill-ring auctex ag adaptive-wrap ace-jump-mode))
+   '(polymode 4clojure yasnippet-snippets yaml-mode which-key wgrep-ag visual-regexp visual-fill-column visual-fill utop use-package-ensure-system-package unfill undo-tree toml-mode string-inflection restclient rainbow-mode racer quelpa-use-package pyvenv projectile powershell plantuml-mode pdf-tools paredit outshine org-journal nginx-mode monky modus-themes merlin magit lua-mode lsp-ui lsp-pyright ledger-mode langtool just-mode json-rpc json-navigator json-mode js2-mode ivy-rich imenu-list imenu-anywhere idle-highlight-mode hide-lines helpful groovy-mode go-guru go-eldoc gcmh fsharp-mode flycheck-rust flycheck-pos-tip flycheck-ledger find-file-in-project elisp-slime-nav dockerfile-mode docker diminish dap-mode csv-mode csharp-mode crosshairs counsel company-statistics company-go company-glsl company-c-headers color-moccur cider cargo c-eldoc browse-kill-ring auctex ag adaptive-wrap ace-jump-mode))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
