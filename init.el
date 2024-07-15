@@ -823,6 +823,9 @@ Examples:
               ("<down>" . isearch-repeat-forward)))
 
 ;;; Editing
+;;;; Multiple Modes
+(use-package polymode
+  :ensure t)
 ;;;; Editing Operations
 (use-package misc
   :commands (zap-up-to-char forward-to-word)
@@ -1746,6 +1749,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
          ("\\.mkii\\'" . context-mode))
   :custom
   (ConTeXt-Mark-version "IV")
+  ;; I am using only ConTeXt, so I don't really want to check for `tex' command
+  (TeX-check-TeX nil)
   :init
   (setq TeX-PDF-mode t)
   (setq revert-without-query '(".+pdf$"))
@@ -1764,6 +1769,20 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               (setq lsp-tex-server 'digestiff)
               (put 'ConTeXt-mode 'eglot-language-id "context")
               (eglot))))
+
+;; let's define polymode for metapost in ConTeXt
+(define-hostmode poly-context-hostmode :mode 'ConTeXt-mode)
+(define-innermode poly-context-metapost-innermode
+  :mode 'metapost-mode
+  :head-matcher "\\\\startMPcode"
+  :tail-matcher "\\\\stopMPcode"
+  :head-mode 'host
+  :tail-mode 'host
+  :init-functions)
+(define-polymode poly-context-mode
+  :hostmode 'poly-context-hostmode
+  :innermodes '(poly-context-metapost-innermode))
+;(add-hook 'ConTeXt-mode-hook 'poly-context-mode)
 
 ;;; Misc File Formats
 ;; Various file formats
