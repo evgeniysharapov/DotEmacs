@@ -16,17 +16,19 @@
             ))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
+;;
 ;; This runs in WSL2 environment and there's an issue with the clipboard
-(defun clipboard-copy (beg end &optional region)
-  (interactive (list (mark) (point) 'region))
-  (let* ((str (if region
-                 (funcall region-extract-function nil)
-               (filter-buffer-substring beg end)))
-        (plain-string (substring-no-properties str)))
-    (message (prin1-to-string  plain-string))
-    (async-shell-command (concat "printf \"%s\" " (prin1-to-string plain-string)  " | clip.exe" ) nil)))
+;; looks like it affects only emacs29
+(defun my-trace-advice (orig-fun &rest data)
+  ;;(message "pgtk-own-selection-internal called with args %S" (string= (car data) "PRIMARY"))
+  (let ((res
+         (if (string= (car data) "PRIMARY")
+             t
+           (apply orig-fun data))
+         ))
+    res))
 
-; (advice-add 'kill-ring-save  :after #'clipboard-copy)
+(advice-add 'pgtk-own-selection-internal :around #'my-trace-advice)
 
 
 (provide '5CG3312VRG)
