@@ -146,7 +146,7 @@
  '(org-refile-targets
    '((org-agenda-files :tag . "")
      (org-agenda-files :maxlevel . 5)
-     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)) t)
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)))
  '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
@@ -163,7 +163,8 @@
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
-   '((ledger-accounts-file . "accounts.ledger")
+   '((outshine-mode . t)
+     (ledger-accounts-file . "accounts.ledger")
      (ledger-accounts-file . "meta.ledger")
      (eval outline-minor-mode t)
      (markdown-asymmetric-header . t)

@@ -26,7 +26,7 @@
     (message (prin1-to-string  plain-string))
     (async-shell-command (concat "printf \"%s\" " (prin1-to-string plain-string)  " | clip.exe" ) nil)))
 
-(advice-add 'kill-ring-save  :after #'clipboard-copy)
+; (advice-add 'kill-ring-save  :after #'clipboard-copy)
 
 
 (provide '5CG3312VRG)
