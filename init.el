@@ -1702,46 +1702,28 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :ensure auctex
   :defer t
   :custom
-  (TeX-parse-self t)              ; parse documents for auto completion
+  (TeX-parse-self t)      ; parse documents for auto completion
   (TeX-auto-save  t)      ; parse on save
-  (TeX-auto-untabify t)
-  (TeX-display-help t)
-  (TeX-save-query nil)
-  (TeX-clean-confirm nil)
-  (TeX-master nil)
+  (TeX-auto-untabify t)   ;
+  (TeX-display-help t)    ;
+  (TeX-save-query nil)    ;
+  (TeX-clean-confirm nil) ;
+  (TeX-master nil)        ;
+  (TeX-check-TeX nil)     ; we may only have ConTeXt on Windows
+  (TeX-PDF-mode t)
   :init
-  (add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1)))
-  (add-hook 'TeX-mode-hook (lambda () (TeX-source-specials-mode 1)))
-  (add-hook 'TeX-mode-hook (lambda () (TeX-toggle-debug-bad-boxes)))
-  (add-hook 'TeX-mode-hook (lambda () (TeX-toggle-debug-warnings)))
-  (add-hook 'TeX-mode-hook (lambda () (outline-minor-mode)))
-  (add-hook 'TeX-mode-hook (lambda () (abbrev-mode t)))
-  (add-hook 'TeX-mode-hook (lambda () (auto-fill-mode 1))))
+  (add-hook 'TeX-mode-hook #'TeX-source-specials-mode)
+  (add-hook 'TeX-mode-hook #'TeX-toggle-debug-bad-boxes)
+  (add-hook 'TeX-mode-hook #'TeX-toggle-debug-warnings)
+  (add-hook 'TeX-mode-hook #'outline-minor-mode)
+  (add-hook 'TeX-mode-hook #'abbrev-mode)
+  (add-hook 'TeX-mode-hook #'auto-fill-mode))
 
 (use-package tex-fold
   :ensure auctex
   :defer t
   :init (add-hook 'TeX-mode-hook #'TeX-fold-mode))
-        
-(use-package tex-mode                   ; TeX mode
-  :ensure auctex
-  :defer t)
-
-(use-package bibtex                     ; BibTeX editing
-  :ensure auctex
-  :defer t)
-
-(use-package reftex                     ; TeX/BibTeX cross-reference management
-  :defer t
-  :init (add-hook 'TeX-mode-hook #'reftex-mode))
-
-;;;; Metapost
-(use-package meta-mode
-  :defer t)
-;;;;; Preview Metapost Buffer via MPtoPDF
-(use-package metapost-mode+
-  :defer t)
-
+       
 ;;;; ConTexT Specifics
 (use-package context
   :defer t
@@ -1749,10 +1731,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
          ("\\.mkii\\'" . context-mode))
   :custom
   (ConTeXt-Mark-version "IV")
-  ;; I am using only ConTeXt, so I don't really want to check for `tex' command
-  (TeX-check-TeX nil)
   :init
-  (setq TeX-PDF-mode t)
   (setq revert-without-query '(".+pdf$"))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
   (add-hook 'TeX-mode-hook
@@ -1783,6 +1762,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :hostmode 'poly-context-hostmode
   :innermodes '(poly-context-metapost-innermode))
 ;(add-hook 'ConTeXt-mode-hook 'poly-context-mode)
+
+;;;; Metapost
+(use-package meta-mode
+  :defer t)
+;;;;; Preview Metapost Buffer via MPtoPDF
+(use-package metapost-mode+
+  :defer t)
+
+
 
 ;;; Misc File Formats
 ;; Various file formats
