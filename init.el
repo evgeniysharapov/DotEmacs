@@ -1286,44 +1286,44 @@ Examples:
 ;;   (parinfer-rust-check-before-enable 'defer)
 ;;   (parinfer-rust-auto-download nil))
 
-;;;;; Emacs Lisp 
+;;;;; Emacs Lisp
+(use-package emacs-lisp-mode
+  :config
+  (defun ffe-disable-elisp-checkdoc-in-configuration-files ()
+    "turn off checkdoc for my configuration files"
+    (if (and (eq major-mode 'emacs-lisp-mode) ; if it is elisp
+		     (or
+		      (string-equal user-init-file (buffer-file-name)) ; or init.el file
+		      (string-equal custom-file (buffer-file-name)) ; customization file
+		      (and                      ; configuration modules
+		       (string-match (or (file-name-directory (or  (buffer-file-name) "")) "") *lisp-dir*)
+		       (string-match "^ffe-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
+        (flycheck-disable-checker 'emacs-lisp-checkdoc)))
+  (add-hook 'emacs-lisp-mode-hook #'ffe-disable-elisp-checkdoc-in-configuration-files)
+  ;; (global-set-key [remap eval-expression] 'pp-eval-expression)
+  ;; (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
+  :bind (:map emacs-lisp-mode-map
+              ("C-c C-c" . eval-buffer)))
+
 (use-package elisp-slime-nav
   :ensure t
   :diminish elisp-slime-nav-mode
-  ;:hook (emacs-lisp-mode ielm-mode lisp-mode lisp-interaction-mode eval-expression-minibuffer-setup)
-  )
-
-;; (global-set-key [remap eval-expression] 'pp-eval-expression)
-;; (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
-(bind-key "C-c C-c" #'eval-buffer emacs-lisp-mode-map)
-
-;; turn off checkdoc for my configuration files
-(defun ffe-disable-elisp-checkdoc-in-configuration-files ()
-  (if (and (eq major-mode 'emacs-lisp-mode)  ; if it is elisp
-		   (or
-		    (string-equal user-init-file (buffer-file-name))	; or init.el file
-		    (string-equal custom-file (buffer-file-name)) ; customization file
-		    (and 		; configuration modules
-		     (string-match (or (file-name-directory (or  (buffer-file-name) "")) "") *lisp-dir*)
-		     (string-match "^ffe-" (or (file-name-nondirectory (or  (buffer-file-name) "")) "")))))
-      (flycheck-disable-checker 'emacs-lisp-checkdoc)))
-
-(add-hook 'emacs-lisp-mode-hook #'ffe-disable-elisp-checkdoc-in-configuration-files)
+  :hook ((emacs-lisp-mode ielm-mode lisp-mode lisp-interaction-mode eval-expression-minibuffer-setup) . elisp-slime-nav-mode))
 
 (use-package ielm
   :defer t
   :init
   (defun ffe-ielm ()
-  "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
-  (interactive)
-  (let ((buf (current-buffer)))
-    (if (get-buffer "*ielm*")
-        (switch-to-buffer-other-window "*ielm*")
-      (progn
-        (split-window-sensibly (selected-window))
-        (other-window 1)
-        (ielm)))
-    (ielm-change-working-buffer buf)))
+    "Starts IELM or switches to existing one in the new window and sets working buffer of IELM to the current buffer."
+    (interactive)
+    (let ((buf (current-buffer)))
+      (if (get-buffer "*ielm*")
+          (switch-to-buffer-other-window "*ielm*")
+        (progn
+          (split-window-sensibly (selected-window))
+          (other-window 1)
+          (ielm)))
+      (ielm-change-working-buffer buf)))
   :bind
   ("C-M-:" .  ffe-ielm))
 
