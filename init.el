@@ -1268,16 +1268,17 @@ Examples:
   :ensure t
   :commands enable-paredit-mode
   :hook
-  (emacs-lisp-mode . enable-paredit-mode)
-  (ielm-mode .enable-paredit-more)
-  (lisp-mode . enable-paredit-more)
-  (lisp-interaction-mode . enable-paredit-mode)
+  (emacs-lisp-mode                  . enable-paredit-mode)
+  (ielm-mode                        . enable-paredit-mode)
+  (lisp-mode                        . enable-paredit-mode)
+  (lisp-interaction-mode            . enable-paredit-mode)
   (eval-expression-minibuffer-setup . enable-paredit-mode)
   :bind
   (:map paredit-mode-map
-        ("M-s" . nil)   ;; we use M-s for searching stuff
-        ("M-k" . paredit-splice-sexp) ;; bind splice onto M-k since we shouldn't use it in lisp mode anyway
-        ))
+        ;; we use M-s for searching stuff
+        ("M-s" . nil)
+        ;; bind splice onto M-k
+        ("M-k" . paredit-splice-sexp)))
 
 ;; (use-package parinfer-rust-mode
 ;;   :ensure t
@@ -1325,7 +1326,9 @@ Examples:
           (ielm)))
       (ielm-change-working-buffer buf)))
   :bind
-  ("C-M-:" .  ffe-ielm))
+  ("C-M-:" .  ffe-ielm)
+  (:map paredit-mode-map
+        ("RET" . nil)))
 
 ;;;; Clojure
 (use-package cider
