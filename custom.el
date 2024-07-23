@@ -3,16 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-file-extensions
-   '("mkii" "mkiv" "tex" "sty" "cls" "ltx" "texi" "txi" "texinfo" "dtx"))
- '(TeX-view-program-selection
-   '(((output-dvi has-no-display-manager)
-      "dvi2tty")
-     ((output-dvi style-pstricks)
-      "dvips and gv")
-     (output-dvi "xdvi")
-     (output-pdf "PDF Tools")
-     (output-html "xdg-open")))
  '(anaconda-mode-eldoc-as-single-line t)
  '(auto-image-file-mode t)
  '(aw-dispatch-always t)

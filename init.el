@@ -1724,19 +1724,37 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (TeX-master nil)        ;
   (TeX-check-TeX nil)     ; we may only have ConTeXt on Windows
   (TeX-PDF-mode t)
-  :init
+  (TeX-file-extensions
+   '("mkii" "mkiv" "tex" "sty" "cls" "ltx" "texi" "txi" "texinfo" "dtx"))
+  (TeX-view-program-selection
+   '(((output-dvi has-no-display-manager)
+      "dvi2tty")
+     ((output-dvi style-pstricks)
+      "dvips and gv")
+     (output-dvi "xdvi")
+     (output-pdf "PDF Tools")
+     (output-html "xdg-open")))
+  (TeX-view-program-list
+   '(("PDF Tools" TeX-pdf-tools-sync-view))) 
+  :config
   (add-hook 'TeX-mode-hook #'TeX-source-specials-mode)
   (add-hook 'TeX-mode-hook #'TeX-toggle-debug-bad-boxes)
   (add-hook 'TeX-mode-hook #'TeX-toggle-debug-warnings)
   (add-hook 'TeX-mode-hook #'outline-minor-mode)
   (add-hook 'TeX-mode-hook #'abbrev-mode)
-  (add-hook 'TeX-mode-hook #'auto-fill-mode))
+  (add-hook 'TeX-mode-hook #'auto-fill-mode)
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package tex-fold
   :ensure auctex
   :defer t
   :init (add-hook 'TeX-mode-hook #'TeX-fold-mode))
-       
+
+(use-package pdf-tools
+  :ensure t
+  :init
+  (pdf-loader-install))
+
 ;;;; ConTexT Specifics
 (use-package context
   :defer t
@@ -1744,13 +1762,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
          ("\\.mkii\\'" . context-mode))
   :custom
   (ConTeXt-Mark-version "IV")
-  :init
+  :config
   (setq revert-without-query '(".+pdf$"))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (add-hook 'TeX-mode-hook
-            (lambda ()
-              (add-to-list 'TeX-file-extensions "mkiv")
-              (add-to-list 'TeX-file-extensions "mkii")))
   (add-hook 'ConTeXt-mode-hook
             (lambda ()
               ;; Install digestif
