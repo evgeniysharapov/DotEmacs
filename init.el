@@ -177,6 +177,7 @@
   (desktop-save-mode t))
 
 ;;;; Minibuffer
+
 ;; minibuffer history 
 (use-package savehist
   :custom
@@ -184,6 +185,7 @@
   :init
   (savehist-mode t))
 
+;; Auto-closing of the utility buffers 
 (defun ffe-auto-close-buffers ()
   "Closes buffers that should be closed after we done with minibuffer.
  Usually it is various completions buffers"
@@ -191,8 +193,11 @@
 	   (let ((buffer (get-buffer buf-name)))
 	     (if (buffer-live-p buffer)
 		 (kill-buffer buffer)))) '("*Completions*" "*Ido Completions*")))
-
 (add-hook 'minibuffer-exit-hook #'ffe-auto-close-buffers)
+;; Use normal RET action
+(add-hook 'eval-expression-minibuffer-setup-hook
+          (lambda () (unbind-key "RET" 'paredit-mode-map)))
+
 
 ;;;; Utility Functions
 ;;;;; UUID
