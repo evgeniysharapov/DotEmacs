@@ -362,7 +362,7 @@ Examples:
   (define-key ctl-x-map [(control ?z)] c-x-z))
 
 ;; we will use M-o for outline
-(define-key global-map (kbd "M-o") nil)
+(unbind-key "M-o" 'global-map)
 
 ;; Facemenu is super useless outside of center-* functions
 ;; (define-key global-map (kbd "C-z f") 'facemenu-keymap)
