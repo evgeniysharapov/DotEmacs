@@ -373,7 +373,7 @@ Examples:
   (which-key-show-transient-maps t)
   :config
   (which-key-mode)
-    ;; otherwise you can't page through help-map
+  ;; otherwise you can't page through help-map
   :bind (:map help-map
               ("C-h" . which-key-C-h-dispatch)))
 
