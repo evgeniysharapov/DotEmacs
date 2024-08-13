@@ -931,7 +931,6 @@ Examples:
 ;;;; Windows
 (use-package windmove
   :ensure t
-  :defer t
   :bind (:map ctl-x-w-map
               ("<left>" . windmove-left)
               ("h" . windmove-left)
