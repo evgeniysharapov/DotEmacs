@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-newline-function 'reindent-then-newline-and-indent)
  '(anaconda-mode-eldoc-as-single-line t)
  '(auto-image-file-mode t)
  '(aw-dispatch-always t)
