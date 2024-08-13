@@ -2081,17 +2081,19 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :custom
   (ledger-binary-path "ledger")
   (ledger-clear-whole-transactions t)
+  (ledger-default-date-format ledger-iso-date-format)
   (ledger-reports
    '(("monthly cf" "ledger -n --monthly [[ledger-mode-flags]] -f %(ledger-file)  reg Expenses or Liabilities:Mortgage or Income")
-     ("unknown" "%(binary) [[ledger-mode-flags]] -f journal.ledger reg expenses:unknown")
-     ("unknown-buffer" "%(binary) [[ledger-mode-flags]] -f journal.ledger --period %(buffer-year) reg expenses:unknown")
+     ("unknown" "%(binary) [[ledger-mode-flags]] -f journal.ledger reg Expenses:Unknown")
+     ("unknown-buffer" "%(binary) [[ledger-mode-flags]] -f journal.ledger --period %(buffer-year) reg Expenses:Unknown")
      ("bal" "%(binary) -f %(ledger-file) bal")
      ("reg" "%(binary) -f journal.ledger reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
   :init
   (defun ffe-ledger-buffer-year-format-specifier()
-    (file-name-base (buffer-file-name)))
+    "This returns a year based on the buffer name"
+    (f-base (file-name-parent-directory (buffer-file-name))))
   (defun ffe-ledger-current-year-format-specifier()
     (with-current-buffer (or ledger-report-buffer-name (current-buffer))
       (let* ((month (or ledger-report-current-month (ledger-report--current-month)))
