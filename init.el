@@ -83,10 +83,6 @@
 ;; this is important on Cisco Umbrella machine 
 (setq package-check-signature nil)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
 (eval-when-compile
   (require 'use-package))
 
