@@ -2092,7 +2092,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
   :init
   (defun ffe-ledger-buffer-year-format-specifier()
-    (file-name-base (buffer-file-name)))
+    (file-name-base (f-parent (buffer-file-name))))
   (defun ffe-ledger-current-year-format-specifier()
     (with-current-buffer (or ledger-report-buffer-name (current-buffer))
       (let* ((month (or ledger-report-current-month (ledger-report--current-month)))
