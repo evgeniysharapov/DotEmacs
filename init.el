@@ -306,6 +306,7 @@ Examples:
   ;; avoid jerky scrolling 
   (scroll-step 1)
   (scroll-margin 4)
+  (pixel-scroll-precision-mode t)
   (inhibit-startup-screen nil)
   (initial-scratch-message nil)
   ;; spaces 
