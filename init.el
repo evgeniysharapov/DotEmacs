@@ -1407,26 +1407,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; Oracle    https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view
 ;; Guru    https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit
 
-;; go get -u golang.org/x/tools/cmd/goimports
-;; go get -u golang.org/x/tools/cmd/godoc
-;; go get -u golang.org/x/tools/cmd/guru
-;; go get -u golang.org/x/lint/golint
-;; go get -u github.com/rogpeppe/godef
-;; go get -u github.com/nsf/gocode
-
-;; TODO:
-;; package-install flymake-go
-;; go get -u github.com/dougm/goflymake
-;; other packages to look at
-;;  go-add-tags
-;;  go-fill-struct
-;;  go-gen-test
-;;  go-impl
-;;  go-projectile
-;;  go-rename
-;;  go-tag
-;;  golint
-
 (use-package go-mode
   :ensure t
   :init (progn
