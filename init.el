@@ -512,15 +512,6 @@ Examples:
   (:map ctl-x-t-map
         ("t" . modus-themes-toggle)))
 
-
-;; (use-package apropospriate-theme
-;;   :ensure t
-;;   :config 
-;;   ;(load-theme 'apropospriate-dark t)
-;;   ;; or
-;;   (load-theme 'apropospriate-light t)
-;;   )
-
 ;;;; Wrapping and Visual Lines
 (visual-line-mode 1)
 ;; These are good to use with org-mode, so it doesn't change paragraph by inserting newlines. 
@@ -634,9 +625,6 @@ Examples:
   :commands (imenu)
   :bind (:map search-map
               ("i" . imenu)))
-
-;; (use-package imenu+
-;;   :after (imenu))
 
 (use-package imenu-list
   :after (imenu)
@@ -854,7 +842,6 @@ Examples:
     :defer 10)
   :bind (("C-M-y" . browse-kill-ring)))
 
-;; TODO activate it later
 (use-package visual-regexp
   :ensure t
   :bind (:map ctl-z-map
@@ -1282,13 +1269,6 @@ Examples:
         ;; bind splice onto M-k
         ("M-k" . paredit-splice-sexp)))
 
-;; (use-package parinfer-rust-mode
-;;   :ensure t
-;;   :custom
-;;   (parinfer-rust-disable-troublesome-modes 't)
-;;   (parinfer-rust-check-before-enable 'defer)
-;;   (parinfer-rust-auto-download nil))
-
 ;;;;; Emacs Lisp
 (use-package emacs-lisp-mode
   :config
@@ -1662,7 +1642,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (setq tuareg-support-metaocaml t           ;; Only handles metaocaml syntax
         org-babel-ocaml-command "metaocaml"))  ;; Different command for metaocaml
 
-; (async-shell-command "time opam install ocp-indent merlin") ;; real 1m33.636s
 (use-package merlin
   :ensure t
   :init
@@ -1912,18 +1891,14 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; Justfile
 (use-package just-mode
   :ensure t)
-;;; Org Mode
-;; comment out ob-ipython as it gives error if no ipython is installed
-;; (use-package ob-ipython
-;;   :ensure t)
 
+;;; Org Mode
 (use-package org
   :mode (("\\.org$" . org-mode))
   :config (progn
             (org-babel-do-load-languages
              'org-babel-load-languages
              '(
-                                        ;(ipython . t)
                (ruby . t)
                (python . t)
                (emacs-lisp . t)
@@ -2106,20 +2081,6 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 (use-package flycheck-ledger
   :ensure t
   :after ledger-mode)
-
-;; (use-package hledger-mode
-;;   :ensure t
-;;   :custom
-;;   (hledger-jfile "journal.ledger")
-;;   :config
-;;   (add-to-list 'company-backends 'hledger-company)
-;;   (add-to-list 'auto-mode-alist '("\\.ledger\\'" . hledger-mode)))
-
-
-;; (use-package flycheck-hledger
-;;   :ensure t)
-
-
 
 ;;; Docker
 (use-package dockerfile-mode
