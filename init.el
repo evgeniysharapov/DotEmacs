@@ -75,13 +75,16 @@
 (require 'package)
 (setf package-user-dir *elpa-dir*)
 
-;; package-enable-at-startup and package-quickstart set in early-init.el
+;; package-enable-at-startup set in early-init.el
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-;; Don't call package-initialize when using package-quickstart
 
-;; this is important on Cisco Umbrella machine 
+;; this is important on Cisco Umbrella machine
 (setq package-check-signature nil)
+
+;; Initialize packages (package-quickstart will skip this if already loaded)
+(unless (bound-and-true-p package--initialized)
+  (package-initialize))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)

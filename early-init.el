@@ -37,7 +37,6 @@
 
 ;; Package system configuration (runs before package-initialize)
 ;; Moved from init.el line 78
-(setq package-enable-at-startup nil
-      package-quickstart t)  ; Faster package loading
+(setq package-enable-at-startup nil)
 
 ;;; early-init.el ends here
