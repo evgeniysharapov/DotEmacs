@@ -1605,13 +1605,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"
         lsp-fsharp-external-autocomplete t))
 
-;; (use-package eglot-fsharp
-;;   :ensure t
-;;   :after fsharp-mode eglot
-;;   :init
-;;   (setf eglot-fsharp-server-install-dir "~/.FsAutoComplete/"))
-
-
 ;;;; Ocaml
 ;; Emacs’ OCaml mode
 (use-package tuareg
