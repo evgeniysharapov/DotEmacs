@@ -324,12 +324,29 @@ Examples:
   (:map ctl-x-map
         ("K" . kill-current-buffer)))
 
-;; Using sneaky strategy to minimize user and GC interference 
+;; Using sneaky strategy to minimize user and GC interference
 (use-package gcmh
   :ensure t
   :demand t
   :config
   (gcmh-mode 1))
+
+;;;; Performance Settings
+;; Increase amount of data read from processes (improves LSP performance)
+(setq read-process-output-max (* 1024 1024)) ; 1MB
+
+;; Improve font rendering performance
+(setq inhibit-compacting-font-caches t)
+
+;; Disable bidirectional text rendering for performance (if no RTL text needed)
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+
+;; Reduce cursor rendering in non-selected windows
+(setq-default cursor-in-non-selected-windows nil)
+
+;; Fast scrolling
+(setq fast-but-imprecise-scrolling t)
 
 
 ;;; Keymap and Keys Organization 
