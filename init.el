@@ -75,10 +75,10 @@
 (require 'package)
 (setf package-user-dir *elpa-dir*)
 
-;; package-enable-at-startup is set in early-init.el
+;; package-enable-at-startup and package-quickstart set in early-init.el
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(package-initialize)
+;; Don't call package-initialize when using package-quickstart
 
 ;; this is important on Cisco Umbrella machine 
 (setq package-check-signature nil)
@@ -1170,7 +1170,7 @@ Examples:
   :defer 5
   :ensure t
   :config
-  (add-to-list 'yas-snippet-dirs (concat *data-dir* "snippets"))
+  (add-to-list 'yas-snippet-dirs (concat *dotfiles-dir* "snippets"))
   (yas-reload-all)
   (add-hook 'text-mode-hook #'yas-minor-mode-on)
   (add-hook 'prog-mode-hook #'yas-minor-mode-on)
@@ -2030,12 +2030,14 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;;;; Org Journal
 (use-package org-journal
   :ensure t
+  :after org
   :init
   (setq org-journal-prefix-key "C-z S-"
         org-journal-file-type 'weekly
         org-journal-file-format "%Y%m%d_W%V.org"
-        org-journal-enable-agenda-integration t
-        org-journal-dir (file-name-as-directory
+        org-journal-enable-agenda-integration t)
+  :config
+  (setq org-journal-dir (file-name-as-directory
                          (concat (file-name-as-directory org-directory)
                                  "journal")))
   :bind (:map ctl-z-map
