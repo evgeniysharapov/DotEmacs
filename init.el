@@ -610,9 +610,8 @@ Examples:
 (bind-key "j" #'counsel-dired-jump ctl-x-f-map)
 
 
-;;; Navigation and Visibility 
-;; navigation in a buffer  and visibility of the buffer content 
-;; TODO: add narrow/widen
+;;; Navigation and Visibility
+;; navigation in a buffer  and visibility of the buffer content
 ;;;; Bookmarks
 (use-package bookmark
   :defer t
@@ -700,7 +699,6 @@ Examples:
 ;; M-n - next  without selection
 ;; M-{, { - prev file (buffer)
 ;; M-}, } - next file (buffer)
-;; TODO: make moccur windows work like occur
 
 ;;;; Grep
 ;; Grep is available on any system but it's the most simple
