@@ -75,7 +75,7 @@
 (require 'package)
 (setf package-user-dir *elpa-dir*)
 
-(customize-set-variable 'package-enable-at-startup nil)
+;; package-enable-at-startup is set in early-init.el
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
@@ -300,9 +300,7 @@ Examples:
   ;; scroll-lock-mode being enabled randomly is infuriating
   (advice-add 'scroll-lock-mode :override (lambda (&rest args)))
   :custom
-  (default-frame-alist '((menu-bar-lines 0)
-                         (tool-bar-lines 0)
-                         (vertical-scroll-bars)))  
+  ;; default-frame-alist is set in early-init.el
   ;; avoid jerky scrolling 
   (scroll-step 1)
   (scroll-margin 4)
