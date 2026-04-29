@@ -864,7 +864,8 @@ Examples:
 
 ;;;; Unfill paragraph or region
 (use-package unfill
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;;; Spellcheck
 ;; On Windows use pre-compiled hunspell
@@ -1657,15 +1658,18 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;;; Lua
 (use-package lua-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;;; Powershell
 (use-package powershell
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;;; Shaders
 (use-package company-glsl
   :ensure t
+  :defer t
   :config
   (when (executable-find "glslangValidator")
     (add-to-list 'company-backends 'company-glsl)))
@@ -1864,7 +1868,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :mode (("\\.zsh" . sh-mode)))
 ;;;; RESTClient
 (use-package restclient
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;;; PlantUML
 ;; On Mac OS X plantuml could be installed via brew
