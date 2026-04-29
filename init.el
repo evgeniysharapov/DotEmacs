@@ -643,25 +643,25 @@ Examples:
 (use-package outshine
   :ensure t
   :diminish "OutS"
-  :init (defvar outline-minor-mode-prefix (kbd "M-o"))
-  :config (add-hook 'outline-minor-mode-hook 'outshine-mode))
-
-;; (use-package outline
-;;   :commands outline-minor-mode
-;;   :init (setq outline-minor-mode-prefix (kbd "M-o"))
-;;   :config (bind-keys :map outline-mode-prefix-map
-;; 		     ;; motion
-;; 		     ("u" . outline-up-heading)
-;; 		     ("f" . outline-forward-same-level)
-;; 		     ("b" . outline-backward-same-level)
-;; 		     ("n" . outline-next-visible-heading)
-;; 		     ("p" . outline-previous-visible-heading)
-;; 		     ;; editing
-;; 		     ("<" . outline-promote)
-;; 		     (">" . outline-demote)
-;; 		     ("^" . outline-move-subtree-up)
-;; 		     ("v" . outline-move-subtree-down)
-;; 		     ("C-SPC" . outline-mark-subtree)))
+  :init
+  (defvar outline-minor-mode-prefix (kbd "M-o"))
+  :config
+  (add-hook 'outline-minor-mode-hook 'outshine-mode)
+  :bind (:map outline-minor-mode-map
+         :prefix-map outline-mode-prefix-map
+         :prefix "M-o"
+         ;; motion
+         ("u" . outline-up-heading)
+         ("f" . outline-forward-same-level)
+         ("b" . outline-backward-same-level)
+         ("n" . outline-next-visible-heading)
+         ("p" . outline-previous-visible-heading)
+         ;; editing
+         ("<" . outline-promote)
+         (">" . outline-demote)
+         ("^" . outline-move-subtree-up)
+         ("v" . outline-move-subtree-down)
+         ("C-SPC" . outline-mark-subtree)))
 
 
 ;;;; Visibility
@@ -2122,3 +2122,4 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
 ;; Local Variables:
 ;; eval: (outline-minor-mode t)
 ;; End:
+
