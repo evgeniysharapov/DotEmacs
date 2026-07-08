@@ -2003,6 +2003,7 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
           ;; this will allow to insert org-tempo templates without annoying pair > inserted
           (add-hook 'org-mode-hook
                     (lambda ()
+                      (require 'elec-pair)
                       (setq-local electric-pair-inhibit-predicate
                                   `(lambda (c)
                                      (if (char-equal c ?<) t
