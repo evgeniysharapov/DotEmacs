@@ -2065,7 +2065,8 @@ If ARG is 16, i.e. C-u C-u is pressed, just drop image file alongside the org fi
   :init
   (defun ffe-ledger-buffer-year-format-specifier()
     "This returns a year based on the buffer name"
-    (f-base (file-name-parent-directory (buffer-file-name))))
+    (file-name-nondirectory
+     (directory-file-name (file-name-parent-directory (buffer-file-name)))))
   (defun ffe-ledger-current-year-format-specifier()
     (with-current-buffer (or ledger-report-buffer-name (current-buffer))
       (let* ((month (or ledger-report-current-month (ledger-report--current-month)))
