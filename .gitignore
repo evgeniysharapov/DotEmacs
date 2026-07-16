@@ -45,3 +45,5 @@ transient
 eln-cache
 /data/elpa/
 /data/quelpa/
+/data/package-quickstart.el
+/data/package-quickstart.elc

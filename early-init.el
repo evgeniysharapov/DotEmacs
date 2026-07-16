@@ -38,5 +38,6 @@
 ;; Must be set before package activation (which now runs before init.el with quickstart)
 (setq package-user-dir (expand-file-name "data/elpa/" user-emacs-directory))
 (setq package-quickstart t)
+(setq package-quickstart-file (expand-file-name "data/package-quickstart.el" user-emacs-directory))
 
 ;;; early-init.el ends here
