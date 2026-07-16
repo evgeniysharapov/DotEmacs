@@ -35,8 +35,8 @@
                             (tool-bar-lines . 0)
                             (vertical-scroll-bars)))
 
-;; Package system configuration (runs before package-initialize)
-;; Moved from init.el line 78
-(setq package-enable-at-startup nil)
+;; Must be set before package activation (which now runs before init.el with quickstart)
+(setq package-user-dir (expand-file-name "data/elpa/" user-emacs-directory))
+(setq package-quickstart t)
 
 ;;; early-init.el ends here

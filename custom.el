@@ -159,7 +159,26 @@
  '(outshine-fontify-whole-heading-line t)
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(ace-jump-mode adaptive-wrap ag auctex browse-kill-ring c-eldoc cargo
+                   cider color-moccur company-c-headers company-glsl
+                   company-go company-statistics counsel crosshairs
+                   csv-mode dap-mode diminish docker dockerfile-mode
+                   elisp-slime-nav find-file-in-project
+                   flycheck-ledger flycheck-pos-tip flycheck-rust
+                   fsharp-mode gcmh go-eldoc go-guru groovy-mode
+                   helpful hide-lines idle-highlight-mode
+                   imenu-anywhere imenu-list ivy-rich js2-mode
+                   json-mode json-navigator json-rpc just-mode
+                   langtool ledger-mode lsp-pyright lsp-ui lua-mode
+                   magit merlin modus-themes monky nginx-mode
+                   org-journal outshine paredit pdf-tools
+                   plantuml-mode polymode powershell projectile pyvenv
+                   quelpa-use-package racer rainbow-mode restclient
+                   string-inflection system-packages toml-mode tuareg
+                   undo-tree unfill use-package-ensure-system-package
+                   utop visual-fill visual-fill-column visual-regexp
+                   wgrep-ag yaml-mode yasnippet-snippets))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)

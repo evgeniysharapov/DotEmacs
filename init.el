@@ -73,18 +73,14 @@
 
 ;;;; Initialize `use-package' and friends
 (require 'package)
-(setf package-user-dir *elpa-dir*)
 
-;; package-enable-at-startup set in early-init.el
+;; package-user-dir and package-enable-at-startup set in early-init.el
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
 ;; this is important on Cisco Umbrella machine
 (setq package-check-signature nil)
 
-;; Initialize packages (package-quickstart will skip this if already loaded)
-(unless (bound-and-true-p package--initialized)
-  (package-initialize))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -104,8 +100,11 @@
   :custom
   (system-packages-noconfirm t))
 
+;; this package fails behind Cisco/Umbrella
 (use-package use-package-ensure-system-package
-  :ensure t)
+  :ensure nil
+  :if (or (executable-find "apt")
+          (executable-find "brew")))
 
 (use-package quelpa
   :ensure t
@@ -1340,20 +1339,6 @@ Examples:
   (dolist (hook '(cider-mode-hook cider-repl-mode-hook clojure-mode-hook clojurescript-mode-hook))
     (add-hook hook #'paredit-mode)
     (add-hook hook #'eldoc-mode)))
-
-(use-package 4clojure
-  :commands (4clojure-open-question)
-  :after cider
-  :ensure t
-  :defer t
-  :init (progn
-	  (defadvice 4clojure-open-question (around 4clojure-open-question-around)
-	    "Start a cider/nREPL connection if one hasn't already been started when
-opening 4clojure questions"
-	    ad-do-it
-	    (unless cider-current-clojure-buffer
-	      (cider-jack-in)))))
-
 
 ;;;; C/C++
 ;; C/C++ Configuration mostly for one off c/c++ programs not for complex C/C++ projects
