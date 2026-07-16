@@ -1415,38 +1415,18 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 (use-package go-mode
   :ensure t
-  :init (progn
-          (use-package go-eldoc
-            :ensure t
-            :init (add-hook 'go-mode-hook #'go-eldoc-setup))
-          (use-package go-guru
-            :ensure t
-            :init (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
-          (use-package company-go
-            :ensure t
-            :init (add-hook 'go-mode-hook (lambda () (ffe-add-company-backends 'company-go))))
+  :init
+  (defun go-run-buffer ()
+    "Run the current buffer with go run."
+    (interactive)
+    (compile (concat "go run " (buffer-file-name))))
 
-          (defun go-run-buffer ()
-            "This will run buffer on the Go"
-            (interactive)
-            (compile (concat "go run " (buffer-file-name))))
-
-          (add-hook 'go-mode-hook (lambda ()
-                                    ;; customize  compile command for go-mode
-                                    (set (make-local-variable 'compile-command)
-                                         "go build")
-                                    ;; make before-save-hook local for go-mode buffer
-                                    (add-hook 'before-save-hook 'gofmt nil t)))
-          (bind-keys :map go-mode-map
-                     :prefix "C-c C-d"
-                     :prefix-map go-mode-doc-map
-                     ("h"   . godoc)
-                     ("d"   . godef-describe)
-                     ("C-d" . godoc-at-point)))
-  
-  :config (progn
-            (setq gofmt-command "goimports"))
-  
+  (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'compile-command) "go build")
+                            (add-hook 'before-save-hook 'gofmt nil t)
+                            (lsp-deferred)))
+  :config
+  (setq gofmt-command "goimports")
   :bind (:map go-mode-map
          ("C-c C-c" . go-run-buffer)))
 
@@ -1550,13 +1530,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (with-eval-after-load 'flycheck
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
-;; Auto completion for rust
-(use-package racer
-  :ensure t
-  :defer t
-  :after rust-mode
-  :init (add-hook 'rust-mode-hook #'racer-mode)   
-  :config (setq racer-rust-src-path (getenv "RUST_SRC_PATH")))
+(add-hook 'rust-mode-hook #'lsp-deferred)
 
 ;; Major mode for .toml Cargo files, I don't think it's used anywhere
 ;; outside of Rust ecosystem so it stays here for now
