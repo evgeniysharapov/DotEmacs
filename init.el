@@ -664,10 +664,16 @@ Examples:
   :diminish "OutS"
   :init
   (defvar outline-minor-mode-prefix (kbd "M-o"))
+  (define-prefix-command 'ffe-outline-visibility-map)
+  (define-key ffe-outline-visibility-map "a" #'outline-show-all)
+  (define-key ffe-outline-visibility-map "h" #'outline-hide-body)
+  (define-key ffe-outline-visibility-map "b" #'outline-show-branches)  
   :hook (outline-minor-mode . outshine-mode)
   :bind (:map outline-minor-mode-map
          :prefix-map outline-mode-prefix-map
          :prefix "M-o"
+         ;; visibility
+         ("/" . ffe-outline-visibility-map)
          ;; motion
          ("u" . outline-up-heading)
          ("f" . outline-forward-same-level)
