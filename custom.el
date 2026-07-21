@@ -167,11 +167,11 @@
                    elisp-slime-nav find-file-in-project
                    flycheck-ledger flycheck-pos-tip flycheck-rust
                    fsharp-mode gcmh go-eldoc go-guru groovy-mode
-                   helpful hide-lines idle-highlight-mode
-                   imenu-anywhere imenu-list ivy-rich js2-mode
-                   json-mode json-navigator json-rpc just-mode
-                   langtool ledger-mode lsp-pyright lsp-ui lua-mode
-                   magit merlin modus-themes monky nginx-mode
+                   helpful hide-lines ibuffer-projectile
+                   idle-highlight-mode imenu-anywhere imenu-list
+                   ivy-rich js2-mode json-mode json-navigator json-rpc
+                   just-mode langtool ledger-mode lsp-pyright lsp-ui
+                   lua-mode magit merlin modus-themes monky nginx-mode
                    org-journal outshine paredit pdf-tools
                    plantuml-mode polymode powershell projectile pyvenv
                    quelpa-use-package racer rainbow-mode restclient

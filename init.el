@@ -54,11 +54,12 @@
 ;; prefer loading newer packages
 (setf load-prefer-newer t)
 
-;;; Libraries and Packages 
+;;; Libraries and Packages
 ;;;; Load Libraries Recursively
 ;; Add `*lisp-dir*' paths recursively to `load-path'
 ;; create recursive function
 (defun add-directory-to-path (dir)
+  "Add a directory DIR recursively to the `load-path'."
   (add-to-list 'load-path dir)
   (dolist (entry (directory-files-and-attributes dir))
     (if (and (cadr entry) ; t for directory
@@ -663,8 +664,7 @@ Examples:
   :diminish "OutS"
   :init
   (defvar outline-minor-mode-prefix (kbd "M-o"))
-  :config
-  (add-hook 'outline-minor-mode-hook 'outshine-mode)
+  :hook (outline-minor-mode . outshine-mode)
   :bind (:map outline-minor-mode-map
          :prefix-map outline-mode-prefix-map
          :prefix "M-o"
@@ -992,7 +992,6 @@ Examples:
                 ibuffer-marked-face 'ibuffer-custom-marked-face)
           ;; auto updateable ibuffer
           (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)))
-
 
 (defun ffe-swap-buffers-with-window ()
   "Moves current buffer to the given WINDOW."
