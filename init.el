@@ -1157,8 +1157,6 @@ Examples:
                           ivy-rich-switch-buffer-align-virtual-buffer t
                           ivy-rich-path-style 'abbrev)
   :config
-  ;; (ivy-set-display-transformer 'ivy-switch-buffer
-  ;;                              'ivy-rich-switch-buffer-transformer)
   (ivy-rich-mode 1))
 
 (use-package swiper
