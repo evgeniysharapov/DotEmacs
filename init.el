@@ -82,10 +82,8 @@
 ;; this is important on Cisco Umbrella machine
 (setq package-check-signature nil)
 
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; this is important on Cisco Umbrella machine 
+(setq package-check-signature nil)
 
 (eval-when-compile
   (require 'use-package))
@@ -307,6 +305,7 @@ Examples:
   ;; avoid jerky scrolling 
   (scroll-step 1)
   (scroll-margin 4)
+  (pixel-scroll-precision-mode t)
   (inhibit-startup-screen nil)
   (initial-scratch-message nil)
   ;; spaces 
@@ -1423,11 +1422,20 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
     "Run the current buffer with go run."
     (interactive)
     (compile (concat "go run " (buffer-file-name))))
-
+  
   (add-hook 'go-mode-hook (lambda ()
-                            (set (make-local-variable 'compile-command) "go build")
-                            (add-hook 'before-save-hook 'gofmt nil t)
-                            (lsp-deferred)))
+                            ;; customize  compile command for go-mode
+                            (set (make-local-variable 'compile-command)
+                                 "go build")
+                            ;; make before-save-hook local for go-mode buffer
+                            (add-hook 'before-save-hook 'gofmt nil t)))
+  (bind-keys :map go-mode-map
+             :prefix "C-c C-d"
+             :prefix-map go-mode-doc-map
+             ("h"   . godoc)
+             ("d"   . godef-describe)
+             ("C-d" . godoc-at-point))
+
   :config
   (setq gofmt-command "goimports")
   :bind (:map go-mode-map
@@ -1849,7 +1857,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;;;; Justfile
 (use-package just-mode
   :ensure t)
-
 ;;; Org Mode
 (use-package org
   :mode (("\\.org$" . org-mode))

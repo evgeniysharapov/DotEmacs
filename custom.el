@@ -94,24 +94,22 @@
  '(org-capture-templates
    '(("w" "Work" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":work:\")\12 %t\12%?"
-      :clock-in t :clock-keep t)
+      "* %^{Description}  %(org-set-tags  \":work:\")\12 %t\12%?" :clock-in t :clock-keep t)
      ("m" "Meeting" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":meeting:\")\12 %t\12%?"
-      :clock-in t :clock-keep t)
+      "* %^{Description}  %(org-set-tags  \":meeting:\")\12 %t\12%?" :clock-in t :clock-keep t)
      ("t" "CRIO Task" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
       "* TODO %^{Description}  %(org-set-tags  \":crio:\")\12 %t\12%?")
-     ("c" "CRIO Note" entry (file "~/Documents/Notes/CRIO.org")
+     ("c" "CRIO Note" entry
+      (file "~/Documents/Notes/CRIO.org")
       "* %^{Description}\12%?")
      ("a" "Add Task" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
-      "* TODO %?\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:"
-      :prepend t)
-     ("n" "Note" entry (file "~/Documents/Notes/Notes.org")
-      "* NOTE %? %^G\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:"
-      :prepend t)
+      "* TODO %?\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:" :prepend t)
+     ("n" "Note" entry
+      (file "~/Documents/Notes/Notes.org")
+      "* NOTE %? %^G\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:" :prepend t)
      ("l" "Link" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Links")
       "* [[%:link][%:description]]\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:URL:      %:link\12:END:\12\12#+BEGIN_QUOTE\12%:initial\12#+END_QUOTE\12\12%?\12")))
@@ -145,25 +143,7 @@
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
  '(package-selected-packages
-   '(ace-jump-mode adaptive-wrap ag auctex browse-kill-ring c-eldoc cargo
-                   cider color-moccur company-c-headers company-glsl
-                   company-go company-statistics counsel crosshairs
-                   csv-mode dap-mode diminish docker dockerfile-mode
-                   elisp-slime-nav find-file-in-project
-                   flycheck-ledger flycheck-pos-tip flycheck-rust
-                   fsharp-mode gcmh go-eldoc go-guru groovy-mode
-                   helpful hide-lines ibuffer-projectile
-                   idle-highlight-mode imenu-anywhere imenu-list
-                   ivy-rich js2-mode json-mode json-navigator json-rpc
-                   just-mode langtool ledger-mode lsp-pyright lsp-ui
-                   lua-mode magit merlin modus-themes monky nginx-mode
-                   org-journal outshine paredit pdf-tools
-                   plantuml-mode polymode powershell projectile pyvenv
-                   quelpa-use-package racer rainbow-mode restclient
-                   string-inflection system-packages toml-mode tuareg
-                   undo-tree unfill use-package-ensure-system-package
-                   utop visual-fill visual-fill-column visual-regexp
-                   wgrep-ag yaml-mode yasnippet-snippets))
+   '(polymode 4clojure yasnippet-snippets yaml-mode which-key wgrep-ag visual-regexp visual-fill-column visual-fill utop use-package-ensure-system-package unfill undo-tree toml-mode string-inflection restclient rainbow-mode racer quelpa-use-package pyvenv projectile powershell plantuml-mode pdf-tools paredit outshine org-journal nginx-mode monky modus-themes merlin magit lua-mode lsp-ui lsp-pyright ledger-mode langtool just-mode json-rpc json-navigator json-mode js2-mode ivy-rich imenu-list imenu-anywhere idle-highlight-mode hide-lines helpful groovy-mode go-guru go-eldoc gcmh fsharp-mode flycheck-rust flycheck-pos-tip flycheck-ledger find-file-in-project elisp-slime-nav dockerfile-mode docker diminish dap-mode csv-mode csharp-mode crosshairs counsel company-statistics company-go company-glsl company-c-headers color-moccur cider cargo c-eldoc browse-kill-ring auctex ag adaptive-wrap ace-jump-mode))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
@@ -171,7 +151,8 @@
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
-   '((outshine-mode . t) (ledger-accounts-file . "accounts.ledger")
+   '((outshine-mode . t)
+     (ledger-accounts-file . "accounts.ledger")
      (ledger-accounts-file . "meta.ledger")
      (eval outline-minor-mode t) (markdown-asymmetric-header . t)
      (mocha-project-test-directory . "test/server\"")
