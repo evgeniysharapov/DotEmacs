@@ -1707,7 +1707,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ;; LSP server
               (setq lsp-tex-server 'digestiff)
               (put 'ConTeXt-mode 'eglot-language-id "context")
-              (eglot))))
+              (eglot-ensure))))
 
 ;; let's define polymode for metapost in ConTeXt
 (define-hostmode poly-context-hostmode :mode 'ConTeXt-mode)
