@@ -21,7 +21,24 @@
  '(company-tooltip-limit 10)
  '(custom-buffer-done-kill t)
  '(custom-safe-themes
-   '("e5e253a4d31d709f1b7147fe6bb237ed2b9353685eea9a9e18652ac917f48823" "36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9" "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" "7397cc72938446348521d8061d3f2e288165f65a2dbb6366bb666224de2629bb" "9f1d0627e756e58e0263fe3f00b16d8f7b2aca0882faacdc20ddd56a95acb7c2" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" default))
+   '("0e4a97c12619ddf2892b0de051512ecc3c4d896042a4392b052177bfab23a6e4"
+     "b3ed1a4cf401a667d2ec3d8d62eb2062db0476f8c8990d8be8483deac7431c58"
+     "e5e253a4d31d709f1b7147fe6bb237ed2b9353685eea9a9e18652ac917f48823"
+     "36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9"
+     "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17"
+     "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370"
+     "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca"
+     "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea"
+     "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c"
+     "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f"
+     "7397cc72938446348521d8061d3f2e288165f65a2dbb6366bb666224de2629bb"
+     "9f1d0627e756e58e0263fe3f00b16d8f7b2aca0882faacdc20ddd56a95acb7c2"
+     "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370"
+     "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca"
+     "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea"
+     "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c"
+     "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f"
+     default))
  '(default-input-method "russian-computer")
  '(directory-free-space-args "-Pmh")
  '(dired-dwim-target t)
@@ -94,22 +111,24 @@
  '(org-capture-templates
    '(("w" "Work" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":work:\")\12 %t\12%?" :clock-in t :clock-keep t)
+      "* %^{Description}  %(org-set-tags  \":work:\")\12 %t\12%?"
+      :clock-in t :clock-keep t)
      ("m" "Meeting" entry
       (file+olp+datetree "~/Documents/Notes/Worklog.org")
-      "* %^{Description}  %(org-set-tags  \":meeting:\")\12 %t\12%?" :clock-in t :clock-keep t)
+      "* %^{Description}  %(org-set-tags  \":meeting:\")\12 %t\12%?"
+      :clock-in t :clock-keep t)
      ("t" "CRIO Task" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
       "* TODO %^{Description}  %(org-set-tags  \":crio:\")\12 %t\12%?")
-     ("c" "CRIO Note" entry
-      (file "~/Documents/Notes/CRIO.org")
+     ("c" "CRIO Note" entry (file "~/Documents/Notes/CRIO.org")
       "* %^{Description}\12%?")
      ("a" "Add Task" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Tasks")
-      "* TODO %?\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:" :prepend t)
-     ("n" "Note" entry
-      (file "~/Documents/Notes/Notes.org")
-      "* NOTE %? %^G\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:" :prepend t)
+      "* TODO %?\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:"
+      :prepend t)
+     ("n" "Note" entry (file "~/Documents/Notes/Notes.org")
+      "* NOTE %? %^G\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:END:"
+      :prepend t)
      ("l" "Link" entry
       (file+headline "~/Documents/Notes/Inbox.org" "Links")
       "* [[%:link][%:description]]\12:PROPERTIES:\12:ID:       %(ffe-uuid)\12:CREATED:  %U\12:URL:      %:link\12:END:\12\12#+BEGIN_QUOTE\12%:initial\12#+END_QUOTE\12\12%?\12")))
@@ -169,8 +188,7 @@
  '(python-shell-prompt-detect-failure-warning nil)
  '(regexp-search-ring-max 100)
  '(safe-local-variable-values
-   '((outshine-mode . t)
-     (ledger-accounts-file . "accounts.ledger")
+   '((outshine-mode . t) (ledger-accounts-file . "accounts.ledger")
      (ledger-accounts-file . "meta.ledger")
      (eval outline-minor-mode t) (markdown-asymmetric-header . t)
      (mocha-project-test-directory . "test/server\"")
