@@ -37,6 +37,74 @@ describe it at length. Just some of the highlights.
   * Javascript via =js-2=, =tern=, =mocha=, =js-comint=
   * Docker: =dockerfile-mode=, =yaml= and =docker=
 
+* Language Server Support (eglot)
+
+Language server integration uses the built-in =eglot= (Emacs 29+), not
+=lsp-mode=. Supporting pieces:
+
+  * =eglot= - LSP client
+  * =eglot-booster= - wraps servers with the =emacs-lsp-booster= binary for
+    faster JSON-RPC (requires the binary on =PATH=, see below)
+  * =flycheck-eglot= - routes eglot diagnostics into =flycheck=
+  * =dape= - Debug Adapter Protocol client (replaces =dap-mode=)
+  * =treesit-auto= - installs tree-sitter grammars and remaps classic major
+    modes to their =*-ts-mode= counterparts
+
+=eglot= keybindings live under the =C-z .= prefix:
+
+  * =C-z . r= =eglot-rename=
+  * =C-z . a= =eglot-code-actions=
+  * =C-z . f= =eglot-format=
+  * =C-z . d= =dape= (start debugger)
+
+** Languages and Major Modes
+
+Files open in tree-sitter major modes (grammars auto-installed on first use).
+
+  | Language  | Major mode        | Language server            |
+  |-----------+-------------------+----------------------------|
+  | Python    | =python-ts-mode=  | =pyright-langserver=       |
+  | Rust      | =rust-ts-mode=    | =rust-analyzer=            |
+  | Go        | =go-ts-mode=      | =gopls=                    |
+  | JavaScript| =js-ts-mode=      | =typescript-language-server= |
+  | Java      | =java-ts-mode=    | =jdtls= (via =eglot-java=) |
+  | YAML      | =yaml-ts-mode=    | =yaml-language-server=     |
+  | Shell/ZSH | =bash-ts-mode=    | =bash-language-server=     |
+  | Terraform | =terraform-mode=  | =terraform-ls=             |
+  | C#        | =csharp-ts-mode=  | =omnisharp= / =csharp-ls=  |
+  | F#        | =fsharp-mode=     | =fsautocomplete=           |
+
+** System Prerequisites
+
+These must be installed on the system and available on =PATH=. They are /not/
+installed by Emacs.
+
+The booster binary (build with Rust/cargo):
+
+#+begin_src shell
+cargo install --git https://github.com/blahgeek/emacs-lsp-booster --root ~/.cargo
+#+end_src
+
+Language servers:
+
+#+begin_src shell
+# npm-based servers
+npm i -g pyright typescript typescript-language-server \
+         yaml-language-server bash-language-server
+
+# Go and Rust (usually already present via toolchains)
+go install golang.org/x/tools/gopls@latest
+rustup component add rust-analyzer
+
+# Terraform LS - from HashiCorp releases / package manager
+# F# (optional)
+dotnet tool install -g fsautocomplete
+#+end_src
+
+=jdtls= (Java) is downloaded and managed automatically by =eglot-java= on
+first use. Tree-sitter grammars are installed by =treesit-auto= (prompts on
+first visit to a file).
+
 * Some Shortcuts
 
 ** Help

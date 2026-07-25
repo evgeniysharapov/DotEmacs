@@ -1239,41 +1239,53 @@ Examples:
               ("." . string-inflection-all-cycle)))
 
 
-;;;; Language Server
-(use-package lsp-mode
+;;;; Tree-sitter
+;; Emacs 30 ships tree-sitter (`treesit') built-in. `treesit-auto' installs
+;; missing grammars on demand and remaps classic major modes to their
+;; `*-ts-mode' counterparts via `major-mode-remap-alist'.
+(use-package treesit-auto
   :ensure t
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-z .")
-  :hook
-  ((js2-mode . lsp-deferred)
-   (yaml-mode . lsp-deferred)
-   (lsp-mode . lsp-enable-which-key-integration)))
-
-(use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode
-  :custom 
-  (lsp-ui-doc-position 'at-point)
-  (lsp-ui-doc-enable nil)
-  :after lsp-mode)
-
-(use-package lsp-treemacs
-  :ensure t
-  :commands lsp-treemacs-errors-list
-  :after lsp-mode)
-
-(use-package dap-mode
-  :ensure t
-  :commands (dap-debug dap-debug-edit-template dap-register-debug-template)
-  :after lsp-mode
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (require 'dap-python)  
+  (global-treesit-auto-mode))
+
+;;;; Language Server
+;; Migrated from lsp-mode to the built-in `eglot'. `eglot-booster' wraps the
+;; server process with the `emacs-lsp-booster' binary (must be on PATH) to
+;; speed up JSON-RPC. `flycheck-eglot' feeds eglot diagnostics into flycheck
+;; so the existing flycheck UI keeps working.
+(use-package eglot
+  :commands (eglot eglot-ensure)
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-events-buffer-size 0)
+  :config
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio")))
   :bind
-  (:map lsp-mode-map        
-        ("C-z . d" . dap-debug))
-  :hook ((lsp-mode . dap-mode)
-         (lsp-mode . dap-ui-mode)))
+  (:map eglot-mode-map
+        ("C-z . r" . eglot-rename)
+        ("C-z . a" . eglot-code-actions)
+        ("C-z . f" . eglot-format)
+        ("C-z . d" . dape)))
+
+(use-package eglot-booster
+  :ensure t
+  :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
+  :after eglot
+  :config
+  (eglot-booster-mode))
+
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
+
+(use-package dape
+  :ensure t
+  :commands (dape))
 
 ;;;; Lisp
 ;;;;; General Lisp 
@@ -1419,52 +1431,57 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; Oracle    https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view
 ;; Guru    https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit
 
+;; `go-ts-mode' is the built-in tree-sitter major mode (treesit-auto remaps
+;; go-mode -> go-ts-mode). The `go-mode' package is still kept installed for
+;; its utility commands (gofmt, godoc, godef-describe, godoc-at-point), which
+;; are not provided by the built-in mode.
 (use-package go-mode
   :ensure t
+  :defer t
+  :commands (gofmt godoc godef-describe godoc-at-point)
+  :config
+  (setq gofmt-command "goimports"))
+
+(use-package go-ts-mode
   :init
   (defun go-run-buffer ()
     "Run the current buffer with go run."
     (interactive)
     (compile (concat "go run " (buffer-file-name))))
-  
-  (add-hook 'go-mode-hook (lambda ()
-                            ;; customize  compile command for go-mode
+
+  (add-hook 'go-ts-mode-hook #'eglot-ensure)
+  (add-hook 'go-ts-mode-hook (lambda ()
+                            ;; customize  compile command for go-ts-mode
                             (set (make-local-variable 'compile-command)
                                  "go build")
-                            ;; make before-save-hook local for go-mode buffer
+                            ;; make before-save-hook local for go buffer
                             (add-hook 'before-save-hook 'gofmt nil t)))
-  (bind-keys :map go-mode-map
+  (bind-keys :map go-ts-mode-map
              :prefix "C-c C-d"
              :prefix-map go-mode-doc-map
              ("h"   . godoc)
              ("d"   . godef-describe)
              ("C-d" . godoc-at-point))
 
-  :config
-  (setq gofmt-command "goimports")
-  :bind (:map go-mode-map
+  :bind (:map go-ts-mode-map
          ("C-c C-c" . go-run-buffer)))
 
 
 ;;;; Javascript
 ;;
-;; We use lsp-server with NodeJS
-;; see https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/
-;; could be installed via `lsp-install-server' then choose 'ts-ls
-;; 
-(use-package js2-mode
-  :defer t
-  :diminish (javascript-mode . "JS")
-  :ensure t
-  :mode (("\\.js\\'" . js2-mode)
-         ("\\.jsx\\'" . js2-jsx-mode))
+;; Uses the built-in tree-sitter `js-ts-mode' with eglot. eglot's default
+;; server for JavaScript is `typescript-language-server --stdio' (install via
+;; npm along with the `typescript' package).
+;;
+(use-package js
+  :mode (("\\.js\\'" . js-ts-mode)
+         ("\\.jsx\\'" . js-ts-mode))
   :init
-  (progn
-    (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-    (add-hook 'js2-mode-hook #'imenu-add-menubar-index)
-    (add-hook 'js2-mode-hook #'idle-highlight-mode)
-    (add-hook 'js2-mode-hook #'electric-pair-mode)
-    (add-hook 'js2-mode-hook #'hs-minor-mode)))
+  (add-hook 'js-ts-mode-hook #'eglot-ensure)
+  (add-hook 'js-ts-mode-hook #'imenu-add-menubar-index)
+  (add-hook 'js-ts-mode-hook #'idle-highlight-mode)
+  (add-hook 'js-ts-mode-hook #'electric-pair-mode)
+  (add-hook 'js-ts-mode-hook #'hs-minor-mode))
 
 ;;;;; Customize Projectile
 (when (fboundp 'projectile-register-project-type)
@@ -1478,10 +1495,10 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :defer t
   :commands python-mode
   :config
-  (add-hook 'python-mode-hook #'eldoc-mode)
-  (add-hook 'python-mode-hook #'lsp-deferred)
+  (add-hook 'python-base-mode-hook #'eldoc-mode)
+  (add-hook 'python-base-mode-hook #'eglot-ensure)
   :bind
-  (:map python-mode-map
+  (:map python-base-mode-map
 	;; python-eldoc-at-point is not really useful, instead
 	;; use it for sending file to python shell
 	("C-c C-f" . python-shell-send-file)
@@ -1495,17 +1512,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 	("M-e" . python-nav-forward-statement)
 	("M-a" . python-nav-backward-statement)))
 
-(use-package lsp-pyright
-  :ensure t
-  :after lsp-mode
-  ;; :hook (python-mode . (lambda ()
-  ;;                        (require 'lsp-pyright)
-  ;;                        (lsp-deferred)))
-  )
-
 (use-package pyvenv
   :ensure t
-  :hook ((python-mode . pyvenv-mode)))
+  :hook ((python-base-mode . pyvenv-mode)))
 
 ;;;; Rust
 
@@ -1528,6 +1537,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; Check out corresponding documentation on how to
 ;; do that. More over there's a RUST_SRC_PATH environment variable
 ;; pointing to rust sources.
+;; `rust-mode' is kept for cargo integration; treesit-auto remaps it to the
+;; built-in `rust-ts-mode', which is where eglot and cargo-minor-mode attach.
 (use-package rust-mode
   :ensure t
   :defer t)
@@ -1535,17 +1546,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package cargo
   :ensure t
   :defer t
-  :init (add-hook 'rust-mode-hook #'cargo-minor-mode))
+  :init (add-hook 'rust-ts-mode-hook #'cargo-minor-mode))
 
-(use-package flycheck-rust
-  :ensure t
-  :defer t
-  :after rust-mode
-  :config
-  (with-eval-after-load 'flycheck
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
-
-(add-hook 'rust-mode-hook #'lsp-deferred)
+(add-hook 'rust-ts-mode-hook #'eglot-ensure)
 
 ;; Major mode for .toml Cargo files, I don't think it's used anywhere
 ;; outside of Rust ecosystem so it stays here for now
@@ -1557,11 +1560,22 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package groovy-mode
   :ensure t)
 
+;;;; Java
+;; `eglot-java' manages the jdtls server (downloads it on first use) and adds
+;; project scaffolding / test-running on top of eglot. Uses the built-in
+;; tree-sitter `java-ts-mode' (treesit-auto remaps java-mode).
+(use-package eglot-java
+  :ensure t
+  :hook (java-ts-mode . eglot-java-mode))
+
 ;;;; C#
+;; `csharp-ts-mode' is built-in (treesit-auto remaps csharp-mode). eglot's
+;; default server is `omnisharp'/`csharp-ls'; adjust `eglot-server-programs' if
+;; your server binary differs.
 (use-package csharp-mode
   :ensure t
   :init
-  (add-hook 'csharp-mode-hook #'lsp-deferred))
+  (add-hook 'csharp-ts-mode-hook #'eglot-ensure))
 
 
 ;;;; F#
@@ -1573,32 +1587,16 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 ;; (see Readme about how to build)
 ;; Once you have it built add ./src/FSharpLanguageServer/bin/Release/net6.0/linux-x64/ or whatever platform is to path
 ;;
-(defun ffe-fsharp-ls-setup ()
-  "Initializes FSharpLanguageServer as a backend for LSP"
-  (require 'lsp)
-  ;; this one seems more robust 
-  (when-let ((fsharp2-lsp-executable (executable-find "FSharpLanguageServer")))
-      (progn
-        (setq lsp-fsharp-server-path "")        
-        ;; creating client for fsharp-ls
-        (lsp-register-client
-         (make-lsp-client
-          :new-connection (lsp-stdio-connection fsharp2-lsp-executable)
-          :major-modes '(fsharp-mode)
-          :server-id 'fsharp-lsp
-          :notification-handlers (ht ("fsharp/startProgress" #'ignore)
-                                     ("fsharp/incrementProgress" #'ignore)
-                                     ("fsharp/endProgress" #'ignore))
-          :priority 1))))
-  (lsp))
-
 (use-package fsharp-mode
   :ensure t
   :config
-  (add-hook 'fsharp-mode-hook #'ffe-fsharp-ls-setup)
-  :init
-  (setf lsp-fsharp-server-install-dir "~/.FsAutoComplete/netcore/"
-        lsp-fsharp-external-autocomplete t))
+  ;; Prefer `fsautocomplete' (dotnet tool) if present, otherwise fall back to
+  ;; the FSharpLanguageServer binary on PATH.
+  (add-to-list 'eglot-server-programs
+               `(fsharp-mode . ,(if (executable-find "fsautocomplete")
+                                    '("fsautocomplete")
+                                  '("FSharpLanguageServer"))))
+  (add-hook 'fsharp-mode-hook #'eglot-ensure))
 
 ;;;; Ocaml
 ;; Emacs’ OCaml mode
@@ -1715,9 +1713,8 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
               ;; Install digestif
               ;; https://github.com/astoff/digestif
               ;;
-              ;; if we are using digestiff with eglot we need to send correct language id to
-              ;; LSP server
-              (setq lsp-tex-server 'digestiff)
+              ;; if we are using digestif with eglot we need to send correct
+              ;; language id to the LSP server
               (put 'ConTeXt-mode 'eglot-language-id "context")
               (eglot-ensure))))
 
@@ -1746,6 +1743,15 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;; Misc File Formats
 ;; Various file formats
+;;;; Terraform
+;; No stable tree-sitter major mode ships, so `terraform-mode' stays. eglot
+;; connects to `terraform-ls serve' (built-in server entry).
+(use-package terraform-mode
+  :ensure t
+  :mode (("\\.tf\\'" . terraform-mode)
+         ("\\.tfvars\\'" . terraform-mode))
+  :hook (terraform-mode . eglot-ensure))
+
 ;;;; JSON
 (use-package json-mode
   :defer t
@@ -1766,10 +1772,12 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :commands nginx-mode)
 
 ;;;; YAML
-(use-package yaml-mode
-  :ensure t
-  :mode (("\\.ya?ml$" . yaml-mode))
-  :hook (yaml-mode . yaml-mode-outline-hook)
+;; Uses the built-in tree-sitter `yaml-ts-mode' with eglot
+;; (yaml-language-server --stdio).
+(use-package yaml-ts-mode
+  :mode (("\\.ya?ml$" . yaml-ts-mode))
+  :hook ((yaml-ts-mode . eglot-ensure)
+         (yaml-ts-mode . yaml-mode-outline-hook))
   :init
   (defun yaml-outline-level ()
     "Returns level based on indentation"
@@ -1840,9 +1848,12 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package csv-mode
   :ensure t)
 
-;;;; Shell Scripts 
+;;;; Shell Scripts
+;; `bash-ts-mode' (built-in tree-sitter) with eglot (bash-language-server start).
+;; bash-language-server also handles zsh scripts.
 (use-package sh-script
-  :mode (("\\.zsh" . sh-mode)))
+  :mode (("\\.zsh" . bash-ts-mode))
+  :hook (bash-ts-mode . eglot-ensure))
 ;;;; RESTClient
 (use-package restclient
   :ensure t

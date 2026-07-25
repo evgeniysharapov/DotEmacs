@@ -91,7 +91,6 @@
  '(js2-mode-show-strict-warnings nil)
  '(load-prefer-newer t t)
  '(ls-lisp-dirs-first t)
- '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(mouse-yank-at-point t)
@@ -177,10 +176,11 @@
                    org-journal outshine paredit pdf-tools
                    plantuml-mode polymode powershell projectile pyvenv
                    quelpa-use-package racer rainbow-mode restclient
-                   string-inflection system-packages toml-mode tuareg
-                   undo-tree unfill use-package-ensure-system-package
-                   utop visual-fill visual-fill-column visual-regexp
-                   wgrep-ag yaml-mode yasnippet-snippets))
+                   string-inflection system-packages toml-mode
+                   treesit-auto tuareg undo-tree unfill
+                   use-package-ensure-system-package utop visual-fill
+                   visual-fill-column visual-regexp wgrep-ag yaml-mode
+                   yasnippet-snippets))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
