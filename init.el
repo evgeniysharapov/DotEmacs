@@ -1041,17 +1041,20 @@ Examples:
                 (describe-symbol symbol)))
 
             (defun ffe-quit-windows-on-help ()
-              "Quits window with *Help* buffer"
+              "Quits windows showing *Help* or *lsp-help* buffers."
               (interactive)
-              (quit-windows-on "*Help*")))  
+              (dolist (buf '("*Help*" "*lsp-help*"))
+                (ignore-errors (quit-windows-on buf)))))
+  
   :bind (:map help-map
               ("C-b" . describe-personal-keybindings)
               ("C-k" . describe-key-briefly)
               ("C-c" . describe-char)
               ("C-s" . ffe-describe-symbol-at-point)
               ("C-S-s" . describe-symbol)
-              ;; Too often I need to close Help windows after seeing the doc and I don't really use `help-quit' anyway
-              ([remap help-quit] . ffe-quit-windows-on-help)
+              ;; Close help windows from anywhere, including outside the help buffer
+              ("q" . ffe-quit-windows-on-help)
+              ("C-h q" . ffe-quit-windows-on-help)
               ;; help-for-help is nice, but I would like C-h still show me prefix bindings
               ("C-h" . describe-prefix-bindings)
               
@@ -1253,6 +1256,22 @@ Examples:
                       :major-modes '(ConTeXt-mode)
                       :priority 2
                       :server-id 'digestif-context)))
+  :config
+  (when (executable-find "emacs-lsp-booster")
+    (defun lsp-booster--advice-json-parse (old-fn &rest args)
+      (or (when (equal (following-char) ?#)
+            (let ((bytecode (read (current-buffer))))
+              (when (byte-code-function-p bytecode)
+                (funcall bytecode))))
+          (apply old-fn args)))
+    (advice-add 'lsp--json-parse-string :around #'lsp-booster--advice-json-parse)
+    (defun lsp-booster--advice-executable (old-fn &rest args)
+      (if (and (not (file-remote-p default-directory))
+               (executable-find "emacs-lsp-booster"))
+          (lambda (&rest args)
+            (cons "emacs-lsp-booster" (apply (apply old-fn args) args)))
+        (apply old-fn args)))
+    (advice-add 'lsp-resolve-final-function :around #'lsp-booster--advice-executable))
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
@@ -1506,6 +1525,9 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package lsp-pyright
   :ensure t
   :after lsp-mode
+  :init
+  (setq lsp-pyright-langserver-command
+        (if (executable-find "basedpyright") "basedpyright" "pyright"))
   :hook (python-mode . (lambda () (require 'lsp-pyright))))
 
 (use-package pyvenv
