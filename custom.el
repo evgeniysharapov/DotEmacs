@@ -152,7 +152,7 @@
  '(org-plantuml-jar-path "~/.bin/plantuml.jar")
  '(org-refile-targets
    '((org-agenda-files :tag . "") (org-agenda-files :maxlevel . 5)
-     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)))
+     ("~/Dropbox/Notes/Orgzly/Christianity.org" :maxlevel . 5)) t)
  '(org-refile-use-outline-path 'file)
  '(org-return-follows-link t)
  '(org-src-fontify-natively t)
@@ -169,18 +169,18 @@
                    elisp-slime-nav find-file-in-project
                    flycheck-ledger flycheck-pos-tip flycheck-rust
                    fsharp-mode gcmh go-eldoc go-guru groovy-mode
-                   helpful hide-lines ibuffer-projectile
-                   idle-highlight-mode imenu-anywhere imenu-list
-                   ivy-rich js2-mode json-mode json-navigator json-rpc
-                   just-mode langtool ledger-mode lsp-pyright lsp-ui
-                   lua-mode magit merlin modus-themes monky nginx-mode
-                   org-journal outshine paredit pdf-tools
-                   plantuml-mode polymode powershell projectile pyvenv
-                   quelpa-use-package racer rainbow-mode restclient
-                   string-inflection system-packages toml-mode tuareg
-                   undo-tree unfill use-package-ensure-system-package
-                   utop visual-fill visual-fill-column visual-regexp
-                   wgrep-ag yaml-mode yasnippet-snippets))
+                   helpful hide-lines idle-highlight-mode
+                   imenu-anywhere imenu-list js2-mode json-mode
+                   json-navigator json-rpc just-mode langtool
+                   ledger-mode lsp-pyright lsp-ui lua-mode magit
+                   merlin modus-themes monky nginx-mode org-journal
+                   outshine paredit pdf-tools plantuml-mode polymode
+                   powershell projectile pyvenv quelpa-use-package
+                   racer rainbow-mode restclient string-inflection
+                   system-packages toml-mode treesit-auto tuareg
+                   undo-tree unfill utop visual-fill
+                   visual-fill-column visual-regexp wgrep-ag yaml-mode
+                   yasnippet-snippets))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
