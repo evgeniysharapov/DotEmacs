@@ -1257,21 +1257,16 @@ Examples:
                       :priority 2
                       :server-id 'digestif-context)))
   :config
+  ;; emacs-lsp-booster speeds up the stdio JSON path (Emacs 29, or 30 without
+  ;; native json-rpc). On Emacs 30 with json-rpc-connection lsp-mode skips the
+  ;; stdio filter entirely, so the advice is a no-op there.
   (when (executable-find "emacs-lsp-booster")
-    (defun lsp-booster--advice-json-parse (old-fn &rest args)
-      (or (when (equal (following-char) ?#)
-            (let ((bytecode (read (current-buffer))))
-              (when (byte-code-function-p bytecode)
-                (funcall bytecode))))
-          (apply old-fn args)))
-    (advice-add 'lsp--json-parse-string :around #'lsp-booster--advice-json-parse)
-    (defun lsp-booster--advice-executable (old-fn &rest args)
-      (if (and (not (file-remote-p default-directory))
-               (executable-find "emacs-lsp-booster"))
-          (lambda (&rest args)
-            (cons "emacs-lsp-booster" (apply (apply old-fn args) args)))
-        (apply old-fn args)))
-    (advice-add 'lsp-resolve-final-function :around #'lsp-booster--advice-executable))
+    (advice-add 'lsp-resolve-final-command :around
+                (lambda (old-fn cmd &optional test?)
+                  (let ((orig (funcall old-fn cmd test?)))
+                    (if (and orig (not test?) (not (file-remote-p default-directory)))
+                        (cons "emacs-lsp-booster" orig)
+                      orig))))))
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
