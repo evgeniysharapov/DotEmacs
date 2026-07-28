@@ -5,6 +5,9 @@
 
 ;;; Code:
 
+;; Environement variables
+(setenv "LSP_USE_PLISTS" "true")
+
 ;; Defer garbage collection during startup for significant speedup
 ;; gcmh package will manage GC during normal operation
 (setq gc-cons-threshold most-positive-fixnum
