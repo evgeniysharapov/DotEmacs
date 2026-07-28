@@ -1564,7 +1564,6 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
 ;;;; C#
 (use-package csharp-mode
-  :ensure t
   :init
   (add-hook 'csharp-mode-hook #'lsp-deferred))
 
