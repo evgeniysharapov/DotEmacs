@@ -1245,9 +1245,18 @@ Examples:
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-z .")
+  ;; register digestif as the server handler for context mode
+  (with-eval-after-load 'lsp-tex
+    (add-to-list 'lsp-language-id-configuration '(ConTeXt-mode . "context"))
+    (lsp-register-client
+     (make-lsp-client :new-connection (lsp-stdio-connection lsp-clients-digestif-executable)
+                      :major-modes '(ConTeXt-mode)
+                      :priority 2
+                      :server-id 'digestif-context)))
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
+   (ConTeXt-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration)))
 
 (use-package lsp-ui
@@ -1701,6 +1710,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (pdf-loader-install))
 
 ;;;; ConTexT Specifics
+;; We are using lsp-mode with Context instead of eglot
 (use-package context
   :defer t
   :mode (("\\.mkiv\\'" . context-mode)
@@ -1709,17 +1719,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   (ConTeXt-Mark-version "IV")
   :config
   (setq revert-without-query '(".+pdf$"))
-  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (add-hook 'ConTeXt-mode-hook
-            (lambda ()
-              ;; Install digestif
-              ;; https://github.com/astoff/digestif
-              ;;
-              ;; if we are using digestiff with eglot we need to send correct language id to
-              ;; LSP server
-              (setq lsp-tex-server 'digestiff)
-              (put 'ConTeXt-mode 'eglot-language-id "context")
-              (eglot-ensure))))
+  (add-hook 'doc-view-mode-hook 'auto-revert-mode))
 
 ;; let's define polymode for metapost in ConTeXt
 (define-hostmode poly-context-hostmode :mode 'ConTeXt-mode)
