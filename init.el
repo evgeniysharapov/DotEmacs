@@ -1257,16 +1257,33 @@ Examples:
                       :priority 2
                       :server-id 'digestif-context)))
   :config
-  ;; emacs-lsp-booster speeds up the stdio JSON path (Emacs 29, or 30 without
-  ;; native json-rpc). On Emacs 30 with json-rpc-connection lsp-mode skips the
-  ;; stdio filter entirely, so the advice is a no-op there.
-  (when (executable-find "emacs-lsp-booster")
-    (advice-add 'lsp-resolve-final-command :around
-                (lambda (old-fn cmd &optional test?)
-                  (let ((orig (funcall old-fn cmd test?)))
-                    (if (and orig (not test?) (not (file-remote-p default-directory)))
-                        (cons "emacs-lsp-booster" orig)
-                      orig))))))
+  ;; emacs-lsp-booster: wraps the server command to pre-parse JSON into bytecode.
+  ;; Falls back to normal JSON parsing when the binary is not available.
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or (when (equal (following-char) ?#)
+          (let ((bytecode (read (current-buffer))))
+            (when (byte-code-function-p bytecode)
+              (funcall bytecode))))
+        (apply old-fn args)))
+  (advice-add (if (progn (require 'json) (fboundp 'json-parse-buffer))
+                  'json-parse-buffer
+                'json-read)
+              :around #'lsp-booster--advice-json-parse)
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster to lsp CMD."
+    (let ((orig (funcall old-fn cmd test?)))
+      (if (and (not test?)
+               (not (file-remote-p default-directory))
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (when-let ((resolved (executable-find (car orig))))
+              (setcar orig resolved))
+            (cons "emacs-lsp-booster" orig))
+        orig)))
+  (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   :hook
   ((js2-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
@@ -1278,7 +1295,7 @@ Examples:
   :commands lsp-ui-mode
   :custom 
   (lsp-ui-doc-position 'at-point)
-  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-enable t)
   :after lsp-mode)
 
 (use-package lsp-treemacs
