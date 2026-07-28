@@ -1276,8 +1276,6 @@ Examples:
   :ensure t
   :commands (dap-debug dap-debug-edit-template dap-register-debug-template)
   :after lsp-mode
-  :config
-  (require 'dap-python)  
   :bind
   (:map lsp-mode-map        
         ("C-z . d" . dap-debug))
@@ -1489,6 +1487,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :config
   (add-hook 'python-mode-hook #'eldoc-mode)
   (add-hook 'python-mode-hook #'lsp-deferred)
+  (add-hook 'python-mode-hook (lambda () (require 'dap-python)))
   :bind
   (:map python-mode-map
 	;; python-eldoc-at-point is not really useful, instead
@@ -1507,10 +1506,7 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package lsp-pyright
   :ensure t
   :after lsp-mode
-  ;; :hook (python-mode . (lambda ()
-  ;;                        (require 'lsp-pyright)
-  ;;                        (lsp-deferred)))
-  )
+  :hook (python-mode . (lambda () (require 'lsp-pyright))))
 
 (use-package pyvenv
   :ensure t
