@@ -1818,6 +1818,34 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 
   (setq markdown-command "pandoc")
 
+  ;; Tables are aligned visually by `valign' using display properties instead of
+  ;; by rewriting the buffer. Notes authored in Obsidian stay byte-identical, and
+  ;; `markdown-table-align' can no longer run unbidden on the handful of notes
+  ;; holding multi-thousand-character table cells. C-c | still aligns on demand.
+  (setq markdown-table-align-p nil)
+
+  (setq markdown-fontify-code-blocks-natively t)
+
+  ;; Wiki links stay off by default. `markdown-fontify-wiki-links' resolves every
+  ;; link to a filename on each fontification pass, whether or not the result is
+  ;; used, which costs 3s on a 1000-link Obsidian note versus 0.04s with links
+  ;; off. Standalone Markdown has no [[links]] to gain from it either way, so turn
+  ;; it on per buffer with C-c C-t w on the rare visit to the vault.
+  ;; These two only take effect once links are on, and encode Obsidian's
+  ;; conventions: [[Page|alias]] rather than markdown-mode's [[alias|Page]], and
+  ;; targets keeping their spaces rather than substituting underscores.
+  (setq markdown-wiki-link-alias-first nil
+        markdown-link-space-sub-char " ")
+  ;; `markdown-wiki-link-search-type' is deliberately left at nil. Adding
+  ;; `sub-directories' makes resolution walk the tree recursively with a regexp
+  ;; built from unescaped link text, so a real note here holding
+  ;; [[...#Working on [DXA-11051]] aborts font-lock with an invalid regexp.
+
+  ;; Scaled headings are global faces, not buffer-local, and must go through the
+  ;; defcustom setter to take effect. Terminal frames ignore the :height, so this
+  ;; is safe to set once even though this Emacs serves both frame types.
+  (setopt markdown-header-scaling t)
+
   (defun flyspell-markdown-check-word-predicate ()
     "Used by `flyspell-mode' in Markdown documents to skip spell checking code blocks and inline code"
     (let ((face (get-text-property (-  (point) 1) 'face)))
@@ -1848,18 +1876,99 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
       ;; now delete that extra char, i.e. X
       (delete-char -1)))
 
+  (defun markdown-plus-tab ()
+    "Move to the next table cell when point is in a table, otherwise cycle visibility"
+    (interactive)
+    (if (markdown-table-at-point-p)
+        (call-interactively #'markdown-table-forward-cell)
+      (call-interactively #'markdown-cycle)))
+
+  (defun markdown-plus-shifttab ()
+    "Move to the previous table cell when point is in a table, otherwise cycle globally"
+    (interactive)
+    (if (markdown-table-at-point-p)
+        (call-interactively #'markdown-table-backward-cell)
+      (call-interactively #'markdown-shifttab)))
+
+  (defun markdown-plus-truncate-lines-in-tables ()
+    "Suspend soft wrapping while point is in a table so rows stay on one line"
+    (let ((in-table (and (markdown-table-at-point-p) t)))
+      (unless (eq in-table (and truncate-lines t))
+        (setq truncate-lines in-table))))
+
+  (defun markdown-plus-toggle-view-mode ()
+    "Toggle between editing and a read-only rendered view with markup hidden"
+    (interactive)
+    (if (derived-mode-p 'markdown-view-mode)
+        ;; `buffer-read-only' is permanent-local, so restoring the major mode
+        ;; does not by itself make the buffer writable again.
+        (progn (markdown-mode) (read-only-mode -1))
+      (markdown-view-mode)))
+
+  (defun markdown-plus-follow-wiki-link (orig name &optional other)
+    "Follow wiki link NAME without ever creating the target.
+`markdown-follow-wiki-link' calls `find-file' unconditionally, and
+`markdown-convert-wiki-link-to-filename' appends the visited file's extension
+to the whole link, so an Obsidian link such as [[Note#Some Heading]] would
+otherwise create a stray file in the vault. Drop the #anchor before resolving,
+refuse to visit a target that does not exist, and move to the anchored heading
+once the file is open."
+    (let* ((anchor (when (string-match "#\\(.+\\)\\'" name)
+                     (match-string 1 name)))
+           (target (if anchor (substring name 0 (match-beginning 0)) name))
+           (file (markdown-convert-wiki-link-to-filename target)))
+      (unless (and file (file-exists-p (expand-file-name file)))
+        (user-error "No such wiki link target: %s" target))
+      (funcall orig target other)
+      (when anchor
+        (goto-char (point-min))
+        (unless (re-search-forward (concat "^#+[ \t]*" (regexp-quote anchor)) nil t)
+          (message "Opened %s, but heading %S was not found" target anchor)))))
+
+  (advice-add 'markdown-follow-wiki-link :around #'markdown-plus-follow-wiki-link)
+
+  (defun markdown-plus-setup-display ()
+    "Enable Markdown display features, gating the ones that need a graphical frame.
+Called from the mode hook rather than at load time because this Emacs runs as a
+daemon, where `display-graphic-p' is always nil during initialisation."
+    (add-hook 'post-command-hook #'markdown-plus-truncate-lines-in-tables nil t)
+    (when (display-graphic-p)
+      (valign-mode 1)))
+
+  (add-hook 'markdown-mode-hook #'markdown-plus-setup-display)
+
   (bind-keys :map markdown-mode-map
              ("RET" . markdown-plus-enter-key)
              ;; C-RET inserts new heading current level
              ("<C-return>" . markdown-plus-insert-new-header-same-level)
              ;; M-<left> promotes, M-<right> demotes
              ("<M-left>"  . markdown-promote)
-             ("<M-right>" . markdown-demote))
+             ("<M-right>" . markdown-demote)
+             ;; TAB/S-TAB walk table cells, and fall through to their usual jobs
+             ("TAB" . markdown-plus-tab)
+             ("<backtab>" . markdown-plus-shifttab)
+             ;; Rewrite a table's whitespace on demand, mainly for terminal frames
+             ("C-c |" . markdown-table-align)
+             ("C-c C-v" . markdown-plus-toggle-view-mode)
+             ;; Joins the other C-c C-t toggles; only worth it in the vault
+             ("C-c C-t w" . markdown-toggle-wiki-links))
+
+  ;; The view mode keymap has no parent, so it needs its own way back. This also
+  ;; displaces `kill-current-buffer' from q, which is too easy to hit by accident.
+  (bind-keys :map markdown-view-mode-map
+             ("q" . markdown-plus-toggle-view-mode)
+             ("C-c C-v" . markdown-plus-toggle-view-mode))
   ;; TODO:  M-<up> - folds current entry, M-<down> - unfolds current entry
   
   
   :init (setq flyspell-generic-check-word-predicate
 	      'flyspell-markdown-check-word-predicate))
+
+;; Aligns table columns with pixel-precise display properties, leaving the file
+;; on disk untouched. Graphical frames only, hence `markdown-plus-setup-display'.
+(use-package valign
+  :ensure t
+  :commands (valign-mode))
 
 ;;;; LESS 
 (use-package less-css-mode
