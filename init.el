@@ -1592,6 +1592,21 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
   :ensure t
   :defer t)
 
+;;;; Go
+
+;; Install the Go toolchain, then:
+;;   go install golang.org/x/tools/gopls@latest
+;;   go install github.com/go-delve/delve/cmd/dlv@latest
+(use-package go-mode
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'go-mode-hook #'lsp-deferred)
+  (add-hook 'go-mode-hook (lambda () (add-hook 'before-save-hook #'gofmt-before-save nil t))))
+
+(with-eval-after-load 'dap-mode
+  (require 'dap-dlv-go))
+
 ;;;; Groovy
 (use-package groovy-mode
   :ensure t)
