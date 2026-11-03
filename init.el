@@ -1134,6 +1134,30 @@ Examples:
 	  (setq company-statistics-file (concat *data-dir* "company-statistics-cache.el"))
 	  (add-hook 'company-mode-hook #'company-statistics-mode)))
 
+;;;; GitHub Copilot
+;; Not on MELPA, so fetched via quelpa. Suggestions are shown on
+;; demand only (no idle popup) so they don't compete with company's
+;; TAB binding.
+(use-package copilot
+  :quelpa (copilot :fetcher github
+                    :repo "zerolfx/copilot.el"
+                    :files ("dist" "*.el"))
+  :commands (copilot-mode copilot-complete)
+  :hook (prog-mode . ffe-maybe-copilot-mode)
+  :init
+  (defun ffe-maybe-copilot-mode ()
+    "Enable `copilot-mode' only if its server is already installed.
+Avoids a hard error at startup before `copilot-install-server' has run."
+    (when (file-executable-p
+           (expand-file-name "copilot/bin/copilot-language-server"
+                              (expand-file-name ".cache" user-emacs-directory)))
+      (copilot-mode)))
+  :bind (:map copilot-mode-map
+              ("M-RET" . copilot-complete))
+  :bind (:map copilot-completion-map
+              ("M-RET" . copilot-accept-completion)
+              ("C-g" . copilot-clear-overlay)))
+
 ;;;; In the Minibuffer
 ;; Let's use Ivy and Counsel
 (use-package counsel
