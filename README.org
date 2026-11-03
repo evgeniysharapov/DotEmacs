@@ -36,6 +36,8 @@ describe it at length. Just some of the highlights.
   * C/C++: =cc-mode=, =c-company-headers=, =c-eldoc=
   * Javascript via =js-2=, =tern=, =mocha=, =js-comint=
   * Docker: =dockerfile-mode=, =yaml= and =docker=
+  * =copilot= - GitHub Copilot, fetched via =quelpa= since it is not on MELPA. Run
+    =M-x copilot-install-server= once, then =M-x copilot-login= to authenticate.
 
 * Some Shortcuts
 
@@ -64,6 +66,18 @@ describe it at length. Just some of the highlights.
    * =C-x K= kill this buffer
    * =C-M-:= start/switch to IELM with current buffer
    * =M-z= is zapping up to a character, =M-Z= zaps to character. Zapping backward is via negative universal argument.
+
+** Dired
+   * Opening a directory (=RET=) reuses the current dired buffer instead of
+     creating a new one. Opening a file (=RET=) still visits it in a new buffer.
+   * =^= goes to the parent directory, also reusing the current buffer.
+
+** GitHub Copilot
+   * =M-RET= triggers a completion suggestion at point.
+   * While a suggestion is shown, =M-RET= accepts it and =C-g= dismisses it.
+   * Copilot is only active once its language server has been installed via
+     =M-x copilot-install-server= (checked on buffer startup to avoid errors
+     before that step has been run).
 
 * Using outline
 ** DONE Faces for outline headers

@@ -610,7 +610,8 @@ Examples:
   :init
   (progn  (add-hook 'dired-mode-hook #'hl-line-mode)
           (put 'dired-find-alternate-file 'disabled nil)
-          (when (string= system-type "darwin")       
+          (setq dired-kill-when-opening-new-dired-buffer t)
+          (when (string= system-type "darwin")
             (setq dired-use-ls-dired nil)))
   :config
   (unbind-key "M-s f" dired-mode-map)
@@ -623,7 +624,16 @@ Examples:
           (dired-deletion-confirmer (lambda (arg) t)))
       (dired-do-delete arg)))
 
-  (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map))
+  (bind-key [remap dired-do-delete] #'ffe-dired-do-delete dired-mode-map)
+
+  (defun ffe-dired-find-file ()
+    "Visit directories in the current dired buffer, files in a new buffer."
+    (interactive)
+    (if (file-directory-p (dired-get-file-for-visit))
+        (dired-find-alternate-file)
+      (dired-find-file)))
+
+  (bind-key [remap dired-find-file] #'ffe-dired-find-file dired-mode-map))
 
 (bind-key "d" #'counsel-dired ctl-x-map)
 (bind-key "j" #'counsel-dired-jump ctl-x-f-map)
