@@ -1,4 +1,4 @@
-;;; package --- summary
+;;; package --- summary -*- lexical-binding: t -*-
 ;;; Configuration for personal MacBook Pro
 ;;; Commentary:
 ;;; Code:
