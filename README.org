@@ -79,6 +79,18 @@ describe it at length. Just some of the highlights.
      =M-x copilot-install-server= (checked on buffer startup to avoid errors
      before that step has been run).
 
+** Debugging (=dap-mode=)
+   * =C-z . d= starts a debug session (=dap-debug=).
+   * =C-z . b= toggles a breakpoint at point.
+   * =C-z . B= deletes all breakpoints.
+   * =C-z . l= lists all breakpoints in a UI buffer. There, =RET= jumps to
+     the breakpoint at point and =d= deletes it.
+   * =C-z . h= opens the =dap-hydra= menu for stepping (next/step-in/step-out),
+     continuing, and other debug actions. It also opens automatically
+     whenever execution stops at a breakpoint.
+   * For Go, =dlv= (Delve) is required and must support the installed Go
+     version; see https://github.com/go-delve/delve for compatibility.
+
 * Using outline
 ** DONE Faces for outline headers
 ** DONE use outshine speedy

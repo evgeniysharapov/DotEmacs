@@ -300,6 +300,9 @@ Examples:
   ;; (put 'scroll-left 'disabled nil)
   ;; scroll-lock-mode being enabled randomly is infuriating
   (advice-add 'scroll-lock-mode :override (lambda (&rest args)))
+  ;; keep logging warnings but stop them from popping a window
+  (add-to-list 'display-buffer-alist
+               '("\\*Warnings\\*" display-buffer-no-window (allow-no-window . t)))
   :custom
   ;; default-frame-alist is set in early-init.el
   ;; avoid jerky scrolling 
@@ -1339,13 +1342,19 @@ Avoids a hard error at startup before `copilot-install-server' has run."
 
 (use-package dap-mode
   :ensure t
-  :commands (dap-debug dap-debug-edit-template dap-register-debug-template)
+  :commands (dap-debug dap-debug-edit-template dap-register-debug-template dap-hydra
+             dap-breakpoint-toggle dap-breakpoint-delete-all dap-ui-breakpoints-list)
   :after lsp-mode
   :bind
-  (:map lsp-mode-map        
-        ("C-z . d" . dap-debug))
+  (:map lsp-mode-map
+        ("C-z . d" . dap-debug)
+        ("C-z . h" . dap-hydra)
+        ("C-z . b" . dap-breakpoint-toggle)
+        ("C-z . B" . dap-breakpoint-delete-all)
+        ("C-z . l" . dap-ui-breakpoints-list))
   :hook ((lsp-mode . dap-mode)
-         (lsp-mode . dap-ui-mode)))
+         (lsp-mode . dap-ui-mode)
+         (dap-stopped . (lambda (_args) (dap-hydra)))))
 
 ;;;; Lisp
 ;;;;; General Lisp 
