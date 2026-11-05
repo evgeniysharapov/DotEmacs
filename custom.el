@@ -1,3 +1,4 @@
+;;; custom.el --- Custom settings -*- lexical-binding: t -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -91,7 +92,7 @@
  '(js2-highlight-level 3)
  '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
- '(load-prefer-newer t t)
+ '(load-prefer-newer t)
  '(ls-lisp-dirs-first t)
  '(lsp-fsharp-server-args '("--verbose"))
  '(monky-process-type 'cmdserver)
@@ -155,7 +156,8 @@
  '(outshine-fontify-whole-heading-line t)
  '(outshine-org-style-global-cycling-at-bob-p t)
  '(outshine-use-speed-commands t)
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(editorconfig yasnippet-snippets yaml-mode which-key wgrep-ag visual-regexp visual-fill-column visual-fill utop unfill undo-tree toml-mode system-packages string-inflection restclient rainbow-mode racer quelpa-use-package pyvenv projectile powershell polymode plantuml-mode pdf-tools paredit outshine org-journal nginx-mode monky modus-themes merlin magit lua-mode lsp-ui lsp-pyright ledger-mode langtool just-mode json-rpc json-navigator json-mode js2-mode imenu-list imenu-anywhere idle-highlight-mode hide-lines helpful groovy-mode go-guru go-eldoc gcmh fsharp-mode flycheck-rust flycheck-pos-tip flycheck-ledger find-file-in-project exec-path-from-shell elisp-slime-nav dockerfile-mode docker diminish dap-mode csv-mode crosshairs counsel company-statistics company-go company-glsl company-c-headers color-moccur cider cargo c-eldoc browse-kill-ring auctex all-the-icons-ivy-rich ag adaptive-wrap ace-jump-mode))
  '(projectile-indexing-method 'alien)
  '(projectile-sort-order 'recentf)
  '(python-indent-guess-indent-offset nil)
