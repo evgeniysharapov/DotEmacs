@@ -91,6 +91,26 @@ describe it at length. Just some of the highlights.
    * For Go, =dlv= (Delve) is required and must support the installed Go
      version; see https://github.com/go-delve/delve for compatibility.
 
+* macOS Notes
+** pdf-tools on macOS 13 (Intel)
+   Homebrew publishes no bottles for macOS 13 on Intel, so everything is
+   compiled from source with Apple clang 15, which lacks some C++23 library
+   features. =pdf-tools= needs the =epdfinfo= server, which links against
+   =poppler=. Building it takes three steps:
+   1. Build =poppler= with a newer compiler. The stock build fails in
+      =GPGMECryptoSignBackend.cc= (=std::ranges::contains= is missing from the
+      system libc++), so use the Homebrew LLVM:
+      : brew install --cc=llvm_clang poppler
+   2. =epdfinfo= is built by =pdf-tools= from Emacs on first use. Its
+      =poppler.pc= requires =libcurl >= 8.5=, but pkg-config finds macOS's 7.x
+      first because Homebrew's =curl= is keg-only. The =pdf-tools= block in
+      =init.el= sets =PKG_CONFIG_PATH= so =/usr/local/opt/curl= comes first.
+   3. If the server has to be rebuilt by hand (for example after a =pdf-tools=
+      update), run from the package's =build/server= directory:
+      : export PKG_CONFIG_PATH=/usr/local/opt/curl/lib/pkgconfig:/usr/local/lib/pkgconfig
+      : autoreconf -i && ./configure -q --bindir=<pdf-tools dir> && make && make install
+   Keep =llvm=: =--cc=llvm_clang= needs it, and =rust= and =lld= depend on it.
+
 * Using outline
 ** DONE Faces for outline headers
 ** DONE use outshine speedy

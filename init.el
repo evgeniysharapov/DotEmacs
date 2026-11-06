@@ -1798,6 +1798,11 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package pdf-tools
   :ensure t
   :init
+  ;; Homebrew's curl is keg-only; without it pkg-config finds macOS libcurl
+  ;; 7.x and building epdfinfo against poppler fails (see README.org).
+  (when (file-directory-p "/usr/local/opt/curl/lib/pkgconfig")
+    (setenv "PKG_CONFIG_PATH"
+            "/usr/local/opt/curl/lib/pkgconfig:/usr/local/lib/pkgconfig"))
   (pdf-loader-install))
 
 ;;;; ConTexT Specifics
