@@ -47,3 +47,5 @@ eln-cache
 /data/quelpa/
 /data/package-quickstart.el
 /data/package-quickstart.elc
+/ido.last
+/smex-items
