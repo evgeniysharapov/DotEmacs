@@ -1582,9 +1582,11 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
 (use-package lsp-pyright
   :ensure t
   :after lsp-mode
-  :init
-  (setq lsp-pyright-langserver-command
-        (if (executable-find "basedpyright") "basedpyright" "pyright"))
+  :config
+  ;; This lsp-pyright has no langserver-command option and falls back to an
+  ;; npm copy of pyright that needs node. Use basedpyright (bundles its node).
+  (when (executable-find "basedpyright-langserver")
+    (lsp-dependency 'pyright '(:system "basedpyright-langserver")))
   :hook (python-mode . (lambda () (require 'lsp-pyright))))
 
 (use-package pyvenv
