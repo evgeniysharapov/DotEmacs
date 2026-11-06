@@ -75,6 +75,12 @@
 ;;;; Initialize `use-package' and friends
 (require 'package)
 
+;; The quickstart file is generated; its byte-compile warnings are not actionable
+;; and pop up *Compile-Log* after every package change.
+(define-advice package-quickstart-refresh (:around (fn &rest args) quiet-bytecomp)
+  (let ((byte-compile-warnings nil))
+    (apply fn args)))
+
 ;; package-user-dir and package-enable-at-startup set in early-init.el
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
@@ -517,14 +523,11 @@ Examples:
 ;;;; Theme
 (use-package modus-themes
   :ensure t
+  :pin melpa-stable
   :commands (modus-themes-toggle)
   :init
-  (setf modus-themes-slanted-constructs t
-        modus-themes-bold-constructs t
-        modus-themes-syntax '(alt-syntax green-strings yellow-comments)
-        modus-themes-org-blocks 'gray-background
-        modus-themes-hl-line '(accented)
-        modus-themes-headings '((1 . (rainbow background)) (t . (rainbow background overline))))
+  (setf modus-themes-italic-constructs t
+        modus-themes-bold-constructs t)
   (load-theme 'modus-operandi)
   :config
   (if (display-graphic-p)
@@ -1067,7 +1070,6 @@ Examples:
               ("C-S-s" . describe-symbol)
               ;; Close help windows from anywhere, including outside the help buffer
               ("q" . ffe-quit-windows-on-help)
-              ("C-h q" . ffe-quit-windows-on-help)
               ;; help-for-help is nice, but I would like C-h still show me prefix bindings
               ("C-h" . describe-prefix-bindings)
               
@@ -1514,17 +1516,17 @@ Due to a bug http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16759 add it to a c-mo
                                  "go build")
                             ;; make before-save-hook local for go-mode buffer
                             (add-hook 'before-save-hook 'gofmt nil t)))
-  (bind-keys :map go-mode-map
-             :prefix "C-c C-d"
-             :prefix-map go-mode-doc-map
-             ("h"   . godoc)
-             ("d"   . godef-describe)
-             ("C-d" . godoc-at-point))
 
   :config
   (setq gofmt-command "goimports")
   :bind (:map go-mode-map
-         ("C-c C-c" . go-run-buffer)))
+              ("C-c C-c" . go-run-buffer))
+  (:map go-mode-map
+        :prefix "C-c C-d"
+        :prefix-map go-mode-doc-map
+        ("h"   . godoc)
+        ("d"   . godef-describe)
+        ("C-d" . godoc-at-point)))
 
 
 ;;;; Javascript
